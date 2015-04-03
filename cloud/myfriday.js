@@ -16,6 +16,7 @@ request.post('http://course.myfriday.cn:80/V2/School/getNewSchoolList.action', f
     var schools_json = JSON.parse(body).data['updateList'];
     for (var i = 0; i < schools_json.length; i++) {
         var school_json = schools_json[i];
+        //TODO object is not a function
         var school = new School();
         school.set('code', school_json['schoolId'], null);
         var name = school_json['name'];

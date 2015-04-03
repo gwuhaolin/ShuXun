@@ -4,4 +4,4 @@
  */
 require('cloud/app.js');
 
-require('cloud/myfriday.js');
+//require('cloud/myfriday.js');
