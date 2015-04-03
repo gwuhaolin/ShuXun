@@ -1,0 +1,40 @@
+<!--一本二手书信息-->
+<ion-view title="二手 图书名称">
+    <ion-content>
+        <!-- 图书基本信息-->
+        <div class="list card">
+            <ion-item style="text-align: center">
+                <img src="book.jpg" style="height: 180px">
+            </ion-item>
+            <ion-item>
+                <h3>主人描述</h3>
+
+                <p style="white-space: pre-wrap">图书简介图书简介图书简介图书简介图书简介图书简介图书简介图书简介...</p>
+                <button class="button button-small button-clear button-balanced" style="padding: 0;">展开</button>
+
+            </ion-item>
+            <ion-item>
+                要价:13元
+            </ion-item>
+            <ion-item>
+                主人所在位置:华中师范大学
+            </ion-item>
+        </div>
+
+        <!-- 主人其它图书-->
+        <div class="list card">
+            <ion-item class="item-divider">主人其它图书</ion-item>
+            <ion-item class="item-avatar">
+                <img src="book.jpg">
+
+                <h2>图书名称</h2>
+
+                <p>二手书1 13元</p>
+            </ion-item>
+        </div>
+        <ion-infinite-scroll
+                on-infinite="loadMore()"
+                distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

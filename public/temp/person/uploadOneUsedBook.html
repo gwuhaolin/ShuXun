@@ -1,0 +1,39 @@
+<ion-view ng-controller="person_uploadOneUsedBook" title="上传二手书">
+    <ion-content style="text-align: center" class="padding">
+        <!-- 正在加载-->
+        <div style="text-align: center;padding-top: 10px" ng-if="isLoading">
+            <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
+        </div>
+        <!-- 扫码-->
+        <div ng-if="!isbn13">
+            <h5>1.扫码书后面的条形码获得图书信息</h5>
+            <button class="button button-outline button-balanced" ng-click="scanQRBtnOnClick()">扫条形码</button>
+        </div>
+        <!-- 出版信息-->
+        <div class="list card" ng-if="book">
+            {{book | json}}
+        </div>
+
+        <hr>
+        <!-- 上传图片-->
+        <div ng-if="!uploadPicSrc">
+            <h5>2.上传一张它的照片让大家知道它的新旧程度</h5>
+            <button class="button button-outline button-balanced" ng-click="uploadPicOnClick()">上传照片</button>
+        </div>
+        <img ng-if="uploadPicSrc" ng-src="{{uploadPicSrc}}">
+
+        <hr>
+        <!-- 填写价格和描述-->
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="number" ng-model="price" placeholder="输入要价(人民币)">
+            </label>
+            <label class="item item-input">
+                <input type="text" ng-model="des" placeholder="对这本书你还有什么想说的吗?">
+            </label>
+        </div>
+
+        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()">提交二手书</button>
+
+    </ion-content>
+</ion-view>

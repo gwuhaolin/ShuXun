@@ -1,0 +1,84 @@
+<ion-view ng-controller="book_oneBook" title="{{book.title}}">
+    <ion-content>
+        <!-- 正在加载-->
+        <div style="text-align: center;padding-top: 10px" ng-if="isLoading">
+            <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
+        </div>
+        <!-- 图书基本信息-->
+        <div class="list card">
+            <!-- 封面-->
+            <ion-item style="text-align: center">
+                <img ng-src="{{book.image}}" style="height: 180px" ng-click="previewBookImg()">
+            </ion-item>
+            <!-- 简介-->
+            <ion-item ng-if="book.summary" class="item-button-right">
+                <h3>简介</h3>
+
+                <p style="white-space: pre-wrap">{{book.summary.substr(0,30)}}...</p>
+                <button class="button button-clear button-balanced"
+                        ng-click="showSummary()">详情
+                </button>
+            </ion-item>
+            <!-- 作者-->
+            <ion-item ng-if="book.author.length>0" class="item-button-right">
+                {{book.author.toString()}} 著
+                <button class="button button-small button-clear button-balanced" ng-if="book.author_intro"
+                        ng-click="showAuthorIntro()">作者简介
+                </button>
+            </ion-item>
+            <!-- 出版信息-->
+            <ion-item class="item-button-right">
+                <i ng-if="book.price">定价:{{book.price}}</i>
+                <i>&nbsp;</i>
+                <i ng-if="book.publisher">{{book.publisher}}/{{book.pubdate}}</i>
+                <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版信息</button>
+            </ion-item>
+            <!-- 豆瓣书评-->
+            <ion-item ng-if="book.rating">
+                <review-star num-stars="{{book.rating.average/2}}" score="{{book.rating.average}}"
+                             num-raters="{{book.rating.numRaters}}"></review-star>
+            </ion-item>
+        </div>
+
+        <!-- 二手书-->
+        <div class="list card">
+            <ion-item class="item-divider">二手书</ion-item>
+            <ion-item class="item-thumbnail-left">
+                <img ng-src="book.jpg">
+
+                <h2>二手书1 13元</h2>
+
+                <p>位置</p>
+
+                <p>主人描述</p>
+            </ion-item>
+            <ion-item style="padding: 0;text-align: center">
+                <a class="button button-small button-clear button-balanced">查看所有二手书</a>
+            </ion-item>
+
+        </div>
+
+        <!-- 电商购买新书-->
+        <div class="list card">
+            <ion-item class="item-divider">购买新书</ion-item>
+            <ion-item class="item-avatar">
+                <img ng-src="img/jd.png">
+
+                <h2>京东 23元</h2>
+            </ion-item>
+        </div>
+    </ion-content>
+    <!--显示详细信息的modal-->
+    <script type="text/ng-template" id="template/author_intro.html">
+        <ion-modal-view>
+            <ion-header-bar>
+                <h2 class="title">{{modalViewData.title}}</h2>
+                <button class="button button-clear icon ion-ios-close-outline" ng-click="modalView.hide()"></button>
+            </ion-header-bar>
+            <ion-content class="padding">
+                <pre>{{modalViewData.content}}</pre>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>
+

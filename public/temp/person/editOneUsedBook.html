@@ -1,0 +1,33 @@
+<!--编辑一本上传的二手书-->
+<ion-view title="编辑你的 图书名称">
+    <ion-nav-buttons side="right">
+        <button class="button">
+            保存
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <!-- 图片信息-->
+        <div class="list card">
+            <ion-item style="text-align: center">
+                <img ng-src="book.jpg" style="height: 180px">
+
+                <div>
+                    <button class="button button-clear button-small button-balanced">更换图片
+                    </button>
+                </div>
+            </ion-item>
+        </div>
+        <!-- 其他信息-->
+        <div class="list card">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">描述</span>
+                <input type="text" placeholder="这书有什么特别之处">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">要价</span>
+                <input type="text" placeholder="人民币 只输入数值">
+            </label>
+        </div>
+
+    </ion-content>
+</ion-view>
