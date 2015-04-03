@@ -47,7 +47,7 @@ angular.module('AppController', [], null)
 
         //注册modal视图
         $scope.modalViewData = {};
-        $ionicModal.fromTemplateUrl('template/author_intro.html', {
+        $ionicModal.fromTemplateUrl('template/authorIntro.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.modalView = modal;
@@ -118,7 +118,19 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_signUp', function ($scope, $stateParams, WeChatJS$) {
+    .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$) {
+
+        $ionicModal.fromTemplateUrl('template/chooseSchool.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.chooseSchoolModalView = modal;
+        });
+
+        $ionicModal.fromTemplateUrl('template/chooseAcademy.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.chooseAcademyModalView = modal;
+        });
 
         var wechatAOuthCode = $stateParams['code'];
 
