@@ -17,7 +17,7 @@ var OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
  * 使用wechat js接口前必须获得这个
  * 返回 wechat js sdk所有需要的config
  */
-module.exports.getJsConfig = function (url, callback) {
+exports.getJsConfig = function (url, callback) {
     APIClient.getJsConfig({
         debug: true,
         url: url,
@@ -38,7 +38,7 @@ module.exports.getJsConfig = function (url, callback) {
  * @param callback
  * 返回 已经关注了用户的微信提供的所有信息
  */
-module.exports.getOAuthUserInfo = function (code, callback) {
+exports.getOAuthUserInfo = function (code, callback) {
     OAuthClient.getAccessToken(code, function (err, result) {
         if (err) {
             callback(err);

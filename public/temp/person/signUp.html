@@ -4,8 +4,8 @@
         <a class="item item-avatar" href="#">
             <img ng-src="{{wechatUserInfo.headimgurl}}">
             <h2>{{wechatUserInfo.nickname}}</h2>
-            <i class="icon ion-female" style="color: #ff6d9e" ng-if="wechatUserInfo.sex"></i>
-            <i class="icon ion-male" style="color: #5eb1ed" ng-if="wechatUserInfo.sex"></i>
+            <i class="icon ion-male" style="color: #5eb1ed" ng-if="wechatUserInfo.sex==1"></i>
+            <i class="icon ion-female" style="color: #ff6d9e" ng-if="wechatUserInfo.sex==2"></i>
         </a>
         <!-- 填写价格和描述-->
         <div class="list list-inset">

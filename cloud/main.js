@@ -3,5 +3,3 @@
  * LeanCloud 主执行文件
  */
 require('cloud/app.js');
-
-//require('cloud/myfriday.js');
