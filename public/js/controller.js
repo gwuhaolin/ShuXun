@@ -118,7 +118,8 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$) {
+    .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$, InfoService$) {
+        $scope.InfoService$ = InfoService$;
 
         $ionicModal.fromTemplateUrl('template/chooseSchool.html', {
             scope: $scope
@@ -126,18 +127,16 @@ angular.module('AppController', [], null)
             $scope.chooseSchoolModalView = modal;
         });
 
-        $ionicModal.fromTemplateUrl('template/chooseAcademy.html', {
+        $ionicModal.fromTemplateUrl('template/chooseMajor.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.chooseAcademyModalView = modal;
         });
 
         var wechatAOuthCode = $stateParams['code'];
-
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.wechatUserInfo = userInfo;
         });
-
 
     })
 

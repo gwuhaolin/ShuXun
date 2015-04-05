@@ -6,16 +6,12 @@
     <title></title>
 </head>
 <body>
-<i class="icon ion-ios-star energized"></i>
-<i class="icon ion-ios-star energized"></i>
-<i class="icon ion-ios-star energized"></i>
-<i class="icon ion-ios-star energized"></i>
-<i>21</i>
-<i>21</i>
-
 <script src="lib/ionic/js/ionic.bundle.js"></script>
 <script>
-    alert(location.href.split('#')[0]);
+    function hi(json) {
+        console.log(json);
+    }
+    hi([{name: 1}, {name: 2}, {name: 3}])
 </script>
 </body>
 </html>

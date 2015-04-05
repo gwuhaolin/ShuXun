@@ -146,21 +146,53 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('BaiduLSB$', function () {
-
+    .service('InfoService$', function ($rootScope, $http) {
+        var that = this;
         /**
-         * 使用浏览器端的IP地址获得其位置信息
-         * http://developer.baidu.com/map/index.php?title=webapi/ip-api
-         * @param callback 百度地理信息
+         * 所有的专业
+         * @type {Array}
          */
-        this.getClientLocationByIP = function (callback) {
-            jsonp('/getIP', function (ip) {
-                var url = 'http://api.map.baidu.com/location/ip?ak=' + BaiDu.AppID + '&ip=' + ip;
-                jsonp(url, function (json) {
-                    callback(json);
-                })
-            })
+        this.majors = [];
+        //加载所有专业信息
+        $http.jsonp('/info/getAllMajor?callback=JSON_CALLBACK').success(function (majors) {
+            that.majors = majors;
+            $rootScope.$apply();
+        });
+        /**
+         * 搜索专业时的关键字
+         * @type {string}
+         */
+        this.searchMajorKeyword = '';
+        /**
+         * 搜索专业时的过滤器
+         * @param major 当前专业信息
+         * @returns {boolean} 是否合格
+         */
+        this.filter_majorByKeyword = function (major) {
+            return major['name'].indexOf(that.searchMajorKeyword) > -1;
         };
 
+        /**
+         * 所有的加载了的学校
+         * @type {Array}
+         */
+        this.schools = [];
+        $http.jsonp('/info/getAllSchool?callback=JSON_CALLBACK').success(function (schools) {
+            that.schools = schools;
+            $rootScope.$apply();
+        });
+        /**
+         * 搜索学校时的关键字
+         * @type {string}
+         */
+        this.searchSchoolKeyword = '';
+        /**
+         * 搜索专业时的过滤器
+         * @param school 当前学校信息
+         * @returns {boolean} 是否合格
+         */
+        this.filter_schoolByKeyword = function (school) {
+            return school['name'].indexOf(that.searchSchoolKeyword) > -1;
+        };
 
     });

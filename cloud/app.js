@@ -4,16 +4,13 @@
  */
 var express = require('express');
 var WechatAPI = require('cloud/wechat.js');
+var Info = require('cloud/info/');
 var app = express();
 
+////////////////////// WeChat /////////////////////////
 /**
- * 返回浏览器的IP地址
+ * 获得微信JS-SDK配置
  */
-app.get('/getIP', function (req, res) {
-    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    res.jsonp(ip);
-});
-
 app.get('/wechat/getJsConfig', function (req, res) {
     var fullUrl = req.header('Referer');
     WechatAPI.getJsConfig(fullUrl, function (config) {
@@ -22,7 +19,7 @@ app.get('/wechat/getJsConfig', function (req, res) {
 });
 
 /**
- * OAuth step 2
+ * 微信获取用户信息 OAuth step 2
  * @param :code
  */
 app.get('/wechat/getOAuthUserInfo/:code', function (req, res) {
@@ -32,5 +29,24 @@ app.get('/wechat/getOAuthUserInfo/:code', function (req, res) {
     })
 });
 
+
+////////////////////// Info /////////////////////////
+/**
+ * 关键字或拼音搜索学校
+ * @param keyword 关键字或拼音
+ */
+app.get('/info/getAllSchool', function (req, res) {
+    var schools = Info.Schools;
+    res.jsonp(schools);
+});
+
+/**
+ * 关键字或拼音搜索专业
+ * @param keyword 关键字或拼音
+ */
+app.get('/info/getAllMajor', function (req, res) {
+    var majors = Info.Majors;
+    res.jsonp(majors);
+});
 
 app.listen();

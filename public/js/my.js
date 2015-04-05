@@ -27,7 +27,3 @@ function jsonp(url, callback) {
 var WECHAT = {
     AppID: 'wx9e79ee1bb4a12663'
 };
-//百度地图
-var BaiDu = {
-    AppID: 'D9748868fb527b49a546fa88932b8cd9'
-};
