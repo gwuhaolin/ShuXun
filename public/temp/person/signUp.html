@@ -2,54 +2,56 @@
 <ion-view ng-controller="person_signUp" title="加入书循">
     <ion-content class="padding">
         <div class="item item-avatar">
-            <img ng-src="{{wechatUserInfo.headimgurl}}">
-            <h2>{{wechatUserInfo.nickname}}</h2>
-            <i class="icon ion-male" style="color: #5eb1ed" ng-if="wechatUserInfo.sex==1"></i>
-            <i class="icon ion-female" style="color: #ff6d9e" ng-if="wechatUserInfo.sex==2"></i>
+            <img ng-src="{{userInfo.headimgurl}}">
+
+            <h2>{{userInfo.nickname}}</h2>
+            <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
+            <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
         </div>
         <!-- 填写价格和描述-->
         <div class="list list-inset">
             <ion-item class="item-icon-right" ng-click="chooseSchoolModalView.show()">
                 你在读的学校
+                <span class="item-note" ng-if="userInfo.school">{{userInfo.school}}</span>
                 <i class="icon ion-ios-arrow-right balanced"></i>
             </ion-item>
-            <ion-item class="item-icon-right" ng-click="chooseAcademyModalView.show()">
+            <ion-item class="item-icon-right" ng-click="chooseMajorModalView.show()">
                 你所学的专业
+                <span class="item-note" ng-if="userInfo.major">{{userInfo.major}}</span>
                 <i class="icon ion-ios-arrow-right balanced"></i>
             </ion-item>
             <label class="item item-input item-select">
                 <span class="input-label">
                     大学入学时间
                 </span>
-                <select>
-                    <option>2012</option>
-                    <option selected>2013</option>
-                    <option>2014</option>
+                <select ng-model="userInfo.startSchoolYear" ng-options="one as one for one in startSchoolYearOptions">
                 </select>
             </label>
         </div>
-        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()">立即加入</button>
+        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
+                ng-disabled="!(userInfo.school && userInfo.major && userInfo.startSchoolYear)">
+            立即加入
+        </button>
     </ion-content>
 
     <!-- 选择学校-->
     <script type="text/ng-template" id="template/chooseSchool.html">
         <ion-modal-view>
-            <ion-header-bar>
-                <h2 class="title">选择你所在的学校</h2>
-                <button class="button button-clear icon ion-ios-close-outline"
-                        ng-click="chooseSchoolModalView.hide()"></button>
+            <ion-header-bar class="item-input-inset">
+                <button class="button button-clear button-balanced"
+                        ng-click="chooseSchoolModalView.hide()">返回
+                </button>
+                <!-- 关键字输入框-->
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios7-search placeholder-icon"></i>
+                    <input type="search" placeholder="输入名称搜索" ng-model="InfoService$.searchSchoolKeyword">
+                </label>
             </ion-header-bar>
             <ion-content class="has-header">
                 <ul class="list">
-                    <!-- 关键字输入框-->
-                    <ion-item class="item-input-inset">
-                        <label class="item-input-wrapper">
-                            <i class="icon ion-search placeholder-icon"></i>
-                            <input type="search" placeholder="输入名称或拼音" ng-model="InfoService$.searchSchoolKeyword">
-                        </label>
-                    </ion-item>
-                    <ion-item
-                            collection-repeat="oneSchool in InfoService$.schools | filter:InfoService$.filter_schoolByKeyword">
+                    <ion-item item-height="55px"
+                              collection-repeat="oneSchool in InfoService$.schools | filter:InfoService$.filter_schoolByKeyword"
+                              ng-click="schoolOnChoose(oneSchool['name'])">
                         {{oneSchool['name']}}
                     </ion-item>
                 </ul>
@@ -59,21 +61,21 @@
     <!-- 选择专业-->
     <script type="text/ng-template" id="template/chooseMajor.html">
         <ion-modal-view>
-            <ion-header-bar>
-                <h2 class="title">选择你所学的专业</h2>
-                <button class="button button-clear icon ion-ios-close-outline"
-                        ng-click="chooseAcademyModalView.hide()"></button>
+            <ion-header-bar class="item-input-inset">
+                <button class="button button-clear button-balanced"
+                        ng-click="chooseMajorModalView.hide()">返回
+                </button>
+                <!-- 关键字输入框-->
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios7-search placeholder-icon"></i>
+                    <input type="search" placeholder="输入名称搜索" ng-model="InfoService$.searchMajorKeyword">
+                </label>
             </ion-header-bar>
             <ion-content class="has-header">
                 <ul class="list">
-                    <!-- 关键字输入框-->
-                    <ion-item class="item-input-inset">
-                        <label class="item-input-wrapper">
-                            <i class="icon ion-search placeholder-icon"></i>
-                            <input type="search" placeholder="输入名称或拼音" ng-model="InfoService$.searchMajorKeyword">
-                        </label>
-                    </ion-item>
-                    <ion-item collection-repeat="oneMajor in InfoService$.majors | filter:InfoService$.filter_majorByKeyword">
+                    <ion-item item-height="55px"
+                              collection-repeat="oneMajor in InfoService$.majors | filter:InfoService$.filter_majorByKeyword"
+                              ng-click="majorOnChoose(oneMajor['name'])">
                         {{oneMajor['name']}}
                     </ion-item>
                 </ul>

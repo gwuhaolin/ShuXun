@@ -156,7 +156,6 @@ angular.module('AppService', [], null)
         //加载所有专业信息
         $http.jsonp('/info/getAllMajor?callback=JSON_CALLBACK').success(function (majors) {
             that.majors = majors;
-            $rootScope.$apply();
         });
         /**
          * 搜索专业时的关键字
@@ -179,7 +178,6 @@ angular.module('AppService', [], null)
         this.schools = [];
         $http.jsonp('/info/getAllSchool?callback=JSON_CALLBACK').success(function (schools) {
             that.schools = schools;
-            $rootScope.$apply();
         });
         /**
          * 搜索学校时的关键字
@@ -194,5 +192,32 @@ angular.module('AppService', [], null)
         this.filter_schoolByKeyword = function (school) {
             return school['name'].indexOf(that.searchSchoolKeyword) > -1;
         };
+
+    })
+
+    .service('User$', function () {
+
+        /**
+         * 用户注册
+         * @param openId 微信id
+         * @param nickName 微信昵称
+         * @param avatarUrl 微信头像
+         * @param major 专业
+         * @param school 学校
+         * @param startSchoolYear 大学入学时间
+         * @returns {*|AV.Promise}
+         */
+        this.signUp = function (openId, nickName, avatarUrl, major, school, startSchoolYear) {
+            var user = new AV.User();
+            user.setUsername(openId, null);
+            user.setPassword(openId, null);
+            user.set('nickName', nickName);
+            user.set('avatarUrl', avatarUrl);
+            user.set('startSchoolYear', startSchoolYear);
+            user.set('school', school);
+            user.set('major', major);
+            return user.signUp(null);
+        }
+
 
     });

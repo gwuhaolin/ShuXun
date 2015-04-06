@@ -118,7 +118,7 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$, InfoService$) {
+    .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$) {
         $scope.InfoService$ = InfoService$;
 
         $ionicModal.fromTemplateUrl('template/chooseSchool.html', {
@@ -126,17 +126,47 @@ angular.module('AppController', [], null)
         }).then(function (modal) {
             $scope.chooseSchoolModalView = modal;
         });
+        //选中了学校
+        $scope.schoolOnChoose = function (school) {
+            $scope.userInfo['school'] = school;
+            $scope.chooseSchoolModalView.hide();
+        };
 
         $ionicModal.fromTemplateUrl('template/chooseMajor.html', {
             scope: $scope
         }).then(function (modal) {
-            $scope.chooseAcademyModalView = modal;
+            $scope.chooseMajorModalView = modal;
         });
+        //选中了专业
+        $scope.majorOnChoose = function (major) {
+            $scope.userInfo['major'] = major;
+            $scope.chooseMajorModalView.hide();
+        };
 
+        //开始上大学时间所有选项,6年前到今年
+        $scope.startSchoolYearOptions = [];
+        {
+            var currentYear = new Date().getFullYear();
+            for (var year = currentYear - 6; year <= currentYear; year++) {
+                $scope.startSchoolYearOptions.push(year);
+            }
+        }
+
+        //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
-            $scope.wechatUserInfo = userInfo;
+            $scope.userInfo = userInfo;
         });
+
+        //点击注册时
+        $scope.submitOnClick = function () {
+            var info = $scope.userInfo;
+            User$.signUp(info['openid'], info['nickName'], info['avatarUrl'], info['major'], info['school'], info['startSchoolYear']).then(function (user) {
+                console.log(user);
+            }, function (error) {
+                console.log(error);
+            });
+        };
 
     })
 
