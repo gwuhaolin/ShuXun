@@ -119,25 +119,31 @@ angular.module('AppController', [], null)
     })
 
     .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$) {
+        //调用微信接口获取用户信息
+        var wechatAOuthCode = $stateParams['code'];
+        WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
+            $scope.userInfo = userInfo;
+        });
+
         $scope.InfoService$ = InfoService$;
 
+        //选中了学校
         $ionicModal.fromTemplateUrl('template/chooseSchool.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.chooseSchoolModalView = modal;
         });
-        //选中了学校
         $scope.schoolOnChoose = function (school) {
             $scope.userInfo['school'] = school;
             $scope.chooseSchoolModalView.hide();
         };
 
+        //选中了专业
         $ionicModal.fromTemplateUrl('template/chooseMajor.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.chooseMajorModalView = modal;
         });
-        //选中了专业
         $scope.majorOnChoose = function (major) {
             $scope.userInfo['major'] = major;
             $scope.chooseMajorModalView.hide();
@@ -152,16 +158,10 @@ angular.module('AppController', [], null)
             }
         }
 
-        //调用微信接口获取用户信息
-        var wechatAOuthCode = $stateParams['code'];
-        WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
-            $scope.userInfo = userInfo;
-        });
-
         //点击注册时
         $scope.submitOnClick = function () {
             var info = $scope.userInfo;
-            User$.signUp(info.openId, info.nickName, info.avatarUrl, info.major, info.school, info.startSchoolYear).then(function (user) {
+            User$.signUp(info.openId, info.nickName, info.avatarUrl, info.major, info.school, info.startSchoolYear,info.sex).then(function (user) {
                 alert(JSON.stringify(user));
             }, function (error) {
                 alert(JSON.stringify(error));

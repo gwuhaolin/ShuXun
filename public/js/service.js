@@ -211,9 +211,10 @@ angular.module('AppService', [], null)
          * @param major 专业
          * @param school 学校
          * @param startSchoolYear 大学入学时间
+         * @param sex 性别 1=男 2=女 0=未知
          * @returns {*|AV.Promise}
          */
-        this.signUp = function (openId, nickName, avatarUrl, major, school, startSchoolYear) {
+        this.signUp = function (openId, nickName, avatarUrl, major, school, startSchoolYear,sex) {
             var user = new AV.User();
             user.setUsername(openId, null);
             user.setPassword(openId, null);
@@ -222,6 +223,8 @@ angular.module('AppService', [], null)
             user.set('startSchoolYear', startSchoolYear);
             user.set('school', school);
             user.set('major', major);
+            user.set('sex',sex);
+            alert(JSON.stringify(user));
             return user.signUp(null);
         }
 

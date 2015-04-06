@@ -1,6 +1,10 @@
 <!--注册-->
 <ion-view ng-controller="person_signUp" title="加入书循">
     <ion-content class="padding">
+        <!-- 正在加载-->
+        <div style="text-align: center;margin: 5px" ng-if="!userInfo.openId">
+            <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
+        </div>
         <div class="item item-avatar">
             <img ng-src="{{userInfo.avatarUrl}}">
 
