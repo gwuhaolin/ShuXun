@@ -1,18 +1,25 @@
 <!--注册-->
 <ion-view ng-controller="person_signUp" title="加入书循">
     <ion-content class="padding">
-        <!-- 正在加载-->
-        <div style="text-align: center;margin: 5px" ng-if="!userInfo.openId">
-            <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
-        </div>
-        <div class="item item-avatar">
+        <!-- 微信信息-->
+        <div class="item item-avatar" ng-if="userInfo.openId">
             <img ng-src="{{userInfo.avatarUrl}}">
 
             <h2>{{userInfo.nickName}}</h2>
             <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
             <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
         </div>
-        <!-- 填写价格和描述-->
+        <!-- 填写邮箱和密码-->
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="email" placeholder="输入邮箱方便买家联系你" ng-model="userInfo.email">
+            </label>
+
+            <label class="item item-input">
+                <input type="text" placeholder="输入登入密码" ng-model="userInfo.password">
+            </label>
+        </div>
+        <!-- 填写其他信息-->
         <div class="list list-inset">
             <ion-item class="item-icon-right" ng-click="chooseSchoolModalView.show()">
                 你在读的学校
@@ -33,7 +40,7 @@
             </label>
         </div>
         <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
-                ng-disabled="!(userInfo.school && userInfo.major && userInfo.startSchoolYear)">
+                ng-disabled="!(userInfo.email && userInfo.password && userInfo.school && userInfo.major && userInfo.startSchoolYear)">
             立即加入
         </button>
     </ion-content>

@@ -23,6 +23,9 @@ function jsonp(url, callback) {
     document.head.appendChild(script);
 }
 
+//AVOSCloud
+AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08zxttpt7upqxwgt6oy47lzb3f8c4juf34otfm");
+
 //微信公共平台
 var WECHAT = {
     AppID: 'wx9e79ee1bb4a12663'
