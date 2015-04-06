@@ -137,7 +137,7 @@ angular.module('AppController', [], null)
 
         //点击注册时
         $scope.submitOnClick = function () {
-            User$.signUp($scope.userInfo).then(function (user) {
+            User$.signUpWithJSONUser($scope.userInfo).then(function (user) {
                 alert(JSON.stringify(User$.avosUserToJson(user)));
             }, function (error) {
                 alert(error.message);

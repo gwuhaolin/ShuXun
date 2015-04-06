@@ -265,8 +265,9 @@ angular.module('AppService', [], null)
          * @param jsonUser json格式的用户信息
          * @returns {*|AV.Promise}
          */
-        this.signUp = function (jsonUser) {
+        this.signUpWithJSONUser = function (jsonUser) {
             var user = that.jsonToAvosUser(jsonUser);
+            user.set('username', jsonUser.email);
             return user.signUp(null);
         };
 
