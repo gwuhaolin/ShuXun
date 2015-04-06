@@ -261,7 +261,7 @@ angular.module('AppService', [], null)
         var UserAttrNames = ['email', 'username', 'password', 'openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
 
         /**
-         * 用户注册
+         * 用户注册 用户名=Email
          * @param jsonUser json格式的用户信息
          * @returns {*|AV.Promise}
          */
@@ -317,15 +317,17 @@ angular.module('AppService', [], null)
 
         /**
          * 提示用户登入
+         * @param title 显示给用户的提示信息
          * @param onSuccess 当登入成功时调用 返回 AVOSUser
          */
-        this.alertUserLoginModalView = function (onSuccess) {
+        this.alertUserLoginModalView = function (title, onSuccess) {
             $ionicModal.fromTemplateUrl('temp/tool/userLoginModalView.html', {
                 scope: $scope
             }).then(function (modal) {
                 $scope.userLoginModalView = modal;
                 $scope.userLoginModalView.show();
             });
+            $scope.title = title;
             $scope.loginInfo = {
                 email: '',
                 password: ''

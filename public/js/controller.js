@@ -119,9 +119,12 @@ angular.module('AppController', [], null)
     })
 
     .controller('person_signUp', function ($scope, $timeout, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$) {
+        //是否正在加载中..
+        $scope.isLoading = true;
         //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
+            $scope.isLoading = false;
             $scope.userInfo = userInfo;
         });
 
@@ -137,11 +140,15 @@ angular.module('AppController', [], null)
 
         //点击注册时
         $scope.submitOnClick = function () {
-            User$.signUpWithJSONUser($scope.userInfo).then(function (user) {
-                alert(JSON.stringify(User$.avosUserToJson(user)));
-            }, function (error) {
+            $scope.isLoading = true;
+            User$.signUpWithJSONUser($scope.userInfo).done(function (avosUser) {
+                alert(JSON.stringify(User$.avosUserToJson(avosUser)));
+            }).fail(function (error) {
                 alert(error.message);
-            });
+            }).always(function () {
+                $scope.isLoading = false;
+                $scope.$apply();
+            })
         };
 
     })
@@ -164,12 +171,12 @@ angular.module('AppController', [], null)
 
         //点击提交修改时
         $scope.submitOnClick = function () {
-            User$.alertUserLoginModalView(function (avosUser) {
+            User$.alertUserLoginModalView('修改前需要验证身份',function (avosUser) {
                 avosUser.save({
                     school: $scope.userInfo['school'],
                     major: $scope.userInfo['major'],
                     startSchoolYear: $scope.userInfo['startSchoolYear']
-                }, function (user) {
+                }, function () {
                     alert('修改成功');
                 }, function (error) {
                     alert('修改失败:' + error.message);

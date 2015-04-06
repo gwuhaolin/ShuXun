@@ -25,7 +25,7 @@
                 <span class="input-label">
                     大学入学时间
                 </span>
-                <select ng-model="userInfo.startSchoolYear" ng-options="one as one for one in startSchoolYearOptions">
+                <select ng-model="userInfo.startSchoolYear" ng-change="attrHasChange=true" ng-options="one as one for one in startSchoolYearOptions">
                 </select>
             </label>
         </div>

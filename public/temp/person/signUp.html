@@ -1,6 +1,10 @@
 <!--注册-->
 <ion-view ng-controller="person_signUp" title="加入书循">
     <ion-content class="padding">
+        <!-- 正在加载-->
+        <div style="text-align: center;margin: 5px" ng-if="isLoading">
+            <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
+        </div>
         <!-- 微信信息-->
         <div class="item item-avatar" ng-if="userInfo.openId">
             <img ng-src="{{userInfo.avatarUrl}}">
@@ -42,7 +46,7 @@
         </div>
         <!-- 提交-->
         <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
-                ng-disabled="!(userInfo.email && userInfo.password && userInfo.school && userInfo.major && userInfo.startSchoolYear)">
+                ng-disabled="isLoading || !(userInfo.email && userInfo.password && userInfo.school && userInfo.major && userInfo.startSchoolYear)">
             立即加入
         </button>
     </ion-content>
