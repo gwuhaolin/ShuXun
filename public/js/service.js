@@ -142,9 +142,9 @@ angular.module('AppService', [], null)
             jsonp('/wechat/getOAuthUserInfo/' + code, function (wechatInfo) {
                 var re = {
                     openId: wechatInfo['openid'],
-                    nickName:wechatInfo['nickname'],
-                    sex:wechatInfo['sex'],
-                    avatarUrl:wechatInfo['headimgurl']
+                    nickName: wechatInfo['nickname'],
+                    sex: wechatInfo['sex'],
+                    avatarUrl: wechatInfo['headimgurl']
                 };
                 callback(re);
             })
@@ -198,35 +198,5 @@ angular.module('AppService', [], null)
         this.filter_schoolByKeyword = function (school) {
             return school['name'].indexOf(that.searchSchoolKeyword) > -1;
         };
-
-    })
-
-    .service('User$', function () {
-
-        /**
-         * 用户注册
-         * @param openId 微信id
-         * @param nickName 微信昵称
-         * @param avatarUrl 微信头像
-         * @param major 专业
-         * @param school 学校
-         * @param startSchoolYear 大学入学时间
-         * @param sex 性别 1=男 2=女 0=未知
-         * @returns {*|AV.Promise}
-         */
-        this.signUp = function (openId, nickName, avatarUrl, major, school, startSchoolYear,sex) {
-            var user = new AV.User();
-            user.setUsername(openId, null);
-            user.setPassword(openId, null);
-            user.set('nickName', nickName);
-            user.set('avatarUrl', avatarUrl);
-            user.set('startSchoolYear', startSchoolYear);
-            user.set('school', school);
-            user.set('major', major);
-            user.set('sex',sex);
-            alert(JSON.stringify(user));
-            return user.signUp(null);
-        }
-
 
     });

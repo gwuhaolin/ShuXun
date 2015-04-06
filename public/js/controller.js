@@ -118,7 +118,7 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$) {
+    .controller('person_signUp', function ($scope, $stateParams, $ionicModal, WeChatJS$, InfoService$) {
         //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
@@ -161,10 +161,22 @@ angular.module('AppController', [], null)
         //点击注册时
         $scope.submitOnClick = function () {
             var info = $scope.userInfo;
-            User$.signUp(info.openId, info.nickName, info.avatarUrl, info.major, info.school, info.startSchoolYear,info.sex).then(function (user) {
-                alert(JSON.stringify(user));
-            }, function (error) {
-                alert(JSON.stringify(error));
+            var user = new AV.User();
+            user.setUsername(info.openId, null);
+            user.setPassword(info.openId, null);
+            user.set('nickName', info.nickName);
+            user.set('avatarUrl', info.avatarUrl);
+            user.set('startSchoolYear', info.startSchoolYear);
+            user.set('school', info.school);
+            user.set('major', info.major);
+            user.set('sex', info.sex);
+            return user.signUp(null, {
+                success: function (user) {
+                    alert(JSON.stringify(user));
+                },
+                error: function (user, error) {
+                    alert(error.message);
+                }
             });
         };
 
