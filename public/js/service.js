@@ -139,8 +139,14 @@ angular.module('AppService', [], null)
          * 返回 已经关注了用户的微信提供的所有信息
          */
         this.getOAuthUserInfo = function (code, callback) {
-            jsonp('/wechat/getOAuthUserInfo/' + code, function (userInfo) {
-                callback(userInfo);
+            jsonp('/wechat/getOAuthUserInfo/' + code, function (wechatInfo) {
+                var re = {
+                    openId: wechatInfo['openid'],
+                    nickName:wechatInfo['nickname'],
+                    sex:wechatInfo['sex'],
+                    avatarUrl:wechatInfo['headimgurl']
+                };
+                callback(re);
             })
         };
 

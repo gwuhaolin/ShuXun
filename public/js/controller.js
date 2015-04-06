@@ -161,7 +161,7 @@ angular.module('AppController', [], null)
         //点击注册时
         $scope.submitOnClick = function () {
             var info = $scope.userInfo;
-            User$.signUp(info['openid'], info['nickName'], info['avatarUrl'], info['major'], info['school'], info['startSchoolYear']).then(function (user) {
+            User$.signUp(info.openId, info.nickName, info.avatarUrl, info.major, info.school, info.startSchoolYear).then(function (user) {
                 alert(JSON.stringify(user));
             }, function (error) {
                 alert(JSON.stringify(error));

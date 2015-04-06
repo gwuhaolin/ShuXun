@@ -93,5 +93,5 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                     }
                 }
             });
-        $urlRouterProvider.otherwise('/tab/book/searchList');
+        $urlRouterProvider.otherwise('/tab/book/recommend');
     });
