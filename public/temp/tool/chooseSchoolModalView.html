@@ -1,0 +1,22 @@
+<!-- 选择学校-->
+<ion-modal-view>
+    <ion-header-bar class="item-input-inset">
+        <button class="button button-clear button-balanced"
+                ng-click="chooseSchoolModalView.hide()">返回
+        </button>
+        <!-- 关键字输入框-->
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios7-search placeholder-icon"></i>
+            <input type="search" placeholder="输入名称搜索" ng-model="InfoService$.searchSchoolKeyword">
+        </label>
+    </ion-header-bar>
+    <ion-content class="has-header">
+        <ul class="list">
+            <ion-item item-height="55px"
+                      collection-repeat="oneSchool in InfoService$.schools | filter:InfoService$.filter_schoolByKeyword"
+                      ng-click="schoolOnChoose(oneSchool['name'])">
+                {{oneSchool['name']}}
+            </ion-item>
+        </ul>
+    </ion-content>
+</ion-modal-view>

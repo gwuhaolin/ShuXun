@@ -9,16 +9,6 @@
             <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
             <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
         </div>
-        <!-- 填写邮箱和密码-->
-        <div class="list list-inset">
-            <label class="item item-input">
-                <input type="email" placeholder="输入邮箱方便买家联系你" ng-model="userInfo.email">
-            </label>
-
-            <label class="item item-input">
-                <input type="text" placeholder="输入登入密码" ng-model="userInfo.password">
-            </label>
-        </div>
         <!-- 填写其他信息-->
         <div class="list list-inset">
             <ion-item class="item-icon-right" ng-click="chooseSchoolModalView.show()">
@@ -35,63 +25,25 @@
                 <span class="input-label">
                     大学入学时间
                 </span>
-                <select ng-model="userInfo.startSchoolYear" ng-options="one as one for one in startSchoolYearOptions">
+                <select ng-model="userInfo.startSchoolYear">
+                    <option ng-repeat="one in startSchoolYearOptions" value="{{one}}">{{one}}</option>
                 </select>
             </label>
         </div>
+        <!-- 填写邮箱和密码-->
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="email" placeholder="输入邮箱方便买家联系你" ng-model="userInfo.email">
+            </label>
+
+            <label class="item item-input">
+                <input type="text" placeholder="输入登入密码" ng-model="userInfo.password">
+            </label>
+        </div>
+        <!-- 提交-->
         <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
                 ng-disabled="!(userInfo.email && userInfo.password && userInfo.school && userInfo.major && userInfo.startSchoolYear)">
             立即加入
         </button>
     </ion-content>
-
-    <!-- 选择学校-->
-    <script type="text/ng-template" id="template/chooseSchool.html">
-        <ion-modal-view>
-            <ion-header-bar class="item-input-inset">
-                <button class="button button-clear button-balanced"
-                        ng-click="chooseSchoolModalView.hide()">返回
-                </button>
-                <!-- 关键字输入框-->
-                <label class="item-input-wrapper">
-                    <i class="icon ion-ios7-search placeholder-icon"></i>
-                    <input type="search" placeholder="输入名称搜索" ng-model="InfoService$.searchSchoolKeyword">
-                </label>
-            </ion-header-bar>
-            <ion-content class="has-header">
-                <ul class="list">
-                    <ion-item item-height="55px"
-                              collection-repeat="oneSchool in InfoService$.schools | filter:InfoService$.filter_schoolByKeyword"
-                              ng-click="schoolOnChoose(oneSchool['name'])">
-                        {{oneSchool['name']}}
-                    </ion-item>
-                </ul>
-            </ion-content>
-        </ion-modal-view>
-    </script>
-    <!-- 选择专业-->
-    <script type="text/ng-template" id="template/chooseMajor.html">
-        <ion-modal-view>
-            <ion-header-bar class="item-input-inset">
-                <button class="button button-clear button-balanced"
-                        ng-click="chooseMajorModalView.hide()">返回
-                </button>
-                <!-- 关键字输入框-->
-                <label class="item-input-wrapper">
-                    <i class="icon ion-ios7-search placeholder-icon"></i>
-                    <input type="search" placeholder="输入名称搜索" ng-model="InfoService$.searchMajorKeyword">
-                </label>
-            </ion-header-bar>
-            <ion-content class="has-header">
-                <ul class="list">
-                    <ion-item item-height="55px"
-                              collection-repeat="oneMajor in InfoService$.majors | filter:InfoService$.filter_majorByKeyword"
-                              ng-click="majorOnChoose(oneMajor['name'])">
-                        {{oneMajor['name']}}
-                    </ion-item>
-                </ul>
-            </ion-content>
-        </ion-modal-view>
-    </script>
-
 </ion-view>

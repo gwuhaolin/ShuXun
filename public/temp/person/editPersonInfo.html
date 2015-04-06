@@ -1,6 +1,38 @@
 <!--编辑个人信息-->
-<ion-view ng-controller="peron_editPersonInfo" title="修改个人信息">
-    <ion-content>
-        <a class="button" ng-href="{{WeChatJS$.getOAuthURL()}}">AT</a>
+<ion-view ng-controller="person_editPersonInfo" title="修改你的信息">
+    <ion-content class="padding">
+        <!-- 微信信息-->
+        <div class="item item-avatar" ng-if="userInfo.openId">
+            <img ng-src="{{userInfo.avatarUrl}}">
+
+            <h2>{{userInfo.nickName}}</h2>
+            <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
+            <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
+        </div>
+        <!-- 填写其他信息-->
+        <div class="list list-inset">
+            <ion-item class="item-icon-right" ng-click="chooseSchoolModalView.show()">
+                在读学校
+                <span class="item-note" ng-if="userInfo.school">{{userInfo.school}}</span>
+                <i class="icon ion-ios-arrow-right balanced"></i>
+            </ion-item>
+            <ion-item class="item-icon-right" ng-click="chooseMajorModalView.show()">
+                所学专业
+                <span class="item-note" ng-if="userInfo.major">{{userInfo.major}}</span>
+                <i class="icon ion-ios-arrow-right balanced"></i>
+            </ion-item>
+            <label class="item item-input item-select">
+                <span class="input-label">
+                    大学入学时间
+                </span>
+                <select ng-model="userInfo.startSchoolYear" ng-options="one as one for one in startSchoolYearOptions">
+                </select>
+            </label>
+        </div>
+        <!-- 提交-->
+        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
+                ng-disabled="!attrHasChange">
+            提交修改
+        </button>
     </ion-content>
 </ion-view>

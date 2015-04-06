@@ -118,74 +118,66 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_signUp', function ($scope, $timeout, $stateParams, $ionicModal, WeChatJS$, InfoService$) {
+    .controller('person_signUp', function ($scope, $timeout, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$) {
         //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.userInfo = userInfo;
         });
 
-        $scope.InfoService$ = InfoService$;
-        //选中了学校
-        $ionicModal.fromTemplateUrl('template/chooseSchool.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.chooseSchoolModalView = modal;
-        });
-        $scope.schoolOnChoose = function (school) {
+        InfoService$.registerChooseSchoolModalView($scope, function (school) {
             $scope.userInfo['school'] = school;
-            $scope.chooseSchoolModalView.hide();
-        };
-
-        //选中了专业
-        $ionicModal.fromTemplateUrl('template/chooseMajor.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.chooseMajorModalView = modal;
         });
-        $scope.majorOnChoose = function (major) {
-            $scope.userInfo['major'] = major;
-            $scope.chooseMajorModalView.hide();
-        };
 
-        //开始上大学时间所有选项 ,6年前到今年
-        $scope.startSchoolYearOptions = [];
-        {
-            var currentYear = new Date().getFullYear();
-            for (var year = currentYear - 6; year <= currentYear; year++) {
-                $scope.startSchoolYearOptions.push(year);
-            }
-        }
+        InfoService$.registerChooseMajorModalView($scope, function (major) {
+            $scope.userInfo['major'] = major;
+        });
+
+        $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
 
         //点击注册时
         $scope.submitOnClick = function () {
-            var info = $scope.userInfo;
-            var user = new AV.User();
-            return user.signUp({
-                email: info.email,
-                username: info.email,
-                password: info.password,
-
-                openId: info.openId,
-                nickName: info.nickName,
-                avatarUrl: info.avatarUrl,
-                sex: info.sex,
-
-                startSchoolYear: info.startSchoolYear,
-                school: info.school,
-                major: info.major
-            }, {
-                success: function (user) {
-                    alert(JSON.stringify(user));
-                },
-                error: function (user, error) {
-                    alert(error.message);
-                }
+            User$.signUp($scope.userInfo).then(function (user) {
+                alert(JSON.stringify(User$.avosUserToJson(user)));
+            }, function (error) {
+                alert(error.message);
             });
         };
 
     })
 
-    .controller('peron_editPersonInfo', function ($scope, WeChatJS$) {
+    .controller('person_editPersonInfo', function ($scope, InfoService$, User$) {
+        //是否对属性进行了修改
+        $scope.attrHasChange = false;
+
+        $scope.userInfo = User$.getCurrentJsonUser();
+
+        InfoService$.registerChooseSchoolModalView($scope, function (school) {
+            $scope.attrHasChange = true;
+            $scope.userInfo['school'] = school;
+        });
+        InfoService$.registerChooseMajorModalView($scope, function (major) {
+            $scope.attrHasChange = true;
+            $scope.userInfo['major'] = major;
+        });
+        $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
+
+        //点击提交修改时
+        $scope.submitOnClick = function () {
+            User$.alertUserLoginModalView(function (avosUser) {
+                avosUser.save({
+                    school: $scope.userInfo['school'],
+                    major: $scope.userInfo['major'],
+                    startSchoolYear: $scope.userInfo['startSchoolYear']
+                }, function (user) {
+                    alert('修改成功');
+                }, function (error) {
+                    alert('修改失败:' + error.message);
+                })
+            });
+        }
+    })
+
+    .controller('person_hello', function ($scope, WeChatJS$) {
         $scope.WeChatJS$ = WeChatJS$;
     });
