@@ -143,7 +143,7 @@ angular.module('AppController', [], null)
             $scope.chooseMajorModalView.hide();
         };
 
-        //开始上大学时间所有选项,6年前到今年
+        //开始上大学时间所有选项 ,6年前到今年
         $scope.startSchoolYearOptions = [];
         {
             var currentYear = new Date().getFullYear();
@@ -162,9 +162,9 @@ angular.module('AppController', [], null)
         $scope.submitOnClick = function () {
             var info = $scope.userInfo;
             User$.signUp(info['openid'], info['nickName'], info['avatarUrl'], info['major'], info['school'], info['startSchoolYear']).then(function (user) {
-                console.log(user);
+                alert(JSON.stringify(user));
             }, function (error) {
-                console.log(error);
+                alert(JSON.stringify(error));
             });
         };
 
