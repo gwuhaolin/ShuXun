@@ -4,7 +4,7 @@
  */
 var express = require('express');
 var WechatAPI = require('cloud/wechat.js');
-var Info = require('cloud/info/');
+var Info = require('cloud/info.js');
 var app = express();
 
 ////////////////////// WeChat /////////////////////////
