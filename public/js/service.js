@@ -207,7 +207,7 @@ angular.module('AppService', [], null)
         {
             var currentYear = new Date().getFullYear();
             for (var year = currentYear - 6; year <= currentYear; year++) {
-                that.startSchoolYearOptions.push(year);
+                that.startSchoolYearOptions.push(year.toString());
             }
         }
 

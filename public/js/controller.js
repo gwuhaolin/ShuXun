@@ -161,6 +161,8 @@ angular.module('AppController', [], null)
             User$.alertUserLoginModalView('你还没有登入', function () {
                 $scope.userInfo = User$.getCurrentJsonUser();
             })
+        } else {
+            $scope.userInfo = User$.getCurrentJsonUser();
         }
 
         InfoService$.registerChooseSchoolModalView($scope, function (school) {
