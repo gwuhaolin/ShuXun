@@ -437,7 +437,6 @@ angular.module('AppService', [], null)
          * @returns {*|AV.Promise}
          */
         this.saveWechatImageToAVOS = function (serverId) {
-            alert(serverId + '把上传到微信服务器的图片保存的AVOS服务器');
             var wechatUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + WeChatJS$.AccessToken + '&media_id=' + serverId;
             var file = AV.File.withURL('UsedBook.png', wechatUrl, null, null);
             return file.save();

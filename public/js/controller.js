@@ -115,13 +115,13 @@ angular.module('AppController', [], null)
                 $scope.localId = localId;
                 WeChatJS$.uploadImage($scope.localId, function (serverId) {
                     $scope.isLoading = true;
-                    UsedBook$.saveWechatImageToAVOS(serverId).done(function (avosFile) {
+                    UsedBook$.saveWechatImageToAVOS(serverId).then(function (avosFile) {
                         $scope.usedBookInfo.avosImageFile = avosFile;
                         $scope.isLoading = false;
                         alert(JSON.stringify(avosFile));
-                    }).fail(function (error) {
+                    }, function (error) {
                         alert('图片上传失败:' + error.message);
-                    })
+                    });
                 });
                 $scope.$apply();
             })
