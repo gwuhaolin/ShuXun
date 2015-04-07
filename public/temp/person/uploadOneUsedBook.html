@@ -33,7 +33,10 @@
             </label>
         </div>
 
-        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()">提交二手书</button>
+        <button ng-disabled="!isLoading && usedBookInfo.isbn13 && localId && usedBookInfo.price"
+                class="button button-block button-outline button-balanced" ng-click="submitOnClick()">
+            提交二手书
+        </button>
 
     </ion-content>
 </ion-view>

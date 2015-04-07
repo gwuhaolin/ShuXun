@@ -114,8 +114,10 @@ angular.module('AppController', [], null)
             WeChatJS$.chooseImage(function (localId) {
                 $scope.localId = localId;
                 WeChatJS$.uploadImage($scope.localId, function (serverId) {
+                    $scope.isLoading = true;
                     UsedBook$.saveWechatImageToAVOS(serverId).done(function (avosFile) {
                         $scope.usedBookInfo.avosImageFile = avosFile;
+                        $scope.isLoading = false;
                         alert(JSON.stringify(avosFile));
                     }).fail(function (error) {
                         alert('图片上传失败:' + error.message);
@@ -126,10 +128,12 @@ angular.module('AppController', [], null)
         };
 
         $scope.submitOnClick = function () {
+            $scope.isLoading = true;
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
             avosUsedBook.save(null).done(function () {
                 $state.go('tab.person_usedBooksList');
             }).fail(function (error) {
+                $scope.isLoading = false;
                 alert(error.message);
             })
         }
