@@ -5,9 +5,10 @@
         <div class="item item-avatar" ng-if="userInfo.openId">
             <img ng-src="{{userInfo.avatarUrl}}">
 
-            <h2>{{userInfo.nickName}}</h2>
-            <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
-            <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
+            <h2>{{userInfo.nickName}}
+                <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
+                <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
+            </h2>
         </div>
         <!-- 填写其他信息-->
         <div class="list list-inset">
@@ -25,7 +26,8 @@
                 <span class="input-label">
                     大学入学时间
                 </span>
-                <select ng-model="userInfo.startSchoolYear" ng-change="attrHasChange=true" ng-options="one as one for one in startSchoolYearOptions">
+                <select ng-model="userInfo.startSchoolYear" ng-change="attrHasChange=true"
+                        ng-options="one as one for one in startSchoolYearOptions">
                 </select>
             </label>
         </div>

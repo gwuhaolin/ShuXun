@@ -1,13 +1,35 @@
 <!--个人主页-->
 <ion-view ng-controller="person_my" title="我的书循">
     <ion-content>
-        <!-- 微信信息-->
-        <div class="item item-avatar" ng-if="userInfo.openId">
+        <!-- 基本信息-->
+        <div class="item item-avatar" ng-if="userInfo.openId" style="padding-bottom: 2px">
             <img ng-src="{{userInfo.avatarUrl}}">
 
-            <h2>{{userInfo.nickName}}</h2>
-            <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
-            <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
+            <h3>{{userInfo.nickName}}
+                <!-- 性别-->
+                <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
+                <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
+            </h3>
+
+            <p>邮箱:{{userInfo.email}}</p>
+
+            <p>专业:{{userInfo.major}}</p>
+
+            <p>学校:{{userInfo.school}}</p>
+
+            <p>年级:{{userInfo.startSchoolYear}}</p>
+            <button class="button button-small button-clear button-balanced" style="float: right"
+                    ui-sref="tab.person_editPersonInfo">修改信息
+            </button>
         </div>
+        <!-- 上传一本二手书-->
+        <ion-item style="text-align: center;padding: 0">
+            <a class="button button-clear button-balanced"
+               ui-sref="tab.person_uploadOneUsedBook">上传一本二手书</a>
+        </ion-item>
+        <!-- 我上传的二手书-->
+        <ion-item ui-sref="tab.person_usedBooksList" class="item-icon-right">已上传的二手书
+            <i class="icon ion-ios-arrow-right balanced"></i>
+        </ion-item>
     </ion-content>
 </ion-view>
