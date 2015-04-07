@@ -329,7 +329,7 @@ angular.module('AppService', [], null)
             });
             $scope.title = title;
             $scope.loginInfo = {
-                email: '',
+                email: that.getCurrentJsonUser().email,
                 password: ''
             };
             $scope.submitOnClick = function () {
