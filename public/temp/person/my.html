@@ -1,0 +1,13 @@
+<!--个人主页-->
+<ion-view ng-controller="person_my" title="我的书循">
+    <ion-content>
+        <!-- 微信信息-->
+        <div class="item item-avatar" ng-if="userInfo.openId">
+            <img ng-src="{{userInfo.avatarUrl}}">
+
+            <h2>{{userInfo.nickName}}</h2>
+            <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
+            <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
+        </div>
+    </ion-content>
+</ion-view>

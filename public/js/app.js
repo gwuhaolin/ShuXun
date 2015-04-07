@@ -99,6 +99,13 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                         templateUrl: 'temp/person/hello.html'
                     }
                 }
+            }).state('tab.person_my', {
+                url: '/person/my',
+                views: {
+                    'tab-person': {
+                        templateUrl: 'temp/person/my.html'
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/tab/book/recommend');
     });

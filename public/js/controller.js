@@ -157,7 +157,11 @@ angular.module('AppController', [], null)
         //是否对属性进行了修改
         $scope.attrHasChange = false;
 
-        $scope.userInfo = User$.getCurrentJsonUser();
+        if (!User$.getCurrentAvosUser()) {//还没有用户的信息
+            User$.alertUserLoginModalView('你还没有登入', function () {
+                $scope.userInfo = User$.getCurrentJsonUser();
+            })
+        }
 
         InfoService$.registerChooseSchoolModalView($scope, function (school) {
             $scope.attrHasChange = true;
@@ -171,7 +175,7 @@ angular.module('AppController', [], null)
 
         //点击提交修改时
         $scope.submitOnClick = function () {
-            User$.alertUserLoginModalView('修改前需要验证身份',function (avosUser) {
+            User$.alertUserLoginModalView('修改前需要验证身份', function (avosUser) {
                 avosUser.save({
                     school: $scope.userInfo['school'],
                     major: $scope.userInfo['major'],
@@ -187,4 +191,8 @@ angular.module('AppController', [], null)
 
     .controller('person_hello', function ($scope, WeChatJS$) {
         $scope.WeChatJS$ = WeChatJS$;
+    })
+
+    .controller('person_my', function ($scope, User$) {
+        $scope.userInfo = User$.getCurrentJsonUser();
     });
