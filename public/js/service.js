@@ -54,6 +54,29 @@ angular.module('AppService', [], null)
     })
 
     .service('WeChatJS$', function ($rootScope) {
+        var that = this;
+        /**
+         * 微信接口调用凭据
+         * @type {string}
+         */
+        this.AccessToken;
+        /**
+         * 更新微信接口调用凭据
+         */
+        function updateAccessToken() {
+            jsonp('/wechat/getAccessToken', function (token) {
+                if (typeof token == 'string') {
+                    that.AccessToken = token;
+                }
+            })
+        }
+
+        //自动更新token
+        updateAccessToken();
+        setInterval(function () {
+            updateAccessToken();
+        }, 1000 * 60 * 30);
+
         //先配置好微信
         jsonp('/wechat/getJsConfig', function (json) {
             wx.config(json);
@@ -99,7 +122,8 @@ angular.module('AppService', [], null)
         /**
          * 拍照或从手机相册中选图接口
          * @param callback
-         * 返回图片的本地src
+         * 返回图片的localId
+         * localId可以作为img标签的src属性显示图片
          * TODO 选择后src属性预览不了
          */
         this.chooseImage = function (callback) {
@@ -107,6 +131,21 @@ angular.module('AppService', [], null)
                 success: function (res) {
                     callback(res.localIds[0]);
                     $rootScope.$apply();
+                }
+            });
+        };
+
+        /**
+         * 上传图片接口
+         * @param localId 需要上传的图片的本地ID，由chooseImage接口获得
+         * @param callback 返回图片的服务器端ID
+         */
+        this.uploadImage = function (localId, callback) {
+            wx.uploadImage({
+                localId: localId,
+                success: function (res) {
+                    var serverId = res.serverId;
+                    callback(serverId);
                 }
             });
         };
@@ -344,4 +383,63 @@ angular.module('AppService', [], null)
                 });
             }
         }
+    })
+
+    .service('UsedBook$', function (User$, WeChatJS$) {
+        var that = this;
+        var UsedBookAttrNames = ['isbn13', 'avosImageFile', 'price', 'des'];
+
+        /**
+         * 所有我上传的二手书
+         * @type {Array}
+         */
+        this.myJsonUsedBookList = [];
+        {//加载所有我上传的二手书
+            var query = new AV.Query('UsedBook');
+            query.equalTo('owner', User$.getCurrentAvosUser());
+            query.find().done(function (avosUsedBooks) {
+                for (var i = 0; i < avosUsedBooks.length; i++) {
+                    var oneAvosUsedBook = avosUsedBooks[i];
+                    that.myJsonUsedBookList.push(that.avosUsedBookToJson(oneAvosUsedBook));
+                }
+            }).fail(function (error) {
+
+            })
+        }
+
+        /**
+         * 把AVOS的UsedBook转换为JSON格式的
+         */
+        this.avosUsedBookToJson = function (avosUsedBook) {
+            var json = {};
+            for (var i = 0; i < UsedBookAttrNames.length; i++) {
+                var attrName = UsedBookAttrNames[i];
+                json[attrName] = avosUsedBook.get(attrName);
+            }
+            return json;
+        };
+
+        /**
+         * 把JSON格式的UsedBook转换为AVOS格式的
+         */
+        this.jsonUsedBookToAvos = function (jsonUsedBook) {
+            var user = new AV.Object.extend("UsedBook");
+            for (var i = 0; i < UsedBookAttrNames.length; i++) {
+                var attrName = UsedBookAttrNames[i];
+                user.set(attrName, jsonUsedBook[attrName]);
+            }
+            return user;
+        };
+
+        /**
+         * 把上传到微信服务器的图片保存的AVOS服务器
+         * @param serverId 图片在微信服务器的ID
+         * @returns {*|AV.Promise}
+         */
+        this.saveWechatImageToAVOS = function (serverId) {
+            var wechatUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + WeChatJS$.AccessToken + '&media_id=' + serverId;
+            var file = AV.File.withURL('UsedBook.png', wechatUrl, null, null);
+            return file.save();
+        }
+
     });

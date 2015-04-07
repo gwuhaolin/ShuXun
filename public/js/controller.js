@@ -87,15 +87,22 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_uploadOneUsedBook', function ($scope, DoubanBook$, WeChatJS$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, DoubanBook$, WeChatJS$, UsedBook$) {
 
         $scope.isLoading = false;
+
+        $scope.usedBookInfo = {
+            isbn13: '',
+            price: 0,
+            des: '',
+            avosImageFile: null
+        };
 
         $scope.scanQRBtnOnClick = function () {
             $scope.isLoading = true;
             WeChatJS$.scanQRCode(function (code) {
-                $scope.isbn13 = code;
-                DoubanBook$.getBookByISBD_simple($scope.isbn13, function (json) {
+                $scope.usedBookInfo.isbn13 = code;
+                DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
                     $scope.book = json;
                     $scope.isLoading = false;
                     $scope.$apply();
@@ -104,16 +111,27 @@ angular.module('AppController', [], null)
         };
 
         $scope.uploadPicOnClick = function () {
-            WeChatJS$.chooseImage(function (localSrc) {
-                $scope.uploadPicSrc = localSrc;
+            WeChatJS$.chooseImage(function (localId) {
+                $scope.localId = localId;
+                WeChatJS$.uploadImage($scope.localId, function (serverId) {
+                    UsedBook$.saveWechatImageToAVOS(serverId).done(function (avosFile) {
+                        $scope.usedBookInfo.avosImageFile = avosFile;
+                        alert(JSON.stringify(avosFile));
+                    }).fail(function (error) {
+                        alert('图片上传失败:' + error.message);
+                    })
+                });
                 $scope.$apply();
             })
         };
 
         $scope.submitOnClick = function () {
-            //TODO
-            //$scope.price;
-            //$scope.des;
+            var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
+            avosUsedBook.save(null).done(function () {
+                $state.go('tab.person_usedBooksList');
+            }).fail(function (error) {
+                alert(error.message);
+            })
         }
 
     })
@@ -197,4 +215,8 @@ angular.module('AppController', [], null)
 
     .controller('person_my', function ($scope, User$) {
         $scope.userInfo = User$.getCurrentJsonUser();
+    })
+
+    .controller('person_usedBookList', function ($scope, UsedBook$) {
+        $scope.UsedBook$ = UsedBook$;
     });

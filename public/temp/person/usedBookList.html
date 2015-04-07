@@ -1,22 +1,17 @@
 <!--管理上传的二手书列表-->
-<ion-view title="管理我的二手图书">
+<ion-view ng-controller="person_usedBookList" title="管理我的二手图书">
     <ion-content>
         <ion-list>
-            <!-- 搜索结果列表-->
-            <ion-item class="item-thumbnail-left">
-                <img ng-src="img/book.jpg">
+            <ion-item ng-repeat="oneJsonUsedBook in UsedBook$.myJsonUsedBookList" class="item-thumbnail-left">
+                <img ng-src="oneJsonUsedBook['avosImageFile'].url()">
 
-                <p>要价:13元</p>
+                <p>{{oneJsonUsedBook['price']}}</p>
 
-                <p>描述:哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
+                <p>描述:{{oneJsonUsedBook['des']}}</p>
                 <button class="button button-small button-outline button-assertive">删除</button>
                 <button class="button button-small button-outline button-balanced">编辑</button>
                 <button class="button button-small button-outline button-positive">已卖</button>
             </ion-item>
         </ion-list>
-        <ion-infinite-scroll
-                on-infinite="loadMore()"
-                distance="1%">
-        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

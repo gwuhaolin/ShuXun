@@ -8,6 +8,16 @@ var Info = require('cloud/info.js');
 var app = express();
 
 ////////////////////// WeChat /////////////////////////
+
+/**
+ * 获得最新的微信access_token
+ */
+app.get('/wechat/getAccessToken', function (req, res) {
+    WechatAPI.getAccessToken(function (token) {
+        res.jsonp(token);
+    })
+});
+
 /**
  * 获得微信JS-SDK配置
  */
