@@ -56,13 +56,13 @@ angular.module('AppController', [], null)
             var title = '出版信息';
             var b = $scope.book;
             var pre = '作者:' + b.author.toString() +
-                '\n出版社:' + b.publisher +
-                '\n出版年:' + b.pubdate +
-                '\n页数:' + b.pages +
-                '\n定价:' + b.price +
-                '\n装帧:' + b.binding +
-                '\nISBN:' + b.isbn13 +
-                '\n目录:\n' + b.catalog;
+                '\n出版社:' + b['publisher'] +
+                '\n出版年:' + b['pubdate'] +
+                '\n页数:' + b['pages'] +
+                '\n定价:' + b['price'] +
+                '\n装帧:' + b['binding'] +
+                '\nISBN:' + b['isbn13'] +
+                '\n目录:\n' + b['catalog'];
             InfoService$.alertTitleAndPreModalView(title, pre);
         };
 
@@ -80,27 +80,39 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_uploadOneUsedBook', function ($scope, $state, DoubanBook$, WeChatJS$, UsedBook$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$) {
+        $ionicModal.fromTemplateUrl('template/noBarCodeModalView.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.noBarCodeModalView = modal;
+        });
 
         $scope.isLoading = false;
 
         $scope.usedBookInfo = {
-            isbn13: '',
-            price: 0,
-            des: '',
+            isbn13: $stateParams.isbn13,
+            price: null,
+            des: null,
             avosImageFile: null
         };
-
-        //TODO 有些书没有条形码了,可以先去搜索哪里
-        $scope.scanQRBtnOnClick = function () {
+        //用$scope.usedBookInfo.isbn13去豆瓣加载图书信息
+        function loadDoubanBookInfo() {
             $scope.isLoading = true;
+            DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
+                $scope.doubanBookInfo = json;
+                $scope.isLoading = false;
+                $scope.$apply();
+            });
+        }
+
+        if ($scope.usedBookInfo.isbn13) {
+            loadDoubanBookInfo();
+        }
+
+        $scope.scanQRBtnOnClick = function () {
             WeChatJS$.scanQRCode(function (code) {
                 $scope.usedBookInfo.isbn13 = code;
-                DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
-                    $scope.bookInfo = json;
-                    $scope.isLoading = false;
-                    $scope.$apply();
-                });
+                loadDoubanBookInfo();
             });
         };
 

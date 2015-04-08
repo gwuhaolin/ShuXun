@@ -43,8 +43,9 @@ AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
         file.save().done(function (avosFile) {
             avosUsedBook.set('avosImageFile', avosFile);
             response.success();
+            console.log('成功下载微信图片' + wechatServerId + '到' + usedBookAvosObjId);
         }).fail(function (error) {//去微信下载图片失败 TODO 待实现添加到稍后重试下载
-            response.error(error);
+            console.log(error);
         })
     }).fail(function (error) {//获得avosUsedBook失败
         response.error(error);

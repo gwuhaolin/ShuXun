@@ -8,21 +8,22 @@
         <div ng-if="!usedBookInfo.isbn13">
             <h5>1.扫码书后面的条形码获得图书信息</h5>
             <button class="button button-outline button-balanced" ng-click="scanQRBtnOnClick()">扫条形码</button>
+            <br>
+            <button class="button button-clear button-small button-balanced" ng-click="noBarCodeModalView.show()">没条码?
+            </button>
         </div>
         <!-- 出版信息-->
-        <div class="list card" ng-if="book">
-            {{bookInfo | json}}
+        <div class="list card" ng-if="doubanBookInfo">
+            {{doubanBookInfo | json}}
         </div>
-
-        <hr>
+        <hr style="margin: 10px">
         <!-- 上传图片-->
         <div ng-if="!localId">
             <h5>2.上传一张它的照片让大家知道它的新旧程度</h5>
             <button class="button button-outline button-balanced" ng-click="uploadPicOnClick()">上传照片</button>
         </div>
         <img ng-if="localId" ng-src="{{localId}}">
-
-        <hr>
+        <hr style="margin: 10px;">
         <!-- 填写价格和描述-->
         <div class="list list-inset">
             <label class="item item-input">
@@ -33,10 +34,27 @@
             </label>
         </div>
 
-        <button ng-disabled="!isLoading && usedBookInfo.isbn13 && usedBookInfo.price"
+        <button ng-disabled="!(!isLoading && usedBookInfo.isbn13 && usedBookInfo.price)"
                 class="button button-block button-outline button-balanced" ng-click="submitOnClick()">
             提交二手书
         </button>
 
     </ion-content>
+    <script type="text/ng-template" id="template/noBarCodeModalView.html">
+        <ion-modal-view>
+            <ion-header-bar>
+                <h2 class="title">书没条码时上传方法</h2>
+                <button class="button button-clear icon ion-ios-close-outline"
+                        ng-click="noBarCodeModalView.hide()"></button>
+            </ion-header-bar>
+            <ion-content class="padding" style="text-align: center">
+                <!-- TODO 还差上传二手书过程说明-->
+                <button class="button button-block button-outline button-balanced" ui-sref="tab.book_searchList"
+                        ng-click="noBarCodeModalView.hide()">
+                    开始上传
+                </button>
+            </ion-content>
+        </ion-modal-view>
+
+    </script>
 </ion-view>

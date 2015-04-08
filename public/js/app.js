@@ -65,7 +65,7 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                     }
                 }
             }).state('tab.person_uploadOneUsedBook', {
-                url: '/person/uploadOneUsedBook',
+                url: '/person/uploadOneUsedBook/{isbn13}',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/person/uploadOneUsedBook.html'
