@@ -7,3 +7,4 @@ AV._initialize('kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0', 'nt5l8v4n4m08
 AV.Cloud.useMasterKey();
 
 require('cloud/app.js');
+require('cloud/cloudCode.js');

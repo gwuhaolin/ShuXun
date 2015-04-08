@@ -52,25 +52,6 @@ angular.module('AppService', [], null)
 
     .service('WeChatJS$', function ($rootScope) {
         var that = this;
-        /**
-         * 微信接口调用凭据
-         * @type {string}
-         */
-        this.AccessToken;
-        /**
-         * 更新微信接口调用凭据
-         */
-        function updateAccessToken() {
-            jsonp('/wechat/getAccessToken', function (token) {
-                if (typeof token == 'string') {
-                    that.AccessToken = token;
-                } else {
-                    updateAccessToken();
-                }
-            })
-        }
-
-        updateAccessToken();
 
         //先配置好微信
         jsonp('/wechat/getJsConfig', function (json) {
@@ -399,7 +380,7 @@ angular.module('AppService', [], null)
         }
     })
 
-    .service('UsedBook$', function (User$, WeChatJS$) {
+    .service('UsedBook$', function (User$) {
         var that = this;
         var UsedBookAttrNames = ['isbn13', 'avosImageFile', 'price', 'des'];
 
@@ -444,16 +425,4 @@ angular.module('AppService', [], null)
             }
             return user;
         };
-
-        /**
-         * 把上传到微信服务器的图片保存的AVOS服务器
-         * @param serverId 图片在微信服务器的ID
-         * @returns {*|AV.Promise}
-         */
-        this.saveWechatImageToAVOS = function (serverId) {
-            var wechatUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + WeChatJS$.AccessToken + '&media_id=' + serverId;
-            var file = AV.File.withURL('UsedBook.png', wechatUrl, null, null);
-            return file.save();
-        }
-
     });

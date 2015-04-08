@@ -104,19 +104,12 @@ angular.module('AppController', [], null)
             });
         };
 
+        var wechatServerId;
         $scope.uploadPicOnClick = function () {
             WeChatJS$.chooseImage(function (localId) {
                 $scope.localId = localId;
                 WeChatJS$.uploadImage($scope.localId, function (serverId) {
-                    $scope.isLoading = true;
-                    UsedBook$.saveWechatImageToAVOS(serverId).then(function (avosFile) {
-                        //TODO 这里被没有调用
-                        $scope.usedBookInfo.avosImageFile = avosFile;
-                        $scope.isLoading = false;
-                        alert(JSON.stringify(avosFile));
-                    }, function (error) {
-                        alert('图片上传失败:' + error.message);
-                    });
+                    wechatServerId = serverId;
                 });
                 $scope.$apply();
             })
@@ -126,7 +119,11 @@ angular.module('AppController', [], null)
             $scope.isLoading = true;
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
             //TODO 添加 ACL权限控制
-            avosUsedBook.save(null).done(function () {
+            avosUsedBook.save(null).done(function (avosUsedBook) {
+                AV.Cloud.run('saveWechatImageToUsedBook', {
+                    serverId: wechatServerId,
+                    objectId: avosUsedBook.objectId
+                }, null);
                 $state.go('tab.person_usedBooksList');
             }).fail(function (error) {
                 $scope.isLoading = false;
