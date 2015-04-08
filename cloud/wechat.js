@@ -14,17 +14,13 @@ var APIClient = new WECHAT.APIClient(WECHAT.AppID, WECHAT.SECRET);
 var OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
 
 /**
- * 微信AccessToken
+ * 获得微信AccessToken
  */
-exports.AccessToken = null;
-//更新AccessToken
-exports.updateAccessToken = function () {
+exports.getAccessToken = function (callback) {
     APIClient.getLatestTicket(function (err, token) {
-        exports.AccessToken = token;
+        callback(token);
     })
 };
-exports.updateAccessToken();
-
 
 /**
  * 使用wechat js接口前必须获得这个

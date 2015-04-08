@@ -80,7 +80,13 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
+        if (!User$.getCurrentAvosUser()) {
+            User$.alertUserLoginModalView('你还没有登入', function (avosUser) {
+                $scope.usedBookInfo.owner = avosUser;
+            })
+        }
+
         $ionicModal.fromTemplateUrl('template/noBarCodeModalView.html', {
             scope: $scope
         }).then(function (modal) {

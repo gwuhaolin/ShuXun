@@ -382,7 +382,7 @@ angular.module('AppService', [], null)
 
     .service('UsedBook$', function (User$) {
         var that = this;
-        var UsedBookAttrNames = ['isbn13', 'avosImageFile', 'price', 'des'];
+        var UsedBookAttrNames = ['owner', 'isbn13', 'avosImageFile', 'price', 'des'];
 
         /**
          * 所有我上传的二手书
@@ -418,11 +418,12 @@ angular.module('AppService', [], null)
          * 把JSON格式的UsedBook转换为AVOS格式的
          */
         this.jsonUsedBookToAvos = function (jsonUsedBook) {
-            var user = new AV.Object.extend("UsedBook");
+            var UsedBook = new AV.Object.extend("UsedBook");
+            var usedBook = new UsedBook();
             for (var i = 0; i < UsedBookAttrNames.length; i++) {
                 var attrName = UsedBookAttrNames[i];
-                user.set(attrName, jsonUsedBook[attrName]);
+                usedBook.set(attrName, jsonUsedBook[attrName]);
             }
-            return user;
+            return usedBook;
         };
     });
