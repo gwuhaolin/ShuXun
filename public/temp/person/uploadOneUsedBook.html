@@ -11,7 +11,7 @@
         </div>
         <!-- 出版信息-->
         <div class="list card" ng-if="book">
-            {{book | json}}
+            {{bookInfo | json}}
         </div>
 
         <hr>
@@ -33,7 +33,7 @@
             </label>
         </div>
 
-        <button ng-disabled="!isLoading && usedBookInfo.isbn13 && localId && usedBookInfo.price"
+        <button ng-disabled="!isLoading && usedBookInfo.isbn13 && usedBookInfo.price"
                 class="button button-block button-outline button-balanced" ng-click="submitOnClick()">
             提交二手书
         </button>

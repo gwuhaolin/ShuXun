@@ -97,7 +97,7 @@ angular.module('AppController', [], null)
             WeChatJS$.scanQRCode(function (code) {
                 $scope.usedBookInfo.isbn13 = code;
                 DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
-                    $scope.book = json;
+                    $scope.bookInfo = json;
                     $scope.isLoading = false;
                     $scope.$apply();
                 });
@@ -118,16 +118,18 @@ angular.module('AppController', [], null)
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
-            //TODO 添加 ACL权限控制
             avosUsedBook.save(null).done(function (avosUsedBook) {
-                AV.Cloud.run('saveWechatImageToUsedBook', {
-                    serverId: wechatServerId,
-                    objectId: avosUsedBook.objectId
-                }, null);
+                if (wechatServerId) {//如果用户上传了图书的图片到微信
+                    AV.Cloud.run('saveWechatImageToUsedBook', {
+                        serverId: wechatServerId,
+                        objectId: avosUsedBook.objectId
+                    }, null);
+                }
                 $state.go('tab.person_usedBooksList');
             }).fail(function (error) {
-                $scope.isLoading = false;
                 alert(error.message);
+            }).always(function () {
+                $scope.isLoading = false;
             })
         }
 
