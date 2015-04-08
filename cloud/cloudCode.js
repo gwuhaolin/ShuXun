@@ -20,9 +20,9 @@ AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
         return;
     }
     WechatAPI.getAccessToken(function (accessToken) {
-        var wechatUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + accessToken + '&media_id=' + wechatServerId;
         var query = new AV.Query('UsedBook');
         query.get(usedBookAvosObjId).done(function (avosUsedBook) {
+            var wechatUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + accessToken + '&media_id=' + wechatServerId;
             var file = AV.File.withURL('UsedBook.png', wechatUrl, null, null);
             file.save().done(function (avosFile) {
                 avosUsedBook.set('avosImageFile', avosFile);
