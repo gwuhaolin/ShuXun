@@ -143,7 +143,11 @@ angular.module('AppController', [], null)
                     AV.Cloud.run('saveWechatImageToUsedBook', {
                         serverId: wechatServerId,
                         objectId: avosUsedBook.objectId
-                    }, null);
+                    }, null).done(function () {
+                        alert('AVOS下载图片成功');
+                    }).fail(function (error) {
+                        alert(error.message);
+                    })
                 }
                 $state.go('tab.person_usedBooksList');
             }).fail(function (error) {
