@@ -9,6 +9,7 @@ angular.module('AppService', [], null)
  * 图书搜索,调用豆瓣接口
  */
     .service('SearchBook$', function ($rootScope, DoubanBook$) {
+        var that = this;
         /**
          * 目前正在搜索的关键字
          * @type {string}
@@ -33,10 +34,6 @@ angular.module('AppService', [], null)
         this.totalNum = 0;
         /**
          * 加载更多到books
-         */
-        var that = this;
-        /**
-         * 加载更多
          */
         this.loadMore = function () {
             if (that.keyword.length > 0) {
@@ -67,22 +64,20 @@ angular.module('AppService', [], null)
             jsonp('/wechat/getAccessToken', function (token) {
                 if (typeof token == 'string') {
                     that.AccessToken = token;
+                } else {
+                    updateAccessToken();
                 }
             })
         }
 
-        //自动更新token
         updateAccessToken();
-        setInterval(function () {
-            updateAccessToken();
-        }, 1000 * 60 * 30);
 
         //先配置好微信
         jsonp('/wechat/getJsConfig', function (json) {
             wx.config(json);
         });
 
-        //分享出去时的数据
+        //分享出去时的数据 TODO 所有分享接口not work
         this.shareData = {
             title: '分享标题',
             desc: '分享描述',
@@ -285,6 +280,25 @@ angular.module('AppService', [], null)
                 majorOnChooseCallback(major);
                 $scope.chooseMajorModalView.hide();
             };
+        };
+
+        /**
+         * 弹出详细文本信息
+         * @param title 标题
+         * @param pre 要放在pre里显示的内容
+         */
+        this.alertTitleAndPreModalView = function (title, pre) {
+            var $scope = $rootScope.$new(true);
+            $scope.titleAndPreModalViewData = {
+                title: title,
+                pre: pre
+            };
+            $ionicModal.fromTemplateUrl('temp/tool/titleAndPreModalView.html', {
+                scope: $scope
+            }).then(function (modal) {
+                $scope.titleAndPreModalView = modal;
+                modal.show();
+            });
         }
 
     })
@@ -323,7 +337,7 @@ angular.module('AppService', [], null)
          * @returns {null}
          */
         this.getCurrentJsonUser = function () {
-            var avosUser = AV.User.current();
+            var avosUser = that.getCurrentAvosUser();
             if (avosUser) {
                 return that.avosUserToJson(avosUser);
             }

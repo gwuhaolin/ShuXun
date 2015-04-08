@@ -30,11 +30,14 @@ exports.getAccessToken = function (callback) {
 /**
  * 使用wechat js接口前必须获得这个
  * 返回 wechat js sdk所有需要的config
+ * @param url 微信浏览器当前打开的网页的URL
+ * @param callback 返回JSON格式的config
  */
 exports.getJsConfig = function (url, callback) {
     APIClient.getJsConfig({
-        debug: true,
+        debug: true,//TODO 发布时需要修改为非调试模式
         url: url,
+        //需要使用的借口列表
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode']
     }, function (err, data) {
         if (err) {

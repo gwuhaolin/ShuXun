@@ -1,10 +1,5 @@
 <!--编辑一本上传的二手书-->
-<ion-view title="编辑你的 图书名称">
-    <ion-nav-buttons side="right">
-        <button class="button">
-            保存
-        </button>
-    </ion-nav-buttons>
+<ion-view ng-controller="person_editOneUsedBook" title="编辑你的 图书名称">
     <ion-content>
         <!-- 图片信息-->
         <div class="list card">
@@ -28,6 +23,10 @@
                 <input type="text" placeholder="人民币 只输入数值">
             </label>
         </div>
-
+        <!-- 提交-->
+        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
+                ng-disabled="">
+            提交修改
+        </button>
     </ion-content>
 </ion-view>

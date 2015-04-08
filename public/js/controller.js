@@ -35,7 +35,7 @@ angular.module('AppController', [], null)
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$) {
+    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$) {
         var isbn13 = $stateParams.isbn13;
         $scope.book = null;
         //目前是否正在加载数据
@@ -45,39 +45,32 @@ angular.module('AppController', [], null)
             $scope.isLoading = false;
         });
 
-        //注册modal视图
-        $scope.modalViewData = {};
-        $ionicModal.fromTemplateUrl('template/authorIntro.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.modalView = modal;
-        });
-
         //显示作者介绍
         $scope.showAuthorIntro = function () {
-            $scope.modalViewData.title = $scope.book.author.toString();
-            $scope.modalViewData.content = $scope.book.author_intro;
-            $scope.modalView.show();
+            var title = $scope.book.author.toString();
+            var pre = $scope.book.author_intro;
+            InfoService$.alertTitleAndPreModalView(title, pre);
         };
         //显示出版信息
         $scope.showPubInfo = function () {
-            $scope.modalViewData.title = '出版信息';
+            var title = '出版信息';
             var b = $scope.book;
-            $scope.modalViewData.content = '作者:' + b.author.toString() +
-            '\n出版社:' + b.publisher +
-            '\n出版年:' + b.pubdate +
-            '\n页数:' + b.pages +
-            '\n定价:' + b.price +
-            '\n装帧:' + b.binding +
-            '\nISBN:' + b.isbn13 +
-            '\n目录:\n' + b.catalog;
-            $scope.modalView.show();
+            var pre = '作者:' + b.author.toString() +
+                '\n出版社:' + b.publisher +
+                '\n出版年:' + b.pubdate +
+                '\n页数:' + b.pages +
+                '\n定价:' + b.price +
+                '\n装帧:' + b.binding +
+                '\nISBN:' + b.isbn13 +
+                '\n目录:\n' + b.catalog;
+            InfoService$.alertTitleAndPreModalView(title, pre);
         };
+
         //显示图书简介
         $scope.showSummary = function () {
-            $scope.modalViewData.title = '图书简介';
-            $scope.modalViewData.content = $scope.book.summary;
-            $scope.modalView.show();
+            var title = '图书简介';
+            var pre = $scope.book.summary;
+            InfoService$.alertTitleAndPreModalView(title, pre);
         };
 
         //预览图书的封面
@@ -98,6 +91,7 @@ angular.module('AppController', [], null)
             avosImageFile: null
         };
 
+        //TODO 有些书没有条形码了,可以先去搜索哪里
         $scope.scanQRBtnOnClick = function () {
             $scope.isLoading = true;
             WeChatJS$.scanQRCode(function (code) {
@@ -116,6 +110,7 @@ angular.module('AppController', [], null)
                 WeChatJS$.uploadImage($scope.localId, function (serverId) {
                     $scope.isLoading = true;
                     UsedBook$.saveWechatImageToAVOS(serverId).then(function (avosFile) {
+                        //TODO 这里被没有调用
                         $scope.usedBookInfo.avosImageFile = avosFile;
                         $scope.isLoading = false;
                         alert(JSON.stringify(avosFile));
@@ -130,6 +125,7 @@ angular.module('AppController', [], null)
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
+            //TODO 添加 ACL权限控制
             avosUsedBook.save(null).done(function () {
                 $state.go('tab.person_usedBooksList');
             }).fail(function (error) {
@@ -223,4 +219,8 @@ angular.module('AppController', [], null)
 
     .controller('person_usedBookList', function ($scope, UsedBook$) {
         $scope.UsedBook$ = UsedBook$;
+    })
+
+    .controller('person_editOneUsedBook', function ($scope) {
+
     });
