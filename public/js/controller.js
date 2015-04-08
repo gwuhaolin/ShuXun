@@ -81,6 +81,14 @@ angular.module('AppController', [], null)
     })
 
     .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
+        $scope.isLoading = false;
+
+        $scope.usedBookInfo = {
+            isbn13: $stateParams.isbn13,
+            price: null,
+            des: null,
+            avosImageFile: null
+        };
         if (!User$.getCurrentAvosUser()) {
             User$.alertUserLoginModalView('你需要先登入', function (avosUser) {
                 $scope.usedBookInfo.owner = avosUser;
@@ -95,14 +103,6 @@ angular.module('AppController', [], null)
             $scope.noBarCodeModalView = modal;
         });
 
-        $scope.isLoading = false;
-
-        $scope.usedBookInfo = {
-            isbn13: $stateParams.isbn13,
-            price: null,
-            des: null,
-            avosImageFile: null
-        };
         //用$scope.usedBookInfo.isbn13去豆瓣加载图书信息
         function loadDoubanBookInfo() {
             $scope.isLoading = true;
