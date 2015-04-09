@@ -58,7 +58,7 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
             })
             //tab-person
             .state('tab.person_editOneUsedBook', {
-                url: '/person/editOneUsedBook',
+                url: '/person/editOneUsedBook/{indexInMyAvosUsedBook_notSell}',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/person/editOneUsedBook.html'

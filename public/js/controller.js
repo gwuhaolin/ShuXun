@@ -242,8 +242,49 @@ angular.module('AppController', [], null)
 
     .controller('person_usedBookList', function ($scope, UsedBook$) {
         $scope.UsedBook$ = UsedBook$;
+
+        /**
+         * 删除一本二手书
+         * @param avosUsedBook
+         */
+        $scope.removeUsedBook = function (avosUsedBook) {
+            if (window.confirm('你确定要删除它吗?')) {
+                avosUsedBook.destroy().done(function () {
+                    UsedBook$.loadMyAvosUsedBookList();
+                }).fail(function (error) {
+                    alert(error.message);
+                })
+            }
+        };
+
+        /**
+         * 把一本二手书设置为已经卖出
+         * @param avosUsedBook
+         */
+        $scope.usedBookHasSell = function (avosUsedBook) {
+            if (window.confirm('你确定它已经卖出了吗?')) {
+                avosUsedBook.set('hasSell', true);
+                avosUsedBook.save(null).done(function () {
+                    UsedBook$.loadMyAvosUsedBookList();
+                }).fail(function (error) {
+                    alert(error.message);
+                })
+            }
+        }
     })
 
-    .controller('person_editOneUsedBook', function ($scope) {
-
+    .controller('person_editOneUsedBook', function ($scope, $state, $stateParams, UsedBook$) {
+        var indexInMyAvosUsedBook_notSell = $stateParams['indexInMyAvosUsedBook_notSell'];
+        $scope.avosUsedBook = UsedBook$.myAvosUsedBookList_notSell[indexInMyAvosUsedBook_notSell];
+        $scope.valueHasChange = false;
+        $scope.jsonUsedBookChangeInfo = UsedBook$.avosUsedBookToJson($scope.avosUsedBook);
+        $scope.submitOnClick = function () {
+            $scope.avosUsedBook.set('des', $scope.jsonUsedBookChangeInfo.des);
+            $scope.avosUsedBook.set('price', $scope.jsonUsedBookChangeInfo.price);
+            $scope.avosUsedBook.save(null).done(function () {
+                $state.go('tab.person_usedBooksList');
+            }).fail(function (error) {
+                alert(error.message);
+            })
+        }
     });

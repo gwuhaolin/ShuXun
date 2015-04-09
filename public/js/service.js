@@ -380,27 +380,49 @@ angular.module('AppService', [], null)
         }
     })
 
-    .service('UsedBook$', function (User$) {
+    .service('UsedBook$', function ($rootScope, User$) {
         var that = this;
-        var UsedBookAttrNames = ['owner', 'isbn13', 'avosImageFile', 'price', 'des'];
+        var UsedBookAttrNames = ['owner', 'isbn13', 'avosImageFile', 'price', 'des', 'hasSell'];
 
         /**
-         * 所有我上传的二手书
+         * 是否正在加载数据
+         * @type {boolean}
+         */
+        this.isLoading = false;
+        /**
+         * 所有我上传的还没有卖出的二手书
          * @type {Array}
          */
-        this.myJsonUsedBookList = [];
-        {//加载所有我上传的二手书
+        this.myAvosUsedBookList_notSell = [];
+        /**
+         * 所有我上传的还已经卖出的二手书
+         * @type {Array}
+         */
+        this.myAvosUsedBookList_hasSell = [];
+        /**
+         * 加载所有我上传的二手书
+         */
+        this.loadMyAvosUsedBookList = function () {
+            that.isLoading = true;
             var query = new AV.Query('UsedBook');
             query.equalTo('owner', User$.getCurrentAvosUser());
             query.find().done(function (avosUsedBooks) {
+                that.myAvosUsedBookList_hasSell = [];
+                that.myAvosUsedBookList_notSell = [];
                 for (var i = 0; i < avosUsedBooks.length; i++) {
-                    var oneAvosUsedBook = avosUsedBooks[i];
-                    that.myJsonUsedBookList.push(that.avosUsedBookToJson(oneAvosUsedBook));
+                    var obj = avosUsedBooks[i];
+                    if (obj.get('hasSell')) {
+                        that.myAvosUsedBookList_hasSell.push(obj);
+                    } else {
+                        that.myAvosUsedBookList_notSell.push(obj);
+                    }
                 }
-            }).fail(function (error) {
-
+            }).always(function () {
+                that.isLoading = false;
+                $rootScope.$apply();
             })
-        }
+        };
+        that.loadMyAvosUsedBookList();
 
         /**
          * 把AVOS的UsedBook转换为JSON格式的
