@@ -12,9 +12,25 @@
             <button class="button button-clear button-small button-balanced" ng-click="noBarCodeModalView.show()">没条码?
             </button>
         </div>
-        <!-- 出版信息-->
-        <div class="list card" ng-if="doubanBookInfo">
-            {{doubanBookInfo | json}}
+        <!-- 图书基本信息-->
+        <div class="list card">
+            <!-- 封面-->
+            <ion-item style="text-align: center">
+                <img ng-src="{{doubanBookInfo.image}}" style="height: 180px" ng-click="previewBookImg()">
+            </ion-item>
+            <ion-item>
+                <p ng-if="doubanBookInfo.title">{{doubanBookInfo.title}}</p>
+
+                <p>
+                    <span ng-if="doubanBookInfo.price">{{doubanBookInfo.price}}</span>
+                    <!-- 作者-->
+                    <span ng-if="doubanBookInfo.author.length>0" class="item-button-right">
+                        {{doubanBookInfo.author.toString()}} 著
+                    </span>
+                </p>
+                <!-- 出版信息-->
+                <p ng-if="doubanBookInfo['publisher']">{{doubanBookInfo['publisher']}}/{{doubanBookInfo['pubdate']}}</p>
+            </ion-item>
         </div>
         <hr style="margin: 10px">
         <!-- 上传图片-->

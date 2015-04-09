@@ -9,7 +9,8 @@
             </div>
             <!-- 搜索结果列表-->
             <ion-item class="item-thumbnail-left"
-                      ng-repeat="avosUsedBook in UsedBook$.nowNotSellEqualISBNAvosUsedBookList">
+                      ng-repeat="avosUsedBook in UsedBook$.nowNotSellEqualISBNAvosUsedBookList"
+                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:avosUsedBook.id})">
                 <img ng-src="{{avosUsedBook.get('avosImageFile').url()}}">
 
                 <p>要价:{{avosUsedBook.get('price')}}</p>
