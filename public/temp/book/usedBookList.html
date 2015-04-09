@@ -1,12 +1,6 @@
 <ion-view ng-controller="book_usedBookList" title="共有{{notSellUsedBookTotalNumber}}本旧书">
     <ion-content>
         <ion-list>
-            <!-- 排序按钮 TODO 排序还没有做-->
-            <div class="item button-bar">
-                <button class="button button-small button-balanced">价格</button>
-                <button class="button button-small">距离</button>
-                <button class="button button-small">新旧</button>
-            </div>
             <!-- 搜索结果列表-->
             <ion-item class="item-thumbnail-left"
                       ng-repeat="avosUsedBook in UsedBook$.nowNotSellEqualISBNAvosUsedBookList"

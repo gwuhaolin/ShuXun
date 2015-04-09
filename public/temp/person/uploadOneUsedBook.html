@@ -13,20 +13,18 @@
             </button>
         </div>
         <!-- 图书基本信息-->
-        <div class="list card">
+        <div class="list card" ng-if="usedBookInfo.isbn13">
             <!-- 封面-->
             <ion-item style="text-align: center">
                 <img ng-src="{{doubanBookInfo.image}}" style="height: 180px" ng-click="previewBookImg()">
             </ion-item>
             <ion-item>
-                <p ng-if="doubanBookInfo.title">{{doubanBookInfo.title}}</p>
-
                 <p>
-                    <span ng-if="doubanBookInfo.price">{{doubanBookInfo.price}}</span>
-                    <!-- 作者-->
-                    <span ng-if="doubanBookInfo.author.length>0" class="item-button-right">
-                        {{doubanBookInfo.author.toString()}} 著
-                    </span>
+                    {{doubanBookInfo.title}}/<span ng-if="doubanBookInfo.price">{{doubanBookInfo.price}}</span>
+                </p>
+                <!-- 作者-->
+                <p ng-if="doubanBookInfo.author.length>0" class="item-button-right">
+                    {{doubanBookInfo.author.toString()}} 著
                 </p>
                 <!-- 出版信息-->
                 <p ng-if="doubanBookInfo['publisher']">{{doubanBookInfo['publisher']}}/{{doubanBookInfo['pubdate']}}</p>

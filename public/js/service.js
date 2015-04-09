@@ -504,7 +504,7 @@ angular.module('AppService', [], null)
          * 获得所有对应ISBN的二手书
          * @param isbn13
          */
-        this.loadNotSellMoreAvosUsedBookEqualISBN = function (isbn13) {
+        this.loadMoreNotSellAvosUsedBookEqualISBN = function (isbn13) {
             that.isLoading = true;
             if (isbn13 != nowISBN13) {//如果是新的ISBN号码就清空以前的
                 nowISBN13 = isbn13;

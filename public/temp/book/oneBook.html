@@ -67,7 +67,7 @@
 
                 <p>{{oneAvosUsedBook.get('des')}}</p>
             </ion-item>
-            <ion-item ng-if="UsedBook$.nowNotSellEqualISBNAvosUsedBookList.length>usedBookNumber"
+            <ion-item ng-if="UsedBook$.nowNotSellEqualISBNAvosUsedBookList.length<usedBookNumber"
                       style="padding: 0;text-align: center">
                 <a class="button button-small button-clear button-balanced"
                    ui-sref="tab.book_usedBookList({isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>

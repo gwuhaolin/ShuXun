@@ -86,7 +86,7 @@ angular.module('AppController', [], null)
             //对应的图书有多少本二手书
             $scope.usedBookNumber = number;
         });
-        UsedBook$.loadNotSellMoreAvosUsedBookEqualISBN($scope.isbn13);//先加载5个
+        UsedBook$.loadMoreNotSellAvosUsedBookEqualISBN($scope.isbn13);//先加载5个
 
     })
 
@@ -97,7 +97,7 @@ angular.module('AppController', [], null)
             $scope.notSellUsedBookTotalNumber = number;
         });
         $scope.loadMore = function () {
-            UsedBook$.loadNotSellMoreAvosUsedBookEqualISBN(isbn13);
+            UsedBook$.loadMoreNotSellAvosUsedBookEqualISBN(isbn13);
         }
     })
 
