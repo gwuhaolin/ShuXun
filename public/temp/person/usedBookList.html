@@ -3,11 +3,15 @@
     <ion-content>
         <ion-list>
             <!-- 正在加载-->
-            <div style="text-align: center;padding-top: 10px" ng-if="UsedBook$.isLoading">
+            <div style="text-align: center;margin: 10px" ng-if="UsedBook$.isLoading">
                 <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
             </div>
 
-            <ion-item class="item-divider item-button-right">正在架上</ion-item>
+            <ion-item class="item-divider item-button-right">正在架上
+                <button class="button button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.person_uploadOneUsedBook({isbn13:book.isbn13})">上传旧书
+                </button>
+            </ion-item>
             <ion-item ng-repeat="oneAvosUsedBook in UsedBook$.myAvosUsedBookList_notSell" class="item-thumbnail-left">
                 <img ng-if="oneAvosUsedBook['avosImageFile']" ng-src="oneAvosUsedBook['avosImageFile'].url()">
 

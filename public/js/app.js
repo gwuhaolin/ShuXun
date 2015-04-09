@@ -35,7 +35,7 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                     }
                 }
             }).state('tab.book_usedBookList', {
-                url: '/book/usedBookList',
+                url: '/book/usedBookList/{isbn13}',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/usedBookList.html'
@@ -49,7 +49,7 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                     }
                 }
             }).state('tab.book_oneUsedBook', {
-                url: '/book/oneUsedBook',
+                url: '/book/oneUsedBook/{usedBookAvosObjectId}',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/oneUsedBook.html'

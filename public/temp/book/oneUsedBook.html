@@ -1,40 +1,52 @@
 <!--一本二手书信息-->
-<ion-view title="二手 图书名称">
+<ion-view ng-controller="book_oneUsedBook" title="二手 图书名称">
     <ion-content>
         <!-- 图书基本信息-->
         <div class="list card">
             <ion-item style="text-align: center">
-                <img src="book.jpg" style="height: 180px">
+                <img ng-src="{{jsonUsedBook.avosImageFile.url()}}" style="height: 180px">
             </ion-item>
             <ion-item>
                 <h3>主人描述</h3>
 
-                <p style="white-space: pre-wrap">图书简介图书简介图书简介图书简介图书简介图书简介图书简介图书简介...</p>
-                <button class="button button-small button-clear button-balanced" style="padding: 0;">展开</button>
+                <p style="white-space: pre-wrap">{{jsonUsedBook.des}}</p>
+            </ion-item>
+            <ion-item>
+                要价:{{jsonUsedBook.price}}
+            </ion-item>
+        </div>
 
+        <!-- 主人信息-->
+        <div class="list card">
+            <ion-item class="item-divider  item-button-right">主人信息
+                <a class="button button-clear button-balanced" style="top: 0" ng-href="mailto:{{ownerInfo.email}}">联系主人
+                </a>
             </ion-item>
-            <ion-item>
-                要价:13元
-            </ion-item>
-            <ion-item>
-                主人所在位置:华中师范大学
-            </ion-item>
+            <div class="item item-avatar" ng-if="ownerInfo">
+                <img ng-src="{{ownerInfo.avatarUrl}}">
+
+                <h2>{{ownerInfo.nickName}}
+                    <i class="icon ion-male" style="color: #5eb1ed" ng-if="ownerInfo.sex==1"></i>
+                    <i class="icon ion-female" style="color: #ff6d9e" ng-if="ownerInfo.sex==2"></i>
+                    <i>{{ownerInfo.startSchoolYear}}级</i>
+                </h2>
+
+                <p>{{ownerInfo.school}}/{{ownerInfo.major}}</p>
+            </div>
         </div>
 
         <!-- 主人其它图书-->
         <div class="list card">
             <ion-item class="item-divider">主人其它图书</ion-item>
-            <ion-item class="item-avatar">
-                <img src="book.jpg">
+            <ion-item class="item-avatar" ng-repeat="jsonUsedBook in ownerJsonUsedBookList"
+                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:jsonUsedBook.objectId})">
+                <img ng-src="{{jsonUsedBook.avosImageFile.url()}}">
 
-                <h2>图书名称</h2>
+                <h2>要价:{{jsonUsedBook.price}}</h2>
 
-                <p>二手书1 13元</p>
+                <p>{{jsonUsedBook.des}}</p>
             </ion-item>
+            <ion-item ng-if="ownerJsonUsedBookList.length==0">主人没有更多的本二手书了</ion-item>
         </div>
-        <ion-infinite-scroll
-                on-infinite="loadMore()"
-                distance="1%">
-        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

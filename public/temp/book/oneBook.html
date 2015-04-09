@@ -30,17 +30,17 @@
             <ion-item class="item-button-right">
                 <i ng-if="book.price">定价:{{book.price}}</i>
                 <i>&nbsp;</i>
-                <i ng-if="book.publisher">{{book.publisher}}/{{book.pubdate}}</i>
+                <i ng-if="book['publisher']">{{book['publisher']}}/{{book['pubdate']}}</i>
                 <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版信息</button>
             </ion-item>
             <!-- 豆瓣书评-->
-            <ion-item ng-if="book.rating">
-                <review-star num-stars="{{book.rating.average/2}}" score="{{book.rating.average}}"
-                             num-raters="{{book.rating.numRaters}}"></review-star>
+            <ion-item ng-if="book['rating']">
+                <review-star num-stars="{{book['rating']['average']/2}}" score="{{book['rating']['average']}}"
+                             num-raters="{{book['rating']['numRaters']}}"></review-star>
             </ion-item>
         </div>
 
-        <!-- 电商购买新书-->
+        <!-- 电商购买新书 TODO 待完成-->
         <div class="list card">
             <ion-item class="item-divider">购买新书</ion-item>
             <ion-item class="item-avatar">
@@ -57,17 +57,19 @@
                         ui-sref="tab.person_uploadOneUsedBook({isbn13:book.isbn13})">上传旧书
                 </button>
             </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img ng-src="img/book.jpg">
+            <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
+            <ion-item ng-if="UsedBook$.nowNotSellEqualISBNAvosUsedBookList.length>0" class="item-thumbnail-left"
+                      ng-repeat="oneAvosUsedBook in UsedBook$.nowNotSellEqualISBNAvosUsedBookList"
+                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneAvosUsedBook.id})">
+                <img ng-src="{{oneAvosUsedBook.get('avosImageFile').url()}}">
 
-                <h2>二手书1 13元</h2>
+                <h2>要价:{{oneAvosUsedBook.get('price')}}</h2>
 
-                <p>位置</p>
-
-                <p>主人描述</p>
+                <p>{{oneAvosUsedBook.get('des')}}</p>
             </ion-item>
-            <ion-item style="padding: 0;text-align: center">
-                <a class="button button-small button-clear button-balanced">查看所有二手书</a>
+            <ion-item ng-if="UsedBook$.nowNotSellEqualISBNAvosUsedBookList.length>0" style="padding: 0;text-align: center">
+                <a class="button button-small button-clear button-balanced"
+                   ui-sref="tab.book_usedBookList({isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
             </ion-item>
 
         </div>

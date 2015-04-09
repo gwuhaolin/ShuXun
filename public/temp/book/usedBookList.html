@@ -1,26 +1,24 @@
-<ion-view title="二手 图书名称">
+<ion-view ng-controller="book_usedBookList" title="共有{{notSellUsedBookTotalNumber}}本旧书">
     <ion-content>
         <ion-list>
-            <!-- 排序按钮-->
+            <!-- 排序按钮 TODO 排序还没有做-->
             <div class="item button-bar">
                 <button class="button button-small button-balanced">价格</button>
                 <button class="button button-small">距离</button>
                 <button class="button button-small">新旧</button>
             </div>
             <!-- 搜索结果列表-->
-            <ion-item class="item-thumbnail-left">
-                <img src="book.jpg">
+            <ion-item class="item-thumbnail-left"
+                      ng-repeat="avosUsedBook in UsedBook$.nowNotSellEqualISBNAvosUsedBookList">
+                <img ng-src="{{avosUsedBook.get('avosImageFile').url()}}">
 
-                <p>要价:13元</p>
+                <p>要价:{{avosUsedBook.get('price')}}</p>
 
-                <p>新旧:80%</p>
-
-                <p>位置:华中师范大学</p>
-
-                <p>描述:哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</p>
+                <p>描述:{{avosUsedBook.get('des')}}</p>
             </ion-item>
         </ion-list>
         <ion-infinite-scroll
+                ng-if="UsedBook$.nowNotSellEqualISBNAvosUsedBookList.length<notSellUsedBookTotalNumber"
                 on-infinite="loadMore()"
                 distance="1%">
         </ion-infinite-scroll>

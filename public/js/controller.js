@@ -35,20 +35,22 @@ angular.module('AppController', [], null)
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$) {
-        var isbn13 = $stateParams.isbn13;
+    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$) {
+        //////////// 豆瓣图书信息 /////////
+        $scope.isbn13 = $stateParams.isbn13;
         $scope.book = null;
         //目前是否正在加载数据
         $scope.isLoading = true;
-        DoubanBook$.getBookByISBD(isbn13, function (json) {
+        DoubanBook$.getBookByISBD($scope.isbn13, function (json) {
             $scope.book = json;
             $scope.isLoading = false;
+            $scope.$apply();
         });
 
         //显示作者介绍
         $scope.showAuthorIntro = function () {
             var title = $scope.book.author.toString();
-            var pre = $scope.book.author_intro;
+            var pre = $scope.book['author_intro'];
             InfoService$.alertTitleAndPreModalView(title, pre);
         };
         //显示出版信息
@@ -76,8 +78,48 @@ angular.module('AppController', [], null)
         //预览图书的封面
         $scope.previewBookImg = function () {
             WeChatJS$.previewOneImage($scope.book.image);
-        }
+        };
 
+        //////////// 二手书信息 /////////
+        $scope.UsedBook$ = UsedBook$;
+        UsedBook$.getNotSellUsedBookNumberEqualISBN($scope.isbn13).done(function (number) {
+            //对应的图书有多少本二手书
+            $scope.usedBookNumber = number;
+        });
+        UsedBook$.loadNotSellMoreAvosUsedBookEqualISBN($scope.isbn13);//先加载5个
+
+    })
+
+    .controller('book_usedBookList', function ($scope, $stateParams, UsedBook$) {
+        var isbn13 = $stateParams.isbn13;
+        $scope.UsedBook$ = UsedBook$;
+        UsedBook$.getNotSellUsedBookNumberEqualISBN(isbn13).done(function (number) {
+            $scope.notSellUsedBookTotalNumber = number;
+        });
+        $scope.loadMore = function () {
+            UsedBook$.loadNotSellMoreAvosUsedBookEqualISBN(isbn13);
+        }
+    })
+
+    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$) {
+        var usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
+        UsedBook$.getJsonUsedBookByAvosObjectId(usedBookAvosObjectId, function (json) {
+            $scope.jsonUsedBook = json;
+            var avosOwner = $scope.jsonUsedBook.owner;
+            avosOwner.fetch().done(function (avosOwner) {
+                $scope.ownerInfo = User$.avosUserToJson(avosOwner);
+            });
+            UsedBook$.loadNotSellUsedBookListForOwner(avosOwner, function (avosUsedBooks) {
+                $scope.ownerJsonUsedBookList = [];
+                for (var i = 0; i < avosUsedBooks.length; i++) {
+                    if (avosUsedBooks[i].id == usedBookAvosObjectId) {
+                        continue;
+                    }
+                    $scope.ownerJsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
+                }
+                $scope.$apply();
+            })
+        })
     })
 
     .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
@@ -242,6 +284,7 @@ angular.module('AppController', [], null)
 
     .controller('person_usedBookList', function ($scope, UsedBook$) {
         $scope.UsedBook$ = UsedBook$;
+        UsedBook$.loadMyAvosUsedBookList();
 
         /**
          * 删除一本二手书
