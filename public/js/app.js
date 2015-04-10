@@ -7,6 +7,7 @@
 angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', 'DoubanBook'], null)
 
     .config(function ($stateProvider, $urlRouterProvider) {
+        ionic.Platform.setPlatform('ios');//ionic私有方法 强制设置平台为IOS
         $stateProvider.state('tab', {
             url: '/tab',
             abstract: true,
