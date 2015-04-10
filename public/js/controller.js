@@ -173,10 +173,10 @@ angular.module('AppController', [], null)
         $scope.uploadPicOnClick = function () {
             WeChatJS$.chooseImage(function (localId) {
                 $scope.localId = localId;
+                $scope.$apply();
                 WeChatJS$.uploadImage($scope.localId, function (serverId) {
                     wechatServerId = serverId;
                 });
-                $scope.$apply();
             })
         };
 
@@ -185,7 +185,6 @@ angular.module('AppController', [], null)
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
             avosUsedBook.save(null).done(function (avosUsedBook) {
                 if (wechatServerId) {//如果用户上传了图书的图片到微信
-                    //TODO 云函数不可调用
                     AV.Cloud.run('saveWechatImageToUsedBook', {
                         serverId: wechatServerId,
                         objectId: avosUsedBook.objectId

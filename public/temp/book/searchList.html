@@ -3,7 +3,7 @@
         <ion-list>
             <!-- 关键字输入框-->
             <ion-item class="item-input-inset">
-                <button class="button button-small button-clear" ng-click="SearchBook$.scanQRBtnOnClick()">扫码
+                <button class="button button-small button-clear" ng-click="scanQRBtnOnClick()">扫码
                 </button>
                 <label class="item-input-wrapper">
                     <i class="icon ion-search placeholder-icon"></i>
@@ -22,7 +22,7 @@
 
                 <h2>{{book.title}}</h2>
 
-                <p ng-if="book.publisher">{{book.publisher}}/{{book.pubdate}}</p>
+                <p ng-if="book['publisher']">{{book['publisher']}}/{{book['pubdate']}}</p>
 
                 <p ng-if="book.author">{{book.author.toString()}}</p>
 

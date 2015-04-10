@@ -83,7 +83,7 @@ angular.module('AppService', [], null)
          * @param callback 返回获得的信息
          */
         this.getBusinessInfoByISBN = function (isbn13, callback) {
-            //TODO 服务器端待完成
+            //TODO
             callback();
         }
     })
@@ -95,26 +95,29 @@ angular.module('AppService', [], null)
         });
 
         //分享出去时的数据 TODO 所有分享接口not work
-        this.shareData = {
-            title: '分享标题',
-            desc: '分享描述',
-            link: '分享链接',
-            imgUrl: '分享图标',
-            success: function () {
-                // 用户确认分享后执行的回调函数
-            },
-            cancel: function () {
-                // 用户取消分享后执行的回调函数
-            }
-        };
+        /**
+         * 获得微信分享接口时需要的参数
+         * @param json 附加的参数
+         */
+        function getShareData(json) {
+            var re = {
+                title: document.title,
+                desc: '关于书循的介绍',
+                link: window.location.href,
+                imgUrl: window.location.host + '/img/logo.png'
+            };
+            re = angular.extend(re, json);
+            return re;
+        }
+
         //分享到朋友圈
-        wx.onMenuShareTimeline(this.shareData);
+        wx.onMenuShareTimeline(getShareData());
         //分享给朋友
-        wx.onMenuShareAppMessage(this.shareData);
+        wx.onMenuShareAppMessage(getShareData());
         //分享到QQ
-        wx.onMenuShareQQ(this.shareData);
+        wx.onMenuShareQQ(getShareData());
         //分享到腾讯微博
-        wx.onMenuShareWeibo(this.shareData);
+        wx.onMenuShareWeibo(getShareData());
 
         /**
          * 调起微信扫一扫接口
