@@ -6,7 +6,7 @@
         </div>
         <!-- 扫码-->
         <div ng-if="!usedBookInfo.isbn13">
-            <h5>1.扫码书后面的条形码获得图书信息</h5>
+            <h5>扫码书后面的条形码获得图书信息</h5>
             <button class="button button-outline button-balanced" ng-click="scanQRBtnOnClick()">扫条形码</button>
             <br>
             <button class="button button-clear button-small button-balanced" ng-click="noBarCodeModalView.show()">没条码?
@@ -33,7 +33,7 @@
         <hr style="margin: 10px">
         <!-- 上传图片-->
         <div ng-if="!localId">
-            <h5>2.上传一张它的照片让大家知道它的新旧程度</h5>
+            <h5>上传一张它的照片让大家知道它的新旧程度</h5>
             <button class="button button-outline button-balanced" ng-click="uploadPicOnClick()">上传照片</button>
         </div>
         <img ng-if="localId" ng-src="{{localId}}">

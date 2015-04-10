@@ -1,0 +1,21 @@
+<ion-view ng-controller="book_usedBookListByISBN" title="共有{{usedBookTotalNumber}}本旧书">
+    <ion-content>
+        <ion-list>
+            <!-- 搜索结果列表-->
+            <ion-item class="item-thumbnail-left"
+                      ng-repeat="avosUsedBook in UsedBook$.nowEqualISBNAvosUsedBookList"
+                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:avosUsedBook.id})">
+                <img ng-src="{{avosUsedBook.get('avosImageFile').url()}}">
+
+                <p>要价:{{avosUsedBook.get('price')}}</p>
+
+                <p>描述:{{avosUsedBook.get('des')}}</p>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll
+                ng-if="UsedBook$.nowEqualISBNAvosUsedBookList.length<usedBookTotalNumber"
+                on-infinite="loadMore()"
+                distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

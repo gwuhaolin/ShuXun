@@ -8,20 +8,6 @@ angular.module('AppController', [], null)
     //图书搜索
     .controller('book_searchList', function ($scope, $timeout, $state, SearchBook$, WeChatJS$) {
         $scope.SearchBook$ = SearchBook$;
-        $scope.searchBtnOnClick = function () {
-            SearchBook$.loadMore();
-            $timeout.cancel(timer);
-        };
-
-        var timer = null;
-        $scope.searchInputOnChange = function () {
-            SearchBook$.books = [];
-            SearchBook$.totalNum = 0;
-            $timeout.cancel(timer);
-            timer = $timeout(function () {
-                $scope.searchBtnOnClick();
-            }, 2000);
-        };
 
         $scope.scanQRBtnOnClick = function () {
             WeChatJS$.scanQRCode(function (code) {
@@ -35,7 +21,7 @@ angular.module('AppController', [], null)
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$) {
+    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$) {
         //////////// 豆瓣图书信息 /////////
         $scope.isbn13 = $stateParams.isbn13;
         $scope.book = null;
@@ -51,7 +37,7 @@ angular.module('AppController', [], null)
         $scope.showAuthorIntro = function () {
             var title = $scope.book.author.toString();
             var pre = $scope.book['author_intro'];
-            InfoService$.alertTitleAndPreModalView(title, pre);
+            IonicModalView$.alertTitleAndPreModalView(title, pre);
         };
         //显示出版信息
         $scope.showPubInfo = function () {
@@ -65,14 +51,14 @@ angular.module('AppController', [], null)
                 '\n装帧:' + b['binding'] +
                 '\nISBN:' + b['isbn13'] +
                 '\n目录:\n' + b['catalog'];
-            InfoService$.alertTitleAndPreModalView(title, pre);
+            IonicModalView$.alertTitleAndPreModalView(title, pre);
         };
 
         //显示图书简介
         $scope.showSummary = function () {
             var title = '图书简介';
             var pre = $scope.book.summary;
-            InfoService$.alertTitleAndPreModalView(title, pre);
+            IonicModalView$.alertTitleAndPreModalView(title, pre);
         };
 
         //预览图书的封面
@@ -80,25 +66,45 @@ angular.module('AppController', [], null)
             WeChatJS$.previewOneImage($scope.book.image);
         };
 
+        ////////////TODO 电商联盟信息 ///////
+
+
         //////////// 二手书信息 /////////
         $scope.UsedBook$ = UsedBook$;
-        UsedBook$.getNotSellUsedBookNumberEqualISBN($scope.isbn13).done(function (number) {
+        UsedBook$.getUsedBookNumberEqualISBN($scope.isbn13).done(function (number) {
             //对应的图书有多少本二手书
             $scope.usedBookNumber = number;
         });
-        UsedBook$.loadMoreNotSellAvosUsedBookEqualISBN($scope.isbn13);//先加载5个
+        UsedBook$.loadMoreAvosUsedBookEqualISBN($scope.isbn13);//先加载5个
 
     })
 
-    .controller('book_usedBookList', function ($scope, $stateParams, UsedBook$) {
+    .controller('book_BusinessSite', function ($scope, $stateParams) {
+        $scope.url = $stateParams.url;
+    })
+
+    .controller('book_usedBookListByISBN', function ($scope, $stateParams, UsedBook$) {
         var isbn13 = $stateParams.isbn13;
         $scope.UsedBook$ = UsedBook$;
-        UsedBook$.getNotSellUsedBookNumberEqualISBN(isbn13).done(function (number) {
-            $scope.notSellUsedBookTotalNumber = number;
+        UsedBook$.getUsedBookNumberEqualISBN(isbn13).done(function (number) {
+            $scope.usedBookTotalNumber = number;
+            $scope.$apply();
         });
         $scope.loadMore = function () {
-            UsedBook$.loadMoreNotSellAvosUsedBookEqualISBN(isbn13);
+            UsedBook$.loadMoreAvosUsedBookEqualISBN(isbn13);
+            $scope.$apply();
         }
+    })
+
+    .controller('book_usedBookListByOwner', function ($scope, $stateParams, UsedBook$) {
+        var ownerId = $stateParams.ownerId;
+        var avosOwner = new AV.User();
+        avosOwner.id = ownerId;
+        $scope.UsedBook$ = UsedBook$;
+        UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
+            $scope.avosUsedBookList = avosUsedBooks;
+            $scope.$apply();
+        })
     })
 
     .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$) {
@@ -108,17 +114,12 @@ angular.module('AppController', [], null)
             var avosOwner = $scope.jsonUsedBook.owner;
             avosOwner.fetch().done(function (avosOwner) {
                 $scope.ownerInfo = User$.avosUserToJson(avosOwner);
-            });
-            UsedBook$.loadNotSellUsedBookListForOwner(avosOwner, function (avosUsedBooks) {
-                $scope.ownerJsonUsedBookList = [];
-                for (var i = 0; i < avosUsedBooks.length; i++) {
-                    if (avosUsedBooks[i].id == usedBookAvosObjectId) {
-                        continue;
-                    }
-                    $scope.ownerJsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
-                }
                 $scope.$apply();
-            })
+            });
+            UsedBook$.getUsedBookNumberForOwner(avosOwner).done(function (number) {
+                $scope.ownerUsedBookNumber = number;
+                $scope.$apply();
+            });
         })
     })
 
@@ -182,6 +183,7 @@ angular.module('AppController', [], null)
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
             avosUsedBook.save(null).done(function (avosUsedBook) {
                 if (wechatServerId) {//如果用户上传了图书的图片到微信
+                    //TODO 云函数不可调用
                     AV.Cloud.run('saveWechatImageToUsedBook', {
                         serverId: wechatServerId,
                         objectId: avosUsedBook.objectId
@@ -201,7 +203,7 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_signUp', function ($scope, $timeout, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$) {
+    .controller('person_signUp', function ($scope, $timeout, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$, IonicModalView$) {
         //是否正在加载中..
         $scope.isLoading = true;
         //调用微信接口获取用户信息
@@ -211,11 +213,11 @@ angular.module('AppController', [], null)
             $scope.userInfo = userInfo;
         });
 
-        InfoService$.registerChooseSchoolModalView($scope, function (school) {
+        IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
             $scope.userInfo['school'] = school;
         });
 
-        InfoService$.registerChooseMajorModalView($scope, function (major) {
+        IonicModalView$.registerChooseMajorModalView($scope, function (major) {
             $scope.userInfo['major'] = major;
         });
 
@@ -236,23 +238,23 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_editPersonInfo', function ($scope, InfoService$, User$) {
+    .controller('person_editPersonInfo', function ($scope, InfoService$, User$, IonicModalView$) {
         //是否对属性进行了修改
         $scope.attrHasChange = false;
 
         if (!User$.getCurrentAvosUser()) {//还没有用户的信息
-            User$.alertUserLoginModalView('你还没有登入', function () {
+            IonicModalView$.alertUserLoginModalView('你还没有登入', function () {
                 $scope.userInfo = User$.getCurrentJsonUser();
             })
         } else {
             $scope.userInfo = User$.getCurrentJsonUser();
         }
 
-        InfoService$.registerChooseSchoolModalView($scope, function (school) {
+        IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
             $scope.attrHasChange = true;
             $scope.userInfo['school'] = school;
         });
-        InfoService$.registerChooseMajorModalView($scope, function (major) {
+        IonicModalView$.registerChooseMajorModalView($scope, function (major) {
             $scope.attrHasChange = true;
             $scope.userInfo['major'] = major;
         });
@@ -260,7 +262,7 @@ angular.module('AppController', [], null)
 
         //点击提交修改时
         $scope.submitOnClick = function () {
-            User$.alertUserLoginModalView('修改前需要验证身份', function (avosUser) {
+            IonicModalView$.alertUserLoginModalView('修改前需要验证身份', function (avosUser) {
                 avosUser.save({
                     school: $scope.userInfo['school'],
                     major: $scope.userInfo['major'],
@@ -282,43 +284,20 @@ angular.module('AppController', [], null)
         $scope.userInfo = User$.getCurrentJsonUser();
     })
 
-    .controller('person_usedBookList', function ($scope, UsedBook$) {
+    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$) {
+        //还没有卖出
         $scope.UsedBook$ = UsedBook$;
         UsedBook$.loadMyAvosUsedBookList();
 
-        /**
-         * 删除一本二手书
-         * @param avosUsedBook
-         */
-        $scope.removeUsedBook = function (avosUsedBook) {
-            if (window.confirm('你确定要删除它吗?')) {
-                avosUsedBook.destroy().done(function () {
-                    UsedBook$.loadMyAvosUsedBookList();
-                }).fail(function (error) {
-                    alert(error.message);
-                })
-            }
-        };
+        //已经卖出的二手书
+        $scope.HasSellUsedBook$ = HasSellUsedBook$;
+        HasSellUsedBook$.loadMyAvosUsedBookList();
 
-        /**
-         * 把一本二手书设置为已经卖出
-         * @param avosUsedBook
-         */
-        $scope.usedBookHasSell = function (avosUsedBook) {
-            if (window.confirm('你确定它已经卖出了吗?')) {
-                avosUsedBook.set('hasSell', true);
-                avosUsedBook.save(null).done(function () {
-                    UsedBook$.loadMyAvosUsedBookList();
-                }).fail(function (error) {
-                    alert(error.message);
-                })
-            }
-        }
     })
 
     .controller('person_editOneUsedBook', function ($scope, $state, $stateParams, UsedBook$) {
         var indexInMyAvosUsedBook_notSell = $stateParams['indexInMyAvosUsedBook_notSell'];
-        $scope.avosUsedBook = UsedBook$.myAvosUsedBookList_notSell[indexInMyAvosUsedBook_notSell];
+        $scope.avosUsedBook = UsedBook$.myAvosUsedBookList[indexInMyAvosUsedBook_notSell];
         $scope.valueHasChange = false;
         $scope.jsonUsedBookChangeInfo = UsedBook$.avosUsedBookToJson($scope.avosUsedBook);
         $scope.submitOnClick = function () {

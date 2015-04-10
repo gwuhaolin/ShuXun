@@ -7,10 +7,19 @@
 </head>
 <body>
 <script src="lib/ionic/js/ionic.bundle.js"></script>
+<script src="lib/avos/av-core.js"></script>
 <script>
-    setInterval(function () {
-        alert(1);
-    },1000);
+    //AVOSCloud
+    AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08zxttpt7upqxwgt6oy47lzb3f8c4juf34otfm");
+
+    AV.Cloud.run('saveWechatImageToUsedBook', {
+        serverId: '1',
+        objectId: '1'
+    }, null).done(function () {
+        alert('AVOS下载图片成功');
+    }).fail(function (error) {
+        alert(error.message);
+    })
 </script>
 </body>
 </html>

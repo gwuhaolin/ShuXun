@@ -29,8 +29,13 @@ exports.getAccessToken = function (callback) {
  * @param callback 返回JSON格式的config
  */
 exports.getJsConfig = function (url, callback) {
+    //如果发布了就关闭微信调试
+    var isDebug = true;
+    if(__production){
+        isDebug = false;
+    }
     APIClient.getJsConfig({
-        debug: true,//TODO 发布时需要修改为非调试模式
+        debug: isDebug,
         url: url,
         //需要使用的借口列表
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode']

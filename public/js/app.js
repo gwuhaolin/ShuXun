@@ -34,15 +34,22 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                         templateUrl: 'temp/book/oneBook.html'
                     }
                 }
-            }).state('tab.book_usedBookList', {
+            }).state('tab.book_usedBookListByISBN', {
                 url: '/book/usedBookList/{isbn13}',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/usedBookList.html'
+                        templateUrl: 'temp/book/usedBookListByISBN.html'
+                    }
+                }
+            }).state('tab.book_usedBookListByOwner', {
+                url: '/book/usedBookList/{ownerId}',
+                views: {
+                    'tab-book': {
+                        templateUrl: 'temp/book/usedBookListByOwner.html'
                     }
                 }
             }).state('tab.book_businessSite', {
-                url: '/book/businessSite',
+                url: '/book/businessSite/{url}',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/businessSite.html'

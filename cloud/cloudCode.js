@@ -32,8 +32,37 @@ AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
                 console.log(error);
             })
         }).fail(function (error) {//获得avosUsedBook失败
+            console.log(error);
             response.error(error);
         });
     });
+});
+
+/**
+ * 当一本二手书被卖出时
+ * 参数: id 被卖出的二手书的AVOS ID
+ * 返回: 事物完成成功返回success,否则返回error
+ */
+AV.Cloud.define('usedBookHasSell', function (request, response) {
+    var usedBookId = request.params['id'];
+    var query = new AV.Query('UsedBook');
+    query.get(usedBookId).done(function (avosUsedBook) {//从UsedBook表获得被卖的二手书
+        var HasSellUsedBook = AV.Object.extend('HasSellUsedBook');
+        var hasUsedBook = new HasSellUsedBook();
+        hasUsedBook.save({//从UsedBook表获得被卖的二手书的信息转移到HasSellUsedBook表
+            owner: avosUsedBook.get('owner'),
+            des: avosUsedBook.get('des'),
+            price: avosUsedBook.get('price'),
+            isbn13: avosUsedBook.get('isbn13')
+        }).done(function () {
+            avosUsedBook.destroy().done(function () {//删除UsedBook表获得被卖的二手书
+                response.success();
+            }).fail(function (error) {
+                response.error(error);
+            })
+        })
+    }).fail(function (error) {
+        response.error(error);
+    })
 });
 

@@ -43,7 +43,7 @@
         <!-- 电商购买新书 TODO 待完成-->
         <div class="list card">
             <ion-item class="item-divider">购买新书</ion-item>
-            <ion-item class="item-avatar">
+            <ion-item class="item-avatar" ui-sref="tab.book_businessSite({url:url})">
                 <img ng-src="img/jd.png">
 
                 <h2>京东 23元</h2>
@@ -58,8 +58,8 @@
                 </button>
             </ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
-            <ion-item ng-if="UsedBook$.nowNotSellEqualISBNAvosUsedBookList.length>0" class="item-thumbnail-left"
-                      ng-repeat="oneAvosUsedBook in UsedBook$.nowNotSellEqualISBNAvosUsedBookList"
+            <ion-item ng-if="UsedBook$.nowEqualISBNAvosUsedBookList.length>0" class="item-thumbnail-left"
+                      ng-repeat="oneAvosUsedBook in UsedBook$.nowEqualISBNAvosUsedBookList"
                       ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneAvosUsedBook.id})">
                 <img ng-src="{{oneAvosUsedBook.get('avosImageFile').url()}}">
 
@@ -67,10 +67,10 @@
 
                 <p>{{oneAvosUsedBook.get('des')}}</p>
             </ion-item>
-            <ion-item ng-if="UsedBook$.nowNotSellEqualISBNAvosUsedBookList.length<usedBookNumber"
+            <ion-item ng-if="UsedBook$.nowEqualISBNAvosUsedBookList.length<usedBookNumber"
                       style="padding: 0;text-align: center">
                 <a class="button button-small button-clear button-balanced"
-                   ui-sref="tab.book_usedBookList({isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
+                   ui-sref="tab.book_usedBookListByISBN({isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
             </ion-item>
 
         </div>
