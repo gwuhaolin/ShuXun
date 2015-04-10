@@ -40,13 +40,14 @@
             </ion-item>
         </div>
 
-        <!-- 电商购买新书 TODO 待完成-->
-        <div class="list card">
+        <!-- 电商购买新书-->
+        <div class="list card" ng-if="businessInfos.length>0">
             <ion-item class="item-divider">购买新书</ion-item>
-            <ion-item class="item-avatar" ui-sref="tab.book_businessSite({url:url})">
-                <img ng-src="img/jd.png">
+            <ion-item class="item-avatar" ng-repeat="info in businessInfos"
+                      ui-sref="tab.book_businessSite({url:info.siteUrl})">
+                <img ng-src="{{info['imageUrl']}}">
 
-                <h2>京东 23元</h2>
+                <h2>{{info['siteName']}} {{info['price']}}元</h2>
             </ion-item>
         </div>
 

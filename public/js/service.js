@@ -73,6 +73,21 @@ angular.module('AppService', [], null)
         };
     })
 
+    .service('BusinessSite$', function () {
+        // 电商联盟的logo 图书价格 电商联盟的名称 商品的购买链接
+        var InfoAttrName = ['imageUrl', 'price', 'siteName', 'siteUrl'];
+
+        /**
+         * 获得对应的ISBN号码的图书在各大电商平台的价格信息
+         * @param isbn13
+         * @param callback 返回获得的信息
+         */
+        this.getBusinessInfoByISBN = function (isbn13, callback) {
+            //TODO 服务器端待完成
+            callback();
+        }
+    })
+
     .service('WeChatJS$', function ($rootScope) {
         //先配置好微信
         jsonp('/wechat/getJsConfig', function (json) {

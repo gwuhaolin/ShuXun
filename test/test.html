@@ -2,11 +2,9 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="lib/ionic/css/ionic.css">
     <title></title>
 </head>
 <body>
-<script src="lib/ionic/js/ionic.bundle.js"></script>
 <script src="lib/avos/av-core.js"></script>
 <script>
     //AVOSCloud
@@ -15,8 +13,8 @@
     AV.Cloud.run('saveWechatImageToUsedBook', {
         serverId: '1',
         objectId: '1'
-    }, null).done(function () {
-        alert('AVOS下载图片成功');
+    }, null).done(function (msg) {
+        alert(msg);
     }).fail(function (error) {
         alert(error.message);
     })

@@ -21,7 +21,7 @@ angular.module('AppController', [], null)
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$) {
+    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
         //////////// 豆瓣图书信息 /////////
         $scope.isbn13 = $stateParams.isbn13;
         $scope.book = null;
@@ -66,8 +66,10 @@ angular.module('AppController', [], null)
             WeChatJS$.previewOneImage($scope.book.image);
         };
 
-        ////////////TODO 电商联盟信息 ///////
-
+        //加载电商联盟信息
+        BusinessSite$.getBusinessInfoByISBN($scope.isbn13, function (infos) {
+            $scope.businessInfos = infos;
+        });
 
         //////////// 二手书信息 /////////
         $scope.UsedBook$ = UsedBook$;
