@@ -4,38 +4,55 @@
  */
 "use strict";
 var WechatAPI = require('cloud/wechat.js');
+var Request = require('request');
+
+/**
+ * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
+ * @param serverId  图片上传到微信服务器后获得的图片的serverID
+ * @param bookId 一个 AVOS的UsedBook的ObjectID
+ * 如果 去微信下载图片失败 会一小时后重新去下载
+ */
+function saveWechatImageToUsedBook(serverId, bookId) {
+    WechatAPI.getAccessToken(function (accessToken) {
+        var query = new AV.Query('UsedBook');
+        query.get(bookId).done(function (avosUsedBook) {
+            var wechatUrl = 'https://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + accessToken + '&media_id=' + serverId;
+            Request({
+                method: 'GET',
+                url: wechatUrl,
+                encoding: null
+            }, function (error, response, body) {
+                if (error) {//去微信下载图片失败
+                    setTimeout(function () {
+                        saveWechatImageToUsedBook(serverId, bookId);
+                    }, 1000 * 60 * 60);//一小时后重新去下载
+                } else {
+                    var file = AV.File('UsedBook.png', body, null);
+                    file.save().done(function (avosFile) {
+                        avosUsedBook.save({
+                            'avosImageFile': avosFile
+                        })
+                    })
+                }
+            });
+        })
+    });
+}
 
 /**
  * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
  * 参数: serverId 图片上传到微信服务器后获得的图片的serverID
  * 参数: objectId 一个 AVOS的UsedBook的ObjectID
- * 返回: 如果下载图片成功返回AVOS的图片的url,否则返回error.
- * 如果 去微信下载图片失败 会把这组任务保存起来以后再去下载
  */
 AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
     var wechatServerId = request.params['serverId'];
     var usedBookAvosObjId = request.params['objectId'];
     if (wechatServerId == null || usedBookAvosObjId == null) {
         response.error('参数不合法');
-        return;
+    } else {
+        saveWechatImageToUsedBook(wechatServerId, usedBookAvosObjId);
+        response.success();
     }
-    WechatAPI.getAccessToken(function (accessToken) {
-        var query = new AV.Query('UsedBook');
-        query.get(usedBookAvosObjId).done(function (avosUsedBook) {
-            var wechatUrl = 'https://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + accessToken + '&media_id=' + wechatServerId;
-            var file = AV.File.withURL('UsedBook.png', wechatUrl, null, null);
-            file.save().done(function (avosFile) {
-                avosUsedBook.set('avosImageFile', avosFile);
-                response.success();
-                console.log('成功下载微信图片' + wechatServerId + '到' + usedBookAvosObjId);
-            }).fail(function (error) {//去微信下载图片失败 TODO 待实现添加到稍后重试下载
-                console.log(error);
-            })
-        }).fail(function (error) {//获得avosUsedBook失败
-            console.log(error);
-            response.error(error);
-        });
-    });
 });
 
 /**
