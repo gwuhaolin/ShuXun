@@ -15,7 +15,8 @@ var WechatAPI = require('cloud/wechat.js');
 AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
     var wechatServerId = request.params['serverId'];
     var usedBookAvosObjId = request.params['objectId'];
-    if (!wechatServerId || !usedBookAvosObjId) {
+    console.log(wechatServerId + ' ' + usedBookAvosObjId);
+    if (wechatServerId == null || usedBookAvosObjId == null) {
         response.error('参数不合法');
         return;
     }
