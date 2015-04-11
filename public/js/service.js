@@ -83,7 +83,7 @@ angular.module('AppService', [], null)
          * @param callback 返回获得的信息
          */
         this.getBusinessInfoByISBN = function (isbn13, callback) {
-            //TODO
+            //TODO 获取联盟数据的后台待实现
             callback();
         }
     })
@@ -94,7 +94,7 @@ angular.module('AppService', [], null)
             wx.config(json);
         });
 
-        //分享出去时的数据 TODO 所有分享接口not work
+        //分享出去时的数据 TODO 分享内容待修改 IOS上没有分享logo
         /**
          * 获得微信分享接口时需要的参数
          * @param json 附加的参数

@@ -126,7 +126,7 @@ angular.module('AppController', [], null)
 
     ////////////////// person ////////////////////
 
-    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$,IonicModalView$) {
         $scope.isLoading = false;
 
         $scope.usedBookInfo = {
@@ -136,7 +136,7 @@ angular.module('AppController', [], null)
             avosImageFile: null
         };
         if (!User$.getCurrentAvosUser()) {
-            User$.alertUserLoginModalView('你需要先登入', function (avosUser) {
+            IonicModalView$.alertUserLoginModalView('你需要先登入', function (avosUser) {
                 $scope.usedBookInfo.owner = avosUser;
             })
         } else {
