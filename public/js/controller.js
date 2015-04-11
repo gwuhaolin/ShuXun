@@ -61,11 +61,6 @@ angular.module('AppController', [], null)
             IonicModalView$.alertTitleAndPreModalView(title, pre);
         };
 
-        //预览图书的封面
-        $scope.previewBookImg = function () {
-            WeChatJS$.previewOneImage($scope.book.image);
-        };
-
         //加载电商联盟信息
         BusinessSite$.getBusinessInfoByISBN($scope.isbn13, function (infos) {
             $scope.businessInfos = infos;
@@ -79,6 +74,7 @@ angular.module('AppController', [], null)
         });
         UsedBook$.loadMoreAvosUsedBookEqualISBN($scope.isbn13);//先加载5个
 
+        $scope.WeChatJS$ = WeChatJS$;
     })
 
     .controller('book_BusinessSite', function ($scope, $stateParams) {
@@ -108,7 +104,8 @@ angular.module('AppController', [], null)
         })
     })
 
-    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$) {
+    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$,WeChatJS$) {
+        $scope.WeChatJS$ = WeChatJS$;
         var usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
         UsedBook$.getJsonUsedBookByAvosObjectId(usedBookAvosObjectId, function (json) {
             $scope.jsonUsedBook = json;

@@ -8,7 +8,7 @@
         <div class="list card">
             <!-- 封面-->
             <ion-item style="text-align: center">
-                <img ng-src="{{book.image}}" style="height: 180px" ng-click="previewBookImg()">
+                <img ng-src="{{book.image}}" style="height: 180px" ng-click="WeChatJS$.previewOneImage(book.image)">
             </ion-item>
             <!-- 简介-->
             <ion-item ng-if="book.summary" class="item-button-right">
