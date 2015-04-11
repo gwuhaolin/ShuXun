@@ -267,7 +267,7 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('IonicModalView$', function ($rootScope, $ionicModal) {
+    .service('IonicModalView$', function ($rootScope, $ionicModal,InfoService$) {
 
         /**
          * 为$scope注册选择学校modalView功能
@@ -275,7 +275,7 @@ angular.module('AppService', [], null)
          * @param schoolOnChooseCallback 当选中了一个学校时调用 返回选中的学校
          */
         this.registerChooseSchoolModalView = function ($scope, schoolOnChooseCallback) {
-            $scope.InfoService$ = this;
+            $scope.InfoService$ = InfoService$;
             $ionicModal.fromTemplateUrl('temp/tool/chooseSchoolModalView.html', {
                 scope: $scope
             }).then(function (modal) {
@@ -293,7 +293,7 @@ angular.module('AppService', [], null)
          * @param majorOnChooseCallback 当选中了一个专业时调用 返回选中的专业
          */
         this.registerChooseMajorModalView = function ($scope, majorOnChooseCallback) {
-            $scope.InfoService$ = this;
+            $scope.InfoService$ = InfoService$;
             //选中了专业
             $ionicModal.fromTemplateUrl('temp/tool/chooseMajorModalView.html', {
                 scope: $scope
