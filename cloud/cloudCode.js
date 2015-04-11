@@ -14,7 +14,7 @@ var WechatAPI = require('cloud/wechat.js');
 function saveWechatImageToUsedBook(serverId, bookId) {
     var query = new AV.Query('UsedBook');
     query.get(bookId).done(function (avosUsedBook) {
-        WechatAPI.getMedia(serverId, function (error, buffer) {
+        WechatAPI.APIClient.getMedia(serverId, function (error, buffer) {
             if (error || buffer.length < 100) {//去微信下载图片失败
                 setTimeout(function () {
                     saveWechatImageToUsedBook(serverId, bookId);

@@ -10,8 +10,8 @@ var WECHAT = {
     APIClient: require('wechat-api'),
     OAuthClient: require('wechat-oauth')
 };
-var APIClient = new WECHAT.APIClient(WECHAT.AppID, WECHAT.SECRET);
-var OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
+exports.APIClient = new WECHAT.APIClient(WECHAT.AppID, WECHAT.SECRET);
+exports.OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
 
 /**
  * 使用wechat js接口前必须获得这个
@@ -22,10 +22,10 @@ var OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
 exports.getJsConfig = function (url, callback) {
     //如果发布了就关闭微信调试
     var isDebug = true;
-    if(__production){
+    if (__production) {
         isDebug = false;
     }
-    APIClient.getJsConfig({
+    exports.APIClient.getJsConfig({
         debug: isDebug,
         url: url,
         //需要使用的借口列表
@@ -47,11 +47,11 @@ exports.getJsConfig = function (url, callback) {
  * 返回 已经关注了用户的微信提供的所有信息
  */
 exports.getOAuthUserInfo = function (code, callback) {
-    OAuthClient.getAccessToken(code, function (err, result) {
+    exports.OAuthClient.getAccessToken(code, function (err, result) {
         if (err) {
             callback(err);
         } else {
-            OAuthClient.getUser(result.data.openid, function (err, userInfo) {
+            exports.OAuthClient.getUser(result.data.openid, function (err, userInfo) {
                 if (err) {
                     callback(err);
                 } else {
