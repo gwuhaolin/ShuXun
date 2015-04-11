@@ -12,6 +12,7 @@
     "express": "3.4.x",
     "request": "^2.54.0",
     "underscore": "^1.8.3",
+    "wechat": "^1.2.3",
     "wechat-api": "^1.7.1",
     "wechat-oauth": "^1.0.1"
   }

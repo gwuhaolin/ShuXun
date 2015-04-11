@@ -4,14 +4,16 @@
  */
 "use strict";
 
-var WECHAT = {
+exports.Config = {
     AppID: 'wx2940a8d3ddcad5e9',
-    SECRET: '109504a5c4cac98f12c024d724fd589f',
+    Secret: '109504a5c4cac98f12c024d724fd589f',
+    Token:'IShuXun',
+    EncodingAESKey:'qiYrBOvI9Z6mhRUZ1LrztiHquQg9NAgQ4arSkgd1aH3',
     APIClient: require('wechat-api'),
     OAuthClient: require('wechat-oauth')
 };
-exports.APIClient = new WECHAT.APIClient(WECHAT.AppID, WECHAT.SECRET);
-exports.OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
+exports.APIClient = new exports.Config.APIClient(exports.Config.AppID, exports.Config.Secret);
+exports.OAuthClient = new exports.Config.OAuthClient(exports.Config.AppID, exports.Config.Secret);
 
 /**
  * 使用wechat js接口前必须获得这个

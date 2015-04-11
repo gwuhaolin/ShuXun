@@ -3,7 +3,7 @@
  * AVOS 运代码
  */
 "use strict";
-var WechatAPI = require('cloud/wechat.js');
+var WechatAPI = require('cloud/wechatAPI.js');
 
 /**
  * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile

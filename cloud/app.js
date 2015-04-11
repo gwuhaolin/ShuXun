@@ -3,7 +3,7 @@
  * express 后端服务器
  */
 var express = require('express');
-var WechatAPI = require('cloud/wechat.js');
+var WechatAPI = require('cloud/wechatAPI.js');
 var Info = require('cloud/info.js');
 var app = express();
 

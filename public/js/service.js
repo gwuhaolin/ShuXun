@@ -267,7 +267,7 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('IonicModalView$', function ($rootScope, $ionicModal,InfoService$) {
+    .service('IonicModalView$', function ($rootScope, $ionicModal, InfoService$) {
 
         /**
          * 为$scope注册选择学校modalView功能
@@ -363,10 +363,9 @@ angular.module('AppService', [], null)
 
         /**
          * 一个用户所有具有的属性名称
-         * TODO openId 换成 unionId
          * @type {string[]}
          */
-        var UserAttrNames = ['email', 'username', 'password', 'openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
+        var UserAttrNames = ['email', 'username', 'password', 'openId', 'unionId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
 
         /**
          * 用户注册 用户名=Email
