@@ -170,7 +170,7 @@ angular.module('AppController', [], null)
             });
         };
 
-        var wechatServerId;
+        var wechatServerId='1';
         $scope.uploadPicOnClick = function () {
             WeChatJS$.chooseImage(function (localId) {
                 $scope.localId = localId;
@@ -188,7 +188,7 @@ angular.module('AppController', [], null)
                 if (wechatServerId) {//如果用户上传了图书的图片到微信
                     AV.Cloud.run('saveWechatImageToUsedBook', {
                         serverId: wechatServerId,
-                        objectId: avosUsedBook.objectId
+                        objectId: avosUsedBook.id
                     }, null).done(function () {
                         alert('AVOS下载图片成功');
                     }).fail(function (error) {

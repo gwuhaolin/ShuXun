@@ -18,7 +18,7 @@ var OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
  */
 exports.getAccessToken = function (callback) {
     APIClient.getLatestTicket(function (err, token) {
-        callback(token);
+        callback(token['ticket']);
     })
 };
 
