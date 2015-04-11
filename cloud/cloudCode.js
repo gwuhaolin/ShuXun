@@ -75,3 +75,18 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
     })
 });
 
+/**
+ * 当一本二手书别卖出或者被删除时 它对应的主人上传的图片会被清除
+ */
+AV.Cloud.beforeDelete('UsedBook', function (request, response) {
+    var query = new AV.Query('UsedBook');
+    query.get(request.object.id).done(function (avosUsedBook) {
+        avosUsedBook.get('avosImageFile').destroy().done(function () {
+            response.success();
+        }).fail(function (error) {
+            response.error(error);
+        })
+    }).fail(function (error) {
+        response.error(error);
+    })
+});
