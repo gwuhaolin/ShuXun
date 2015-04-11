@@ -7,12 +7,10 @@
                 <img ng-src="{{jsonUsedBook.avosImageFile.url()}}" style="height: 180px">
             </ion-item>
             <ion-item>
-                <h3>主人描述</h3>
+                <h3>要价:{{jsonUsedBook.price}}</h3>
+                <h4>{{jsonUsedBook.updatedAt | date:'mediumDate' }}</h4>
 
                 <p style="white-space: pre-wrap">{{jsonUsedBook.des}}</p>
-            </ion-item>
-            <ion-item>
-                要价:{{jsonUsedBook.price}}
             </ion-item>
         </div>
 

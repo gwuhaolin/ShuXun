@@ -7,8 +7,8 @@
                       ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:avosUsedBook.id})">
                 <img ng-src="{{avosUsedBook.get('avosImageFile').url()}}">
 
-                <p>要价:{{avosUsedBook.get('price')}}</p>
-
+                <h3>要价:{{avosUsedBook.get('price')}}</h3>
+                <h4>{{avosUsedBook.updatedAt | date:'mediumDate' }}</h4>
                 <p>描述:{{avosUsedBook.get('des')}}</p>
             </ion-item>
         </ion-list>

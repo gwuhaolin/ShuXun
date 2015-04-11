@@ -267,26 +267,7 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('IonicModalView$', function ($rootScope, $ionicModal, User$) {
-
-        /**
-         * 弹出详细文本信息
-         * @param title 标题
-         * @param pre 要放在pre里显示的内容
-         */
-        this.alertTitleAndPreModalView = function (title, pre) {
-            var $scope = $rootScope.$new(true);
-            $scope.titleAndPreModalViewData = {
-                title: title,
-                pre: pre
-            };
-            $ionicModal.fromTemplateUrl('temp/tool/titleAndPreModalView.html', {
-                scope: $scope
-            }).then(function (modal) {
-                $scope.titleAndPreModalView = modal;
-                modal.show();
-            });
-        };
+    .service('IonicModalView$', function ($rootScope, $ionicModal) {
 
         /**
          * 为$scope注册选择学校modalView功能
@@ -326,11 +307,31 @@ angular.module('AppService', [], null)
         };
 
         /**
+         * 弹出详细文本信息
+         * @param title 标题
+         * @param pre 要放在pre里显示的内容
+         */
+        this.alertTitleAndPreModalView = function (title, pre) {
+            var $scope = $rootScope.$new(true);
+            $scope.titleAndPreModalViewData = {
+                title: title,
+                pre: pre
+            };
+            $ionicModal.fromTemplateUrl('temp/tool/titleAndPreModalView.html', {
+                scope: $scope
+            }).then(function (modal) {
+                $scope.titleAndPreModalView = modal;
+                modal.show();
+            });
+        };
+
+        /**
          * 提示用户登入
          * @param title 显示给用户的提示信息
          * @param onSuccess 当登入成功时调用 返回 AVOSUser
          */
         this.alertUserLoginModalView = function (title, onSuccess) {
+            var $scope = $rootScope.$new(true);
             $ionicModal.fromTemplateUrl('temp/tool/userLoginModalView.html', {
                 scope: $scope
             }).then(function (modal) {
@@ -339,7 +340,7 @@ angular.module('AppService', [], null)
             });
             $scope.title = title;
             $scope.loginInfo = {
-                email: User$.getCurrentJsonUser() == null ? '' : User$.getCurrentJsonUser().email,
+                email: AV.User.current() == null ? '' : AV.User.current().getCurrentJsonUser().email,
                 password: ''
             };
             $scope.submitOnClick = function () {
@@ -357,7 +358,7 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('User$', function () {
+    .service('User$', function (IonicModalView$) {
         var that = this;
 
         /**
@@ -422,10 +423,20 @@ angular.module('AppService', [], null)
             return user;
         };
 
+        /**
+         * 检测用户是否已经登录了,没有的话提示用户登录
+         * @param onSuccess 当用户登录成功时
+         */
+        this.checkUsedHasLogin = function (onSuccess) {
+            if (!that.getCurrentAvosUser()) {
+                IonicModalView$.alertUserLoginModalView('你还没有登录', onSuccess);
+            }
+        }
+
     })
 
     //还没有卖出的二手书
-    .service('UsedBook$', function ($rootScope, User$, HasSellUsedBook$) {
+    .service('UsedBook$', function ($rootScope, HasSellUsedBook$) {
         var that = this;
         var UsedBookAttrNames = ['owner', 'isbn13', 'avosImageFile', 'price', 'des'];
 
@@ -443,6 +454,7 @@ angular.module('AppService', [], null)
         this.getUsedBookNumberForOwner = function (avosUser) {
             var query = new AV.Query('UsedBook');
             query.equalTo("owner", avosUser);
+            query.descending("updatedAt");
             return query.count();
         };
 
@@ -454,6 +466,7 @@ angular.module('AppService', [], null)
         this.loadUsedBookListForOwner = function (avosUser) {
             var query = new AV.Query('UsedBook');
             query.equalTo('owner', avosUser);
+            query.descending("updatedAt");
             return query.find();
         };
 
@@ -468,7 +481,8 @@ angular.module('AppService', [], null)
         this.loadMyAvosUsedBookList = function () {
             that.isLoading = true;
             var query = new AV.Query('UsedBook');
-            query.equalTo('owner', User$.getCurrentAvosUser());
+            query.equalTo('owner', AV.User.current());
+            query.descending("updatedAt");
             query.find().done(function (avosUsedBooks) {
                 that.myAvosUsedBookList = avosUsedBooks;
             }).always(function () {
@@ -518,6 +532,7 @@ angular.module('AppService', [], null)
                 json[attrName] = avosUsedBook.get(attrName);
             }
             json.objectId = avosUsedBook.id;
+            json.updatedAt = avosUsedBook.updatedAt;
             return json;
         };
 
@@ -577,6 +592,7 @@ angular.module('AppService', [], null)
             }
             var query = new AV.Query('UsedBook');
             query.equalTo("isbn13", nowISBN13);
+            query.descending("updatedAt");
             query.skip(that.nowEqualISBNAvosUsedBookList.length);
             query.limit(5);
             query.find().done(function (avosUsedBooks) {
@@ -590,7 +606,7 @@ angular.module('AppService', [], null)
     })
 
     //已经卖出的二手书
-    .service('HasSellUsedBook$', function ($rootScope, User$) {
+    .service('HasSellUsedBook$', function ($rootScope) {
         var that = this;
         /**
          * 所有我上传的还已经卖出的二手书
@@ -603,7 +619,7 @@ angular.module('AppService', [], null)
          */
         this.loadMyAvosUsedBookList = function () {
             var query = new AV.Query('HasSellUsedBook');
-            query.equalTo('owner', User$.getCurrentAvosUser());
+            query.equalTo('owner', AV.User.current());
             query.find().done(function (avosUsedBooks) {
                 that.myAvosUsedBookList = avosUsedBooks;
             }).always(function () {

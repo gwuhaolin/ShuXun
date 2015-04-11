@@ -94,7 +94,6 @@ angular.module('AppController', [], null)
         });
         $scope.loadMore = function () {
             UsedBook$.loadMoreAvosUsedBookEqualISBN(isbn13);
-            $scope.$apply();
         }
     })
 
@@ -124,6 +123,8 @@ angular.module('AppController', [], null)
             });
         })
     })
+
+    ////////////////// person ////////////////////
 
     .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
         $scope.isLoading = false;
@@ -285,7 +286,11 @@ angular.module('AppController', [], null)
         $scope.userInfo = User$.getCurrentJsonUser();
     })
 
-    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$) {
+    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$, User$) {
+        User$.checkUsedHasLogin(function () {
+            UsedBook$.loadMyAvosUsedBookList();
+            HasSellUsedBook$.loadMyAvosUsedBookList();
+        });
         //还没有卖出
         $scope.UsedBook$ = UsedBook$;
         UsedBook$.loadMyAvosUsedBookList();

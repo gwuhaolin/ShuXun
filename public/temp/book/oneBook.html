@@ -66,6 +66,8 @@
 
                 <h2>要价:{{oneAvosUsedBook.get('price')}}</h2>
 
+                <h4>{{oneAvosUsedBook.updatedAt | date:'mediumDate' }}</h4>
+
                 <p>{{oneAvosUsedBook.get('des')}}</p>
             </ion-item>
             <ion-item ng-if="UsedBook$.nowEqualISBNAvosUsedBookList.length<usedBookNumber"
