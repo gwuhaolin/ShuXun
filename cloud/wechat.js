@@ -5,8 +5,8 @@
 "use strict";
 
 var WECHAT = {
-    AppID: 'wx9e79ee1bb4a12663',
-    SECRET: '9b93032bd66454f92aa24d24f983020b',
+    AppID: 'wx2940a8d3ddcad5e9',
+    SECRET: '109504a5c4cac98f12c024d724fd589f',
     APIClient: require('wechat-api'),
     OAuthClient: require('wechat-oauth')
 };

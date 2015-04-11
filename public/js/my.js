@@ -28,5 +28,5 @@ AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08z
 
 //微信公共平台
 var WECHAT = {
-    AppID: 'wx9e79ee1bb4a12663'
+    AppID: 'wx2940a8d3ddcad5e9'
 };

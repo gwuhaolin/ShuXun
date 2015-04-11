@@ -363,6 +363,7 @@ angular.module('AppService', [], null)
 
         /**
          * 一个用户所有具有的属性名称
+         * TODO openId 换成 unionId
          * @type {string[]}
          */
         var UserAttrNames = ['email', 'username', 'password', 'openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
