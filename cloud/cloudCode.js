@@ -15,7 +15,6 @@ var WechatAPI = require('cloud/wechat.js');
 AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
     var wechatServerId = request.params['serverId'];
     var usedBookAvosObjId = request.params['objectId'];
-    console.log(wechatServerId + ' ' + usedBookAvosObjId);
     if (wechatServerId == null || usedBookAvosObjId == null) {
         response.error('参数不合法');
         return;
@@ -23,7 +22,7 @@ AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
     WechatAPI.getAccessToken(function (accessToken) {
         var query = new AV.Query('UsedBook');
         query.get(usedBookAvosObjId).done(function (avosUsedBook) {
-            var wechatUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + accessToken + '&media_id=' + wechatServerId;
+            var wechatUrl = 'https://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + accessToken + '&media_id=' + wechatServerId;
             var file = AV.File.withURL('UsedBook.png', wechatUrl, null, null);
             file.save().done(function (avosFile) {
                 avosUsedBook.set('avosImageFile', avosFile);
