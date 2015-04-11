@@ -27,7 +27,7 @@ function saveWechatImageToUsedBook(serverId, bookId) {
                         saveWechatImageToUsedBook(serverId, bookId);
                     }, 1000 * 60 * 60);//一小时后重新去下载
                 } else {
-                    var file = AV.File('UsedBook.png', body, null);
+                    var file = new AV.File('UsedBook.png', body, null);
                     file.save().done(function (avosFile) {
                         avosUsedBook.save({
                             'avosImageFile': avosFile

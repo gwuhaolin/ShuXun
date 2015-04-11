@@ -28,6 +28,7 @@
                         ng-click="UsedBook$.usedBookHasSell(oneAvosUsedBook)">已卖
                 </button>
             </ion-item>
+            <ion-item ng-if="UsedBook$.myAvosUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>
 
             <ion-item class="item-divider item-button-right">已经卖出</ion-item>
             <ion-item ng-repeat="oneAvosUsedBook in HasSellUsedBook$.myAvosUsedBookList" class="item-avatar">
@@ -37,6 +38,7 @@
                         ng-click="HasSellUsedBook$.removeUsedBook(oneAvosUsedBook)">删除
                 </button>
             </ion-item>
+            <ion-item ng-if="HasSellUsedBook$.myAvosUsedBookList.length==0">你还没有已经卖出的书,点击 已卖</ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
