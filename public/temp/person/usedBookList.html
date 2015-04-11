@@ -13,7 +13,8 @@
                 </button>
             </ion-item>
             <ion-item ng-repeat="oneAvosUsedBook in UsedBook$.myAvosUsedBookList" class="item-thumbnail-left">
-                <img ng-if="oneAvosUsedBook['avosImageFile']" ng-src="oneAvosUsedBook['avosImageFile'].url()">
+                <img ng-if="oneAvosUsedBook.get('avosImageFile')"
+                     ng-src="{{oneAvosUsedBook.get('avosImageFile').thumbnailURL(100, 100)}}">
 
                 <p ng-if="oneAvosUsedBook.get('price')">要价:{{oneAvosUsedBook.get('price')}}</p>
 

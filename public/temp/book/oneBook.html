@@ -62,7 +62,7 @@
             <ion-item ng-if="UsedBook$.nowEqualISBNAvosUsedBookList.length>0" class="item-thumbnail-left"
                       ng-repeat="oneAvosUsedBook in UsedBook$.nowEqualISBNAvosUsedBookList"
                       ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneAvosUsedBook.id})">
-                <img ng-src="{{oneAvosUsedBook.get('avosImageFile').url()}}">
+                <img ng-src="{{oneAvosUsedBook.get('avosImageFile').thumbnailURL(100, 100)}}">
 
                 <h2>要价:{{oneAvosUsedBook.get('price')}}</h2>
 

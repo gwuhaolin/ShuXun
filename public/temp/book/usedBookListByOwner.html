@@ -5,7 +5,7 @@
             <ion-item class="item-thumbnail-left"
                       ng-repeat="avosUsedBook in avosUsedBookList"
                       ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:avosUsedBook.id})">
-                <img ng-src="{{avosUsedBook.get('avosImageFile').url()}}">
+                <img ng-src="{{avosUsedBook.get('avosImageFile').thumbnailURL(100, 100)}}">
 
                 <h3>要价:{{avosUsedBook.get('price')}}</h3>
                 <h4>{{avosUsedBook.updatedAt | date:'mediumDate' }}</h4>
