@@ -4,6 +4,7 @@
  */
 var express = require('express');
 var WechatAPI = require('cloud/wechatAPI.js');
+var WechatMsg = require('cloud/wechatMsg.js');
 var Info = require('cloud/info.js');
 var app = express();
 
@@ -29,6 +30,11 @@ app.get('/wechat/getOAuthUserInfo/:code', function (req, res) {
         res.jsonp(userInfo);
     })
 });
+
+/**
+ * 微信消息服务
+ */
+app.use('/wechat/msg', WechatMsg.MsgHandler);
 
 
 ////////////////////// Info /////////////////////////

@@ -3,11 +3,15 @@
  *
  */
 "use strict";
+var Wechat = require('wechat');
 var WechatAPI = require('cloud/wechatAPI.js');
-var express = require('express');
-var app = express();
+var config = {
+    token: WechatAPI.Config.Token,
+    appid: WechatAPI.Config.AppID,
+    encodingAESKey: WechatAPI.Config.EncodingAESKey
+};
 
-app.use('/wechat/msg', wechat(WechatAPI.Config.Token)
+exports.MsgHandler = Wechat(config)
     .text(function (message, req, res, next) {
     }).image(function (message, req, res, next) {
     }).voice(function (message, req, res, next) {
@@ -23,7 +27,7 @@ app.use('/wechat/msg', wechat(WechatAPI.Config.Token)
                 saveLocationToUser(openId, lat, lon);
                 break;
         }
-    }).middlewarify());
+    }).middlewarify();
 
 /**
  * 把用户上报的地理位置记录到AVOS
