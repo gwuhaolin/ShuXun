@@ -14,15 +14,6 @@ var APIClient = new WECHAT.APIClient(WECHAT.AppID, WECHAT.SECRET);
 var OAuthClient = new WECHAT.OAuthClient(WECHAT.AppID, WECHAT.SECRET);
 
 /**
- * 获得微信AccessToken
- */
-exports.getAccessToken = function (callback) {
-    APIClient.getLatestTicket(function (err, token) {
-        callback(token['ticket']);
-    })
-};
-
-/**
  * 使用wechat js接口前必须获得这个
  * 返回 wechat js sdk所有需要的config
  * @param url 微信浏览器当前打开的网页的URL

@@ -170,7 +170,7 @@ angular.module('AppController', [], null)
             });
         };
 
-        var wechatServerId='QUNglGOP9kVLa2u-i0scKbY4KZR9Eppyl0ZA_bQXpHQ1mu4QsNSyeVx5hPJAG3t9';
+        var wechatServerId='';
         $scope.uploadPicOnClick = function () {
             WeChatJS$.chooseImage(function (localId) {
                 $scope.localId = localId;

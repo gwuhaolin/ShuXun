@@ -4,7 +4,6 @@
  */
 "use strict";
 var WechatAPI = require('cloud/wechat.js');
-var Request = require('request');
 
 /**
  * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
@@ -13,30 +12,23 @@ var Request = require('request');
  * 如果 去微信下载图片失败 会一小时后重新去下载
  */
 function saveWechatImageToUsedBook(serverId, bookId) {
-    WechatAPI.getAccessToken(function (accessToken) {
-        var query = new AV.Query('UsedBook');
-        query.get(bookId).done(function (avosUsedBook) {
-            var wechatUrl = 'https://file.api.weixin.qq.com/cgi-bin/media/get?access_token=' + accessToken + '&media_id=' + serverId;
-            Request({
-                method: 'GET',
-                url: wechatUrl,
-                encoding: null
-            }, function (error, response, body) {
-                if (error) {//去微信下载图片失败
-                    setTimeout(function () {
-                        saveWechatImageToUsedBook(serverId, bookId);
-                    }, 1000 * 60 * 60);//一小时后重新去下载
-                } else {
-                    var file = new AV.File('UsedBook.png', body, null);
-                    file.save().done(function (avosFile) {
-                        avosUsedBook.save({
-                            'avosImageFile': avosFile
-                        })
+    var query = new AV.Query('UsedBook');
+    query.get(bookId).done(function (avosUsedBook) {
+        WechatAPI.getMedia(serverId, function (error, buffer) {
+            if (error || buffer.length < 100) {//去微信下载图片失败
+                setTimeout(function () {
+                    saveWechatImageToUsedBook(serverId, bookId);
+                }, 1000 * 60 * 60);//一小时后重新去下载
+            } else {
+                var file = new AV.File('UsedBook', buffer, 'png');
+                file.save().done(function (avosFile) {
+                    avosUsedBook.save({
+                        'avosImageFile': avosFile
                     })
-                }
-            });
-        })
-    });
+                })
+            }
+        });
+    })
 }
 
 /**
