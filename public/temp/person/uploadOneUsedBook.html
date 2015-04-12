@@ -16,7 +16,8 @@
         <div class="list card" ng-if="usedBookInfo.isbn13">
             <!-- 封面-->
             <ion-item style="text-align: center">
-                <img ng-src="{{doubanBookInfo.image}}" style="height: 180px" ng-click="previewBookImg()">
+                <img ng-src="{{doubanBookInfo.image}}" style="height: 180px"
+                     ng-click="WeChatJS$.previewOneImage(doubanBookInfo.image)">
             </ion-item>
             <ion-item>
                 <p>
@@ -58,8 +59,9 @@
         <ion-modal-view>
             <ion-header-bar>
                 <h2 class="title">书没条码时上传方法</h2>
-                <button class="button button-clear"
-                        ng-click="noBarCodeModalView.hide()">返回</button>
+                <button class="button button-clear button-balanced"
+                        ng-click="noBarCodeModalView.hide()">返回
+                </button>
             </ion-header-bar>
             <ion-content class="padding" style="text-align: center">
                 <img style="max-width: 98%" ng-src="img/noCodeBar.png">

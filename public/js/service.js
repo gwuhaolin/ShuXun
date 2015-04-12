@@ -267,7 +267,7 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('IonicModalView$', function ($rootScope, $ionicModal, InfoService$) {
+    .service('IonicModalView$', function ($rootScope, $ionicModal, InfoService$, WeChatJS$) {
 
         /**
          * 为$scope注册选择学校modalView功能
@@ -332,6 +332,7 @@ angular.module('AppService', [], null)
          */
         this.alertUserLoginModalView = function (title, onSuccess) {
             var $scope = $rootScope.$new(true);
+            $scope.WeChatJS$ = WeChatJS$;
             $ionicModal.fromTemplateUrl('temp/tool/userLoginModalView.html', {
                 scope: $scope
             }).then(function (modal) {

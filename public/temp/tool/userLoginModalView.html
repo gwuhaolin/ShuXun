@@ -6,7 +6,7 @@
         </button>
         <h2 class="title">{{title}}</h2>
     </ion-header-bar>
-    <ion-content class="padding has-header">
+    <ion-content class="padding has-header" style="text-align: center">
         <!-- 填写邮箱和密码-->
         <div class="list list-inset">
             <label class="item item-input">
@@ -23,11 +23,13 @@
             登入书循
         </button>
 
+        <hr style="margin: 30px">
         <!-- 加入书循-->
-        <button class="button button-block button-clear button-balanced" ui-sref="tab.person_hello"
+        <p>没有账号?</p>
+        <a class="button button-outline button-balanced" ng-href="{{WeChatJS$.getOAuthURL()}}"
                 ng-click="userLoginModalView.hide()">
-            没有账号?
-        </button>
+            加入书循
+        </a>
 
     </ion-content>
 </ion-modal-view>

@@ -271,10 +271,6 @@ angular.module('AppController', [], null)
         }
     })
 
-    .controller('person_hello', function ($scope, WeChatJS$) {
-        $scope.WeChatJS$ = WeChatJS$;
-    })
-
     .controller('person_my', function ($scope, User$) {
         $scope.userInfo = User$.getCurrentJsonUser();
     })

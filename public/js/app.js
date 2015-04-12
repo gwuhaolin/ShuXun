@@ -100,13 +100,6 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                         templateUrl: 'temp/person/editPersonInfo.html'
                     }
                 }
-            }).state('tab.person_hello', {
-                url: '/person/hello',
-                views: {
-                    'tab-person': {
-                        templateUrl: 'temp/person/hello.html'
-                    }
-                }
             }).state('tab.person_my', {
                 url: '/person/my',
                 views: {
