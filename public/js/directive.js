@@ -53,7 +53,21 @@ angular.module('AppDirective', [], null)
                 jsonUserInfo: '=',
                 userUsedBookNumber: '='
             },
-            templateUrl: 'temp/tool/userInfo.html'
+            templateUrl: 'temp/tool/userInfoTemplate.html'
+        }
+    })
+
+/**
+ * 三本书排成一行
+ */
+    .directive('threeBookOneLine', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                //三本图书的信息
+                jsonBooksInfo: '='
+            },
+            templateUrl: 'temp/tool/threeBookOneLineTemplate.html'
         }
     });
 

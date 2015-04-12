@@ -5,6 +5,16 @@
 "use strict";
 angular.module('AppController', [], null)
 
+    //图书推荐
+    .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) {
+        $scope.BookRecommend$ = BookRecommend$;
+        $ionicModal.fromTemplateUrl('template/bookTags.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.bookTagsModalView = modal;
+        });
+    })
+
     //图书搜索
     .controller('book_searchList', function ($scope, $timeout, $state, SearchBook$, WeChatJS$) {
         $scope.SearchBook$ = SearchBook$;
@@ -17,6 +27,31 @@ angular.module('AppController', [], null)
                     alert('不合法的ISBN号');
                 }
             });
+        }
+    })
+
+    //图书列表
+    .controller('book_bookList', function ($scope, $stateParams, BookRecommend$) {
+        $scope.title = $stateParams['title'];
+        var cmd = $stateParams['cmd'];
+        if (cmd == 'tag') {
+            var tag = $stateParams['tag'];
+            BookRecommend$.TagBook.setTag(tag);
+            BookRecommend$.TagBook.loadMore();
+            $scope.title = tag;
+            $scope.books = BookRecommend$.TagBook.books;
+            $scope.loadMore = BookRecommend$.TagBook.loadMore;
+            $scope.hasMore = BookRecommend$.TagBook.hasMore;
+        } else if (cmd == 'new') {
+            $scope.books = BookRecommend$.NewBook.books;
+            $scope.loadMore = BookRecommend$.NewBook.loadMore;
+        } else if (cmd == 'need') {
+            $scope.books = BookRecommend$.NeedBook.books;
+            $scope.loadMore = BookRecommend$.NeedBook.loadMore;
+        } else if (cmd == 'major') {
+            $scope.books = BookRecommend$.MajorBook.books;
+            $scope.loadMore = BookRecommend$.MajorBook.loadMore;
+            $scope.title = BookRecommend$.MajorBook.major;
         }
     })
 
@@ -125,7 +160,7 @@ angular.module('AppController', [], null)
 
     ////////////////// person ////////////////////
 
-    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$, IonicModalView$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$, IonicModalView$) {
         $scope.isLoading = false;
 
         $scope.usedBookInfo = {
@@ -191,6 +226,7 @@ angular.module('AppController', [], null)
                     }, null);
                 }
                 $state.go('tab.person_usedBooksList');
+                $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
             }).always(function () {
@@ -200,7 +236,7 @@ angular.module('AppController', [], null)
 
     })
 
-    .controller('person_signUp', function ($scope, $timeout, $stateParams, $ionicModal, WeChatJS$, InfoService$, User$, IonicModalView$) {
+    .controller('person_signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, IonicModalView$) {
         //是否正在加载中..
         $scope.isLoading = true;
         //调用微信接口获取用户信息
@@ -223,8 +259,9 @@ angular.module('AppController', [], null)
         //点击注册时
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
-            User$.signUpWithJSONUser($scope.userInfo).done(function (avosUser) {
-                alert(JSON.stringify(User$.avosUserToJson(avosUser)));
+            User$.signUpWithJSONUser($scope.userInfo).done(function () {
+                $state.go('tab.person_my');
+                $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
             }).always(function () {
@@ -273,8 +310,12 @@ angular.module('AppController', [], null)
         }
     })
 
-    .controller('person_my', function ($scope, User$) {
+    .controller('person_my', function ($scope, User$, UsedBook$) {
         $scope.userInfo = User$.getCurrentJsonUser();
+        UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser()).done(function (number) {
+            $scope.myUsedBookNumber = number;
+            $scope.$apply();
+        });
     })
 
     .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$, User$) {

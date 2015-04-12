@@ -4,7 +4,7 @@
  */
 "use strict";
 
-angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', 'DoubanBook'], null)
+angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective'], null)
 
     .config(function ($stateProvider, $urlRouterProvider) {
         ionic.Platform.setPlatform('ios');
@@ -26,6 +26,13 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/searchList.html'
+                    }
+                }
+            }).state('tab.book_bookList', {
+                url: '/book/bookList?cmd&title&tag',
+                views: {
+                    'tab-book': {
+                        templateUrl: 'temp/book/bookList.html'
                     }
                 }
             }).state('tab.book_oneBook', {

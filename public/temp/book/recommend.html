@@ -1,17 +1,67 @@
-<!--TODO 待实现-->
-<ion-view title="推荐">
+<ion-view ng-controller="book_recommend" title="书循">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
     <ion-content>
-        <button class="button" ui-sref="tab.book_searchList">tab.book_searchList</button>
-        <button class="button" ui-sref="tab.book_oneBook">tab.book_oneBook</button>
-        <button class="button" ui-sref="tab.book_usedBookListByISBN">tab.book_usedBookListByISBN</button>
-        <button class="button" ui-sref="tab.book_businessSite">tab.book_businessSite</button>
-        <button class="button" ui-sref="tab.book_oneUsedBook">tab.book_oneUsedBook</button>
-        <button class="button" ui-sref="tab.person_editOneUsedBook">tab.person_editOneUsedBook</button>
-        <button class="button" ui-sref="tab.person_uploadOneUsedBook">tab.person_uploadOneUsedBook'</button>
-        <button class="button" ui-sref="tab.person_usedBooksList">tab.person_usedBooksList</button>
-        <button class="button" ui-sref="tab.person_signUp">tab.person_signUp</button>
-        <button class="button" ui-sref="tab.person_editPersonInfo">tab.person_editPersonInfo</button>
-        <button class="button" ui-sref="tab.person_hello">关于书循</button>
-        <button class="button" ui-sref="tab.person_my">我的书循</button>
+        <!-- 图书分类-->
+        <div ng-if="BookRecommend$.tags.length>0">
+            <ion-item class="item-divider item-button-right">图书分类
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ng-click="bookTagsModalView.show()">更多
+                </button>
+            </ion-item>
+            <ion-item style="white-space:normal">
+                <button class="button button-small button-outline button-balanced" style="margin: 5px"
+                        ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
+                        ng-repeat="tag in BookRecommend$.tags.slice(0,5)">{{tag}}
+                </button>
+            </ion-item>
+        </div>
+        <!-- 新书速递-->
+        <div ng-if="BookRecommend$.NewBook.books.length>0">
+            <ion-item class="item-divider item-button-right">新书速递
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'new'})">更多
+                </button>
+            </ion-item>
+            <three-book-one-line json-books-info="BookRecommend$.NewBook.books"></three-book-one-line>
+        </div>
+        <!-- 根据专业推荐的书-->
+        <div ng-if="BookRecommend$.MajorBook.books.length>0">
+            <ion-item class="item-divider item-button-right">{{BookRecommend$.MajorBook.major}}
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'major'})">更多
+                </button>
+            </ion-item>
+            <three-book-one-line json-books-info="BookRecommend$.MajorBook.books"></three-book-one-line>
+        </div>
+        <!-- 用户下学期需要的书-->
+        <div ng-if="BookRecommend$.NeedBook.books.length>0">
+            <ion-item class="item-divider item-button-right">你可能需要
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'need'})">更多
+                </button>
+            </ion-item>
+            <three-book-one-line json-books-info="BookRecommend$.NeedBook.books"></three-book-one-line>
+        </div>
     </ion-content>
+
+    <!-- 图书所有分类-->
+    <script type="text/ng-template" id="template/bookTags.html">
+        <ion-modal-view>
+            <ion-header-bar class="item-input-inset">
+                <button class="button button-clear button-balanced"
+                        ng-click="bookTagsModalView.hide()">返回
+                </button>
+            </ion-header-bar>
+            <ion-content class="has-header">
+                <ion-list>
+                    <ion-item ng-repeat="tag in BookRecommend$.tags" ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
+                              ng-click="bookTagsModalView.hide()">
+                        {{tag}}
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-modal-view>
+    </script>
 </ion-view>

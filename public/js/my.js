@@ -13,11 +13,12 @@
 function jsonp(url, callback) {
     var script = document.createElement('script');
     script.type = "text/javascript";
-    script.src = url + (url.indexOf('?') > 0 ? '&' : '?') + 'callback=CB&' + Date.now();
+    var random = Date.now();
+    script.src = url + (url.indexOf('?') > 0 ? '&' : '?') + 'callback=CB' + random;
     script.onload = function () {
         script.parentNode.removeChild(script);
     };
-    window['CB'] = function (json) {
+    window['CB'+random] = function (json) {
         callback(json);
     };
     document.head.appendChild(script);

@@ -4,6 +4,78 @@
  */
 "use strict";
 angular.module('AppService', [], null)
+/**
+ * 豆瓣图书接口
+ */
+    .service('DoubanBook$', function () {
+
+        var baseUri = 'http://api.douban.com/v2/book';
+        /**
+         * 用书的ISBN号码获得书的信息
+         * @param bookISBN 书的ISBN号码
+         * @param callback
+         */
+        this.getBookByISBD = function (bookISBN, callback) {
+            var url = baseUri + '/isbn/' + bookISBN;
+            url += '?fields=rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+            jsonp(url, callback);
+        };
+        this.getBookByISBD_simple = function (bookISBN, callback) {
+            var url = baseUri + '/isbn/' + bookISBN;
+            url += '?fields=author,pubdate,image,publisher,title,price,isbn13';
+            jsonp(url, callback);
+        };
+        /**
+         * 搜索图书
+         * @param keyword 查询关键字 keyword和tag必传其一
+         * @param start 取结果的offset 默认为0
+         * @param count 取结果的条数 默认为20，最大为100
+         * @param callback [json]
+         */
+        this.searchBooks = function (keyword, start, count, callback) {
+            var url = baseUri + '/search';
+            if (keyword && keyword.length < 1) {
+                return [];
+            }
+            url += '?q=' + keyword;
+            if (start) {
+                url += '&start=' + start;
+            }
+            if (count) {
+                url += '&count=' + count;
+            }
+            url += '&fields=isbn13,title,image,author,publisher,pubdate,price';
+            jsonp(url, function (json) {
+                callback(json);
+            });
+        };
+
+        /**
+         * 获得分类对应的图书
+         * @param tag 一个类别图书
+         * @param start 取结果的offset 默认为0
+         * @param count 取结果的条数 默认为20，最大为100
+         * @param callback
+         * @returns [json]
+         */
+        this.getBooksByTag = function (tag, start, count, callback) {
+            var url = baseUri + '/search';
+            if (tag && tag.length < 1) {
+                return [];
+            }
+            url += '?tag=' + tag;
+            if (start) {
+                url += '&start=' + start;
+            }
+            if (count) {
+                url += '&count=' + count;
+            }
+            url += '&fields=isbn13,title,image,author,publisher,pubdate,price';
+            jsonp(url, function (json) {
+                callback(json);
+            });
+        };
+    })
 
 /**
  * 图书搜索,调用豆瓣接口
@@ -25,7 +97,7 @@ angular.module('AppService', [], null)
          * @type {boolean}
          */
         this.hasMore = function () {
-            return this.books.length < this.totalNum;
+            return that.books.length < that.totalNum;
         };
         /**
          * 该关键字一共检索到的书的数量
@@ -71,6 +143,113 @@ angular.module('AppService', [], null)
                 that.searchBtnOnClick();
             }, 1000);
         };
+    })
+
+/**
+ * 图书推荐
+ */
+    .service('BookRecommend$', function (DoubanBook$, User$, $rootScope) {
+        var that = this;
+
+        /**
+         * 所有图书分类
+         * @type {Array}
+         */
+        this.tags = [];
+        //TODO 待实现 加载所有图书分类
+        {
+            that.tags = ['数学', '计算机', '文学', '考研','金融','编程','心理学'];
+        }
+
+        /**
+         * 分类浏览
+         * @type {{books: Array, loadMore: Function}}
+         */
+        this.TagBook = {
+            /**
+             * 当前搜索的图书分类
+             */
+            nowTag: '',
+            /**
+             * 该关键字一共检索到的书的数量
+             */
+            totalNum: 0,
+            setTag: function (tag) {
+                if (tag != that.TagBook.nowTag) {
+                    that.TagBook.books = [];
+                    that.TagBook.nowTag = tag;
+                }
+            },
+            books: [],
+            loadMore: function () {
+                DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, 5, function (json) {
+                    that.TagBook.totalNum = json['total'];
+                    var booksJSON = json['books'];
+                    for (var i = 0; i < booksJSON.length; i++) {
+                        that.TagBook.books.push(booksJSON[i]);
+                    }
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                })
+            },
+            hasMore: function () {
+                return that.TagBook.books.length < that.TagBook.totalNum;
+            }
+        };
+
+        /**
+         * TODO 待实现
+         * 新书速递
+         * @type {{books: Array, loadMore: Function}}
+         */
+        this.NewBook = {
+            books: [],
+            loadMore: function () {
+
+            },
+            hasMore: function () {
+
+            }
+        };
+
+        /**
+         * 专业相关图书
+         * @type {{books: Array, loadMore: Function}}
+         */
+        this.MajorBook = {
+            major: User$.getCurrentJsonUser().major,
+            books: [],
+            loadMore: function () {
+                DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length, 5, function (json) {
+                    that.MajorBook.totalNum = json['total'];
+                    var booksJSON = json['books'];
+                    for (var i = 0; i < booksJSON.length; i++) {
+                        that.MajorBook.books.push(booksJSON[i]);
+                    }
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                })
+            },
+            hasMore: function () {
+                return that.MajorBook.books.length < that.MajorBook.totalNum;
+            }
+        };
+        that.MajorBook.loadMore();
+
+        /**
+         * TODO 待实现
+         * 你可能需要的图书
+         * @type {{books: Array, loadMore: Function}}
+         */
+        this.NeedBook = {
+            books: [],
+            loadMore: function () {
+
+            },
+            hasMore: function () {
+
+            }
+        }
     })
 
     .service('BusinessSite$', function () {

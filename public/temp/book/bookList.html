@@ -1,0 +1,27 @@
+<!--图书列表-->
+<ion-view ng-controller="book_bookList" title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-list>
+            <!-- 搜索结果列表-->
+            <ion-item class="item-thumbnail-left" collection-repeat="book in books"
+                      ui-sref="tab.book_oneBook({isbn13:book.isbn13})">
+                <img ng-src="{{book.image}}">
+
+                <h2>{{book.title}}</h2>
+
+                <p ng-if="book['publisher']">{{book['publisher']}}/{{book['pubdate']}}</p>
+
+                <p ng-if="book.author">{{book.author.toString()}}</p>
+
+                <p ng-if="book.price">{{book.price}}</p>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll ng-if="hasMore()"
+                             on-infinite="loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>
