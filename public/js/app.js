@@ -36,14 +36,14 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective', '
                     }
                 }
             }).state('tab.book_usedBookListByISBN', {
-                url: '/book/usedBookList/{isbn13}',
+                url: '/book/usedBookListByISBN/{isbn13}',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/usedBookListByISBN.html'
                     }
                 }
             }).state('tab.book_usedBookListByOwner', {
-                url: '/book/usedBookList/{ownerId}',
+                url: '/book/usedBookListByOwner/{ownerId}',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/usedBookListByOwner.html'

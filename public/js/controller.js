@@ -93,18 +93,20 @@ angular.module('AppController', [], null)
         }
     })
 
-    .controller('book_usedBookListByOwner', function ($scope, $stateParams, UsedBook$) {
-        var ownerId = $stateParams.ownerId;
-        var avosOwner = new AV.User();
-        avosOwner.id = ownerId;
+    .controller('book_usedBookListByOwner', function ($scope, $stateParams, UsedBook$, User$) {
         $scope.UsedBook$ = UsedBook$;
-        UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
-            $scope.avosUsedBookList = avosUsedBooks;
-            $scope.$apply();
-        })
+        var ownerId = $stateParams.ownerId;
+        var query = new AV.Query(AV.User);
+        query.get(ownerId).done(function (avosOwner) {
+            $scope.jsonOwnerInfo = User$.avosUserToJson(avosOwner);
+            UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
+                $scope.avosUsedBookList = avosUsedBooks;
+                $scope.$apply();
+            })
+        });
     })
 
-    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$,WeChatJS$) {
+    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$) {
         $scope.WeChatJS$ = WeChatJS$;
         var usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
         UsedBook$.getJsonUsedBookByAvosObjectId(usedBookAvosObjectId, function (json) {
@@ -123,7 +125,7 @@ angular.module('AppController', [], null)
 
     ////////////////// person ////////////////////
 
-    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$,IonicModalView$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$, IonicModalView$) {
         $scope.isLoading = false;
 
         $scope.usedBookInfo = {
@@ -167,7 +169,7 @@ angular.module('AppController', [], null)
             });
         };
 
-        var wechatServerId='';
+        var wechatServerId = '';
         $scope.uploadPicOnClick = function () {
             WeChatJS$.chooseImage(function (localId) {
                 $scope.localId = localId;

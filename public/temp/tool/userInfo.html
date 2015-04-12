@@ -1,0 +1,18 @@
+<!-- 用户基本信息-->
+<div class="item item-avatar" ng-if="jsonUserInfo">
+    <img ng-src="{{jsonUserInfo.avatarUrl}}">
+
+    <h2>{{jsonUserInfo.nickName}}
+        <i class="icon ion-male" style="color: #5eb1ed" ng-if="jsonUserInfo.sex==1"></i>
+        <i class="icon ion-female" style="color: #ff6d9e" ng-if="jsonUserInfo.sex==2"></i>
+        <i>{{jsonUserInfo.startSchoolYear}}级</i>
+    </h2>
+
+    <p>{{jsonUserInfo.school}}/{{jsonUserInfo.major}}</p>
+</div>
+<!-- 主人所有旧书链接-->
+<ion-item ng-if="userUsedBookNumber>0"
+          style="padding: 0;text-align: center">
+    <a class="button button-small button-clear button-balanced"
+       ui-sref="tab.book_usedBookListByOwner({ownerId:jsonUserInfo.objectId})">查看主人其它{{userUsedBookNumber}}本旧书</a>
+</ion-item>

@@ -89,6 +89,7 @@ angular.module('AppService', [], null)
     })
 
     .service('WeChatJS$', function ($rootScope) {
+        var that = this;
         //先配置好微信
         jsonp('/wechat/getJsConfig', function (json) {
             wx.config(json);
@@ -109,6 +110,13 @@ angular.module('AppService', [], null)
             re = angular.extend(re, json);
             return re;
         }
+
+        //获得用户目前地理位置
+        wx.getLocation({
+            success: function (res) {
+                that.location = res;//latitude; // 纬度，浮点数，范围为90 ~ -90 longitude; // 经度，浮点数，范围为180 ~ -180。// 速度，以米/每秒计 // 位置精度
+            }
+        });
 
         //分享到朋友圈
         wx.onMenuShareTimeline(getShareData());

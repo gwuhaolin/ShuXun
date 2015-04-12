@@ -31,7 +31,7 @@ angular.module('AppDirective', [], null)
             restrict: 'E',
             scope: {
                 //要显示的星星数,整数
-                numStars:'@',
+                numStars: '@',
                 //详细分值
                 score: '@',
                 //总评分人数
@@ -39,4 +39,21 @@ angular.module('AppDirective', [], null)
             },
             link: link
         }
+    })
+
+/**
+ * 显示用户消息
+ */
+
+    .directive('userInfo', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                //用户的AVOS objectID
+                jsonUserInfo: '=',
+                userUsedBookNumber: '='
+            },
+            templateUrl: 'temp/tool/userInfo.html'
+        }
     });
+

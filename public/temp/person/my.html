@@ -2,26 +2,13 @@
 <ion-view ng-controller="person_my" title="我的书循">
     <ion-content>
         <!-- 基本信息-->
-        <div class="item item-avatar" ng-if="userInfo.openId" style="padding-bottom: 2px">
-            <img ng-src="{{userInfo.avatarUrl}}">
-
-            <h3>{{userInfo.nickName}}
-                <!-- 性别-->
-                <i class="icon ion-male" style="color: #5eb1ed" ng-if="userInfo.sex==1"></i>
-                <i class="icon ion-female" style="color: #ff6d9e" ng-if="userInfo.sex==2"></i>
-            </h3>
-
-            <p>邮箱:{{userInfo.email}}</p>
-
-            <p>专业:{{userInfo.major}}</p>
-
-            <p>学校:{{userInfo.school}}</p>
-
-            <p>年级:{{userInfo.startSchoolYear}}</p>
-            <button class="button button-small button-clear button-balanced" style="float: right"
+        <ion-item class="item-divider item-button-right">基本信息
+            <button class="button button-clear button-balanced" style="top: 0;float: right"
                     ui-sref="tab.person_editPersonInfo">修改信息
             </button>
-        </div>
+        </ion-item>
+        <user-info ng-if="userInfo" json-user-info="userInfo"></user-info>
+        <ion-item class="item-divider">二手书</ion-item>
         <!-- 上传一本二手书-->
         <ion-item style="text-align: center;padding: 0">
             <a class="button button-clear button-balanced"
