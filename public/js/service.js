@@ -287,7 +287,7 @@ angular.module('AppService', [], null)
                     $rootScope.$apply();
                 })
             },
-            hasMore:true
+            hasMore: true
         };
         this.NearBook.loadMore();
 
@@ -546,7 +546,7 @@ angular.module('AppService', [], null)
     })
 
     .
-    service('IonicModalView$', function ($rootScope, $ionicModal, InfoService$, WeChatJS$) {
+    service('IonicModalView$', function ($rootScope, $ionicModal, InfoService$, WeChatJS$, User$) {
 
         /**
          * 为$scope注册选择学校modalView功能
@@ -620,7 +620,7 @@ angular.module('AppService', [], null)
             });
             $scope.title = title;
             $scope.loginInfo = {
-                email: AV.User.current() == null ? '' : AV.User.current().getCurrentJsonUser().email,
+                email: User$.getCurrentAvosUser() == null ? '' : User$.getCurrentJsonUser().email,
                 password: ''
             };
             $scope.submitOnClick = function () {

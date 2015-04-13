@@ -14,7 +14,8 @@
             </button>
         </ion-item>
         <!-- 我上传的二手书-->
-        <ion-item ui-sref="tab.person_usedBooksList" class="item-icon-right">已上传{{myUsedBookNumber}}本旧书
+        <ion-item ng-if="myUsedBookNumber>0" ui-sref="tab.person_usedBooksList" class="item-icon-right">
+            已上传{{myUsedBookNumber}}本旧书
             <i class="icon ion-ios-arrow-right balanced"></i>
         </ion-item>
     </ion-content>
