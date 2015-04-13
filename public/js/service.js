@@ -158,7 +158,7 @@ angular.module('AppService', [], null)
         this.tags = [];
         //TODO 待实现 加载所有图书分类
         {
-            that.tags = ['数学', '计算机', '文学', '考研','金融','编程','心理学'];
+            that.tags = ['数学', '计算机', '文学', '考研', '金融', '编程', '心理学'];
         }
 
         /**
@@ -361,7 +361,6 @@ angular.module('AppService', [], null)
                 current: imgUrl,
                 urls: [imgUrl]
             });
-            $rootScope.$apply();
         };
 
         /**
@@ -721,6 +720,9 @@ angular.module('AppService', [], null)
             }
             json.objectId = avosUsedBook.id;
             json.updatedAt = avosUsedBook.updatedAt;
+            if (!json.avosImageFile) {//如果没有图片就显示logo
+                json.avosImageFile.set('url', 'img/logo-R.png');
+            }
             return json;
         };
 

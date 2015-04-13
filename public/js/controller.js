@@ -63,6 +63,7 @@ angular.module('AppController', [], null)
         //目前是否正在加载数据
         $scope.isLoading = true;
         DoubanBook$.getBookByISBD($scope.isbn13, function (json) {
+            json.image = json.image.replace('mpic','lpic');//大图显示
             $scope.book = json;
             $scope.isLoading = false;
             $scope.$apply();
