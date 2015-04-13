@@ -103,6 +103,7 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
  */
 AV.Cloud.beforeSave('UsedBook', function (request, response) {
     var avosUser = request.user;
+    console.log(avosUser.get('location'));
     request.object.set('location', avosUser.get('location'));
     request.object.save();
     response.success();
