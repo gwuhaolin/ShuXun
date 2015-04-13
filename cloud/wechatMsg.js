@@ -12,19 +12,20 @@ var config = {
 };
 
 exports.MsgHandler = Wechat(config)
-    .text(function (message, req, res, next) {
-        res.reply(message);
-    }).image(function (message, req, res, next) {
-        res.reply(message);
-    }).voice(function (message, req, res, next) {
-        res.reply(message);
-    }).video(function (message, req, res, next) {
-        res.reply(message);
-    }).location(function (message, req, res, next) {
-        res.reply(message);
-    }).link(function (message, req, res, next) {
-    }).event(function (message, req, res, next) {
-        res.reply(message);
+    .text(function (message, req, res) {
+        res.reply('ishuxun');
+    }).image(function (message, req, res) {
+        res.reply('ishuxun');
+    }).voice(function (message, req, res) {
+        res.reply('ishuxun');
+    }).video(function (message, req, res) {
+        res.reply('ishuxun');
+    }).location(function (message, req, res) {
+        res.reply('ishuxun');
+    }).link(function (message, req, res) {
+        res.reply('ishuxun');
+    }).event(function (message, req, res) {
+        res.reply('ishuxun');
         switch (message['Event']) {
             case 'LOCATION':
                 var openId = message['FromUserName'];
