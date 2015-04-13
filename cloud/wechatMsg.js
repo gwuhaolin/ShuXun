@@ -49,8 +49,8 @@ function saveLocationToUser(userOpenId, lat, lon) {
         if (avosUser) {
             var point = new AV.GeoPoint({latitude: lat, longitude: lon});
             avosUser.set('location', point);
+            console.log(avosUser);
             avosUser.save();
         }
     })
-
 }
