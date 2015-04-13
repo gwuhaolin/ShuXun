@@ -263,6 +263,35 @@ angular.module('AppService', [], null)
         };
 
         /**
+         * 附近的二手图书
+         * @type {{books: Array, loadMore: Function, hasMore: Function}}
+         */
+        this.NearBook = {
+            jsonBooks: [],
+            loadMore: function () {
+                var avosGeo = User$.getCurrentUserLocation();
+                var query = new AV.Query('UsedBook');
+                if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
+                    query.near("location", avosGeo);
+                }
+                query.skip(that.NearBook.jsonBooks.length);
+                query.limit(5);
+                query.find().done(function (avosUsedBooks) {
+                    if (avosUsedBooks.length > 0) {
+                        for (var i = 0; i < avosUsedBooks.length; i++) {
+                            that.NearBook.jsonBooks.push(User$.avosUserToJson(avosUsers[i]));
+                        }
+                    } else {
+                        that.NearBook.hasMore = false;
+                    }
+                    $rootScope.$apply();
+                })
+            },
+            hasMore:true
+        };
+        this.NearBook.loadMore();
+
+        /**
          * 我附近的用户
          * @type {{jsonUsers: Array, loadMore: Function, hasMore: Function}}
          */

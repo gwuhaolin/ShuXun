@@ -99,16 +99,29 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
 });
 
 /**
+ * 上传一本二手书时,把二手书的位置定为主人当前的位置
+ */
+AV.Cloud.beforeSave('UsedBook', function (request, response) {
+    var avosUser = request.user;
+    request.object.set('location', avosUser.get('location'));
+    request.object.save();
+    response.success();
+});
+
+/**
  * 当一本二手书别卖出或者被删除时 它对应的主人上传的图片会被清除
  */
 AV.Cloud.beforeDelete('UsedBook', function (request, response) {
     var query = new AV.Query('UsedBook');
     query.get(request.object.id).done(function (avosUsedBook) {
-        avosUsedBook.get('avosImageFile').destroy().done(function () {
-            response.success();
-        }).fail(function (error) {
-            response.error(error);
-        })
+        var file = avosUsedBook.get('avosImageFile');
+        if (file) {
+            file.destroy().done(function () {
+                response.success();
+            }).fail(function (error) {
+                response.error(error);
+            })
+        }
     }).fail(function (error) {
         response.error(error);
     })
