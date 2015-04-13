@@ -304,6 +304,7 @@ angular.module('AppService', [], null)
         //获得用户目前地理位置
         wx.getLocation({
             success: function (res) {
+                alert(res);
                 that.location = res;//latitude; // 纬度，浮点数，范围为90 ~ -90 longitude; // 经度，浮点数，范围为180 ~ -180。// 速度，以米/每秒计 // 位置精度
             }
         });
