@@ -13,6 +13,7 @@ var config = {
 
 exports.MsgHandler = Wechat(config)
     .text(function (message, req, res, next) {
+        console.log(message);
     }).image(function (message, req, res, next) {
     }).voice(function (message, req, res, next) {
     }).video(function (message, req, res, next) {
