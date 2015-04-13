@@ -44,6 +44,24 @@
             </ion-item>
             <three-book-one-line json-books-info="BookRecommend$.NeedBook.books"></three-book-one-line>
         </div>
+        <!-- 用户附近的二手书-->
+        <div ng-if="BookRecommend$.NeedBook.books.length>0">
+            <ion-item class="item-divider item-button-right">附近的旧书
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'near'})">更多
+                </button>
+            </ion-item>
+            <three-book-one-line json-books-info="BookRecommend$.NeedBook.books"></three-book-one-line>
+        </div>
+        <!-- 用户附近的用户-->
+        <div ng-if="BookRecommend$.NeedBook.books.length>0">
+            <ion-item class="item-divider item-button-right">附近的同学
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'near'})">更多
+                </button>
+            </ion-item>
+            <three-book-one-line json-books-info="BookRecommend$.NeedBook.books"></three-book-one-line>
+        </div>
     </ion-content>
 
     <!-- 图书所有分类-->

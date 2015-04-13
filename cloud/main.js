@@ -8,4 +8,3 @@ AV.Cloud.useMasterKey();
 
 require('cloud/app.js');
 require('cloud/cloudCode.js');
-console.log('加载完毕');

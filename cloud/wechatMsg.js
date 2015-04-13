@@ -13,14 +13,18 @@ var config = {
 
 exports.MsgHandler = Wechat(config)
     .text(function (message, req, res, next) {
-        console.log(message);
+        res.reply(message);
     }).image(function (message, req, res, next) {
+        res.reply(message);
     }).voice(function (message, req, res, next) {
+        res.reply(message);
     }).video(function (message, req, res, next) {
+        res.reply(message);
     }).location(function (message, req, res, next) {
+        res.reply(message);
     }).link(function (message, req, res, next) {
     }).event(function (message, req, res, next) {
-        console.log(message);
+        res.reply(message);
         switch (message['Event']) {
             case 'LOCATION':
                 var openId = message['FromUserName'];
