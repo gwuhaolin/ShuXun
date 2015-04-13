@@ -38,22 +38,19 @@ app.use('/wechat/msg', WechatMsg.MsgHandler);
 
 
 ////////////////////// Info /////////////////////////
-/**
- * 关键字或拼音搜索学校
- * @param keyword 关键字或拼音
- */
 app.get('/info/getAllSchool', function (req, res) {
     var schools = Info.Schools;
     res.jsonp(schools);
 });
 
-/**
- * 关键字或拼音搜索专业
- * @param keyword 关键字或拼音
- */
 app.get('/info/getAllMajor', function (req, res) {
     var majors = Info.Majors;
     res.jsonp(majors);
+});
+
+app.get('/info/getAllBookTags', function (req, res) {
+    var tags = Info['BookTags'];
+    res.jsonp(tags);
 });
 
 app.listen();

@@ -4,7 +4,7 @@
     </ion-nav-buttons>
     <ion-content>
         <!-- 图书分类-->
-        <div ng-if="BookRecommend$.tags.length>0">
+        <div ng-if="BookRecommend$['BookTag']['tag']">
             <ion-item class="item-divider item-button-right">图书分类
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ng-click="bookTagsModalView.show()">更多
@@ -13,7 +13,7 @@
             <ion-item style="white-space:normal">
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
                         ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
-                        ng-repeat="tag in BookRecommend$.tags.slice(0,5)">{{tag}}
+                        ng-repeat="tag in BookRecommend$['BookTag'].getTagAttrNames()">{{tag}}
                 </button>
             </ion-item>
         </div>
@@ -50,16 +50,24 @@
     <script type="text/ng-template" id="template/bookTags.html">
         <ion-modal-view>
             <ion-header-bar class="item-input-inset">
+                <h1 class="title">图书热门分类</h1>
                 <button class="button button-clear button-balanced"
                         ng-click="bookTagsModalView.hide()">返回
                 </button>
             </ion-header-bar>
             <ion-content class="has-header">
                 <ion-list>
-                    <ion-item ng-repeat="tag in BookRecommend$.tags" ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
-                              ng-click="bookTagsModalView.hide()">
-                        {{tag}}
-                    </ion-item>
+                    <div ng-repeat="bigTag in BookRecommend$['BookTag'].getTagAttrNames()">
+                        <ion-item class="item-divider item-button-right">{{bigTag}}</ion-item>
+                        <ion-item style="white-space:normal">
+                            <button class="button button-small button-outline button-balanced" style="margin: 5px"
+                                    ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
+                                    ng-click="bookTagsModalView.hide()"
+                                    ng-repeat="tag in BookRecommend$['BookTag']['tag'][bigTag]">
+                                {{tag}}
+                            </button>
+                        </ion-item>
+                    </div>
                 </ion-list>
             </ion-content>
         </ion-modal-view>

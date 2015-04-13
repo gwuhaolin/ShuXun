@@ -155,11 +155,22 @@ angular.module('AppService', [], null)
          * 所有图书分类
          * @type {Array}
          */
-        this.tags = [];
-        //TODO 待实现 加载所有图书分类
-        {
-            that.tags = ['数学', '计算机', '文学', '考研', '金融', '编程', '心理学'];
-        }
+        this.BookTag = {
+            tag: null,
+            load: function () {
+                jsonp('/info/getAllBookTags', function (tag) {
+                    that.BookTag.tag = tag;
+                    $rootScope.$apply();
+                })
+            },
+            getTagAttrNames: function () {
+                if (that['BookTag']['tag']) {
+                    return Object.keys(that['BookTag']['tag']);
+                }
+                return [];
+            },
+        };
+        this['BookTag'].load();
 
         /**
          * 分类浏览
@@ -720,9 +731,6 @@ angular.module('AppService', [], null)
             }
             json.objectId = avosUsedBook.id;
             json.updatedAt = avosUsedBook.updatedAt;
-            if (!json.avosImageFile) {//如果没有图片就显示logo
-                json.avosImageFile.set('url', 'img/logo-R.png');
-            }
             return json;
         };
 
