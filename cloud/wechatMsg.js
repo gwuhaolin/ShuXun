@@ -19,6 +19,7 @@ exports.MsgHandler = Wechat(config)
     }).location(function (message, req, res, next) {
     }).link(function (message, req, res, next) {
     }).event(function (message, req, res, next) {
+        console.log(message);
         switch (message['Event']) {
             case 'LOCATION':
                 var openId = message['FromUserName'];
