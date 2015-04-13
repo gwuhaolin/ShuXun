@@ -304,7 +304,6 @@ angular.module('AppService', [], null)
         //获得用户目前地理位置
         wx.getLocation({
             success: function (res) {
-                alert(res);
                 that.location = res;//latitude; // 纬度，浮点数，范围为90 ~ -90 longitude; // 经度，浮点数，范围为180 ~ -180。// 速度，以米/每秒计 // 位置精度
             }
         });
@@ -429,26 +428,53 @@ angular.module('AppService', [], null)
             return major['name'].indexOf(that.searchMajorKeyword) > -1;
         };
 
-        /**
-         * 所有的加载了的学校
-         * @type {Array}
-         */
-        this.schools = [];
-        $http.jsonp('/info/getAllSchool?callback=JSON_CALLBACK').success(function (schools) {
-            that.schools = schools;
-        });
-        /**
-         * 搜索学校时的关键字
-         * @type {string}
-         */
-        this.searchSchoolKeyword = '';
-        /**
-         * 搜索专业时的过滤器
-         * @param school 当前学校信息
-         * @returns {boolean} 是否合格
-         */
-        this.filter_schoolByKeyword = function (school) {
-            return school['name'].indexOf(that.searchSchoolKeyword) > -1;
+        this.School = {
+            /**
+             * 所有的加载了的学校
+             * @type {Array}
+             */
+            schools: [],
+            loadMore: function () {
+                var avosGeo;
+                try {
+                    avosGeo = AV.User.current().get('location');
+                } finally {
+                    avosGeo = null
+                }
+                var query = new AV.Query('School');
+                if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
+                    query.near("location", avosGeo);
+                }
+                query.skip(that.School.schools.length);
+                query.limit(5);
+                query.find().done(function (avosSchools) {
+                    if (avosSchools.length > 0) {
+                        for (var i = 0; i < avosSchools.length; i++) {
+                            that.School.schools.push(avosSchools[i].get('name'));
+                        }
+                    } else {
+                        that.School.hasMore = false;
+                    }
+                    $rootScope.$apply();
+                })
+            },
+            /**
+             * 是否还可以加载更多
+             */
+            hasMore: true,
+            /**
+             * 搜索学校时的关键字
+             * @type {string}
+             */
+            searchSchoolKeyword: '',
+            /**
+             * 搜索专业时的过滤器
+             * @param schoolName 当前学校
+             * @returns {boolean} 是否合格
+             */
+            filter_schoolByKeyword: function (schoolName) {
+                return schoolName.indexOf(that['School']['searchSchoolKeyword']) >= 0;
+            }
         };
 
         /**
@@ -465,7 +491,8 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('IonicModalView$', function ($rootScope, $ionicModal, InfoService$, WeChatJS$) {
+    .
+    service('IonicModalView$', function ($rootScope, $ionicModal, InfoService$, WeChatJS$) {
 
         /**
          * 为$scope注册选择学校modalView功能

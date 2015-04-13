@@ -1064,42 +1064,6 @@ exports.Majors = [
     }
 ];
 
-//所有学校
-exports.Schools = [
-    {
-        "name": "其它学校",
-        "location": null
-    },
-    {
-        "name": "华中师范大学",
-        "location": {
-            "lng": 30.522385,
-            "lat": 114.369487
-        }
-    },
-    {
-        "name": "武汉理工大学",
-        "location": {
-            "lng": 116.412347,
-            "lat": 40.005328
-        }
-    },
-    {
-        "name": "武汉大学",
-        "location": {
-            "lng": 116.412347,
-            "lat": 40.005328
-        }
-    },
-    {
-        "name": "华中科技大学",
-        "location": {
-            "lng": 116.412347,
-            "lat": 40.005328
-        }
-    }
-];
-
 /**
  * 图书分类
  * @type {{文学: string[], 流行: string[], 文化: string[], 生活: string[], 经管: string[], 科技: string[]}}

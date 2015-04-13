@@ -38,11 +38,6 @@ app.use('/wechat/msg', WechatMsg.MsgHandler);
 
 
 ////////////////////// Info /////////////////////////
-app.get('/info/getAllSchool', function (req, res) {
-    var schools = Info.Schools;
-    res.jsonp(schools);
-});
-
 app.get('/info/getAllMajor', function (req, res) {
     var majors = Info.Majors;
     res.jsonp(majors);
