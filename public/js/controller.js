@@ -333,12 +333,21 @@ angular.module('AppController', [], null)
         }
     })
 
-    .controller('person_my', function ($scope, User$, UsedBook$) {
-        $scope.userInfo = User$.getCurrentJsonUser();
-        UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
-            $scope.myUsedBookNumber = number;
-            $scope.$apply();
-        });
+    .controller('person_my', function ($scope, User$, UsedBook$, IonicModalView$) {
+        function load() {
+            $scope.userInfo = User$.getCurrentJsonUser();
+            UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
+                $scope.myUsedBookNumber = number;
+                $scope.$apply();
+            });
+        }
+        if (User$.getCurrentJsonUser()) {
+            load();
+        } else {
+            IonicModalView$.alertUserLoginModalView('你还没有登录', function () {
+                load();
+            });
+        }
     })
 
     .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$, User$, IonicModalView$) {
