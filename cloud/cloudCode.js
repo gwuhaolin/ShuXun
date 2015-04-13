@@ -121,6 +121,8 @@ AV.Cloud.beforeDelete('UsedBook', function (request, response) {
             }).fail(function (error) {
                 response.error(error);
             })
+        } else {//没有图片文件
+            response.success();
         }
     }).fail(function (error) {
         response.error(error);
