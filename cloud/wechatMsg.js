@@ -43,13 +43,14 @@ exports.MsgHandler = Wechat(config)
  * @param lon 纬度
  */
 function saveLocationToUser(userOpenId, lat, lon) {
+    lat = parseFloat(lat);
+    lon = parseFloat(lon);
     var query = new AV.Query(AV.User);
     query.equalTo('openId', userOpenId);
     query.first().done(function (avosUser) {
         if (avosUser) {
-            var point = new AV.GeoPoint({latitude: lat, longitude: lon});
+            var point = new AV.GeoPoint(lat, lon);
             avosUser.set('location', point);
-            console.log(avosUser);
             avosUser.save();
         }
     })
