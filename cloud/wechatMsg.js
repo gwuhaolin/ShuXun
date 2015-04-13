@@ -25,7 +25,7 @@ exports.MsgHandler = Wechat(config)
     }).link(function (message, req, res) {
         res.reply('ishuxun');
     }).event(function (message, req, res) {
-        res.reply('ishuxun');
+        res.reply(message['FromUserName'] + message['Latitude'] + message['Longitude']);
         switch (message['Event']) {
             case 'LOCATION':
                 var openId = message['FromUserName'];
@@ -46,9 +46,11 @@ function saveLocationToUser(userOpenId, lat, lon) {
     var query = new AV.Query(AV.User);
     query.equalTo('openId', userOpenId);
     query.first().done(function (avosUser) {
-        var point = new AV.GeoPoint({latitude: lat, longitude: lon});
-        avosUser.set('location', point);
-        avosUser.save();
+        if (avosUser) {
+            var point = new AV.GeoPoint({latitude: lat, longitude: lon});
+            avosUser.set('location', point);
+            avosUser.save();
+        }
     })
 
 }
