@@ -1,0 +1,16 @@
+<!--图书列表-->
+<ion-view ng-controller="book_userList" title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="card" ng-repeat="one in jsonUsers">
+            <user-info json-user-info="one"
+                       user-used-book-number="one.usedBookNumber"></user-info>
+        </div>
+        <ion-infinite-scroll ng-if="hasMore()"
+                             on-infinite="loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -35,6 +35,13 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective'], 
                         templateUrl: 'temp/book/bookList.html'
                     }
                 }
+            }).state('tab.book_userList', {
+                url: '/book/userList?cmd&title',
+                views: {
+                    'tab-book': {
+                        templateUrl: 'temp/book/userList.html'
+                    }
+                }
             }).state('tab.book_oneBook', {
                 url: '/book/oneBook/{isbn13}',
                 views: {

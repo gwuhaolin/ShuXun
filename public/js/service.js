@@ -148,7 +148,7 @@ angular.module('AppService', [], null)
 /**
  * 图书推荐
  */
-    .service('BookRecommend$', function (DoubanBook$, User$, $rootScope) {
+    .service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$) {
         var that = this;
 
         /**
@@ -260,7 +260,36 @@ angular.module('AppService', [], null)
             hasMore: function () {
 
             }
-        }
+        };
+
+        /**
+         * 我附近的用户
+         * @type {{jsonUsers: Array, loadMore: Function, hasMore: Function}}
+         */
+        this.NearUser = {
+            jsonUsers: [],
+            loadMore: function () {
+                var avosGeo = User$.getCurrentUserLocation();
+                var query = new AV.Query(AV.User);
+                if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
+                    query.near("location", avosGeo);
+                }
+                query.skip(that.NearUser.jsonUsers.length);
+                query.limit(5);
+                query.find().done(function (avosUsers) {
+                    if (avosUsers.length > 0) {
+                        for (var i = 0; i < avosUsers.length; i++) {
+                            that.NearUser.jsonUsers.push(User$.avosUserToJson(avosUsers[i]));
+                        }
+                    } else {
+                        that.NearUser.hasMore = false;
+                    }
+                    $rootScope.$apply();
+                })
+            },
+            hasMore: true
+        };
+        this.NearUser.loadMore();
     })
 
     .service('BusinessSite$', function () {
@@ -403,7 +432,7 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('InfoService$', function ($rootScope, $http) {
+    .service('InfoService$', function ($rootScope, $http, User$) {
         var that = this;
         /**
          * 所有的专业
@@ -435,12 +464,7 @@ angular.module('AppService', [], null)
              */
             schools: [],
             loadMore: function () {
-                var avosGeo;
-                try {
-                    avosGeo = AV.User.current().get('location');
-                } finally {
-                    avosGeo = null
-                }
+                var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query('School');
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
@@ -459,6 +483,7 @@ angular.module('AppService', [], null)
                 })
             },
             /**
+             * TODO not work
              * 是否还可以加载更多
              */
             hasMore: true,
@@ -584,7 +609,7 @@ angular.module('AppService', [], null)
 
     })
 
-    .service('User$', function (IonicModalView$) {
+    .service('User$', function () {
         var that = this;
 
         /**
@@ -602,6 +627,18 @@ angular.module('AppService', [], null)
             var user = that.jsonToAvosUser(jsonUser);
             user.set('username', jsonUser.email);
             return user.signUp(null);
+        };
+
+        /**
+         * 获得当前用户的地理位置
+         * 如果没有用户或用户没有位置就返回null
+         */
+        this.getCurrentUserLocation = function () {
+            var user = that.getCurrentAvosUser();
+            if (user) {
+                return user.get('location');
+            }
+            return null;
         };
 
         /**
@@ -649,16 +686,6 @@ angular.module('AppService', [], null)
             return user;
         };
 
-        /**
-         * 检测用户是否已经登录了,没有的话提示用户登录
-         * @param onSuccess 当用户登录成功时
-         */
-        this.checkUsedHasLogin = function (onSuccess) {
-            if (!that.getCurrentAvosUser()) {
-                IonicModalView$.alertUserLoginModalView('你还没有登录', onSuccess);
-            }
-        }
-
     })
 
     //还没有卖出的二手书
@@ -674,11 +701,13 @@ angular.module('AppService', [], null)
 
         /**
          * 获得这位主人还没有卖出的二手书的数量
-         * @param avosUser
+         * @param avosUserObjectId
          * @returns {*|AV.Promise}
          */
-        this.getUsedBookNumberForOwner = function (avosUser) {
+        this.getUsedBookNumberForOwner = function (avosUserObjectId) {
             var query = new AV.Query('UsedBook');
+            var avosUser = new AV.User();
+            avosUser.id = avosUserObjectId;
             query.equalTo("owner", avosUser);
             query.descending("updatedAt");
             return query.count();

@@ -52,6 +52,28 @@ angular.module('AppController', [], null)
             $scope.books = BookRecommend$.MajorBook.books;
             $scope.loadMore = BookRecommend$.MajorBook.loadMore;
             $scope.title = BookRecommend$.MajorBook.major;
+        } else if (cmd == 'nearBook') {
+            $scope.title = '你附近的旧书';
+        }
+    })
+
+    //用户列表
+    .controller('book_userList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
+        var cmd = $stateParams['cmd'];
+        if (cmd == 'near') {
+            $scope.title = '你附近的同学';
+            $scope.jsonUsers = BookRecommend$.NearUser.jsonUsers;
+            for (var i = 0; i < $scope.jsonUsers.length; i++) {
+                var oneJsonUser = $scope.jsonUsers[i];
+                UsedBook$.getUsedBookNumberForOwner(oneJsonUser.objectId).done(function (number) {
+                    oneJsonUser.usedBookNumber = number;
+                    $scope.$apply();
+                })
+            }
+            $scope.loadMore = BookRecommend$.NearUser.loadMore;
+            $scope.hasMore = function () {
+                return BookRecommend$.NearUser.hasMore;
+            }
         }
     })
 
@@ -63,7 +85,7 @@ angular.module('AppController', [], null)
         //目前是否正在加载数据
         $scope.isLoading = true;
         DoubanBook$.getBookByISBD($scope.isbn13, function (json) {
-            json.image = json.image.replace('mpic','lpic');//大图显示
+            json.image = json.image.replace('mpic', 'lpic');//大图显示
             $scope.book = json;
             $scope.isLoading = false;
             $scope.$apply();
@@ -152,7 +174,7 @@ angular.module('AppController', [], null)
                 $scope.ownerInfo = User$.avosUserToJson(avosOwner);
                 $scope.$apply();
             });
-            UsedBook$.getUsedBookNumberForOwner(avosOwner).done(function (number) {
+            UsedBook$.getUsedBookNumberForOwner(avosOwner.id).done(function (number) {
                 $scope.ownerUsedBookNumber = number;
                 $scope.$apply();
             });
@@ -313,17 +335,19 @@ angular.module('AppController', [], null)
 
     .controller('person_my', function ($scope, User$, UsedBook$) {
         $scope.userInfo = User$.getCurrentJsonUser();
-        UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser()).done(function (number) {
+        UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
             $scope.myUsedBookNumber = number;
             $scope.$apply();
         });
     })
 
-    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$, User$) {
-        User$.checkUsedHasLogin(function () {
-            UsedBook$.loadMyAvosUsedBookList();
-            HasSellUsedBook$.loadMyAvosUsedBookList();
-        });
+    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$, User$, IonicModalView$) {
+        if (!User$.getCurrentAvosUser()) {
+            IonicModalView$.alertUserLoginModalView('你还没有登录', function () {
+                UsedBook$.loadMyAvosUsedBookList();
+                HasSellUsedBook$.loadMyAvosUsedBookList();
+            });
+        }
         //还没有卖出
         $scope.UsedBook$ = UsedBook$;
         UsedBook$.loadMyAvosUsedBookList();
