@@ -7,7 +7,7 @@
 exports.Config = {
     AppID: 'wx2940a8d3ddcad5e9',
     Secret: '109504a5c4cac98f12c024d724fd589f',
-    Token: 'IShuXun',
+    Token: 'ishuxun',
     EncodingAESKey: 'qiYrBOvI9Z6mhRUZ1LrztiHquQg9NAgQ4arSkgd1aH3',
     APIClient: require('wechat-api'),
     OAuthClient: require('wechat-oauth')

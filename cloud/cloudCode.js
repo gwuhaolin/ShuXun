@@ -32,6 +32,29 @@ function saveWechatImageToUsedBook(serverId, bookId) {
 }
 
 /**
+ * 更新微信菜单
+ */
+AV.Cloud.define('updateWechatMenu', function (request, response) {
+    //微信菜单格式见 http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html
+    var wechatMenu = {
+        "button": [
+            {
+                "type": "view",
+                "name": "书循",
+                "url": "http://ishuxun.avosapps.com/"
+            }
+        ]
+    };
+    WechatAPI.APIClient.createMenu(wechatMenu, function (error, result) {
+        if (error) {
+            response.error(error);
+        } else {
+            response.success(result);
+        }
+    });
+});
+
+/**
  * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
  * 参数: serverId 图片上传到微信服务器后获得的图片的serverID
  * 参数: objectId 一个 AVOS的UsedBook的ObjectID
