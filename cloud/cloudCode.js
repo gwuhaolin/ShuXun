@@ -102,9 +102,9 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
  * 上传一本二手书时,把二手书的位置定为主人当前的位置
  */
 AV.Cloud.beforeSave('UsedBook', function (request, response) {
-    var avosUser = request.user;
-    console.log(avosUser.get('location'));
-    request.object.set('location', avosUser.get('location'));
+    var location = request.user.get('location');
+    var point = new AV.GeoPoint(location);
+    request.object.set('location', point);
     request.object.save();
     response.success();
 });
