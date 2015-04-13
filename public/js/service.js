@@ -168,7 +168,7 @@ angular.module('AppService', [], null)
                     return Object.keys(that['BookTag']['tag']);
                 }
                 return [];
-            },
+            }
         };
         this['BookTag'].load();
 
