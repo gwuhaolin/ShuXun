@@ -1,4 +1,7 @@
 <ion-view ng-controller="book_oneBook" title="{{book.title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
     <ion-content>
         <!-- 正在加载-->
         <div style="text-align: center;padding-top: 10px" ng-if="isLoading">

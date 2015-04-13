@@ -1,4 +1,7 @@
 <ion-view ng-controller="person_uploadOneUsedBook" title="上传二手书">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+    </ion-nav-buttons>
     <ion-content style="text-align: center" class="padding">
         <!-- 正在加载-->
         <div style="text-align: center;padding-top: 10px" ng-if="isLoading">

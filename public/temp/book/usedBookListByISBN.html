@@ -1,4 +1,7 @@
 <ion-view ng-controller="book_usedBookListByISBN" title="共有{{usedBookTotalNumber}}本旧书">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
     <ion-content>
         <ion-list>
             <!-- 搜索结果列表-->

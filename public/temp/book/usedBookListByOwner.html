@@ -1,4 +1,7 @@
-<ion-view ng-controller="book_usedBookListByOwner" title="共有{{avosUsedBookList.length}}本旧书">
+<ion-view ng-controller="book_usedBookListByOwner" title="主人的二手书">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
     <ion-content>
         <ion-list>
             <user-info json-user-info="jsonOwnerInfo"></user-info>

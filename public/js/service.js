@@ -228,7 +228,7 @@ angular.module('AppService', [], null)
          * @type {{books: Array, loadMore: Function}}
          */
         this.MajorBook = {
-            major: User$.getCurrentJsonUser().major,
+            major: User$.getCurrentJsonUser() ? User$.getCurrentJsonUser().major : '',
             books: [],
             loadMore: function () {
                 DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length, 5, function (json) {
@@ -245,7 +245,6 @@ angular.module('AppService', [], null)
                 return that.MajorBook.books.length < that.MajorBook.totalNum;
             }
         };
-        that.MajorBook.loadMore();
 
         /**
          * TODO 待实现
@@ -289,7 +288,6 @@ angular.module('AppService', [], null)
             },
             hasMore: true
         };
-        this.NearBook.loadMore();
 
         /**
          * 我附近的用户

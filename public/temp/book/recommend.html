@@ -1,6 +1,6 @@
 <ion-view ng-controller="book_recommend" title="书循">
     <ion-nav-buttons side="right">
-        <button class="button button-clear" ui-sref="tab.book_searchList">寻书</button>
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
     <ion-content>
         <!-- 图书分类-->
@@ -27,7 +27,7 @@
             <three-book-one-line json-books-info="BookRecommend$.NewBook.books"></three-book-one-line>
         </div>
         <!-- 根据专业推荐的书-->
-        <div ng-if="BookRecommend$.MajorBook.books.length>0">
+        <div ng-init="BookRecommend$.MajorBook.loadMore()" ng-if="BookRecommend$.MajorBook.books.length>0">
             <ion-item class="item-divider item-button-right">{{BookRecommend$.MajorBook.major}}
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_bookList({cmd:'major'})">更多
@@ -45,7 +45,7 @@
             <three-book-one-line json-books-info="BookRecommend$.NeedBook.books"></three-book-one-line>
         </div>
         <!-- 用户附近的二手书-->
-        <div ng-if="BookRecommend$.NeedBook.jsonBooks.length>0">
+        <div ng-init="BookRecommend$.NeedBook.loadMore()" ng-if="BookRecommend$.NeedBook.jsonBooks.length>0">
             <ion-item class="item-divider item-button-right">附近的旧书
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_bookList({cmd:'nearBook'})">更多

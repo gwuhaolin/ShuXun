@@ -1,5 +1,8 @@
 <!--编辑个人信息-->
 <ion-view ng-controller="person_editPersonInfo" title="修改你的信息">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+    </ion-nav-buttons>
     <ion-content class="padding">
         <!-- 基本信息-->
         <user-info json-user-info="userInfo"></user-info>
