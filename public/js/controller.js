@@ -8,6 +8,8 @@ angular.module('AppController', [], null)
     //图书推荐
     .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) {
         $scope.BookRecommend$ = BookRecommend$;
+        BookRecommend$.MajorBook.loadMore();
+        BookRecommend$.NeedBook.loadMore();
         $ionicModal.fromTemplateUrl('template/bookTags.html', {
             scope: $scope
         }).then(function (modal) {
@@ -185,7 +187,7 @@ angular.module('AppController', [], null)
 
     .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$, IonicModalView$) {
         $scope.isLoading = false;
-
+        $scope.WeChatJS$ = WeChatJS$;
         $scope.usedBookInfo = {
             isbn13: $stateParams.isbn13,
             price: null,
@@ -333,7 +335,7 @@ angular.module('AppController', [], null)
         }
     })
 
-    .controller('person_my', function ($scope, User$, UsedBook$, IonicModalView$) {
+    .controller('person_my', function ($scope, $state, User$, UsedBook$, IonicModalView$) {
         function load() {
             $scope.userInfo = User$.getCurrentJsonUser();
             UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
@@ -341,12 +343,21 @@ angular.module('AppController', [], null)
                 $scope.$apply();
             });
         }
+
         if (User$.getCurrentJsonUser()) {
             load();
         } else {
             IonicModalView$.alertUserLoginModalView('你还没有登录', function () {
                 load();
             });
+        }
+
+        /**
+         * 用户退出
+         */
+        $scope.logOut = function () {
+            AV.User.logOut();
+            $state.go('tab.book_recommend');
         }
     })
 

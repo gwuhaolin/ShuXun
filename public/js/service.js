@@ -60,7 +60,7 @@ angular.module('AppService', [], null)
          */
         this.getBooksByTag = function (tag, start, count, callback) {
             var url = baseUri + '/search';
-            if (tag && tag.length < 1) {
+            if (!tag || tag.length < 1) {
                 return [];
             }
             url += '?tag=' + tag;
@@ -457,6 +457,19 @@ angular.module('AppService', [], null)
             })
         };
 
+        /**
+         * 调用微信接口显示地图
+         * @param lat
+         * @param lon
+         */
+        this.openMap = function (lat, lon) {
+            wx.openLocation({
+                latitude: lat, // 纬度，浮点数，范围为90 ~ -90
+                longitude: lon, // 经度，浮点数，范围为180 ~ -180。
+                name: '主人位置' // 位置名
+            });
+        }
+
     })
 
     .service('InfoService$', function ($rootScope, $http, User$) {
@@ -698,6 +711,7 @@ angular.module('AppService', [], null)
                 json[attrName] = avosUser.get(attrName);
             }
             json.objectId = avosUser.id;
+            json.location = avosUser.get('location');
             return json;
         };
 

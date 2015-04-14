@@ -45,7 +45,10 @@ angular.module('AppDirective', [], null)
  * 显示用户消息
  */
 
-    .directive('userInfo', function () {
+    .directive('userInfo', function (WeChatJS$) {
+        function link($scope) {
+            $scope.WeChatJS$ = WeChatJS$;
+        }
         return {
             restrict: 'E',
             scope: {
@@ -53,7 +56,8 @@ angular.module('AppDirective', [], null)
                 jsonUserInfo: '=',
                 userUsedBookNumber: '='
             },
-            templateUrl: 'temp/tool/userInfoTemplate.html'
+            templateUrl: 'temp/tool/userInfoTemplate.html',
+            link:link
         }
     })
 

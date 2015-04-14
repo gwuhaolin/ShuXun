@@ -1,5 +1,8 @@
 <!--个人主页-->
 <ion-view ng-controller="person_my" title="我的书循">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ng-click="logOut()">退出</button>
+    </ion-nav-buttons>
     <ion-content>
         <!-- 基本信息-->
         <ion-item class="item-divider item-button-right">我的信息
