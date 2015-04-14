@@ -49,6 +49,7 @@ angular.module('AppDirective', [], null)
         function link($scope) {
             $scope.WeChatJS$ = WeChatJS$;
         }
+
         return {
             restrict: 'E',
             scope: {
@@ -57,21 +58,37 @@ angular.module('AppDirective', [], null)
                 userUsedBookNumber: '='
             },
             templateUrl: 'temp/tool/userInfoTemplate.html',
-            link:link
+            link: link
         }
     })
 
 /**
  * 三本书排成一行
  */
-    .directive('threeBookOneLine', function () {
+    .directive('doubanBookOneLine', function () {
         return {
             restrict: 'E',
             scope: {
                 //三本图书的信息
                 jsonBooksInfo: '='
             },
-            templateUrl: 'temp/tool/threeBookOneLineTemplate.html'
+            templateUrl: 'temp/tool/threeDoubanBookOneLineTemplate.html',
+            link: function (scope) {
+                scope.showNumber = Math.floor(document.body.clientWidth / 80);
+            }
+        }
+    })
+
+    .directive('usedBookOneLine', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                //三本图书的信息
+                jsonBooksInfo: '='
+            },
+            templateUrl: 'temp/tool/threeUsedBookOneLineTemplate.html',
+            link: function (scope) {
+                scope.showNumber = Math.floor(document.body.clientWidth / 80);
+            }
         }
     });
-

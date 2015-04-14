@@ -1,0 +1,8 @@
+<ion-item style="text-align: center;padding: 0;">
+    <div ng-repeat="jsonBook in jsonBooksInfo.slice(0,showNumber)" ui-sref="tab.book_oneBook({isbn13:jsonBook.isbn13})"
+         style="display: inline-block;padding: 5px;width: 80px;height: 120px">
+        <img ng-if="jsonBook.avosImageFile" ng-src="{{jsonBook.avosImageFile.thumbnailURL(200, 200)}}"
+             style="width: 70px;height: 100px">
+        <h5 ng-if="jsonBook.des" class="title">{{jsonBook.des}}</h5>
+    </div>
+</ion-item>

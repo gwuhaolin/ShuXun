@@ -10,6 +10,7 @@ angular.module('AppController', [], null)
         $scope.BookRecommend$ = BookRecommend$;
         BookRecommend$.MajorBook.loadMore();
         BookRecommend$.NeedBook.loadMore();
+        BookRecommend$.NearBook.loadMore();
         $ionicModal.fromTemplateUrl('template/bookTags.html', {
             scope: $scope
         }).then(function (modal) {

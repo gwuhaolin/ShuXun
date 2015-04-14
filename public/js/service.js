@@ -278,7 +278,7 @@ angular.module('AppService', [], null)
                 query.find().done(function (avosUsedBooks) {
                     if (avosUsedBooks.length > 0) {
                         for (var i = 0; i < avosUsedBooks.length; i++) {
-                            that.NearBook.jsonBooks.push(User$.avosUserToJson(avosUsers[i]));
+                            that.NearBook.jsonBooks.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
                         }
                     } else {
                         that.NearBook.hasMore = false;
