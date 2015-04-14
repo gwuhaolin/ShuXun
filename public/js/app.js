@@ -35,6 +35,13 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective'], 
                         templateUrl: 'temp/book/bookList.html'
                     }
                 }
+            }).state('tab.book_usedBookList', {
+                url: '/book/usedBookList?cmd&isbn',
+                views: {
+                    'tab-book': {
+                        templateUrl: 'temp/book/usedBookList.html'
+                    }
+                }
             }).state('tab.book_userList', {
                 url: '/book/userList?cmd&title',
                 views: {
@@ -47,13 +54,6 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective'], 
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/oneBook.html'
-                    }
-                }
-            }).state('tab.book_usedBookListByISBN', {
-                url: '/book/usedBookListByISBN/{isbn13}',
-                views: {
-                    'tab-book': {
-                        templateUrl: 'temp/book/usedBookListByISBN.html'
                     }
                 }
             }).state('tab.book_usedBookListByOwner', {

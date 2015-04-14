@@ -48,7 +48,7 @@
         <div ng-if="BookRecommend$.NearBook.jsonBooks.length>0">
             <ion-item class="item-divider item-button-right">附近的旧书
                 <button class="button button-small button-clear button-balanced" style="top: 0"
-                        ui-sref="tab.book_bookList({cmd:'nearBook'})">更多
+                        ui-sref="tab.book_usedBookList({cmd:'near'})">更多
                 </button>
             </ion-item>
             <used-book-one-line json-books-info="BookRecommend$.NearBook.jsonBooks"></used-book-one-line>

@@ -60,6 +60,28 @@ angular.module('AppController', [], null)
         }
     })
 
+    //二手书列表
+    .controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
+        var cmd = $stateParams['cmd'];
+        if (cmd == 'near') {
+            $scope.title = '你附近的二手书';
+            $scope.jsonUsedBooks = BookRecommend$.NearBook.jsonBooks;
+            $scope.loadMore = BookRecommend$.NearBook.loadMore;
+            $scope.hasMore = function () {
+                return BookRecommend$.NearBook.hasMore;
+            };
+        } else if (cmd == 'isbn') {
+            $scope.title = '对应的二手书';
+            var isbn13 = $stateParams['isbn13'];
+            UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
+            $scope.jsonUsedBooks = UsedBook$.ISBN.nowEqualISBNJsonUsedBookList;
+            $scope.loadMore = UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
+            $scope.hasMore = function () {
+                return UsedBook$.ISBN.hasMore;
+            };
+        }
+    })
+
     //用户列表
     .controller('book_userList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
         var cmd = $stateParams['cmd'];
@@ -133,25 +155,13 @@ angular.module('AppController', [], null)
             //对应的图书有多少本二手书
             $scope.usedBookNumber = number;
         });
-        UsedBook$.loadMoreAvosUsedBookEqualISBN($scope.isbn13);//先加载5个
+        UsedBook$.ISBN.loadMoreUsedBookEqualISBN($scope.isbn13);//先加载5个
 
         $scope.WeChatJS$ = WeChatJS$;
     })
 
     .controller('book_BusinessSite', function ($scope, $stateParams) {
         $scope.url = $stateParams.url;
-    })
-
-    .controller('book_usedBookListByISBN', function ($scope, $stateParams, UsedBook$) {
-        var isbn13 = $stateParams.isbn13;
-        $scope.UsedBook$ = UsedBook$;
-        UsedBook$.getUsedBookNumberEqualISBN(isbn13).done(function (number) {
-            $scope.usedBookTotalNumber = number;
-            $scope.$apply();
-        });
-        $scope.loadMore = function () {
-            UsedBook$.loadMoreAvosUsedBookEqualISBN(isbn13);
-        }
     })
 
     .controller('book_usedBookListByOwner', function ($scope, $stateParams, UsedBook$, User$) {

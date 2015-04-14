@@ -62,21 +62,21 @@
                 </button>
             </ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
-            <ion-item ng-if="UsedBook$.nowEqualISBNAvosUsedBookList.length>0" class="item-thumbnail-left"
-                      ng-repeat="oneAvosUsedBook in UsedBook$.nowEqualISBNAvosUsedBookList"
-                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneAvosUsedBook.id})">
-                <img ng-src="{{oneAvosUsedBook.get('avosImageFile').thumbnailURL(100, 100)}}">
+            <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0" class="item-thumbnail-left"
+                      ng-repeat="onJsonUsedBook in UsedBook$.ISBN.nowEqualISBNJsonUsedBookList"
+                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:onJsonUsedBook.objectId})">
+                <img ng-src="{{onJsonUsedBook.avosImageFile.thumbnailURL(100, 100)}}">
 
-                <h2>要价:{{oneAvosUsedBook.get('price')}}</h2>
+                <h2>要价:{{onJsonUsedBook.price}}</h2>
 
-                <h4>{{oneAvosUsedBook.updatedAt | date:'mediumDate' }}</h4>
+                <h4>{{onJsonUsedBook.updatedAt | date:'mediumDate' }}</h4>
 
-                <p>{{oneAvosUsedBook.get('des')}}</p>
+                <p>{{onJsonUsedBook.des}}</p>
             </ion-item>
-            <ion-item ng-if="UsedBook$.nowEqualISBNAvosUsedBookList.length>0"
+            <ion-item ng-if="UsedBook$.nowEqualISBNJsonUsedBookList.length>0"
                       style="padding: 0;text-align: center">
                 <a class="button button-small button-clear button-balanced"
-                   ui-sref="tab.book_usedBookListByISBN({isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
+                   ui-sref="tab.book_usedBookList({cmd:'isbn',isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
             </ion-item>
 
         </div>

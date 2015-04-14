@@ -1,0 +1,25 @@
+<ion-view ng-controller="book_usedBookList" title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-list>
+            <!-- 搜索结果列表-->
+            <ion-item class="item-thumbnail-left"
+                      ng-repeat="jsonUsedBook in jsonUsedBooks"
+                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:jsonUsedBook.objectId})">
+                <img ng-src="{{jsonUsedBook.avosImageFile.thumbnailURL(100, 100)}}">
+
+                <h3>要价:{{jsonUsedBook.price}}</h3>
+                <h4>{{jsonUsedBook.updatedAt | date:'mediumDate' }}</h4>
+
+                <p>描述:{{jsonUsedBook.des}}</p>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll
+                ng-if="hasMore()"
+                on-infinite="loadMore()"
+                distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

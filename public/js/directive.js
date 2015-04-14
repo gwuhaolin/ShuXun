@@ -72,7 +72,7 @@ angular.module('AppDirective', [], null)
                 //三本图书的信息
                 jsonBooksInfo: '='
             },
-            templateUrl: 'temp/tool/threeDoubanBookOneLineTemplate.html',
+            templateUrl: 'temp/tool/doubanBookOneLineTemplate.html',
             link: function (scope) {
                 scope.showNumber = Math.floor(document.body.clientWidth / 80);
             }
@@ -86,7 +86,7 @@ angular.module('AppDirective', [], null)
                 //三本图书的信息
                 jsonBooksInfo: '='
             },
-            templateUrl: 'temp/tool/threeUsedBookOneLineTemplate.html',
+            templateUrl: 'temp/tool/usedBookOneLineTemplate.html',
             link: function (scope) {
                 scope.showNumber = Math.floor(document.body.clientWidth / 80);
             }

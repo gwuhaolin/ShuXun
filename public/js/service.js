@@ -267,6 +267,7 @@ angular.module('AppService', [], null)
          */
         this.NearBook = {
             jsonBooks: [],
+            hasMore: true,
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query('UsedBook');
@@ -285,8 +286,7 @@ angular.module('AppService', [], null)
                     }
                     $rootScope.$apply();
                 })
-            },
-            hasMore: true
+            }
         };
 
         /**
@@ -866,39 +866,47 @@ angular.module('AppService', [], null)
             return query.count();
         };
 
-        /**
-         * 目前正在加载的二手书的ISBN号码
-         * @type {string}
-         */
-        var nowISBN13 = '';
-        /**
-         * 目前已经加载了对应的ISBN号码的二手书列表
-         * @type {Array}
-         */
-        this.nowEqualISBNAvosUsedBookList = [];
-        /**
-         * 获得所有对应ISBN的二手书
-         * @param isbn13
-         */
-        this.loadMoreAvosUsedBookEqualISBN = function (isbn13) {
-            that.isLoading = true;
-            if (isbn13 != nowISBN13) {//如果是新的ISBN号码就清空以前的
-                nowISBN13 = isbn13;
-                that.nowEqualISBNAvosUsedBookList = [];
-            }
-            var query = new AV.Query('UsedBook');
-            query.equalTo("isbn13", nowISBN13);
-            query.descending("updatedAt");
-            query.skip(that.nowEqualISBNAvosUsedBookList.length);
-            query.limit(5);
-            query.find().done(function (avosUsedBooks) {
-                that.nowEqualISBNAvosUsedBookList = that.nowEqualISBNAvosUsedBookList.concat(avosUsedBooks);
-            }).always(function () {
-                that.isLoading = false;
-                $rootScope.$apply();
-            })
-        }
-
+        this.ISBN = {
+            /**
+             * 目前正在加载的二手书的ISBN号码
+             * @type {string}
+             */
+            nowISBN13: '',
+            /**
+             * 目前已经加载了对应的ISBN号码的二手书列表
+             * @type {Array}
+             */
+            nowEqualISBNJsonUsedBookList: [],
+            /**
+             * 获得所有对应ISBN的二手书
+             * @param isbn13
+             */
+            loadMoreUsedBookEqualISBN: function (isbn13) {
+                that.isLoading = true;
+                if (isbn13 != that.ISBN.nowISBN13) {//如果是新的ISBN号码就清空以前的
+                    that.ISBN.nowISBN13 = isbn13;
+                    that.nowEqualISBNJsonUsedBookList = [];
+                }
+                var query = new AV.Query('UsedBook');
+                query.equalTo("isbn13", that.ISBN.nowISBN13);
+                query.descending("updatedAt");
+                query.skip(that.ISBN.nowEqualISBNJsonUsedBookList.length);
+                query.limit(5);
+                query.find().done(function (avosUsedBooks) {
+                    if (avosUsedBooks.length > 0) {
+                        for (var i = 0; i < avosUsedBooks.length; i++) {
+                            that.ISBN.nowEqualISBNJsonUsedBookList.push(that.avosUsedBookToJson(avosUsedBooks[i]));
+                        }
+                    } else {
+                        that.ISBN.hasMore = false;
+                    }
+                }).always(function () {
+                    that.isLoading = false;
+                    $rootScope.$apply();
+                })
+            },
+            hasMore: true
+        };
     })
 
     //已经卖出的二手书
