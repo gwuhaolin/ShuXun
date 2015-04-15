@@ -209,21 +209,6 @@ angular.module('AppService', [], null)
         };
 
         /**
-         * TODO 待实现
-         * 新书速递
-         * @type {{books: Array, loadMore: Function}}
-         */
-        this.NewBook = {
-            books: [],
-            loadMore: function () {
-
-            },
-            hasMore: function () {
-
-            }
-        };
-
-        /**
          * 专业相关图书
          * @type {{books: Array, loadMore: Function}}
          */
@@ -341,7 +326,7 @@ angular.module('AppService', [], null)
             wx.config(json);
         });
 
-        //分享出去时的数据 TODO 分享内容待修改 IOS上没有分享logo
+        //分享出去时的数据 TODO 分享内容待修改
         /**
          * 获得微信分享接口时需要的参数
          * @param json 附加的参数

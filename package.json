@@ -6,7 +6,11 @@
   "author": "WuHaolin",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.8.11"
+    "gulp": "^3.8.11",
+    "gulp-angular-filesort": "^1.1.1",
+    "gulp-angular-templatecache": "^1.6.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-uglify": "^1.2.0"
   },
   "dependencies": {
     "express": "3.4.x",

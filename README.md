@@ -1,1 +1,0 @@
-Cloud code project for 校园二手书. Cloud Code Guide: https://cn.avoscloud.com/docs/cloud_code_guide.html

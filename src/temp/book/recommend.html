@@ -17,15 +17,6 @@
                 </button>
             </ion-item>
         </div>
-        <!-- 新书速递-->
-        <div ng-if="BookRecommend$.NewBook.books.length>0">
-            <ion-item class="item-divider item-button-right">新书速递
-                <button class="button button-small button-clear button-balanced" style="top: 0"
-                        ui-sref="tab.book_bookList({cmd:'new'})">更多
-                </button>
-            </ion-item>
-            <douban-book-one-line json-books-info="BookRecommend$.NewBook.books"></douban-book-one-line>
-        </div>
         <!-- 根据专业推荐的书-->
         <div ng-if="BookRecommend$.MajorBook.books.length>0">
             <ion-item class="item-divider item-button-right">{{BookRecommend$.MajorBook.major}}

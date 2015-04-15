@@ -2,13 +2,18 @@
   <dictionary name="wuhaolin">
     <words>
       <w>coor</w>
+      <w>filesort</w>
       <w>hzkjdx</w>
       <w>hzsfdx</w>
       <w>ishuxun</w>
       <w>lpic</w>
+      <w>mailto</w>
+      <w>minify</w>
       <w>mpic</w>
       <w>pinyins</w>
       <w>shuxun</w>
+      <w>templatecache</w>
+      <w>uglify</w>
       <w>whdx</w>
       <w>whlgdx</w>
     </words>
