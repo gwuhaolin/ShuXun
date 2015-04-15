@@ -2,7 +2,10 @@
   <dictionary name="wuhaolin">
     <words>
       <w>coor</w>
+      <w>endbuild</w>
       <w>filesort</w>
+      <w>htmlmin</w>
+      <w>htmlreplace</w>
       <w>hzkjdx</w>
       <w>hzsfdx</w>
       <w>imagemin</w>
