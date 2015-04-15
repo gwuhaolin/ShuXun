@@ -36,7 +36,7 @@ angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective'], 
                     }
                 }
             }).state('tab.book_usedBookList', {
-                url: '/book/usedBookList?cmd&isbn',
+                url: '/book/usedBookList?cmd&isbn13',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/usedBookList.html'
