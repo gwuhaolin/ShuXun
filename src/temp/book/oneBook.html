@@ -73,7 +73,7 @@
 
                 <p>{{onJsonUsedBook.des}}</p>
             </ion-item>
-            <ion-item ng-if="UsedBook$.nowEqualISBNJsonUsedBookList.length>0"
+            <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0"
                       style="padding: 0;text-align: center">
                 <a class="button button-small button-clear button-balanced"
                    ui-sref="tab.book_usedBookList({cmd:'isbn',isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>

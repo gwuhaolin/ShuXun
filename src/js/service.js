@@ -870,7 +870,7 @@ angular.module('AppService', [], null)
                 that.isLoading = true;
                 if (isbn13 != that.ISBN.nowISBN13) {//如果是新的ISBN号码就清空以前的
                     that.ISBN.nowISBN13 = isbn13;
-                    that.nowEqualISBNJsonUsedBookList = [];
+                    that.ISBN.nowEqualISBNJsonUsedBookList = [];
                 }
                 var query = new AV.Query('UsedBook');
                 query.equalTo("isbn13", that.ISBN.nowISBN13);
