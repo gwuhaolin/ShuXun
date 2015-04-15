@@ -10,6 +10,8 @@
     "gulp-angular-filesort": "^1.1.1",
     "gulp-angular-templatecache": "^1.6.0",
     "gulp-concat": "^2.5.2",
+    "gulp-imagemin": "^2.2.1",
+    "gulp-ng-annotate": "^0.5.2",
     "gulp-uglify": "^1.2.0"
   },
   "dependencies": {

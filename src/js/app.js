@@ -4,7 +4,7 @@
  */
 "use strict";
 
-angular.module('app', ['ionic', 'AppController', 'AppService', 'AppDirective'], null)
+var APP = angular.module('APP', ['ionic'], null)
 
     .config(function ($stateProvider, $urlRouterProvider) {
         ionic.Platform.setPlatform('ios');

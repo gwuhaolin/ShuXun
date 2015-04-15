@@ -3,20 +3,18 @@
  *
  */
 "use strict";
-angular.module('AppController', [], null)
-
-    //图书推荐
-    .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) {
-        $scope.BookRecommend$ = BookRecommend$;
-        BookRecommend$.MajorBook.loadMore();
-        BookRecommend$.NeedBook.loadMore();
-        BookRecommend$.NearBook.loadMore();
-        $ionicModal.fromTemplateUrl('template/bookTags.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.bookTagsModalView = modal;
-        });
-    })
+//图书推荐
+APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) {
+    $scope.BookRecommend$ = BookRecommend$;
+    BookRecommend$.MajorBook.loadMore();
+    BookRecommend$.NeedBook.loadMore();
+    BookRecommend$.NearBook.loadMore();
+    $ionicModal.fromTemplateUrl('template/bookTags.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.bookTagsModalView = modal;
+    });
+})
 
     //图书搜索
     .controller('book_searchList', function ($scope, $timeout, $state, SearchBook$, WeChatJS$) {
