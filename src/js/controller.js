@@ -290,7 +290,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         //点击注册时
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
-            alert($scope.userInfo);
+            alert(JSON.stringify($scope.userInfo));
             User$.signUpWithJSONUser($scope.userInfo).done(function () {
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();
