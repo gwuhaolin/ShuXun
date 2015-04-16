@@ -431,6 +431,7 @@ APP.service('DoubanBook$', function () {
             jsonp('/wechat/getOAuthUserInfo/' + code, function (wechatInfo) {
                 var re = {
                     openId: wechatInfo['openid'],
+                    unionId: wechatInfo['unionid'],
                     nickName: wechatInfo['nickname'],
                     sex: wechatInfo['sex'],
                     avatarUrl: wechatInfo['headimgurl']
@@ -646,7 +647,6 @@ APP.service('DoubanBook$', function () {
          * @returns {*|AV.Promise}
          */
         this.signUpWithJSONUser = function (jsonUser) {
-            alert(jsonUser);
             var user = that.jsonToAvosUser(jsonUser);
             user.set('username', jsonUser.email);
             return user.signUp(null);
