@@ -25,6 +25,7 @@ exports.MsgHandler = Wechat(config)
     }).link(function (message, req, res) {
         res.reply('ishuxun');
     }).event(function (message, req, res) {
+        res.reply();
         switch (message['Event']) {
             case 'LOCATION':
                 var openId = message['FromUserName'];
