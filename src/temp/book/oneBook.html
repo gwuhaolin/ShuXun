@@ -46,11 +46,11 @@
         <!-- 电商购买新书-->
         <div class="list card" ng-if="businessInfos.length>0">
             <ion-item class="item-divider">购买新书</ion-item>
-            <ion-item class="item-avatar" ng-repeat="info in businessInfos"
-                      ui-sref="tab.book_businessSite({url:info.siteUrl})">
-                <img ng-src="{{info['imageUrl']}}">
-
-                <h2>{{info['siteName']}} {{info['price']}}元</h2>
+            <ion-item style="white-space:normal">
+                <a class="button button-small button-outline button-balanced" style="margin: 5px"
+                   ng-repeat="info in businessInfos | orderBy:'price'"
+                   ng-href="{{info.url}}">{{info.name}}/{{info.price}}
+                </a>
             </ion-item>
         </div>
 

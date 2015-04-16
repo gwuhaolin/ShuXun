@@ -16,7 +16,7 @@ APP.service('DoubanBook$', function () {
      */
     this.getBookByISBD = function (bookISBN, callback) {
         var url = baseUri + '/isbn/' + bookISBN;
-        url += '?fields=rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+        url += '?fields=id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
         jsonp(url, callback);
     };
     this.getBookByISBD_simple = function (bookISBN, callback) {
@@ -303,18 +303,16 @@ APP.service('DoubanBook$', function () {
         this.NearUser.loadMore();
     })
 
-    .service('BusinessSite$', function () {
-        // 电商联盟的logo 图书价格 电商联盟的名称 商品的购买链接
-        var InfoAttrName = ['imageUrl', 'price', 'siteName', 'siteUrl'];
-
+    .service('BusinessSite$', function ($http) {
         /**
          * 获得对应的ISBN号码的图书在各大电商平台的价格信息
-         * @param isbn13
-         * @param callback 返回获得的信息
+         * @param doubanId 图书的豆瓣ID
+         * @param callback 返回图书的电商信息
          */
-        this.getBusinessInfoByISBN = function (isbn13, callback) {
-            //TODO 获取联盟数据的后台待实现
-            callback();
+        this.getBusinessInfoByISBN = function (doubanId, callback) {
+            $http.jsonp('/business/' + doubanId + '?callback=JSON_CALLBACK').success(function (json) {
+                callback(json);
+            });
         }
     })
 
@@ -611,7 +609,7 @@ APP.service('DoubanBook$', function () {
                 scope: $scope
             }).then(function (modal) {
                 $scope.userLoginModalView = modal;
-                $scope.userLoginModalView.show();
+                modal.show();
             });
             $scope.title = title;
             $scope.loginInfo = {

@@ -5,9 +5,9 @@
 var express = require('express');
 var WechatAPI = require('cloud/wechatAPI.js');
 var WechatMsg = require('cloud/wechatMsg.js');
+var BusinessSite = require('cloud/businessSite.js');
 var Info = require('cloud/info.js');
 var app = express();
-
 ////////////////////// WeChat /////////////////////////
 
 /**
@@ -49,3 +49,11 @@ app.get('/info/getAllBookTags', function (req, res) {
 });
 
 app.listen();
+
+////////////////////// 图书电商信息 /////////////////////////
+app.get('/business/:id', function (req, res) {
+    var id = req.params['id'];
+    BusinessSite.spider(id, function (json) {
+        res.jsonp(json);
+    })
+});

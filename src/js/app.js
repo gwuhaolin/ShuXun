@@ -63,13 +63,6 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/book/usedBookListByOwner.html'
                     }
                 }
-            }).state('tab.book_businessSite', {
-                url: '/book/businessSite/{url}',
-                views: {
-                    'tab-book': {
-                        templateUrl: 'temp/book/businessSite.html'
-                    }
-                }
             }).state('tab.book_oneUsedBook', {
                 url: '/book/oneUsedBook/{usedBookAvosObjectId}',
                 views: {

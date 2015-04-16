@@ -101,7 +101,8 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
+    .controller('book_oneBook', function ($scope, $sce, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
+        $scope.$sce = $sce;
         //////////// 豆瓣图书信息 /////////
         $scope.isbn13 = $stateParams.isbn13;
         $scope.book = null;
@@ -112,6 +113,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.book = json;
             $scope.isLoading = false;
             $scope.$apply();
+            //加载电商联盟信息
+            BusinessSite$.getBusinessInfoByISBN(json.id, function (infos) {
+                $scope.businessInfos = infos;
+            });
         });
 
         //显示作者介绍
@@ -142,11 +147,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             IonicModalView$.alertTitleAndPreModalView(title, pre);
         };
 
-        //加载电商联盟信息
-        BusinessSite$.getBusinessInfoByISBN($scope.isbn13, function (infos) {
-            $scope.businessInfos = infos;
-        });
-
         //////////// 二手书信息 /////////
         $scope.UsedBook$ = UsedBook$;
         UsedBook$.getUsedBookNumberEqualISBN($scope.isbn13).done(function (number) {
@@ -156,10 +156,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         UsedBook$.ISBN.loadMoreUsedBookEqualISBN($scope.isbn13);//先加载5个
 
         $scope.WeChatJS$ = WeChatJS$;
-    })
-
-    .controller('book_BusinessSite', function ($scope, $stateParams) {
-        $scope.url = $stateParams.url;
     })
 
     .controller('book_usedBookListByOwner', function ($scope, $stateParams, UsedBook$, User$) {
