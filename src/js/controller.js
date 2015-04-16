@@ -274,6 +274,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
+            $scope.$apply();
         });
 
         IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
