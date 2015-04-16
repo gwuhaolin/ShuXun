@@ -57,7 +57,6 @@ exports.getOAuthUserInfo = function (code, callback) {
                 if (err) {
                     callback(err);
                 } else {
-                    console.log(userInfo);
                     callback(userInfo);
                 }
             })
