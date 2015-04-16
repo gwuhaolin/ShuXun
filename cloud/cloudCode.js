@@ -41,7 +41,7 @@ AV.Cloud.define('updateWechatMenu', function (request, response) {
             {
                 "type": "view",
                 "name": "书循",
-                "url": "http://ishuxun-wechat.avosapps.com/"
+                "url": "http://wechat.ishuxun.cn/"
             }
         ]
     };
