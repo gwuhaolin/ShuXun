@@ -653,7 +653,7 @@ APP.service('DoubanBook$', function () {
         };
 
         /**
-         * 和微信链接
+         * TODO 和微信链接
          * @param unionid 微信的unionid
          * @returns {*|AV.Promise}
          */
