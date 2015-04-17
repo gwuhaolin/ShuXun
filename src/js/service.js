@@ -647,6 +647,7 @@ APP.service('DoubanBook$', function () {
          * @returns {*|AV.Promise}
          */
         this.signUpWithJSONUser = function (jsonUser) {
+            confirm(jsonUser);//TODO
             var user = that.jsonToAvosUser(jsonUser);
             user.set('username', jsonUser.email);
             return user.signUp(null);
