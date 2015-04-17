@@ -8,6 +8,7 @@ var WechatMsg = require('cloud/wechatMsg.js');
 var BusinessSite = require('cloud/businessSite.js');
 var Info = require('cloud/info.js');
 var app = express();
+app.use(express.compress(), null);//压缩返回的数据
 ////////////////////// WeChat /////////////////////////
 
 /**
@@ -48,8 +49,6 @@ app.get('/info/getAllBookTags', function (req, res) {
     res.jsonp(tags);
 });
 
-app.listen();
-
 ////////////////////// 图书电商信息 /////////////////////////
 app.get('/business/:id', function (req, res) {
     var id = req.params['id'];
@@ -57,3 +56,5 @@ app.get('/business/:id', function (req, res) {
         res.jsonp(json);
     })
 });
+
+app.listen();
