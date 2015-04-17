@@ -272,7 +272,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
-            confirm(userInfo);//TODO
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
             $scope.$apply();
@@ -290,7 +289,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
         //点击注册时
         $scope.submitOnClick = function () {
-            confirm($scope.userInfo);//TODO
             $scope.isLoading = true;
             User$.signUpWithJSONUser($scope.userInfo).done(function () {
                 $state.go('tab.person_my');
