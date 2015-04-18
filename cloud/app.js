@@ -32,6 +32,16 @@ app.get('/wechat/getOAuthUserInfo/:code', function (req, res) {
     })
 });
 
+app.get('/wechat/sendMsgTo/:sendName/:sendId/:receiverId/:msg', function (req, res) {
+    var sendName = req.params['sendName'];
+    var sendOpenId = req.params['sendId'];
+    var receiverOpenId = req.params['receiverId'];
+    var msg = req.params['msg'];
+    WechatAPI.senderSendMsgToReceiver(sendName, sendOpenId, receiverOpenId, msg, function (result) {
+        res.jsonp(result);
+    })
+});
+
 /**
  * 微信消息服务
  */

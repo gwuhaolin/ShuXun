@@ -63,3 +63,42 @@ exports.getOAuthUserInfo = function (code, callback) {
         }
     });
 };
+
+/**
+ * 用户之间相互发送消息
+ * @param senderName 发送者的昵称
+ * @param senderId 发送者的微信openID
+ * @param receiverId 接收者的微信openID
+ * @param msg 消息内容
+ * @param callback 发送成功就返回msgid 否则返回error
+ */
+exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, callback) {
+    var templateId = 'OPENTM202119578';
+    var url = 'http://wechat.ishuxun.cn/person/sendMsgToUser/' + senderId + '/' + msg;
+    var color = '#30bf4c';
+    var data = {
+        first: {//标题
+            value: '有同学咨询你的旧书',
+            color: color
+        },
+        keyword1: {//用户名称
+            value: senderName,
+            color: color
+        },
+        keyword2: {//咨询内容
+            value: msg,
+            color: color
+        },
+        remark: {//底部
+            value: '点击我回复该同学',
+            color: color
+        }
+    };
+    exports.APIClient.sendTemplate(receiverId, templateId, url, color, data, function (err, result) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(result['msgid']);
+        }
+    })
+};

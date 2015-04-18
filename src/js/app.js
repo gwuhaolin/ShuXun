@@ -114,6 +114,13 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/person/my.html'
                     }
                 }
+            }).state('tab.person_sendMsgToUser', {
+                url: '/person/sendMsgToUser?openId&msg',
+                views: {
+                    'tab-person': {
+                        templateUrl: 'temp/person/sendMsgToUser.html'
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/tab/book/recommend');
     });

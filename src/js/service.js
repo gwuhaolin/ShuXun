@@ -449,7 +449,7 @@ APP.service('DoubanBook$', function () {
             wx.openLocation({
                 latitude: lat, // 纬度，浮点数，范围为90 ~ -90
                 longitude: lon, // 经度，浮点数，范围为180 ~ -180。
-                name: '主人位置' // 位置名
+                name: '该同学位置' // 位置名
             });
         }
 
@@ -632,7 +632,7 @@ APP.service('DoubanBook$', function () {
 
     })
 
-    .service('User$', function () {
+    .service('User$', function ($http) {
         var that = this;
 
         /**
@@ -710,6 +710,29 @@ APP.service('DoubanBook$', function () {
             return user;
         };
 
+        /***
+         * 获得微信openId
+         * @param openId
+         * @returns {*|AV.Promise|{value, color}}
+         */
+        this.getAvosUserByOpenId = function (openId) {
+            var query = new AV.Query(AV.User);
+            query.equalTo('openId', openId);
+            return query.first();
+        };
+
+        /**
+         * 我发送消息给其他用户
+         * @param receiverId 接收者的openID
+         * @param msg 消息内容
+         * @param callback 发送成功就返回msgid 否则返回error
+         */
+        this.sendMsgToUser = function (receiverId, msg, callback) {
+            var myJsonInfo = that.getCurrentJsonUser();
+            var sendName = myJsonInfo.nickName;
+            var sendId = myJsonInfo.openId;
+            $http.jsonp('/wechat/sendMsgTo/' + sendName + '/' + sendId + '/' + receiverId + '/' + msg + '?callback=JSON_CALLBACK').success(callback);
+        }
     })
 
     //还没有卖出的二手书

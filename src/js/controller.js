@@ -398,4 +398,25 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 alert(error.message);
             })
         }
+    })
+
+    .controller('person_sendMsgToUser', function ($scope, $stateParams, User$, IonicModalView$) {
+        if (!User$.getCurrentAvosUser()) {
+            IonicModalView$.alertUserLoginModalView('你还没有登录');
+        }
+        var receiverId = $stateParams['openId'];
+        $scope.receiveMsg = $stateParams['msg'];
+        User$.getAvosUserByOpenId(receiverId).done(function (avosUser) {
+            $scope.jsonUser = User$.avosUserToJson(avosUser);
+            $scope.$apply();
+        });
+
+        /**
+         * 发出消息
+         */
+        $scope.sendOnClick = function () {
+            User$.sendMsgToUser(receiverId, $scope['sendMsg'], function (reslut) {
+
+            })
+        }
     });
