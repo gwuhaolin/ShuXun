@@ -79,7 +79,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
     var data = {
         first: {//标题
             value: '有同学咨询你的旧书',
-            color: color
+            color: '#ff7171'
         },
         keyword1: {//用户名称
             value: senderName,
