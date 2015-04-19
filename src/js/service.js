@@ -725,9 +725,10 @@ APP.service('DoubanBook$', function () {
          * 我发送消息给其他用户
          * @param receiverId 接收者的openID
          * @param msg 消息内容
-         * @param callback 发送成功就返回msgid 否则返回error
+         * @param onSuccess 发送成功就返回msgid
+         * @param onError 返回错误
          */
-        this.sendMsgToUser = function (receiverId, msg, callback) {
+        this.sendMsgToUser = function (receiverId, msg, onSuccess, onError) {
             var myJsonInfo = that.getCurrentJsonUser();
             var sendName = myJsonInfo.nickName;
             var sendId = myJsonInfo.openId;
@@ -738,7 +739,15 @@ APP.service('DoubanBook$', function () {
                     receiverId: receiverId,
                     msg: msg
                 }
-            }).success(callback);
+            }).success(function (result) {
+                if (result['errcode'] == 0) {
+                    onSuccess(result['msgid'])
+                } else {
+                    onError(result);
+                }
+            }).error(function (error) {
+                onError(error);
+            })
         }
     })
 

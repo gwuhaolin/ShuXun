@@ -400,7 +400,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_sendMsgToUser', function ($scope, $stateParams, User$, IonicModalView$) {
+    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, User$, IonicModalView$) {
         if (!User$.getCurrentAvosUser()) {
             IonicModalView$.alertUserLoginModalView('你还没有登录');
         }
@@ -418,8 +418,11 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
          * 发出消息
          */
         $scope.sendOnClick = function () {
-            User$.sendMsgToUser(receiverId, $scope.msg.sendMsg, function (reslut) {
-
+            User$.sendMsgToUser(receiverId, $scope.msg['sendMsg'], function () {
+                alert('回复成功');
+                $state.go('tab.person_my');
+            }, function (error) {
+                alert('发送失败:' + error['errmsg']);
             })
         }
     });

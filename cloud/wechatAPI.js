@@ -70,7 +70,7 @@ exports.getOAuthUserInfo = function (code, callback) {
  * @param senderId 发送者的微信openID
  * @param receiverId 接收者的微信openID
  * @param msg 消息内容
- * @param callback 发送成功就返回msgid 否则返回error
+ * @param callback 返回result
  */
 exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, callback) {
     var templateId = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';
@@ -79,7 +79,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
     var data = {
         first: {//标题
             value: '有同学咨询你的旧书',
-            color: '#ff7171'
+            color: '#46bfb9'
         },
         keyword1: {//用户名称
             value: senderName,
@@ -98,7 +98,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
         if (err) {
             callback(err);
         } else {
-            callback(result['msgid']);
+            callback(result);
         }
     })
 };
