@@ -323,15 +323,15 @@ APP.service('DoubanBook$', function () {
             wx.config(json);
         });
 
-        //分享出去时的数据 TODO 分享内容待修改
+        //分享出去时的数据
         /**
          * 获得微信分享接口时需要的参数
          * @param json 附加的参数
          */
         function getShareData(json) {
             var re = {
-                title: document.title,
-                desc: '关于书循的介绍',
+                title: '书循',
+                desc: '让你的课本重复利用',
                 link: window.location.href,
                 imgUrl: 'http://' + window.location.host + '/img/logo-R.png'
             };
@@ -506,7 +506,6 @@ APP.service('DoubanBook$', function () {
                 })
             },
             /**
-             * TODO not work
              * 是否还可以加载更多
              */
             hasMore: true,
