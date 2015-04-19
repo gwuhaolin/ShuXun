@@ -8,13 +8,13 @@
             <!-- 对方用户信息-->
             <user-info ng-if="jsonUser" json-user-info="jsonUser"></user-info>
             <!-- 对方发的消息-->
-            <ion-item ng-if="receiveMsg">{{receiveMsg}}</ion-item>
+            <ion-item ng-if="msg.receiveMsg">{{msg.receiveMsg}}</ion-item>
             <!-- 我的输入框-->
             <label class="item item-input">
-                <input type="text" ng-model="sendMsg" placeholder="输入回复内容" style="height: 100px;">
+                <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容" style="height: 100px;">
             </label>
         </ion-list>
-        <button ng-disabled="!sendMsg" class="button button-block button-outline button-balanced"
+        <button ng-disabled="!msg.sendMsg" class="button button-block button-outline button-balanced"
                 ng-click="sendOnClick()">发送
         </button>
     </ion-content>

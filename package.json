@@ -8,7 +8,6 @@
   "devDependencies": {
     "event-stream": "^3.3.0",
     "gulp": "^3.8.11",
-    "gulp-angular-filesort": "^1.1.1",
     "gulp-angular-templatecache": "^1.6.0",
     "gulp-concat": "^2.5.2",
     "gulp-html-replace": "^1.4.5",

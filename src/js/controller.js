@@ -405,7 +405,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             IonicModalView$.alertUserLoginModalView('你还没有登录');
         }
         var receiverId = $stateParams['openId'];
-        $scope.receiveMsg = $stateParams['msg'];
+        $scope.msg = {
+            receiveMsg: $stateParams['msg'],
+            sendMsg: ''
+        };
         User$.getAvosUserByOpenId(receiverId).done(function (avosUser) {
             $scope.jsonUser = User$.avosUserToJson(avosUser);
             $scope.$apply();
@@ -415,7 +418,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
          * 发出消息
          */
         $scope.sendOnClick = function () {
-            User$.sendMsgToUser(receiverId, $scope['sendMsg'], function (reslut) {
+            User$.sendMsgToUser(receiverId, $scope.msg.sendMsg, function (reslut) {
 
             })
         }

@@ -73,8 +73,8 @@ exports.getOAuthUserInfo = function (code, callback) {
  * @param callback 发送成功就返回msgid 否则返回error
  */
 exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, callback) {
-    var templateId = 'OPENTM202119578';
-    var url = 'http://wechat.ishuxun.cn/person/sendMsgToUser/' + senderId + '/' + msg;
+    var templateId = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';
+    var url = 'http://wechat.ishuxun.cn/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg;
     var color = '#30bf4c';
     var data = {
         first: {//标题
@@ -86,11 +86,11 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
             color: color
         },
         keyword2: {//咨询内容
-            value: msg,
+            value: '',
             color: color
         },
         remark: {//底部
-            value: '点击我回复该同学',
+            value: msg,
             color: color
         }
     };

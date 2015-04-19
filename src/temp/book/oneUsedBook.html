@@ -19,7 +19,8 @@
         </div>
         <div class="list card">
             <ion-item class="item-divider  item-button-right">主人信息
-                <a class="button button-clear button-balanced" style="top: 0" ng-href="mailto:{{ownerInfo.email}}">联系主人
+                <a class="button button-clear button-balanced" style="top: 0"
+                   ui-sref="tab.person_sendMsgToUser({openId:ownerInfo.objectId})">联系主人
                 </a>
             </ion-item>
             <user-info json-user-info="ownerInfo" user-used-book-number="ownerUsedBookNumber"></user-info>

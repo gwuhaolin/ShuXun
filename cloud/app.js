@@ -32,11 +32,17 @@ app.get('/wechat/getOAuthUserInfo/:code', function (req, res) {
     })
 });
 
-app.get('/wechat/sendMsgTo/:sendName/:sendId/:receiverId/:msg', function (req, res) {
-    var sendName = req.params['sendName'];
-    var sendOpenId = req.params['sendId'];
-    var receiverOpenId = req.params['receiverId'];
-    var msg = req.params['msg'];
+/**
+ * @queryParam sendName
+ * @queryParam sendId
+ * @queryParam receiverId
+ * @queryParam msg
+ */
+app.get('/wechat/sendMsgTo', function (req, res) {
+    var sendName = req.query['sendName'];
+    var sendOpenId = req.query['sendId'];
+    var receiverOpenId = req.query['receiverId'];
+    var msg = req.query['msg'];
     WechatAPI.senderSendMsgToReceiver(sendName, sendOpenId, receiverOpenId, msg, function (result) {
         res.jsonp(result);
     })

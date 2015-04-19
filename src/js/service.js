@@ -731,7 +731,14 @@ APP.service('DoubanBook$', function () {
             var myJsonInfo = that.getCurrentJsonUser();
             var sendName = myJsonInfo.nickName;
             var sendId = myJsonInfo.openId;
-            $http.jsonp('/wechat/sendMsgTo/' + sendName + '/' + sendId + '/' + receiverId + '/' + msg + '?callback=JSON_CALLBACK').success(callback);
+            $http.jsonp('/wechat/sendMsgTo?callback=JSON_CALLBACK', {
+                params: {
+                    sendName: sendName,
+                    sendId: sendId,
+                    receiverId: receiverId,
+                    msg: msg
+                }
+            }).success(callback);
         }
     })
 
