@@ -74,7 +74,7 @@ exports.getOAuthUserInfo = function (code, callback) {
  */
 exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, callback) {
     var templateId = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';
-    var url = 'http://wechat.ishuxun.cn/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg;
+    var url = 'http://wechat.ishuxun.cn/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg;
     var color = '#30bf4c';
     var data = {
         first: {//标题
