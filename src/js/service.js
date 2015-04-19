@@ -747,6 +747,18 @@ APP.service('DoubanBook$', function () {
             }).error(function (error) {
                 onError(error);
             })
+        };
+
+        /**
+         * 使用微信登入
+         */
+        this.loginByWechat = function () {
+            var wechatUnionId = '';
+            AV.User._logInWith('weixin', {
+                "authData": {
+                    "unionId": wechatUnionId
+                }
+            })
         }
     })
 
