@@ -134,3 +134,19 @@ AV.Cloud.beforeDelete('UsedBook', function (request, response) {
         response.error(error);
     })
 });
+
+/**
+ * 用户注册之后
+ */
+AV.Cloud.afterSave('_User', function (request) {
+    //把当前用户的微信账号链接到AVOS账号
+    var my = request.object;
+    var wechatUnionId = my.get('unionId');
+    if (my && wechatUnionId) {
+        my._linkWith('weixin', {
+            "authData": {
+                "unionId": wechatUnionId
+            }
+        })
+    }
+});
