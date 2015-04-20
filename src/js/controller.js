@@ -293,7 +293,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             User$.signUpWithJSONUser($scope.userInfo).done(function (avosUser) {
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();
-                createCookie('unionId',avosUser.get('unionId'),365);
             }).fail(function (error) {
                 alert(error.message);
             }).always(function () {
@@ -342,7 +341,18 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_my', function ($scope, $state, User$, UsedBook$, IonicModalView$) {
+    .controller('person_my', function ($scope, $state, $stateParams, User$, UsedBook$, IonicModalView$) {
+        //调用微信接口获取用户信息,来自用户登入
+        var wechatAOuthCode = $stateParams['code'];
+        if (wechatAOuthCode) {
+            WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
+                loginWithUnionId(userInfo.unionId).done(function () {
+                    load();
+                })
+            });
+        }
+
+
         function load() {
             $scope.userInfo = User$.getCurrentJsonUser();
             UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {

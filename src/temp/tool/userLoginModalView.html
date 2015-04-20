@@ -7,27 +7,28 @@
         <h2 class="title">{{title}}</h2>
     </ion-header-bar>
     <ion-content class="padding has-header" style="text-align: center">
-        <!-- 填写邮箱和密码-->
-        <div class="list list-inset">
-            <label class="item item-input">
-                <input type="email" placeholder="输入你的邮箱" ng-model="loginInfo.email">
-            </label>
+        <!--&lt;!&ndash; 填写邮箱和密码&ndash;&gt;-->
+        <!--<div class="list list-inset">-->
+        <!--<label class="item item-input">-->
+        <!--<input type="email" placeholder="输入你的邮箱" ng-model="loginInfo.email">-->
+        <!--</label>-->
 
-            <label class="item item-input">
-                <input type="password" placeholder="输入登入密码" ng-model="loginInfo.password">
-            </label>
-        </div>
+        <!--<label class="item item-input">-->
+        <!--<input type="password" placeholder="输入登入密码" ng-model="loginInfo.password">-->
+        <!--</label>-->
+        <!--</div>-->
         <!-- 提交-->
-        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
-                ng-disabled="!(loginInfo.email && loginInfo.password)">
+        <hr style="margin: 30px">
+        <a class="button button-outline button-balanced"
+           ng-href="{{WeChatJS$.getOAuthURL('tab/person/my')}}">
             登入书循
-        </button>
+        </a>
 
         <hr style="margin: 30px">
         <!-- 加入书循-->
         <p>没有账号?</p>
-        <a class="button button-outline button-balanced" ng-href="{{WeChatJS$.getOAuthURL()}}"
-                ng-click="userLoginModalView.hide()">
+        <a class="button button-outline button-balanced" ng-href="{{WeChatJS$.getOAuthURL('tab/person/signUp')}}"
+           ng-click="userLoginModalView.hide()">
             加入书循
         </a>
 

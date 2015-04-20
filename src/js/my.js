@@ -41,16 +41,17 @@ function createCookie(name, value, days) {
     document.cookie = name + "=" + value + expires + "; path=/";
 }
 
-{//使用微信写在cookie里的unionId登入
-    var wechatUnionId = readCookie('unionId');
-    if (wechatUnionId) {
-        AV.User._logInWith('weixin', {
-            "authData": {
-                "unionId": wechatUnionId
-            }
-        })
+/**
+ * 使用微信写在cookie里的unionId登入
+ * @param unionId 微信ID
+ * @returns {*|AV.Promise}
+ */
+function loginWithUnionId(unionId) {
+    if (unionId) {
+        return AV.User.logIn(unionId, unionId);
     }
 }
+loginWithUnionId(readCookie('unionId'));
 
 function readCookie(name) {
     var nameEQ = name + "=";

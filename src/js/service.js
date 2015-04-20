@@ -414,9 +414,10 @@ APP.service('DoubanBook$', function () {
 
         /**
          * 直接生成引导用户Web OAuth点击的URL
+         * @param subUrl 获得微信code后跳转到的url的#后面的url
          */
-        this.getOAuthURL = function () {
-            var redirectUrl = location.href.split('#')[0] + '#tab/person/signUp';
+        this.getOAuthURL = function (subUrl) {
+            var redirectUrl = location.href.split('#')[0] + '#' + subUrl;
             return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect';
         };
 
@@ -436,6 +437,7 @@ APP.service('DoubanBook$', function () {
                     sex: wechatInfo['sex'],
                     avatarUrl: wechatInfo['headimgurl']
                 };
+                createCookie('unionId', re.unionId, 365);
                 callback(re);
             })
         };
@@ -638,7 +640,7 @@ APP.service('DoubanBook$', function () {
          * 一个用户所有具有的属性名称
          * @type {string[]}
          */
-        var UserAttrNames = ['email', 'username', 'password', 'openId', 'unionId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
+        var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
 
         /**
          * 用户注册 用户名=Email
@@ -647,7 +649,8 @@ APP.service('DoubanBook$', function () {
          */
         this.signUpWithJSONUser = function (jsonUser) {
             var user = that.jsonToAvosUser(jsonUser);
-            user.set('username', jsonUser.email);
+            user.set('username', jsonUser.unionId);
+            user.set('password', jsonUser.unionId);
             return user.signUp(null);
         };
 
