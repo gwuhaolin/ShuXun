@@ -8,7 +8,11 @@ var WechatMsg = require('cloud/wechatMsg.js');
 var BusinessSite = require('cloud/businessSite.js');
 var Info = require('cloud/info.js');
 var app = express();
+var favicon = require('serve-favicon');
 app.use(express.compress(), null);//压缩返回的数据
+app.set("view engine", "ejs");
+app.use(favicon('cloud/views/favicon.ico',null),null);
+app.listen();
 ////////////////////// WeChat /////////////////////////
 
 /**
@@ -72,5 +76,3 @@ app.get('/business/:id', function (req, res) {
         res.jsonp(json);
     })
 });
-
-app.listen();
