@@ -10,8 +10,9 @@ var Info = require('cloud/info.js');
 var app = express();
 var favicon = require('serve-favicon');
 app.use(express.compress(), null);//压缩返回的数据
+app.set('views', 'cloud/views');   // 设置模板目录
 app.set("view engine", "ejs");
-app.use(favicon('cloud/views/favicon.ico',null),null);
+app.use(favicon('cloud/views/favicon.ico', null), null);
 app.listen();
 ////////////////////// WeChat /////////////////////////
 
@@ -70,9 +71,18 @@ app.get('/info/getAllBookTags', function (req, res) {
 });
 
 ////////////////////// 图书电商信息 /////////////////////////
+/**
+ * @queryParam id 豆瓣图书id
+ */
 app.get('/business/:id', function (req, res) {
     var id = req.params['id'];
     BusinessSite.spider(id, function (json) {
         res.jsonp(json);
     })
+});
+
+////////////////////// SEO /////////////////////////
+app.get('/seo/:name', function (req, res) {
+    var name = req.params['name'];
+    res.render("seo", {book: "test"});
 });
