@@ -6,6 +6,7 @@ var express = require('express');
 var WechatAPI = require('cloud/wechatAPI.js');
 var WechatMsg = require('cloud/wechatMsg.js');
 var BusinessSite = require('cloud/businessSite.js');
+var request = require('request');
 var Info = require('cloud/info.js');
 var app = express();
 var favicon = require('serve-favicon');
@@ -82,7 +83,21 @@ app.get('/business/:id', function (req, res) {
 });
 
 ////////////////////// SEO /////////////////////////
-app.get('/seo/:name', function (req, res) {
-    var name = req.params['name'];
-    res.render("seo", {book: "test"});
+app.get('/seo', function (req, res) {
+    var books = [];
+    var query = new AV.Query('UsedBook');
+    query.select('isbn13');
+    query.find().done(function (usedBooks) {
+        for (var i = 0; i < usedBooks.length; i++) {
+            var isbn13 = usedBooks[i].get('isbn13');
+            var url = 'http://api.douban.com/v2/book/isbn/' + isbn13;
+            url += '?fields=author,pubdate,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+            request(url, function (error, res, body) {
+                if (!error) {
+                    books.push(JSON.parse(body));
+                }
+            });
+        }
+    });
+    res.render("seoBookList", {books: books});
 });
