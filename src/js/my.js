@@ -3,6 +3,13 @@
  *
  */
 "use strict";
+//AVOSCloud
+AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08zxttpt7upqxwgt6oy47lzb3f8c4juf34otfm");
+
+//微信公共平台
+var WECHAT = {
+    AppID: 'wx2940a8d3ddcad5e9'
+};
 
 /**
  * 自定义的jsonp调用
@@ -55,11 +62,3 @@ function readCookie(name) {
     }
     return null;
 }
-
-//AVOSCloud
-AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08zxttpt7upqxwgt6oy47lzb3f8c4juf34otfm");
-
-//微信公共平台
-var WECHAT = {
-    AppID: 'wx2940a8d3ddcad5e9'
-};
