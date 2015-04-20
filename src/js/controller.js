@@ -200,9 +200,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             avosImageFile: null
         };
         if (!User$.getCurrentAvosUser()) {
-            IonicModalView$.alertUserLoginModalView('你需要先登入', function (avosUser) {
-                $scope.usedBookInfo.owner = avosUser;
-            })
+            IonicModalView$.alertUserLoginModalView();
         } else {
             $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
         }
@@ -297,7 +295,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         //点击注册时
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
-            User$.signUpWithJSONUser($scope.userInfo).done(function (avosUser) {
+            User$.signUpWithJSONUser($scope.userInfo).done(function () {
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();
             }).fail(function (error) {
@@ -310,14 +308,12 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     })
 
-    .controller('person_editPersonInfo', function ($scope, InfoService$, User$, IonicModalView$) {
+    .controller('person_editPersonInfo', function ($scope, $state, InfoService$, User$, IonicModalView$) {
         //是否对属性进行了修改
         $scope.attrHasChange = false;
 
         if (!User$.getCurrentAvosUser()) {//还没有用户的信息
-            IonicModalView$.alertUserLoginModalView('你还没有登入', function () {
-                $scope.userInfo = User$.getCurrentJsonUser();
-            })
+            IonicModalView$.alertUserLoginModalView();
         } else {
             $scope.userInfo = User$.getCurrentJsonUser();
         }
@@ -337,12 +333,14 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             var unionId = readCookie('unionId');
             if (unionId) {
                 loginWithUnionId(unionId).done(function (avosUser) {
+                    avosUser.fetchWhenSave(true);
                     avosUser.save({
                         school: $scope.userInfo['school'],
                         major: $scope.userInfo['major'],
                         startSchoolYear: $scope.userInfo['startSchoolYear']
                     }, function () {
                         alert('修改成功');
+                        $state.go('tab.person_my');
                     }, function (error) {
                         alert('修改失败:' + error.message);
                     })
@@ -409,7 +407,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, User$, IonicModalView$) {
         if (!User$.getCurrentAvosUser()) {
-            IonicModalView$.alertUserLoginModalView('你还没有登录');
+            IonicModalView$.alertUserLoginModalView();
         }
         var receiverId = $stateParams['openId'];
         $scope.msg = {
