@@ -748,18 +748,6 @@ APP.service('DoubanBook$', function () {
                 onError(error);
             })
         };
-
-        /**
-         * 使用微信登入
-         */
-        this.loginByWechat = function () {
-            var wechatUnionId = '';
-            AV.User._logInWith('weixin', {
-                "authData": {
-                    "unionId": wechatUnionId
-                }
-            })
-        }
     })
 
     //还没有卖出的二手书

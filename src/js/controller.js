@@ -290,9 +290,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         //点击注册时
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
-            User$.signUpWithJSONUser($scope.userInfo).done(function () {
+            User$.signUpWithJSONUser($scope.userInfo).done(function (avosUser) {
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();
+                createCookie('unionId',avosUser.get('unionId'),365);
             }).fail(function (error) {
                 alert(error.message);
             }).always(function () {
