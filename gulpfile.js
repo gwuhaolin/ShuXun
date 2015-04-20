@@ -63,6 +63,19 @@ gulp.task('wechat', function () {
 
 ///////////// pc //////////////
 
+//图片压缩
+gulp.task('pc_image', function () {
+    return gulp.src('src/img/*.*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('public/img'));
+});
+
+gulp.task('pc_index', function () {
+    return gulp.src('src/index.html')
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(gulp.dest('public'));
+});
+
 gulp.task('pc', function () {
-    gulp.start();
+    gulp.start('pc_index', 'pc_image');
 });
