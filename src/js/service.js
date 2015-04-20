@@ -602,9 +602,8 @@ APP.service('DoubanBook$', function () {
         /**
          * 提示用户登入
          * @param title 显示给用户的提示信息
-         * @param onSuccess 当登入成功时调用 返回 AVOSUser
          */
-        this.alertUserLoginModalView = function (title, onSuccess) {
+        this.alertUserLoginModalView = function (title) {
             var $scope = $rootScope.$new(true);
             $scope.WeChatJS$ = WeChatJS$;
             $ionicModal.fromTemplateUrl('temp/tool/userLoginModalView.html', {
@@ -614,21 +613,6 @@ APP.service('DoubanBook$', function () {
                 modal.show();
             });
             $scope.title = title;
-            $scope.loginInfo = {
-                email: User$.getCurrentAvosUser() == null ? '' : User$.getCurrentJsonUser().email,
-                password: ''
-            };
-            $scope.submitOnClick = function () {
-                AV.User.logIn($scope.loginInfo.email, $scope.loginInfo.password, {
-                    success: function (avosUser) {
-                        $scope.userLoginModalView.hide();
-                        onSuccess(avosUser);
-                    },
-                    error: function (user, error) {
-                        alert('登入失败:' + error.message);
-                    }
-                });
-            }
         }
 
     })

@@ -327,17 +327,22 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
         //点击提交修改时
         $scope.submitOnClick = function () {
-            IonicModalView$.alertUserLoginModalView('修改前需要验证身份', function (avosUser) {
-                avosUser.save({
-                    school: $scope.userInfo['school'],
-                    major: $scope.userInfo['major'],
-                    startSchoolYear: $scope.userInfo['startSchoolYear']
-                }, function () {
-                    alert('修改成功');
-                }, function (error) {
-                    alert('修改失败:' + error.message);
+            var unionId = readCookie('unionId');
+            if (unionId) {
+                loginWithUnionId(unionId).done(function (avosUser) {
+                    avosUser.save({
+                        school: $scope.userInfo['school'],
+                        major: $scope.userInfo['major'],
+                        startSchoolYear: $scope.userInfo['startSchoolYear']
+                    }, function () {
+                        alert('修改成功');
+                    }, function (error) {
+                        alert('修改失败:' + error.message);
+                    })
                 })
-            });
+            } else {
+                IonicModalView$.alertUserLoginModalView('修改前需要验证身份');
+            }
         }
     })
 
@@ -349,6 +354,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 $scope.$apply();
             });
         }
+
         //调用微信接口获取用户信息,来自用户登入
         var wechatAOuthCode = $stateParams['code'];
         if (wechatAOuthCode) {
@@ -357,7 +363,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                     load();
                 })
             });
-        }else{
+        } else {
             if (User$.getCurrentJsonUser()) {
                 load();
             } else {
@@ -372,16 +378,14 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
          */
         $scope.logOut = function () {
             AV.User.logOut();
+            eraseCookie('unionId');
             $state.go('tab.book_recommend');
         }
     })
 
     .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$, User$, IonicModalView$) {
         if (!User$.getCurrentAvosUser()) {
-            IonicModalView$.alertUserLoginModalView('你还没有登录', function () {
-                UsedBook$.loadMyAvosUsedBookList();
-                HasSellUsedBook$.loadMyAvosUsedBookList();
-            });
+            IonicModalView$.alertUserLoginModalView('你还没有登录');
         }
         //还没有卖出
         $scope.UsedBook$ = UsedBook$;
