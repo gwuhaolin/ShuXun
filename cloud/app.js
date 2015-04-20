@@ -13,7 +13,7 @@ var favicon = require('serve-favicon');
 app.use(express.compress(), null);//压缩返回的数据
 app.set('views', 'cloud/views');   // 设置模板目录
 app.set("view engine", "ejs");
-app.use(favicon('cloud/views/favicon.ico', null), null);
+app.use(favicon('../public/favicon.ico', null), null);
 app.listen();
 ////////////////////// WeChat /////////////////////////
 
@@ -80,24 +80,4 @@ app.get('/business/:id', function (req, res) {
     BusinessSite.spider(id, function (json) {
         res.jsonp(json);
     })
-});
-
-////////////////////// SEO /////////////////////////
-app.get('/seo', function (req, res) {
-    var books = [];
-    var query = new AV.Query('UsedBook');
-    query.select('isbn13');
-    query.find().done(function (usedBooks) {
-        for (var i = 0; i < usedBooks.length; i++) {
-            var isbn13 = usedBooks[i].get('isbn13');
-            var url = 'http://api.douban.com/v2/book/isbn/' + isbn13;
-            url += '?fields=author,pubdate,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
-            request(url, function (error, res, body) {
-                if (!error) {
-                    books.push(JSON.parse(body));
-                }
-            });
-        }
-    });
-    res.render("seoBookList", {books: books});
 });
