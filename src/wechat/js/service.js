@@ -333,7 +333,7 @@ APP.service('DoubanBook$', function () {
                 title: '书循',
                 desc: '让你的课本重复利用',
                 link: window.location.href,
-                imgUrl: 'http://' + window.location.host + '/img/logo-R.png'
+                imgUrl: 'http://' + window.location.host + '/wechat/img/logo-R.png'
             };
             re = angular.extend(re, json);
             return re;
