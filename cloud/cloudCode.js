@@ -41,12 +41,12 @@ AV.Cloud.define('updateWechatMenu', function (request, response) {
             {
                 "type": "view",
                 "name": "买书",
-                "url": "http://wechat.ishuxun.cn/"
+                "url": "http://ishuxun.cn/wechat/"
             },
             {
                 "type": "view",
                 "name": "卖书",
-                "url": "http://wechat.ishuxun.cn/#/tab/person/uploadOneUsedBook/"
+                "url": "http://ishuxun.cn/wechat/#/tab/person/uploadOneUsedBook/"
             }
         ]
     };
