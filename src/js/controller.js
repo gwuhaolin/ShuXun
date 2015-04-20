@@ -371,7 +371,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         $scope.logOut = function () {
             AV.User.logOut();
             eraseCookie('unionId');
-            $state.go('tab.book_recommend');
+            wx.closeWindow();
         }
     })
 
