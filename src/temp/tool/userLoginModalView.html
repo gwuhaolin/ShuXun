@@ -20,7 +20,8 @@
         <!-- 提交-->
         <hr style="margin: 30px">
         <a class="button button-outline button-balanced"
-           ng-href="{{WeChatJS$.getOAuthURL('tab/person/my')}}">
+           ng-href="{{WeChatJS$.getOAuthURL('tab/person/my')}}"
+           ng-click="userLoginModalView.hide()">
             登入书循
         </a>
 

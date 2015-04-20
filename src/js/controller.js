@@ -342,6 +342,13 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
     })
 
     .controller('person_my', function ($scope, $state, $stateParams, User$, UsedBook$, IonicModalView$) {
+        function load() {
+            $scope.userInfo = User$.getCurrentJsonUser();
+            UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
+                $scope.myUsedBookNumber = number;
+                $scope.$apply();
+            });
+        }
         //调用微信接口获取用户信息,来自用户登入
         var wechatAOuthCode = $stateParams['code'];
         if (wechatAOuthCode) {
@@ -350,23 +357,14 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                     load();
                 })
             });
-        }
-
-
-        function load() {
-            $scope.userInfo = User$.getCurrentJsonUser();
-            UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
-                $scope.myUsedBookNumber = number;
-                $scope.$apply();
-            });
-        }
-
-        if (User$.getCurrentJsonUser()) {
-            load();
-        } else {
-            IonicModalView$.alertUserLoginModalView('你还没有登录', function () {
+        }else{
+            if (User$.getCurrentJsonUser()) {
                 load();
-            });
+            } else {
+                IonicModalView$.alertUserLoginModalView('你还没有登录', function () {
+                    load();
+                });
+            }
         }
 
         /**
