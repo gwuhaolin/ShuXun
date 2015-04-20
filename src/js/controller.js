@@ -297,7 +297,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.isLoading = true;
             User$.signUpWithJSONUser($scope.userInfo).done(function () {
                 $state.go('tab.person_my');
-                $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
             }).always(function () {
