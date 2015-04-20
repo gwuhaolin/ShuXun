@@ -72,6 +72,11 @@ gulp.task('pc_image', function () {
 
 gulp.task('pc_index', function () {
     return gulp.src('src/index.html')
+        .pipe(htmlreplace({
+            'jQuery': 'http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js',
+            'Semantic-js': 'http://cdn.bootcss.com/semantic-ui/1.11.8/semantic.min.js',
+            'Semantic-css': 'http://cdn.bootcss.com/semantic-ui/1.11.8/semantic.min.css'
+        }))
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('public'));
 });
