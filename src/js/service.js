@@ -414,10 +414,9 @@ APP.service('DoubanBook$', function () {
 
         /**
          * 直接生成引导用户Web OAuth点击的URL
-         * @param subUrl 获得微信code后跳转到的url的#后面的url
          */
-        this.getOAuthURL = function (subUrl) {
-            var redirectUrl = location.href.split('#')[0] + '#' + subUrl;
+        this.getOAuthURL = function () {
+            var redirectUrl = location.href.split('#')[0] + '#tab/person/signUp';
             return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect';
         };
 
@@ -601,9 +600,8 @@ APP.service('DoubanBook$', function () {
 
         /**
          * 提示用户登入
-         * @param title 显示给用户的提示信息
          */
-        this.alertUserLoginModalView = function (title) {
+        this.alertUserLoginModalView = function () {
             var $scope = $rootScope.$new(true);
             $scope.WeChatJS$ = WeChatJS$;
             $ionicModal.fromTemplateUrl('temp/tool/userLoginModalView.html', {
@@ -612,7 +610,6 @@ APP.service('DoubanBook$', function () {
                 $scope.userLoginModalView = modal;
                 modal.show();
             });
-            $scope.title = title;
         }
 
     })
@@ -697,7 +694,7 @@ APP.service('DoubanBook$', function () {
         };
 
         /***
-         * 获得微信openId
+         * 获得微信openId的用户
          * @param openId
          * @returns {*|AV.Promise|{value, color}}
          */
@@ -706,6 +703,18 @@ APP.service('DoubanBook$', function () {
             query.equalTo('openId', openId);
             return query.first();
         };
+
+        /***
+         * 获得微信openId的用户
+         * @param unionId
+         * @returns {*|AV.Promise|{value, color}}
+         */
+        this.getAvosUserByUnionId = function (unionId) {
+            var query = new AV.Query(AV.User);
+            query.equalTo('username', unionId);
+            return query.first();
+        };
+
 
         /**
          * 我发送消息给其他用户

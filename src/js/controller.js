@@ -274,6 +274,13 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
+            User$.getAvosUserByUnionId(userInfo.unionId).done(function (avosUser) {
+                if (avosUser) {//这个用户已经注册,直接去主页
+                    loginWithUnionId(userInfo.unionId).done(function () {
+                        $state.go('tab.person_my');
+                    })
+                }
+            });
             $scope.$apply();
         });
 
@@ -355,24 +362,11 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             });
         }
 
-        //调用微信接口获取用户信息,来自用户登入
-        var wechatAOuthCode = $stateParams['code'];
-        if (wechatAOuthCode) {
-            WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
-                loginWithUnionId(userInfo.unionId).done(function () {
-                    load();
-                })
-            });
+        if (User$.getCurrentJsonUser()) {
+            load();
         } else {
-            if (User$.getCurrentJsonUser()) {
-                load();
-            } else {
-                IonicModalView$.alertUserLoginModalView('你还没有登录', function () {
-                    load();
-                });
-            }
+            IonicModalView$.alertUserLoginModalView();
         }
-
         /**
          * 用户退出
          */

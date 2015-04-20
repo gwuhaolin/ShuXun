@@ -4,34 +4,13 @@
         <button class="button button-clear button-balanced"
                 ng-click="userLoginModalView.hide()">返回
         </button>
-        <h2 class="title">{{title}}</h2>
+        <h2 class="title">进入书循</h2>
     </ion-header-bar>
     <ion-content class="padding has-header" style="text-align: center">
-        <!--&lt;!&ndash; 填写邮箱和密码&ndash;&gt;-->
-        <!--<div class="list list-inset">-->
-        <!--<label class="item item-input">-->
-        <!--<input type="email" placeholder="输入你的邮箱" ng-model="loginInfo.email">-->
-        <!--</label>-->
-
-        <!--<label class="item item-input">-->
-        <!--<input type="password" placeholder="输入登入密码" ng-model="loginInfo.password">-->
-        <!--</label>-->
-        <!--</div>-->
-        <!-- 提交-->
         <hr style="margin: 30px">
-        <a class="button button-outline button-balanced"
-           ng-href="{{WeChatJS$.getOAuthURL('tab/person/my')}}"
+        <a class="button button-outline button-balanced" ng-href="{{WeChatJS$.getOAuthURL()}}"
            ng-click="userLoginModalView.hide()">
-            登入书循
+            进入书循
         </a>
-
-        <hr style="margin: 30px">
-        <!-- 加入书循-->
-        <p>没有账号?</p>
-        <a class="button button-outline button-balanced" ng-href="{{WeChatJS$.getOAuthURL('tab/person/signUp')}}"
-           ng-click="userLoginModalView.hide()">
-            加入书循
-        </a>
-
     </ion-content>
 </ion-modal-view>
