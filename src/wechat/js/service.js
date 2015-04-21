@@ -493,23 +493,21 @@ APP.service('DoubanBook$', function () {
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
                 }
-                query.skip(that.School.schools.length);
-                query.limit(5);
+                if (that.School.searchSchoolKeyword.length > 0) {
+                    query.startsWith("name", that.School.searchSchoolKeyword);
+                }else{
+                    query.skip(that.School.schools.length);
+                    query.limit(10);
+                }
                 query.find().done(function (avosSchools) {
                     if (avosSchools.length > 0) {
                         for (var i = 0; i < avosSchools.length; i++) {
                             that.School.schools.push(avosSchools[i].get('name'));
                         }
-                    } else {
-                        that.School.hasMore = false;
                     }
                     $rootScope.$apply();
                 })
             },
-            /**
-             * 是否还可以加载更多
-             */
-            hasMore: true,
             /**
              * 搜索学校时的关键字
              * @type {string}

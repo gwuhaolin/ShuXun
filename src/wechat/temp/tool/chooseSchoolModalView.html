@@ -1,6 +1,9 @@
 <!-- 选择学校-->
 <ion-modal-view>
     <ion-header-bar class="item-input-inset">
+        <button class="button button-clear button-balanced"
+                ng-click="InfoService$.School.loadMore()">搜索
+        </button>
         <!-- 关键字输入框-->
         <label class="item-input-wrapper">
             <i class="icon ion-ios7-search placeholder-icon"></i>
@@ -18,8 +21,7 @@
                 {{school}}
             </ion-item>
         </ul>
-        <ion-infinite-scroll ng-if="InfoService$.School.hasMore"
-                             on-infinite="InfoService$.School.loadMore()"
+        <ion-infinite-scroll on-infinite="InfoService$.School.loadMore()"
                              distance="1%">
         </ion-infinite-scroll>
     </ion-content>
