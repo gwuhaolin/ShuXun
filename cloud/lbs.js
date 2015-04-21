@@ -58,12 +58,12 @@ exports.getSchoolLocation = function (schoolName, onSuccess, onError) {
         url: 'http://api.map.baidu.com/place/v2/search',
         qs: {
             ak: BaiDu.AppID,
-            q: schoolName,
+            query: schoolName,
+            scope: 1,
             page_size: 1,
             page_num: 0,
             region: '全国',
-            output: 'json',
-            tag: '教育培训,高等院校'
+            output: 'json'
         }
     }, function (err, res, body) {
         if (err) {
