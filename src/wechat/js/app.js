@@ -143,8 +143,5 @@ APP.run(function ($rootScope, $state, User$) {
                 $state.go('tab.hello');//去验证身份
             }
         }
-        if (nextState['name'] == 'tab.person_my') {
-
-        }
     });
 });

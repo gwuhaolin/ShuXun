@@ -329,11 +329,13 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                     school: $scope.userInfo['school'],
                     major: $scope.userInfo['major'],
                     startSchoolYear: $scope.userInfo['startSchoolYear']
-                }, function () {
+                }).done(function () {
+                    alert('修改成功');
+                }).fail(function (error) {
+                    alert('修改失败:' + error.message);
+                }).always(function () {
                     $state.go('tab.person_my');
                     $ionicHistory.clearHistory();
-                }, function (error) {
-                    alert('修改失败:' + error.message);
                 })
             })
         }
@@ -348,7 +350,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             });
         }
 
-        load();
+        $scope.$on('$ionicView.afterEnter', load);
 
         /**
          * 用户退出
