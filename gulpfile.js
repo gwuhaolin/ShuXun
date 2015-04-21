@@ -12,9 +12,15 @@ var imagemin = require('gulp-imagemin');
 var es = require("event-stream");
 var htmlreplace = require('gulp-html-replace');
 var htmlmin = require('gulp-htmlmin');
+var clean = require('gulp-clean');
 
-gulp.task('default', function () {
+gulp.task('default', ['clear'], function () {
     gulp.start('wechat', 'desktop');
+});
+
+gulp.task('clear', function () {
+    return gulp.src(['public/wechat', 'public/desktop', 'public/index.html'], {read: false})
+        .pipe(clean());
 });
 
 ///////////// wechat //////////////
