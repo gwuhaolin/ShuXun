@@ -3,6 +3,7 @@
  * 静态信息提供
  */
 "use strict";
+var request = require('request');
 
 //所有专业
 exports.Majors = [
@@ -1226,4 +1227,25 @@ exports.BookTags = {
         "神经网络",
         "程序"
     ]
+};
+
+/**
+ * 去超级课程表抓取全国大学信息,添加到School表里
+ */
+exports.spiderSchoolsFromMyFriday = function () {
+    var url = 'http://course.myfriday.cn:80/V2/School/getNewSchoolList.action';
+    var AvosSchool = AV.Object.extend('School');
+    request.post(url, function (err, res, body) {
+        if (!err) {
+            var json = JSON.parse(body);
+            var schools = json.data.updateList;
+            for (var i = 0; i < schools.length; i++) {
+                var name = schools[i].name;
+                var school = new AvosSchool();
+                school.save({
+                    name: name
+                })
+            }
+        }
+    })
 };

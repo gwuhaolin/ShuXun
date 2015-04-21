@@ -5,6 +5,7 @@
 "use strict";
 var WechatAPI = require('cloud/wechatAPI.js');
 var LBS = require('cloud/lbs.js');
+var Info = require('cloud/info.js');
 
 /**
  * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
@@ -31,6 +32,14 @@ function saveWechatImageToUsedBook(serverId, bookId) {
         });
     })
 }
+
+/**
+ * 更新全国大学信息
+ */
+AV.Cloud.define('updateSchoolInfo', function (request, response) {
+    Info.spiderSchoolsFromMyFriday();
+    response.success();
+});
 
 /**
  * 更新微信菜单
