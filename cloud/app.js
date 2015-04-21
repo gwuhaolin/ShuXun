@@ -9,11 +9,9 @@ var BusinessSite = require('cloud/businessSite.js');
 var request = require('request');
 var Info = require('cloud/info.js');
 var app = express();
-var favicon = require('serve-favicon');
 app.use(express.compress(), null);//压缩返回的数据
 app.set('views', 'cloud/views');   // 设置模板目录
 app.set("view engine", "ejs");
-app.use(favicon('../public/favicon.ico', null), null);
 app.listen();
 ////////////////////// WeChat /////////////////////////
 
