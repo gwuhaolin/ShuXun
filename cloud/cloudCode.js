@@ -4,6 +4,7 @@
  */
 "use strict";
 var WechatAPI = require('cloud/wechatAPI.js');
+var LBS = require('cloud/lbs.js');
 
 /**
  * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
@@ -133,4 +134,33 @@ AV.Cloud.beforeDelete('UsedBook', function (request, response) {
     }).fail(function (error) {
         response.error(error);
     })
+});
+
+/**
+ * 更新学校对象的经纬度
+ * @param avosSchool 学校的名称
+ */
+function updateSchoolLocation(avosSchool) {
+    var name = avosSchool.get('name');
+    LBS.getSchoolLocation(name, function (location) {
+        var point = new AV.GeoPoint(location.lat, location.lng);
+        avosSchool.set('location', point);
+        avosSchool.save();
+    })
+}
+/**
+ * 当添加了一个学校之后,会根据学校的名称自动调用百度API去获得这个学校的经纬度
+ */
+AV.Cloud.afterSave('School', function (request, response) {
+    var avosSchool = request.object;
+    updateSchoolLocation(avosSchool);
+    response.success();
+});
+/**
+ * 当更新了一个学校之后,会根据学校的名称自动调用百度API去获得这个学校的经纬度
+ */
+AV.Cloud.afterUpdate('School', function (request, response) {
+    var avosSchool = request.object;
+    updateSchoolLocation(avosSchool);
+    response.success();
 });

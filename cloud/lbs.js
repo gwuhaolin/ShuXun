@@ -11,14 +11,13 @@ var BaiDu = {
 var request = require('request');
 
 /**
+ * 通过用户的IP地址获取用户的经纬度
  * @param request express请求
- * 返回浏览器的IP地址
+ * @param onSuccess
+ * @param onError
  */
-function getClientIP(request) {
-    return request.headers['x-real-ip'];
-}
-
-function getLocationByIP(ip, callback) {
+exports.getLocationByIP = function (request, onSuccess, onError) {
+    var ip = request.headers['x-real-ip'];
     request.get({
         url: 'http://api.map.baidu.com/location/ip',
         qs: {
@@ -27,31 +26,56 @@ function getLocationByIP(ip, callback) {
             coor: 'bd09ll'
         }
     }, function (err, res, body) {
-        var point = JSON.parse(body)['point'];
-        var location = {
-            lng: point.x,
-            lat: point.y
-        };
-        callback(location);
+        if (err) {
+            onError(err);
+        } else {
+            var json = JSON.parse(body);
+            if (json.status == 0) {
+                var point = json['point'];
+                onSuccess({
+                    lng: point.x,
+                    lat: point.y
+                });
+            } else {
+                onError(json);
+            }
+        }
     })
-}
+};
 
 /**
- * 获得客户端的地理位置
- * @param request express请求
- * @param callback 返回location
+ * 获得学校的地理经纬度
+ * @param schoolName 学校的名称
+ * @param onSuccess 返回
+ *          {
+				lat : 30.522385,
+				lng : 114.369487
+			}
+ * @param onError 返回错误原因
  */
-exports.getClientLocation = function (request, callback) {
-    var user = request.AV.user;
-    if (user) {//用户已经登入
-        var location = user.get('location');
-        if (location) {
-            callback(location);
+exports.getSchoolLocation = function (schoolName, onSuccess, onError) {
+    request.get({
+        url: 'http://api.map.baidu.com/place/v2/search',
+        qs: {
+            ak: BaiDu.AppID,
+            q: schoolName,
+            page_size: 1,
+            page_num: 0,
+            region: '全国',
+            output: 'json',
+            tag: '教育培训,高等院校'
         }
-    } else {
-        var ip = getClientIP(request);
-        getLocationByIP(ip, function (location) {
-            callback(location);
-        })
-    }
+    }, function (err, res, body) {
+        if (err) {
+            onError(err);
+        } else {
+            var json = JSON.parse(body);
+            if (json.status == 0) {
+                var location = json.results[0].location;
+                onSuccess(location);
+            } else {
+                onError(json);
+            }
+        }
+    })
 };
