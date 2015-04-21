@@ -70,7 +70,7 @@ exports.getSchoolLocation = function (schoolName, onSuccess, onError) {
             onError(err);
         } else {
             var json = JSON.parse(body);
-            if (json.status == 0 && json.results.length > 0) {
+            if (json.status == 0 && json.results.length > 0 && json.results[0].location) {
                 var location = json.results[0].location;
                 onSuccess(location);
             } else {
