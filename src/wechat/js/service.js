@@ -540,7 +540,7 @@ APP.service('DoubanBook$', function () {
     })
 
     .
-    service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory, InfoService$, WeChatJS$) {
+    service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory, InfoService$) {
 
         /**
          * 为$scope注册选择学校modalView功能
@@ -597,21 +597,6 @@ APP.service('DoubanBook$', function () {
                 modal.show();
             });
         };
-
-        /**
-         * 提示用户登入
-         */
-        this.alertUserLoginModalView = function () {
-            var $scope = $rootScope.$new(true);
-            $scope.WeChatJS$ = WeChatJS$;
-            $ionicModal.fromTemplateUrl('temp/tool/userLoginModalView.html', {
-                scope: $scope
-            }).then(function (modal) {
-                $scope.userLoginModalView = modal;
-                modal.show();
-                $ionicHistory.clearHistory();
-            });
-        }
 
     })
 

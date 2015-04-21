@@ -190,7 +190,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     ////////////////// person ////////////////////
 
-    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$, IonicModalView$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
         $scope.isLoading = false;
         $scope.WeChatJS$ = WeChatJS$;
         $scope.usedBookInfo = {
@@ -199,11 +199,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             des: null,
             avosImageFile: null
         };
-        if (!User$.getCurrentAvosUser()) {
-            IonicModalView$.alertUserLoginModalView();
-        } else {
-            $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
-        }
+        $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
 
         $ionicModal.fromTemplateUrl('template/noBarCodeModalView.html', {
             scope: $scope
@@ -297,6 +293,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.isLoading = true;
             User$.signUpWithJSONUser($scope.userInfo).done(function () {
                 $state.go('tab.person_my');
+                $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
             }).always(function () {
@@ -307,15 +304,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     })
 
-    .controller('person_editPersonInfo', function ($scope, $state, InfoService$, User$, IonicModalView$) {
+    .controller('person_editPersonInfo', function ($scope, $state, $ionicHistory, InfoService$, User$, IonicModalView$) {
         //是否对属性进行了修改
         $scope.attrHasChange = false;
-
-        if (!User$.getCurrentAvosUser()) {//还没有用户的信息
-            IonicModalView$.alertUserLoginModalView();
-        } else {
-            $scope.userInfo = User$.getCurrentJsonUser();
-        }
+        $scope.userInfo = User$.getCurrentJsonUser();
 
         IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
             $scope.attrHasChange = true;
@@ -340,6 +332,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                     }, function () {
                         alert('修改成功');
                         $state.go('tab.person_my');
+                        $ionicHistory.clearHistory();
                     }, function (error) {
                         alert('修改失败:' + error.message);
                     })
@@ -350,7 +343,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_my', function ($scope, $state, $stateParams, User$, UsedBook$, IonicModalView$) {
+    .controller('person_my', function ($scope, $state, $stateParams, User$, UsedBook$) {
         function load() {
             $scope.userInfo = User$.getCurrentJsonUser();
             UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
@@ -359,11 +352,8 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             });
         }
 
-        if (User$.getCurrentJsonUser()) {
-            load();
-        } else {
-            IonicModalView$.alertUserLoginModalView();
-        }
+        load();
+
         /**
          * 用户退出
          */
@@ -374,10 +364,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$, User$, IonicModalView$) {
-        if (!User$.getCurrentAvosUser()) {
-            IonicModalView$.alertUserLoginModalView('你还没有登录');
-        }
+    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$) {
         //还没有卖出
         $scope.UsedBook$ = UsedBook$;
         UsedBook$.loadMyAvosUsedBookList();
@@ -388,7 +375,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     })
 
-    .controller('person_editOneUsedBook', function ($scope, $state, $stateParams, UsedBook$) {
+    .controller('person_editOneUsedBook', function ($scope, $state, $ionicHistory, $stateParams, UsedBook$) {
         var indexInMyAvosUsedBook_notSell = $stateParams['indexInMyAvosUsedBook_notSell'];
         $scope.avosUsedBook = UsedBook$.myAvosUsedBookList[indexInMyAvosUsedBook_notSell];
         $scope.valueHasChange = false;
@@ -398,16 +385,14 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.avosUsedBook.set('price', $scope.jsonUsedBookChangeInfo.price);
             $scope.avosUsedBook.save(null).done(function () {
                 $state.go('tab.person_usedBooksList');
+                $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
             })
         }
     })
 
-    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, User$, IonicModalView$) {
-        if (!User$.getCurrentAvosUser()) {
-            IonicModalView$.alertUserLoginModalView();
-        }
+    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, User$) {
         var receiverId = $stateParams['openId'];
         $scope.msg = {
             receiveMsg: $stateParams['msg'],
@@ -425,8 +410,13 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             User$.sendMsgToUser(receiverId, $scope.msg['sendMsg'], function () {
                 alert('回复成功');
                 $state.go('tab.person_my');
+                $ionicHistory.clearHistory();
             }, function (error) {
                 alert('发送失败:' + error['errmsg']);
             })
         }
+    })
+
+    .controller('person_hello', function ($scope, WeChatJS$) {
+        $scope.WeChatJS$ = WeChatJS$;
     });

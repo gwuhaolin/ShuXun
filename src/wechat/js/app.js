@@ -121,6 +121,28 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/person/sendMsgToUser.html'
                     }
                 }
+            }).state('tab.hello', {
+                url: '/hello',
+                views: {
+                    'tab-person': {
+                        templateUrl: 'temp/person/hello.html'
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/tab/book/recommend');
     });
+
+APP.run(function ($rootScope, $state, User$) {
+    $rootScope.$on('$stateChangeStart', function (event, nextState) {
+        var state = nextState['name'];
+        if (state.indexOf('tab.person_') >= 0) {//需要登录
+            if (!User$.getCurrentAvosUser()) {
+                event.preventDefault();//停止当前
+                $state.go('tab.hello');//去验证身份
+            }
+        }
+        if (nextState['name'] == 'tab.person_my') {
+
+        }
+    });
+});
