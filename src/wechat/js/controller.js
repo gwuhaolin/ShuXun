@@ -272,6 +272,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 if (avosUser) {//这个用户已经注册,直接去主页
                     loginWithUnionId(userInfo.unionId).done(function () {
                         $state.go('tab.person_my');
+                        $ionicHistory.clearHistory();
                     })
                 }
             });
@@ -322,24 +323,19 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         //点击提交修改时
         $scope.submitOnClick = function () {
             var unionId = readCookie('unionId');
-            if (unionId) {
-                loginWithUnionId(unionId).done(function (avosUser) {
-                    avosUser.fetchWhenSave(true);
-                    avosUser.save({
-                        school: $scope.userInfo['school'],
-                        major: $scope.userInfo['major'],
-                        startSchoolYear: $scope.userInfo['startSchoolYear']
-                    }, function () {
-                        alert('修改成功');
-                        $state.go('tab.person_my');
-                        $ionicHistory.clearHistory();
-                    }, function (error) {
-                        alert('修改失败:' + error.message);
-                    })
+            loginWithUnionId(unionId).done(function (avosUser) {
+                avosUser.fetchWhenSave(true);
+                avosUser.save({
+                    school: $scope.userInfo['school'],
+                    major: $scope.userInfo['major'],
+                    startSchoolYear: $scope.userInfo['startSchoolYear']
+                }, function () {
+                    $state.go('tab.person_my');
+                    $ionicHistory.clearHistory();
+                }, function (error) {
+                    alert('修改失败:' + error.message);
                 })
-            } else {
-                IonicModalView$.alertUserLoginModalView('修改前需要验证身份');
-            }
+            })
         }
     })
 

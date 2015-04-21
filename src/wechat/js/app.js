@@ -93,13 +93,6 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/person/usedBookList.html'
                     }
                 }
-            }).state('tab.person_signUp', {
-                url: '/person/signUp?code',
-                views: {
-                    'tab-person': {
-                        templateUrl: 'temp/person/signUp.html'
-                    }
-                }
             }).state('tab.person_editPersonInfo', {
                 url: '/person/editPersonInfo',
                 views: {
@@ -121,11 +114,20 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/person/sendMsgToUser.html'
                     }
                 }
-            }).state('tab.hello', {
+            })
+            //公共
+            .state('tab.hello', {
                 url: '/hello',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/hello.html'
+                        templateUrl: 'temp/tool/hello.html'
+                    }
+                }
+            }).state('tab.signUp', {
+                url: '/signUp?code',
+                views: {
+                    'tab-person': {
+                        templateUrl: 'temp/tool/signUp.html'
                     }
                 }
             });

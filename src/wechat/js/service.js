@@ -416,7 +416,7 @@ APP.service('DoubanBook$', function () {
          * 直接生成引导用户Web OAuth点击的URL
          */
         this.getOAuthURL = function () {
-            var redirectUrl = location.href.split('#')[0] + '#tab/person/signUp';
+            var redirectUrl = location.href.split('#')[0] + '#tab/signUp';
             return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect';
         };
 
