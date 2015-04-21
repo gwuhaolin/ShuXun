@@ -149,6 +149,21 @@ function updateSchoolLocation(avosSchool) {
     })
 }
 /**
+ * 避免添加重名的学校
+ */
+AV.Cloud.beforeSave('School', function (request, response) {
+    var avosSchool = request.object;
+    var query = new AV.Query('School');
+    query.equalTo('name', avosSchool.get('name'));
+    query.count().done(function (number) {
+        if (number > 0) {
+            response.error('这个学校已经添加了');
+        } else {
+            response.success();
+        }
+    });
+});
+/**
  * 当添加了一个学校之后,会根据学校的名称自动调用百度API去获得这个学校的经纬度
  */
 AV.Cloud.afterSave('School', function (request, response) {
