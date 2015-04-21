@@ -7,14 +7,14 @@ var cheerio = require('cheerio');
 var request = require('request');
 
 var UnionID = {
-    JD: '',//京东
+    JD: '287386251',//京东
     Amazon: '',//亚马逊
-    DangDang: '',//当当
+    DangDang: 'shuxun',//当当
     WenXuan: '',//文轩,
     BeiFa: '',//北发图书网
-    BooksChina: '',//中国图书
+    BooksChina: '354944',//中国图书
     ChinaPub: '',//china-pub
-    TaoShu: ''//淘书书
+    TaoShu: ''//淘书网
 };
 
 /**

@@ -14,7 +14,7 @@ var htmlreplace = require('gulp-html-replace');
 var htmlmin = require('gulp-htmlmin');
 
 gulp.task('default', function () {
-    gulp.start('wechat', 'pc');
+    gulp.start('wechat', 'desktop');
 });
 
 ///////////// wechat //////////////
@@ -61,16 +61,16 @@ gulp.task('wechat', function () {
     gulp.start('wechat_js', 'wechat_image', 'wechat_index');
 });
 
-///////////// pc //////////////
+///////////// desktop //////////////
 
 //图片压缩
-gulp.task('pc_image', function () {
-    return gulp.src('src/img/*.*')
+gulp.task('desktop_image', function () {
+    return gulp.src('src/desktop/img/*.*')
         .pipe(imagemin())
-        .pipe(gulp.dest('public/img'));
+        .pipe(gulp.dest('public/desktop/img'));
 });
 
-gulp.task('pc_index', function () {
+gulp.task('desktop_index', function () {
     return gulp.src('src/index.html')
         .pipe(htmlreplace({
             'jQuery': 'http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js',
@@ -81,6 +81,6 @@ gulp.task('pc_index', function () {
         .pipe(gulp.dest('public'));
 });
 
-gulp.task('pc', function () {
-    gulp.start('pc_index', 'pc_image');
+gulp.task('desktop', function () {
+    gulp.start('desktop_index', 'desktop_image');
 });

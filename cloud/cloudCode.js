@@ -33,9 +33,9 @@ function saveWechatImageToUsedBook(serverId, bookId) {
 
 /**
  * 更新微信菜单
+ * 微信菜单格式见 http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html
  */
 AV.Cloud.define('updateWechatMenu', function (request, response) {
-    //微信菜单格式见 http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html
     var wechatMenu = {
         "button": [
             {
