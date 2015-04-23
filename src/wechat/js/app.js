@@ -117,14 +117,14 @@ var APP = angular.module('APP', ['ionic'], null)
             })
             //公共
             .state('tab.hello', {
-                url: '/hello',
+                url: '/hello?state',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/tool/hello.html'
                     }
                 }
             }).state('tab.signUp', {
-                url: '/signUp?code',
+                url: '/signUp?code&state',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/tool/signUp.html'
@@ -136,11 +136,11 @@ var APP = angular.module('APP', ['ionic'], null)
 
 APP.run(function ($rootScope, $state, User$) {
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
-        var state = nextState['name'];
-        if (state.indexOf('tab.person_') >= 0) {//需要登录
+        var stateName = nextState['name'];
+        if (stateName.indexOf('tab.person_') >= 0) {//需要登录
             if (!User$.getCurrentAvosUser()) {
                 event.preventDefault();//停止当前
-                $state.go('tab.hello');//去验证身份
+                $state.go('tab.hello',{state:stateName});//去验证身份
             }
         }
     });

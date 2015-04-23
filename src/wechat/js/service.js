@@ -414,10 +414,11 @@ APP.service('DoubanBook$', function () {
 
         /**
          * 直接生成引导用户Web OAuth点击的URL
+         * @param state 验证完成后要去的状态
          */
-        this.getOAuthURL = function () {
+        this.getOAuthURL = function (state) {
             var redirectUrl = location.href.split('#')[0] + '#tab/signUp';
-            return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state=0#wechat_redirect';
+            return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state='+state+'#wechat_redirect';
         };
 
         /**

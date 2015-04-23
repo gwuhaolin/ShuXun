@@ -260,51 +260,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     })
 
-    .controller('person_signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, IonicModalView$) {
-        //是否正在加载中..
-        $scope.isLoading = true;
-        //调用微信接口获取用户信息
-        var wechatAOuthCode = $stateParams['code'];
-        WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
-            $scope.isLoading = false;
-            $scope.userInfo = userInfo;
-            User$.getAvosUserByUnionId(userInfo.unionId).done(function (avosUser) {
-                if (avosUser) {//这个用户已经注册,直接去主页
-                    loginWithUnionId(userInfo.unionId).done(function () {
-                        $state.go('tab.person_my');
-                        $ionicHistory.clearHistory();
-                    })
-                }
-            });
-            $scope.$apply();
-        });
-
-        IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
-            $scope.userInfo['school'] = school;
-        });
-
-        IonicModalView$.registerChooseMajorModalView($scope, function (major) {
-            $scope.userInfo['major'] = major;
-        });
-
-        $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
-
-        //点击注册时
-        $scope.submitOnClick = function () {
-            $scope.isLoading = true;
-            User$.signUpWithJSONUser($scope.userInfo).done(function () {
-                $state.go('tab.person_my');
-                $ionicHistory.clearHistory();
-            }).fail(function (error) {
-                alert(error.message);
-            }).always(function () {
-                $scope.isLoading = false;
-                $scope.$apply();
-            })
-        };
-
-    })
-
     .controller('person_editPersonInfo', function ($scope, $state, $ionicHistory, InfoService$, User$, IonicModalView$) {
         //是否对属性进行了修改
         $scope.attrHasChange = false;
@@ -415,6 +370,53 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_hello', function ($scope, WeChatJS$) {
-        $scope.WeChatJS$ = WeChatJS$;
+    .controller('signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, IonicModalView$) {
+        //是否正在加载中..
+        $scope.isLoading = true;
+        //调用微信接口获取用户信息
+        var wechatAOuthCode = $stateParams['code'];
+        var shouldGoState = $stateParams['state'];
+        WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
+            $scope.isLoading = false;
+            $scope.userInfo = userInfo;
+            User$.getAvosUserByUnionId(userInfo.unionId).done(function (avosUser) {
+                if (avosUser) {//这个用户已经注册,直接去主页
+                    loginWithUnionId(userInfo.unionId).done(function () {
+                        $state.go(shouldGoState);
+                        $ionicHistory.clearHistory();
+                    })
+                }
+            });
+            $scope.$apply();
+        });
+
+        IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
+            $scope.userInfo['school'] = school;
+        });
+
+        IonicModalView$.registerChooseMajorModalView($scope, function (major) {
+            $scope.userInfo['major'] = major;
+        });
+
+        $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
+
+        //点击注册时
+        $scope.submitOnClick = function () {
+            $scope.isLoading = true;
+            User$.signUpWithJSONUser($scope.userInfo).done(function () {
+                $state.go(shouldGoState);
+                $ionicHistory.clearHistory();
+            }).fail(function (error) {
+                alert(error.message);
+            }).always(function () {
+                $scope.isLoading = false;
+                $scope.$apply();
+            })
+        };
+
+    })
+
+    .controller('hello', function ($scope, $stateParams, WeChatJS$) {
+        var state = $stateParams['state'];
+        $scope.OAuthURL = WeChatJS$.getOAuthURL(state);
     });
