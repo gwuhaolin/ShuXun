@@ -31,7 +31,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    //图书列表
+    //豆瓣图书列表
     .controller('book_bookList', function ($scope, $stateParams, BookRecommend$) {
         $scope.title = $stateParams['title'];
         var cmd = $stateParams['cmd'];
@@ -43,9 +43,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.books = BookRecommend$.TagBook.books;
             $scope.loadMore = BookRecommend$.TagBook.loadMore;
             $scope.hasMore = BookRecommend$.TagBook.hasMore;
-        } else if (cmd == 'new') {
-            $scope.books = BookRecommend$.NewBook.books;
-            $scope.loadMore = BookRecommend$.NewBook.loadMore;
         } else if (cmd == 'need') {
             $scope.books = BookRecommend$.NeedBook.books;
             $scope.loadMore = BookRecommend$.NeedBook.loadMore;
@@ -53,8 +50,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.books = BookRecommend$.MajorBook.books;
             $scope.loadMore = BookRecommend$.MajorBook.loadMore;
             $scope.title = BookRecommend$.MajorBook.major;
-        } else if (cmd == 'nearBook') {
-            $scope.title = '你附近的旧书';
         }
     })
 
@@ -83,15 +78,19 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
     //用户列表
     .controller('book_userList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
         var cmd = $stateParams['cmd'];
+
+        function userBookNumber(oneJsonUser) {
+            UsedBook$.getUsedBookNumberForOwner(oneJsonUser.objectId).done(function (number) {
+                oneJsonUser.usedBookNumber = number;
+                $scope.$apply();
+            })
+        }
+
         if (cmd == 'near') {
             $scope.title = '你附近的同学';
             $scope.jsonUsers = BookRecommend$.NearUser.jsonUsers;
             for (var i = 0; i < $scope.jsonUsers.length; i++) {
-                var oneJsonUser = $scope.jsonUsers[i];
-                UsedBook$.getUsedBookNumberForOwner(oneJsonUser.objectId).done(function (number) {
-                    oneJsonUser.usedBookNumber = number;
-                    $scope.$apply();
-                })
+                userBookNumber($scope.jsonUsers[i]);
             }
             $scope.loadMore = BookRecommend$.NearUser.loadMore;
             $scope.hasMore = function () {
@@ -162,10 +161,13 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         $scope.UsedBook$ = UsedBook$;
         var ownerId = $stateParams.ownerId;
         var query = new AV.Query(AV.User);
+        $scope.jsonUsedBookList = [];
         query.get(ownerId).done(function (avosOwner) {
             $scope.jsonOwnerInfo = User$.avosUserToJson(avosOwner);
             UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
-                $scope.avosUsedBookList = avosUsedBooks;
+                for (var i = 0; i < avosUsedBooks.length; i++) {
+                    $scope.jsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
+                }
                 $scope.$apply();
             })
         });
@@ -175,6 +177,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         $scope.WeChatJS$ = WeChatJS$;
         var usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
         UsedBook$.getJsonUsedBookByAvosObjectId(usedBookAvosObjectId, function (json) {
+            json.image = json.image ? json.image.replace('mpic', 'lpic') : '';//大图显示
             $scope.jsonUsedBook = json;
             var avosOwner = $scope.jsonUsedBook.owner;
             avosOwner.fetch().done(function (avosOwner) {
@@ -197,7 +200,8 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             isbn13: $stateParams.isbn13,
             price: null,
             des: null,
-            avosImageFile: null
+            image: '',
+            title: ''
         };
         $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
 
@@ -213,6 +217,8 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
                 $scope.doubanBookInfo = json;
                 $scope.isLoading = false;
+                $scope.usedBookInfo.image = json.image.replace('mpic', 'lpic');//大图显示
+                $scope.usedBookInfo.title = json.title;
                 $scope.$apply();
             });
         }
@@ -228,27 +234,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             });
         };
 
-        var wechatServerId = '';
-        $scope.uploadPicOnClick = function () {
-            WeChatJS$.chooseImage(function (localId) {
-                $scope.localId = localId;
-                $scope.$apply();
-                WeChatJS$.uploadImage($scope.localId, function (serverId) {
-                    wechatServerId = serverId;
-                });
-            })
-        };
-
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
-            avosUsedBook.save(null).done(function (avosUsedBook) {
-                if (wechatServerId) {//如果用户上传了图书的图片到微信
-                    AV.Cloud.run('saveWechatImageToUsedBook', {
-                        serverId: wechatServerId,
-                        objectId: avosUsedBook.id
-                    }, null);
-                }
+            avosUsedBook.save(null).done(function () {
                 $state.go('tab.person_usedBooksList');
                 $ionicHistory.clearHistory();
             }).fail(function (error) {

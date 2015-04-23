@@ -8,32 +8,6 @@ var LBS = require('cloud/lbs.js');
 var Info = require('cloud/info.js');
 
 /**
- * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
- * @param serverId  图片上传到微信服务器后获得的图片的serverID
- * @param bookId 一个 AVOS的UsedBook的ObjectID
- * 如果 去微信下载图片失败 会一小时后重新去下载
- */
-function saveWechatImageToUsedBook(serverId, bookId) {
-    var query = new AV.Query('UsedBook');
-    query.get(bookId).done(function (avosUsedBook) {
-        WechatAPI.APIClient.getMedia(serverId, function (error, buffer) {
-            if (error || buffer.length < 100) {//去微信下载图片失败
-                setTimeout(function () {
-                    saveWechatImageToUsedBook(serverId, bookId);
-                }, 1000 * 60 * 60);//一小时后重新去下载
-            } else {
-                var file = new AV.File('UsedBook', buffer, 'png');
-                file.save().done(function (avosFile) {
-                    avosUsedBook.save({
-                        'avosImageFile': avosFile
-                    })
-                })
-            }
-        });
-    })
-}
-
-/**
  * 更新全国大学信息
  */
 AV.Cloud.define('updateSchoolInfo', function (request, response) {
@@ -67,22 +41,6 @@ AV.Cloud.define('updateWechatMenu', function (request, response) {
             response.success(result);
         }
     });
-});
-
-/**
- * 把上传到微信的二手书的图片下载到AVOS 的UsedBook 的 avosImageFile
- * 参数: serverId 图片上传到微信服务器后获得的图片的serverID
- * 参数: objectId 一个 AVOS的UsedBook的ObjectID
- */
-AV.Cloud.define('saveWechatImageToUsedBook', function (request, response) {
-    var wechatServerId = request.params['serverId'];
-    var usedBookAvosObjId = request.params['objectId'];
-    if (wechatServerId == null || usedBookAvosObjId == null) {
-        response.error('参数不合法');
-    } else {
-        saveWechatImageToUsedBook(wechatServerId, usedBookAvosObjId);
-        response.success();
-    }
 });
 
 /**
@@ -122,27 +80,6 @@ AV.Cloud.beforeSave('UsedBook', function (request, response) {
     request.object.set('location', point);
     request.object.save();
     response.success();
-});
-
-/**
- * 当一本二手书别卖出或者被删除时 它对应的主人上传的图片会被清除
- */
-AV.Cloud.beforeDelete('UsedBook', function (request, response) {
-    var query = new AV.Query('UsedBook');
-    query.get(request.object.id).done(function (avosUsedBook) {
-        var file = avosUsedBook.get('avosImageFile');
-        if (file) {
-            file.destroy().done(function () {
-                response.success();
-            }).fail(function (error) {
-                response.error(error);
-            })
-        } else {//没有图片文件
-            response.success();
-        }
-    }).fail(function (error) {
-        response.error(error);
-    })
 });
 
 /**

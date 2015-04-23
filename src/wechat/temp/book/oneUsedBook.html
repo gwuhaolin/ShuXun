@@ -1,20 +1,22 @@
 <!--一本二手书信息-->
-<ion-view ng-controller="book_oneUsedBook" title="二手 图书名称">
+<ion-view ng-controller="book_oneUsedBook" title="二手 {{jsonUsedBook.title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
     <ion-content>
         <!-- 图书基本信息-->
         <div class="list card">
-            <ion-item style="text-align: center">
-                <img ng-src="{{jsonUsedBook.avosImageFile.thumbnailURL(200, 200)}}" style="height: 180px"
-                     ng-click="WeChatJS$.previewOneImage(jsonUsedBook.avosImageFile.thumbnailURL(400, 400))">
+            <ion-item ng-if="jsonUsedBook.image" style="text-align: center">
+                <img ng-src="{{jsonUsedBook.image" style="height: 180px"
+                     ng-click="WeChatJS$.previewOneImage(jsonUsedBook.image)">
             </ion-item>
             <ion-item>
                 <h3>要价:{{jsonUsedBook.price}}</h3>
                 <h4>{{jsonUsedBook.updatedAt | date:'mediumDate' }}</h4>
 
-                <p style="white-space: pre-wrap">{{jsonUsedBook.des}}</p>
+                <p>书名:{{jsonUsedBook.title}}</p>
+
+                <p ng-if="jsonUsedBook.des" style="white-space: pre-wrap">描述:{{jsonUsedBook.des}}</p>
             </ion-item>
         </div>
         <div class="list card">

@@ -51,7 +51,7 @@ function readCookie(name) {
     return null;
 }
 function eraseCookie(name) {
-    createCookie(name,"",-1);
+    createCookie(name, "", -1);
 }
 
 /**

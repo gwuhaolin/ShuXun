@@ -16,10 +16,12 @@
                 </button>
             </ion-item>
             <ion-item ng-repeat="oneAvosUsedBook in UsedBook$.myAvosUsedBookList" class="item-thumbnail-left">
-                <img ng-if="oneAvosUsedBook.get('avosImageFile')"
-                     ng-src="{{oneAvosUsedBook.get('avosImageFile').thumbnailURL(100, 100)}}">
+                <img ng-if="oneAvosUsedBook.get('image')"
+                     ng-src="{{oneAvosUsedBook.get('image')}}">
 
                 <p ng-if="oneAvosUsedBook.get('price')">要价:{{oneAvosUsedBook.get('price')}}</p>
+
+                <p ng-if="oneAvosUsedBook.get('title')">书名:{{oneAvosUsedBook.get('title')}}</p>
 
                 <p ng-if="oneAvosUsedBook.get('des')">描述:{{oneAvosUsedBook.get('des')}}</p>
                 <button class="button button-small button-outline button-assertive"

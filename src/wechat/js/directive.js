@@ -89,4 +89,15 @@ APP.directive('reviewStar', function () {
                 scope.showNumber = Math.floor(document.body.clientWidth / 80);
             }
         }
+    })
+
+    .directive('oneUsedBook', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                //三本图书的信息
+                jsonUsedBook: '='
+            },
+            templateUrl: 'temp/tool/oneUsedBookTemplate.html'
+        }
     });

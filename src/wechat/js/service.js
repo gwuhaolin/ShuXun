@@ -23,9 +23,19 @@ APP.service('DoubanBook$', function () {
         url += '?fields=' + fields;
         jsonp(url, callback);
     };
+    /**
+     * 只要部分必要的字段
+     * @param bookISBN
+     * @param callback
+     */
     this.getBookByISBD_simple = function (bookISBN, callback) {
         that.getBookByISBD(bookISBN, callback, 'author,pubdate,image,publisher,title,price,isbn13');
     };
+    /**
+     * 只要图书的名称和图片链接
+     * @param bookISBN
+     * @param callback
+     */
     this.getBookByISBN_NameImage = function (bookISBN, callback) {
         that.getBookByISBD(bookISBN, callback, 'image,title');
     };
@@ -256,7 +266,6 @@ APP.service('DoubanBook$', function () {
          */
         this.NearBook = {
             jsonBooks: [],
-            hasMore: true,
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query('UsedBook');
@@ -270,8 +279,6 @@ APP.service('DoubanBook$', function () {
                         for (var i = 0; i < avosUsedBooks.length; i++) {
                             that.NearBook.jsonBooks.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
                         }
-                    } else {
-                        that.NearBook.hasMore = false;
                     }
                     $rootScope.$apply();
                 })
@@ -739,7 +746,7 @@ APP.service('DoubanBook$', function () {
     //还没有卖出的二手书
     .service('UsedBook$', function ($rootScope, HasSellUsedBook$) {
         var that = this;
-        var UsedBookAttrNames = ['owner', 'isbn13', 'avosImageFile', 'price', 'des'];
+        var UsedBookAttrNames = ['owner', 'isbn13', 'price', 'des', 'image', 'title'];
 
         /**
          * 是否正在加载数据
