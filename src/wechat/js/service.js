@@ -7,22 +7,27 @@
  * 豆瓣图书接口
  */
 APP.service('DoubanBook$', function () {
-
+    var that = this;
     var baseUri = 'http://api.douban.com/v2/book';
     /**
      * 用书的ISBN号码获得书的信息
      * @param bookISBN 书的ISBN号码
+     * @param fields 要返回的字段
      * @param callback
      */
-    this.getBookByISBD = function (bookISBN, callback) {
+    this.getBookByISBD = function (bookISBN, callback, fields) {
         var url = baseUri + '/isbn/' + bookISBN;
-        url += '?fields=id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+        if (fields == null) {//默认是获取所有的字段
+            fields = 'id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+        }
+        url += '?fields=' + fields;
         jsonp(url, callback);
     };
     this.getBookByISBD_simple = function (bookISBN, callback) {
-        var url = baseUri + '/isbn/' + bookISBN;
-        url += '?fields=author,pubdate,image,publisher,title,price,isbn13';
-        jsonp(url, callback);
+        that.getBookByISBD(bookISBN, callback, 'author,pubdate,image,publisher,title,price,isbn13');
+    };
+    this.getBookByISBN_NameImage = function (bookISBN, callback) {
+        that.getBookByISBD(bookISBN, callback, 'image,title');
     };
     /**
      * 搜索图书
@@ -418,7 +423,7 @@ APP.service('DoubanBook$', function () {
          */
         this.getOAuthURL = function (state) {
             var redirectUrl = location.href.split('#')[0] + '#tab/signUp';
-            return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state='+state+'#wechat_redirect';
+            return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state=' + state + '#wechat_redirect';
         };
 
         /**
@@ -496,7 +501,7 @@ APP.service('DoubanBook$', function () {
                 }
                 if (that.School.searchSchoolKeyword.length > 0) {
                     query.startsWith("name", that.School.searchSchoolKeyword);
-                }else{
+                } else {
                     query.skip(that.School.schools.length);
                     query.limit(10);
                 }
