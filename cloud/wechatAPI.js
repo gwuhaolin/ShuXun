@@ -70,11 +70,13 @@ exports.getOAuthUserInfo = function (code, callback) {
  * @param senderId 发送者的微信openID
  * @param receiverId 接收者的微信openID
  * @param msg 消息内容
- * @param callback 返回result
+ * @param usedBookAvosObjectId 当前咨询的二手书的objectId
+ * @param onSuccess 发送成功时
+ * @param onError 发送失败时
  */
-exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, callback) {
+exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, usedBookAvosObjectId, onSuccess, onError) {
     var templateId = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';
-    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg;
+    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg + '&usedBookAvosObjectId=' + usedBookAvosObjectId;
     var color = '#30bf4c';
     var data = {
         first: {//标题
@@ -96,9 +98,9 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
     };
     exports.APIClient.sendTemplate(receiverId, templateId, url, color, data, function (err, result) {
         if (err) {
-            callback(err);
+            onError(err);
         } else {
-            callback(result);
+            onSuccess(result);
         }
     })
 };

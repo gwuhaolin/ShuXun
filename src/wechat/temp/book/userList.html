@@ -1,4 +1,4 @@
-<!--图书列表-->
+<!--用户列表-->
 <ion-view ng-controller="book_userList" view-title="{{title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
@@ -8,8 +8,7 @@
             <user-info json-user-info="one"
                        user-used-book-number="one.usedBookNumber"></user-info>
         </div>
-        <ion-infinite-scroll ng-if="hasMore()"
-                             on-infinite="loadMore()"
+        <ion-infinite-scroll on-infinite="loadMore()"
                              distance="1%">
         </ion-infinite-scroll>
     </ion-content>

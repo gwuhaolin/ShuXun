@@ -65,6 +65,29 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
 });
 
 /**
+ * 给分数发送模板消息
+ * @参数:sendName 发送者的昵称
+ * @参数:sendId 发送者的微信openId
+ * @参数:receiverId 接收者的微信openId
+ * @参数:msg 信息内容
+ * @参数:usedBookAvosObjectId 当前咨询的二手书的objectId
+ * @返回 发送成功时返回
+ *      发送失败时返回 error
+ */
+AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
+    var sendName = request.params['sendName'];
+    var sendId = request.params['sendId'];
+    var receiverId = request.params['receiverId'];
+    var msg = request.params['msg'];
+    var usedBookAvosObjectId = request.params['usedBookAvosObjectId'];
+    WechatAPI.senderSendMsgToReceiver(sendName, sendId, receiverId, msg, usedBookAvosObjectId, function (result) {
+        response.success(result);
+    }, function (error) {
+        response.error(error);
+    })
+});
+
+/**
  * 上传一本二手书时,把二手书的位置定为主人当前的位置
  */
 AV.Cloud.beforeSave('UsedBook', function (request, response) {

@@ -12,6 +12,7 @@
             </ion-item>
             <ion-item>
                 <h3>要价:{{jsonUsedBook.price}}</h3>
+
                 <p>时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
 
                 <p>书名:{{jsonUsedBook.title}}</p>
@@ -22,7 +23,7 @@
         <div class="list card">
             <ion-item class="item-divider  item-button-right">主人信息
                 <a class="button button-clear button-balanced" style="top: 0"
-                   ui-sref="tab.person_sendMsgToUser({openId:ownerInfo.openId})">联系主人
+                   ui-sref="tab.person_sendMsgToUser({openId:ownerInfo.openId,usedBookAvosObjectId:usedBookAvosObjectId})">联系主人
                 </a>
             </ion-item>
             <user-info json-user-info="ownerInfo" user-used-book-number="ownerUsedBookNumber"></user-info>

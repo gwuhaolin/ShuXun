@@ -3,19 +3,31 @@
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
     </ion-nav-buttons>
-    <ion-content class="padding" style="text-align: center">
+    <ion-content class="padding">
         <ion-list>
+            <!-- 二手书信息-->
+            <one-used-book json-used-book="jsonUsedBook"></one-used-book>
             <!-- 对方用户信息-->
             <user-info ng-if="jsonUser" json-user-info="jsonUser"></user-info>
             <!-- 对方发的消息-->
             <ion-item ng-if="msg.receiveMsg">{{msg.receiveMsg}}</ion-item>
             <!-- 我的输入框-->
             <label class="item item-input">
-                <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容" style="height: 100px;">
+                <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容" autofocus="autofocus">
             </label>
         </ion-list>
         <button ng-disabled="!msg.sendMsg" class="button button-block button-outline button-balanced"
                 ng-click="sendOnClick()">发送
         </button>
+        <!-- 常用回复语-->
+        <ion-list>
+            <ion-item class="item-divider item-button-right">快速回复内容</ion-item>
+            <ion-item style="white-space:normal;padding: 5px">
+                <button class="button button-small button-outline button-balanced" style="margin: 5px"
+                        ng-repeat="word in commonWords"
+                        ng-click="msg.sendMsg=word">{{word}}
+                </button>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

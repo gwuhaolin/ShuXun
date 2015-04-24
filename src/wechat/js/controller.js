@@ -165,8 +165,8 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$) {
         $scope.WeChatJS$ = WeChatJS$;
-        var usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
-        UsedBook$.getJsonUsedBookByAvosObjectId(usedBookAvosObjectId, function (json) {
+        $scope.usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
+        UsedBook$.getJsonUsedBookByAvosObjectId($scope.usedBookAvosObjectId, function (json) {
             json.image = json.image ? json.image.replace('mpic', 'lpic') : '';//大图显示
             $scope.jsonUsedBook = json;
             $scope.$apply();
@@ -325,28 +325,36 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, User$) {
+    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, User$, UsedBook$) {
         var receiverId = $stateParams['openId'];
         $scope.msg = {
             receiveMsg: $stateParams['msg'],
-            sendMsg: ''
+            sendMsg: '',
+            usedBookAvosObjectId: $stateParams['usedBookAvosObjectId']
         };
         User$.getAvosUserByOpenId(receiverId).done(function (avosUser) {
             $scope.jsonUser = User$.avosUserToJson(avosUser);
             $scope.$apply();
         });
+        UsedBook$.getJsonUsedBookByAvosObjectId($scope.msg.usedBookAvosObjectId, function (jsonUsedBook) {
+            $scope.$apply(function () {
+                $scope.jsonUsedBook = jsonUsedBook;
+            })
+        });
+
+        $scope.commonWords = ['1', '2', '3'];//TODO
 
         /**
          * 发出消息
          */
         $scope.sendOnClick = function () {
-            User$.sendMsgToUser(receiverId, $scope.msg['sendMsg'], function () {
+            User$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId).done(function () {
                 alert('回复成功');
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();
-            }, function (error) {
-                alert('发送失败:' + error['errmsg']);
-            })
+            }).fail(function (error) {
+                alert('发送失败:' + JSON.stringify(error));
+            });
         }
     })
 

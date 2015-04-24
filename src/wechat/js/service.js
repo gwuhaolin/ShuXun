@@ -663,29 +663,19 @@ APP.service('DoubanBook$', function () {
          * 我发送消息给其他用户
          * @param receiverId 接收者的openID
          * @param msg 消息内容
-         * @param onSuccess 发送成功就返回msgid
-         * @param onError 返回错误
+         * @param usedBookAvosObjectId 当前正在咨询的二手书的objectID
          */
-        this.sendMsgToUser = function (receiverId, msg, onSuccess, onError) {
+        this.sendMsgToUser = function (receiverId, msg, usedBookAvosObjectId) {
             var myJsonInfo = that.getCurrentJsonUser();
             var sendName = myJsonInfo.nickName;
             var sendId = myJsonInfo.openId;
-            $http.jsonp('/wechat/sendMsgTo?callback=JSON_CALLBACK', {
-                params: {
-                    sendName: sendName,
-                    sendId: sendId,
-                    receiverId: receiverId,
-                    msg: msg
-                }
-            }).success(function (result) {
-                if (result['errcode'] == 0) {
-                    onSuccess(result['msgid'])
-                } else {
-                    onError(result);
-                }
-            }).error(function (error) {
-                onError(error);
-            })
+            return AV.Cloud.run('sendTemplateMsgToUser', {
+                sendName: sendName,
+                sendId: sendId,
+                receiverId: receiverId,
+                msg: msg,
+                usedBookAvosObjectId: usedBookAvosObjectId
+            });
         };
     })
 
