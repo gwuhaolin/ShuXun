@@ -32,14 +32,6 @@ APP.service('DoubanBook$', function () {
         that.getBookByISBD(bookISBN, callback, 'author,pubdate,image,publisher,title,price,isbn13');
     };
     /**
-     * 只要图书的名称和图片链接
-     * @param bookISBN
-     * @param callback
-     */
-    this.getBookByISBN_NameImage = function (bookISBN, callback) {
-        that.getBookByISBD(bookISBN, callback, 'image,title');
-    };
-    /**
      * 搜索图书
      * @param keyword 查询关键字 keyword和tag必传其一
      * @param start 取结果的offset 默认为0
@@ -254,9 +246,6 @@ APP.service('DoubanBook$', function () {
             books: [],
             loadMore: function () {
 
-            },
-            hasMore: function () {
-
             }
         };
 
@@ -304,13 +293,10 @@ APP.service('DoubanBook$', function () {
                         for (var i = 0; i < avosUsers.length; i++) {
                             that.NearUser.jsonUsers.push(User$.avosUserToJson(avosUsers[i]));
                         }
-                    } else {
-                        that.NearUser.hasMore = false;
                     }
                     $rootScope.$apply();
                 })
-            },
-            hasMore: true
+            }
         };
         this.NearUser.loadMore();
     })
@@ -329,7 +315,6 @@ APP.service('DoubanBook$', function () {
     })
 
     .service('WeChatJS$', function ($rootScope) {
-        var that = this;
         //先配置好微信
         jsonp('/wechat/getJsConfig', function (json) {
             wx.config(json);
@@ -350,13 +335,6 @@ APP.service('DoubanBook$', function () {
             re = angular.extend(re, json);
             return re;
         }
-
-        //获得用户目前地理位置
-        wx.getLocation({
-            success: function (res) {
-                that.location = res;//latitude; // 纬度，浮点数，范围为90 ~ -90 longitude; // 经度，浮点数，范围为180 ~ -180。// 速度，以米/每秒计 // 位置精度
-            }
-        });
 
         //分享到朋友圈
         wx.onMenuShareTimeline(getShareData());
@@ -380,37 +358,6 @@ APP.service('DoubanBook$', function () {
                     $rootScope.$apply();
                 }
             })
-        };
-
-        /**
-         * 拍照或从手机相册中选图接口
-         * @param callback
-         * 返回图片的localId
-         * localId可以作为img标签的src属性显示图片
-         * TODO 选择后src属性预览不了
-         */
-        this.chooseImage = function (callback) {
-            wx.chooseImage({
-                success: function (res) {
-                    callback(res.localIds[0]);
-                    $rootScope.$apply();
-                }
-            });
-        };
-
-        /**
-         * 上传图片接口
-         * @param localId 需要上传的图片的本地ID，由chooseImage接口获得
-         * @param callback 返回图片的服务器端ID
-         */
-        this.uploadImage = function (localId, callback) {
-            wx.uploadImage({
-                localId: localId,
-                success: function (res) {
-                    var serverId = res.serverId;
-                    callback(serverId);
-                }
-            });
         };
 
         /***
@@ -550,8 +497,7 @@ APP.service('DoubanBook$', function () {
 
     })
 
-    .
-    service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory, InfoService$) {
+    .service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory, InfoService$) {
 
         /**
          * 为$scope注册选择学校modalView功能
@@ -911,15 +857,12 @@ APP.service('DoubanBook$', function () {
                         for (var i = 0; i < avosUsedBooks.length; i++) {
                             that.ISBN.nowEqualISBNJsonUsedBookList.push(that.avosUsedBookToJson(avosUsedBooks[i]));
                         }
-                    } else {
-                        that.ISBN.hasMore = false;
                     }
                 }).always(function () {
                     that.isLoading = false;
                     $rootScope.$apply();
                 })
-            },
-            hasMore: true
+            }
         };
     })
 

@@ -5,18 +5,7 @@
     <ion-content>
         <ion-list>
             <!-- 二手书列表-->
-            <ion-item class="item-thumbnail-left"
-                      ng-repeat="jsonUsedBook in jsonUsedBooks"
-                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:jsonUsedBook.objectId})">
-                <img ng-if="jsonUsedBook.image" ng-src="{{jsonUsedBook.image}}">
-
-                <h3>要价:{{jsonUsedBook.price}}</h3>
-                <h4>{{jsonUsedBook.updatedAt | date:'mediumDate' }}</h4>
-
-                <p ng-if="jsonUsedBook.title">书名:{{jsonUsedBook.title}}</p>
-
-                <p ng-if="jsonUsedBook.des">描述:{{jsonUsedBook.des}}</p>
-            </ion-item>
+            <one-used-book ng-repeat="jsonUsedBook in jsonUsedBooks" json-used-book="jsonUsedBook"></one-used-book>
         </ion-list>
         <ion-infinite-scroll
                 on-infinite="loadMore()"

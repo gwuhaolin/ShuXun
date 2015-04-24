@@ -7,12 +7,12 @@
         <!-- 图书基本信息-->
         <div class="list card">
             <ion-item ng-if="jsonUsedBook.image" style="text-align: center">
-                <img ng-src="{{jsonUsedBook.image" style="height: 180px"
+                <img ng-src="{{jsonUsedBook.image}}" style="height: 180px"
                      ng-click="WeChatJS$.previewOneImage(jsonUsedBook.image)">
             </ion-item>
             <ion-item>
                 <h3>要价:{{jsonUsedBook.price}}</h3>
-                <h4>{{jsonUsedBook.updatedAt | date:'mediumDate' }}</h4>
+                <p>时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
 
                 <p>书名:{{jsonUsedBook.title}}</p>
 

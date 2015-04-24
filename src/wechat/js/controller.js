@@ -60,18 +60,12 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.title = '你附近的二手书';
             $scope.jsonUsedBooks = BookRecommend$.NearBook.jsonBooks;
             $scope.loadMore = BookRecommend$.NearBook.loadMore;
-            $scope.hasMore = function () {
-                return BookRecommend$.NearBook.hasMore;
-            };
         } else if (cmd == 'isbn') {
             $scope.title = '对应的二手书';
             var isbn13 = $stateParams['isbn13'];
             UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
             $scope.jsonUsedBooks = UsedBook$.ISBN.nowEqualISBNJsonUsedBookList;
             $scope.loadMore = UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
-            $scope.hasMore = function () {
-                return UsedBook$.ISBN.hasMore;
-            };
         }
     })
 
@@ -93,15 +87,11 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 userBookNumber($scope.jsonUsers[i]);
             }
             $scope.loadMore = BookRecommend$.NearUser.loadMore;
-            $scope.hasMore = function () {
-                return BookRecommend$.NearUser.hasMore;
-            }
         }
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $sce, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
-        $scope.$sce = $sce;
+    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
         //////////// 豆瓣图书信息 /////////
         $scope.isbn13 = $stateParams.isbn13;
         $scope.book = null;
@@ -179,6 +169,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         UsedBook$.getJsonUsedBookByAvosObjectId(usedBookAvosObjectId, function (json) {
             json.image = json.image ? json.image.replace('mpic', 'lpic') : '';//大图显示
             $scope.jsonUsedBook = json;
+            $scope.$apply();
             var avosOwner = $scope.jsonUsedBook.owner;
             avosOwner.fetch().done(function (avosOwner) {
                 $scope.ownerInfo = User$.avosUserToJson(avosOwner);

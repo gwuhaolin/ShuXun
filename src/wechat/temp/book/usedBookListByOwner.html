@@ -8,7 +8,10 @@
             <!-- 搜索结果列表-->
             <one-used-book ng-if="jsonUsedBookList.length>0" ng-repeat="oneJsonUsedBook in jsonUsedBookList"
                            json-used-book="oneJsonUsedBook"></one-used-book>
-            <ion-item ng-if="jsonUsedBookList.length==0" style="text-align: center;padding: 5px">主人还没有旧书要卖</ion-item>
+            <ion-item ng-if="jsonUsedBookList.length==0" style="text-align: center;padding: 0">
+                <a class="button button-small button-clear button-balanced"
+                   ui-sref="tab.book_recommend">主人还没旧书要卖,再去逛逛</a>
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
