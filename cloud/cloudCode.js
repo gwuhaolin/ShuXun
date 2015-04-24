@@ -7,13 +7,6 @@ var WechatAPI = require('cloud/wechatAPI.js');
 var LBS = require('cloud/lbs.js');
 var Info = require('cloud/info.js');
 
-/**
- * 更新全国大学信息
- */
-AV.Cloud.define('updateSchoolInfo', function (request, response) {
-    Info.spiderSchoolsFromMyFriday();
-    response.success();
-});
 
 /**
  * 更新微信菜单
@@ -82,6 +75,7 @@ AV.Cloud.beforeSave('UsedBook', function (request, response) {
     response.success();
 });
 
+
 /**
  * 更新学校对象的经纬度
  * @param avosSchool 学校的名称
@@ -123,5 +117,12 @@ AV.Cloud.afterSave('School', function (request, response) {
 AV.Cloud.afterUpdate('School', function (request, response) {
     var avosSchool = request.object;
     updateSchoolLocation(avosSchool);
+    response.success();
+});
+/**
+ * 更新全国大学信息
+ */
+AV.Cloud.define('updateSchoolInfo', function (request, response) {
+    Info.spiderSchoolsFromMyFriday();
     response.success();
 });

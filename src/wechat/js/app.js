@@ -6,8 +6,9 @@
 
 var APP = angular.module('APP', ['ionic'], null)
 
-    .config(function ($stateProvider, $urlRouterProvider) {
-        ionic.Platform.setPlatform('ios');
+    .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+        $ionicConfigProvider.tabs.style('standard');
+        $ionicConfigProvider.tabs.position('bottom');
         $stateProvider.state('tab', {
             url: '/tab',
             abstract: true,
@@ -140,7 +141,7 @@ APP.run(function ($rootScope, $state, User$) {
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录
             if (!User$.getCurrentAvosUser()) {
                 event.preventDefault();//停止当前
-                $state.go('tab.hello',{state:stateName});//去验证身份
+                $state.go('tab.hello', {state: stateName});//去验证身份
             }
         }
     });
