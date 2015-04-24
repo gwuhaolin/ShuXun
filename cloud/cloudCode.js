@@ -7,7 +7,6 @@ var WechatAPI = require('cloud/wechatAPI.js');
 var LBS = require('cloud/lbs.js');
 var Info = require('cloud/info.js');
 
-
 /**
  * 更新微信菜单
  * 微信菜单格式见 http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html
@@ -51,7 +50,9 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
             owner: avosUsedBook.get('owner'),
             des: avosUsedBook.get('des'),
             price: avosUsedBook.get('price'),
-            isbn13: avosUsedBook.get('isbn13')
+            isbn13: avosUsedBook.get('isbn13'),
+            title: avosUsedBook.get('title'),
+            image: avosUsedBook.get('image')
         }).done(function () {
             avosUsedBook.destroy().done(function () {//删除UsedBook表获得被卖的二手书
                 response.success();

@@ -5,7 +5,7 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
-            <!-- 正在加载-->
+            <!-- 正在架上-->
             <div style="text-align: center;margin: 10px" ng-if="UsedBook$.isLoading">
                 <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
             </div>
@@ -17,7 +17,8 @@
             </ion-item>
             <ion-item ng-repeat="oneAvosUsedBook in UsedBook$.myAvosUsedBookList" class="item-thumbnail-left">
                 <img ng-if="oneAvosUsedBook.get('image')"
-                     ng-src="{{oneAvosUsedBook.get('image')}}">
+                     ng-src="{{oneAvosUsedBook.get('image')}}"
+                     ui-sref="tab.book_oneBook({isbn13:oneAvosUsedBook.get('isbn13')})">
 
                 <p ng-if="oneAvosUsedBook.get('price')">要价:{{oneAvosUsedBook.get('price')}}</p>
 
@@ -36,10 +37,16 @@
             </ion-item>
             <ion-item ng-if="UsedBook$.myAvosUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>
 
-            <ion-item class="item-divider item-button-right">已经卖出</ion-item>
+            <!-- 已经卖出-->
+            <ion-item class="item-divider">已经卖出</ion-item>
             <ion-item ng-repeat="oneAvosUsedBook in HasSellUsedBook$.myAvosUsedBookList" class="item-avatar">
+                <img ng-if="oneAvosUsedBook.get('image')"
+                     ng-src="{{oneAvosUsedBook.get('image')}}"
+                     ui-sref="tab.book_oneBook({isbn13:oneAvosUsedBook.get('isbn13')})">
+
+                <p ng-if="oneAvosUsedBook.get('title')">书名:{{oneAvosUsedBook.get('title')}}</p>
+
                 <p ng-if="oneAvosUsedBook.get('des')">描述:{{oneAvosUsedBook.get('des')}}</p>
-                <span ng-if="oneAvosUsedBook.get('price')">要价:{{oneAvosUsedBook.get('price')}}</span>
                 <button class="button button-small button-outline button-assertive" style="float: right"
                         ng-click="HasSellUsedBook$.removeUsedBook(oneAvosUsedBook)">删除
                 </button>
