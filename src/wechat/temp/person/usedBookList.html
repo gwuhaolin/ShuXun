@@ -39,12 +39,12 @@
 
             <!-- 已经卖出-->
             <ion-item class="item-divider">已经卖出</ion-item>
-            <ion-item ng-repeat="oneAvosUsedBook in HasSellUsedBook$.myAvosUsedBookList" class="item-avatar">
+            <ion-item ng-repeat="oneAvosUsedBook in HasSellUsedBook$.myAvosUsedBookList" class="item-avatar item-button-right">
                 <img ng-if="oneAvosUsedBook.get('image')"
                      ng-src="{{oneAvosUsedBook.get('image')}}"
                      ui-sref="tab.book_oneBook({isbn13:oneAvosUsedBook.get('isbn13')})">
 
-                <p ng-if="oneAvosUsedBook.get('title')">书名:{{oneAvosUsedBook.get('title')}}</p>
+                <h3 ng-if="oneAvosUsedBook.get('title')">书名:{{oneAvosUsedBook.get('title')}}</h3>
 
                 <p ng-if="oneAvosUsedBook.get('des')">描述:{{oneAvosUsedBook.get('des')}}</p>
                 <button class="button button-small button-outline button-assertive" style="float: right"
