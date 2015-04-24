@@ -3,9 +3,17 @@
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
     <ion-content>
+        <!-- 排序方式-->
+        <div class="button-bar padding">
+            <a class="button button-small" ng-click="sortWay='price'"
+               ng-class="{'button-balanced':sortWay=='price'}">图书价格</a>
+            <a class="button button-small " ng-click="sortWay='location'"
+               ng-class="{'button-balanced':sortWay=='location'}">离你距离</a>
+        </div>
         <ion-list>
             <!-- 二手书列表-->
-            <one-used-book ng-repeat="jsonUsedBook in jsonUsedBooks" json-used-book="jsonUsedBook"></one-used-book>
+            <one-used-book ng-repeat="jsonUsedBook in jsonUsedBooks | orderBy:sortWay"
+                           json-used-book="jsonUsedBook"></one-used-book>
         </ion-list>
         <ion-infinite-scroll
                 on-infinite="loadMore()"

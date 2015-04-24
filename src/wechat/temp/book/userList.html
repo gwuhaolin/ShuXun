@@ -3,8 +3,14 @@
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
-    <ion-content>
-        <div class="card" ng-repeat="one in jsonUsers">
+    <ion-content class="padding">
+        <div class="button-bar">
+            <a class="button button-small" ng-click="sortWay='usedBookNumber'"
+               ng-class="{'button-balanced':sortWay=='usedBookNumber'}">旧书数量</a>
+            <a class="button button-small " ng-click="sortWay='location'"
+               ng-class="{'button-balanced':sortWay=='location'}">离你距离</a>
+        </div>
+        <div class="card" ng-repeat="one in jsonUsers | orderBy:sortWay:true">
             <user-info json-user-info="one"
                        user-used-book-number="one.usedBookNumber"></user-info>
         </div>

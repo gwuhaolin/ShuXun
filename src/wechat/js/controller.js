@@ -56,6 +56,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
     //二手书列表
     .controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
         var cmd = $stateParams['cmd'];
+        $scope.sortWay = '';
         if (cmd == 'near') {
             $scope.title = '你附近的二手书';
             $scope.jsonUsedBooks = BookRecommend$.NearBook.jsonBooks;
@@ -72,6 +73,8 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
     //用户列表
     .controller('book_userList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
         var cmd = $stateParams['cmd'];
+
+        $scope.sortWay = '';
 
         function userBookNumber(oneJsonUser) {
             UsedBook$.getUsedBookNumberForOwner(oneJsonUser.objectId).done(function (number) {
