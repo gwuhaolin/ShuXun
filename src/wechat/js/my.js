@@ -55,6 +55,20 @@ function eraseCookie(name) {
 }
 
 /**
+ * 调用百度lbs API获得我当前客户端的IP地址对应的经纬度
+ * @param callback [经度,纬度]
+ */
+function getMyLocationByIP(callback) {
+    var url = 'http://api.map.baidu.com/location/ip?ak=D9748868fb527b49a546fa88932b8cd9&coor=bd09ll';
+    jsonp(url, function (json) {
+        if (json.status == 0) {
+            var point = json.content['point'];
+            callback([point.x, point.y]);
+        }
+    });
+}
+
+/**
  * 使用微信写在cookie里的unionId登入
  * @param unionId 微信ID
  * @returns {*|AV.Promise}
@@ -67,7 +81,11 @@ function loginWithUnionId(unionId) {
 }
 loginWithUnionId(readCookie('unionId')).done(function (avosUser) {
     if (avosUser.get('location') == null) {//如果用户没地理位置信息就先通过IP地址获得
-        jsonp('/lbs/updateLocationByIP');
+        getMyLocationByIP(function (location) {
+            AV.Cloud.run('updateMyLocationByIP', {
+                location: location
+            });
+        });
     }
 });
 

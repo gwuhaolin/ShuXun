@@ -89,6 +89,26 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
 });
 
 /**
+ * 根据我的IP地址更新我经纬度
+ */
+AV.Cloud.define('updateMyLocationByIP', function (req, res) {
+    var location = req.params['location'];
+    var user = req.user;
+    if (user) {
+        var point = new AV.GeoPoint(location);
+        user.set('location', point);
+        user.save().done(function () {
+            res.success();
+        }).fail(function (error) {
+            res.error(error);
+        })
+    } else {
+        res.error('需要先登入');
+    }
+
+});
+
+/**
  * 上传一本二手书时,把二手书的位置定为主人当前的位置
  */
 AV.Cloud.beforeSave('UsedBook', function (request, response) {

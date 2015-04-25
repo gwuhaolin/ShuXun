@@ -8,7 +8,6 @@ var WechatMsg = require('cloud/wechatMsg.js');
 var BusinessSite = require('cloud/businessSite.js');
 var request = require('request');
 var Info = require('cloud/info.js');
-var LBS = require('cloud/lbs.js');
 var app = express();
 app.use(express.compress(), null);//压缩返回的数据
 app.set('views', 'cloud/views');   // 设置模板目录
@@ -62,28 +61,5 @@ app.get('/business/:id', function (req, res) {
     var id = req.params['id'];
     BusinessSite.spider(id, function (json) {
         res.jsonp(json);
-    })
-});
-
-////////////////////// LBS /////////////////////////
-/**
- * 根据用户的IP地址去调用百度API获得用户的经纬度
- */
-app.get('/lbs/updateLocationByIP', function (req, res) {
-    LBS.getLocationByIP(req, function (location) {
-        var user = AV.User.current();
-        if (user) {
-            var point = new AV.GeoPoint(location.lat, location.lng);
-            user.set('location', point);
-            user.save().done(function () {
-                res.jsonp(location);
-            }).fail(function (error) {
-                res.jsonp(error);
-            })
-        } else {
-            res.jsonp('需要登录');
-        }
-    }, function (error) {
-        res.jsonp(error);
     })
 });
