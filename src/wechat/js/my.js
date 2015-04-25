@@ -63,7 +63,7 @@ function getMyLocationByIP(callback) {
     jsonp(url, function (json) {
         if (json.status == 0) {
             var point = json.content['point'];
-            callback([point.x, point.y]);
+            callback([point.y, point.x]);
         }
     });
 }
