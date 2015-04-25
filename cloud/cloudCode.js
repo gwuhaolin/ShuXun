@@ -89,28 +89,6 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
 });
 
 /**
- * 根据用户的IP地址去调用百度API获得用户的经纬度
- */
-AV.Cloud.define('updateLocationByIP', function (req, res) {
-    LBS.getLocationByIP(req, function (location) {
-        var user = req.user;
-        if (user) {
-            var point = new AV.GeoPoint(location.lat, location.lng);
-            user.set('location', point);
-            user.save().done(function () {
-                res.success(location);
-            }).fail(function (error) {
-                res.error(error);
-            })
-        } else {
-            res.error('需要登录');
-        }
-    }, function (error) {
-        res.error(error);
-    })
-});
-
-/**
  * 上传一本二手书时,把二手书的位置定为主人当前的位置
  */
 AV.Cloud.beforeSave('UsedBook', function (request, response) {

@@ -67,7 +67,7 @@ function loginWithUnionId(unionId) {
 }
 loginWithUnionId(readCookie('unionId')).done(function (avosUser) {
     if (avosUser.get('location') == null) {//如果用户没地理位置信息就先通过IP地址获得
-        AV.Cloud.run('updateLocationByIP');
+        jsonp('/lbs/updateLocationByIP');
     }
 });
 

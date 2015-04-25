@@ -35,7 +35,7 @@ exports.getLocationByIP = function (req, onSuccess, onError) {
         } else {
             var json = JSON.parse(body);
             if (json.status == 0) {
-                var point = json['point'];
+                var point = json['content']['point'];
                 onSuccess({
                     lng: point.x,
                     lat: point.y
