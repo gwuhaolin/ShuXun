@@ -8,17 +8,21 @@
 var BaiDu = {
     AppID: 'D9748868fb527b49a546fa88932b8cd9'
 };
-var request = require('request');
+var Request = require('request');
 
 /**
  * 通过用户的IP地址获取用户的经纬度
- * @param request express请求
- * @param onSuccess
+ * @param req express请求
+ * @param onSuccess 返回经纬度
+ *              {
+                    lng: point.x,
+                    lat: point.y
+                }
  * @param onError
  */
-exports.getLocationByIP = function (request, onSuccess, onError) {
-    var ip = request.headers['x-real-ip'];
-    request.get({
+exports.getLocationByIP = function (req, onSuccess, onError) {
+    var ip = req.headers['x-real-ip'];
+    Request.get({
         url: 'http://api.map.baidu.com/location/ip',
         qs: {
             ak: BaiDu.AppID,
@@ -54,7 +58,7 @@ exports.getLocationByIP = function (request, onSuccess, onError) {
  * @param onError 返回错误原因
  */
 exports.getSchoolLocation = function (schoolName, onSuccess, onError) {
-    request.get({
+    Request.get({
         url: 'http://api.map.baidu.com/place/v2/search',
         qs: {
             ak: BaiDu.AppID,

@@ -557,7 +557,7 @@ APP.service('DoubanBook$', function () {
 
     })
 
-    .service('User$', function ($http) {
+    .service('User$', function () {
         var that = this;
 
         /**
@@ -657,7 +657,6 @@ APP.service('DoubanBook$', function () {
             query.equalTo('username', unionId);
             return query.first();
         };
-
 
         /**
          * 我发送消息给其他用户

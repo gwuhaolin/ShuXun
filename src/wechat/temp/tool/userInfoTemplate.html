@@ -6,7 +6,8 @@
         <i class="icon ion-male" style="color: #5eb1ed" ng-if="jsonUserInfo.sex==1"></i>
         <i class="icon ion-female" style="color: #ff6d9e" ng-if="jsonUserInfo.sex==2"></i>
         <i>{{jsonUserInfo.startSchoolYear}}级</i>
-        <button ng-if="jsonUserInfo.location" class="button button-small button-clear button-balanced" style="float: right"
+        <button ng-if="jsonUserInfo.location" class="button button-small button-clear button-balanced"
+                style="float: right"
                 ng-click="WeChatJS$.openMap(jsonUserInfo.location.latitude,jsonUserInfo.location.longitude)">地图
         </button>
     </h2>
@@ -16,6 +17,6 @@
 <!-- 主人所有旧书链接-->
 <ion-item ng-if="userUsedBookNumber" style="padding: 0;text-align: center">
     <a ng-if="userUsedBookNumber>0" class="button button-small button-clear button-balanced"
-       ui-sref="tab.book_usedBookListByOwner({ownerId:jsonUserInfo.objectId})">查看主人其它{{userUsedBookNumber}}本旧书</a>
+       ui-sref="tab.book_usedBookListByOwner({ownerId:jsonUserInfo.objectId})">查看主人要卖的{{userUsedBookNumber}}本旧书</a>
     <a ng-if="userUsedBookNumber==0" class="button button-small button-clear button-balanced">主人还没有在买的二手书</a>
 </ion-item>
