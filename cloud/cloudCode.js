@@ -90,8 +90,11 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
 
 /**
  * 根据我的IP地址更新我经纬度
+ * @参数:latitude 纬度
+ * @参数:longitude 经度
+ * 如果更新成功就返回success,否则返回error
  */
-AV.Cloud.define('updateMyLocationByIP', function (req, res) {
+AV.Cloud.define('updateMyLocation', function (req, res) {
     var latitude = parseFloat(req.params['latitude']);
     var longitude = parseFloat(req.params['longitude']);
     var user = req.user;

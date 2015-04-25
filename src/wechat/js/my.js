@@ -55,23 +55,6 @@ function eraseCookie(name) {
 }
 
 /**
- * 调用百度lbs API获得我当前客户端的IP地址对应的经纬度
- * @param callback [经度,纬度]
- */
-function getMyLocationByIP(callback) {
-    var url = 'http://api.map.baidu.com/location/ip?ak=D9748868fb527b49a546fa88932b8cd9&coor=bd09ll';
-    jsonp(url, function (json) {
-        if (json.status == 0) {
-            var point = json.content['point'];
-            callback({
-                longitude: point.x,
-                latitude: point.y
-            });
-        }
-    });
-}
-
-/**
  * 使用微信写在cookie里的unionId登入
  * @param unionId 微信ID
  * @returns {*|AV.Promise}
@@ -82,14 +65,32 @@ function loginWithUnionId(unionId) {
     }
     return AV.Promise.error("unionId错误");
 }
-loginWithUnionId(readCookie('unionId')).done(function (avosUser) {
-    if (avosUser.get('location') == null) {//如果用户没地理位置信息就先通过IP地址获得
-        getMyLocationByIP(function (location) {
-            AV.Cloud.run('updateMyLocationByIP', {
-                latitude: location.latitude,
-                longitude: location.longitude
-            });
-        });
-    }
-});
+
+/**
+ * 调用百度lbs API获得我当前客户端的IP地址对应的经纬度
+ * @param callback [经度,纬度]
+ */
+//function getMyLocationByIP(callback) {
+//    var url = 'http://api.map.baidu.com/location/ip?ak=D9748868fb527b49a546fa88932b8cd9&coor=bd09ll';
+//    jsonp(url, function (json) {
+//        if (json.status == 0) {
+//            var point = json.content['point'];
+//            callback({
+//                longitude: point.x,
+//                latitude: point.y
+//            });
+//        }
+//    });
+//}
+//loginWithUnionId(readCookie('unionId')).done(function (avosUser) {
+//    if (avosUser.get('location') == null) {//如果用户没地理位置信息就先通过IP地址获得
+//        getMyLocationByIP(function (location) {
+//            AV.Cloud.run('updateMyLocation', {
+//                latitude: location.latitude,
+//                longitude: location.longitude
+//            });
+//        });
+//    }
+//});
+
 

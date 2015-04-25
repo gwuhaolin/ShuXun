@@ -336,14 +336,26 @@ APP.service('DoubanBook$', function () {
             return re;
         }
 
-        //分享到朋友圈
-        wx.onMenuShareTimeline(getShareData());
-        //分享给朋友
-        wx.onMenuShareAppMessage(getShareData());
-        //分享到QQ
-        wx.onMenuShareQQ(getShareData());
-        //分享到腾讯微博
-        wx.onMenuShareWeibo(getShareData());
+        wx.ready(function () {
+            //分享到朋友圈
+            wx.onMenuShareTimeline(getShareData());
+            //分享给朋友
+            wx.onMenuShareAppMessage(getShareData());
+            //分享到QQ
+            wx.onMenuShareQQ(getShareData());
+            //分享到腾讯微博
+            wx.onMenuShareWeibo(getShareData());
+            //更新用户的经纬度
+            wx.getLocation({
+                success: function (res) {
+                    AV.Cloud.run('updateMyLocation', {
+                        latitude: res.latitude,
+                        longitude: res.longitude
+                    });
+                }
+            });
+        });
+
 
         /**
          * 调起微信扫一扫接口
