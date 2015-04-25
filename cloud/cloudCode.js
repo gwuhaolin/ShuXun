@@ -92,10 +92,11 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
  * 根据我的IP地址更新我经纬度
  */
 AV.Cloud.define('updateMyLocationByIP', function (req, res) {
-    var location = req.params['location'];
+    var latitude = req.params['latitude'];
+    var longitude = req.params['longitude'];
     var user = req.user;
     if (user) {
-        var point = new AV.GeoPoint(location);
+        var point = new AV.GeoPoint(latitude, longitude);
         user.set('location', point);
         user.save().done(function () {
             res.success();

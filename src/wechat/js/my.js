@@ -63,7 +63,10 @@ function getMyLocationByIP(callback) {
     jsonp(url, function (json) {
         if (json.status == 0) {
             var point = json.content['point'];
-            callback([point.y, point.x]);
+            callback({
+                longitude: point.x,
+                latitude: point.y
+            });
         }
     });
 }
@@ -83,7 +86,8 @@ loginWithUnionId(readCookie('unionId')).done(function (avosUser) {
     if (avosUser.get('location') == null) {//如果用户没地理位置信息就先通过IP地址获得
         getMyLocationByIP(function (location) {
             AV.Cloud.run('updateMyLocationByIP', {
-                location: location
+                latitude: location.latitude,
+                longitude: location.longitude
             });
         });
     }
