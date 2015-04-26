@@ -96,11 +96,19 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
             color: color
         }
     };
-    exports.APIClient.sendTemplate(receiverId, templateId, url, color, data, function (err, result) {
-        if (err) {
-            onError(err);
-        } else {
-            onSuccess(result);
-        }
-    })
+
+    var query = new AV.Query('UsedBook');
+    query.select('title');
+    query.get(usedBookAvosObjectId).done(function (usedBook) {
+        data.first.value += '-' + usedBook.get('title');
+    }).always(function () {
+        exports.APIClient.sendTemplate(receiverId, templateId, url, color, data, function (err, result) {
+            if (err) {
+                onError(err);
+            } else {
+                onSuccess(result);
+            }
+        })
+    });
+
 };
