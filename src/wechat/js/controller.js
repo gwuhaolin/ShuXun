@@ -94,21 +94,26 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
+    .controller('book_oneBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
         //////////// 豆瓣图书信息 /////////
         $scope.isbn13 = $stateParams.isbn13;
         $scope.book = null;
         //目前是否正在加载数据
         $scope.isLoading = true;
         DoubanBook$.getBookByISBD($scope.isbn13, function (json) {
-            json.image = json.image.replace('mpic', 'lpic');//大图显示
-            $scope.book = json;
-            $scope.isLoading = false;
-            $scope.$apply();
-            //加载电商联盟信息
-            BusinessSite$.getBusinessInfoByISBN(json.id, function (infos) {
-                $scope.businessInfos = infos;
-            });
+            if (json) {
+                json.image = json.image.replace('mpic', 'lpic');//大图显示
+                $scope.book = json;
+                $scope.isLoading = false;
+                $scope.$apply();
+                //加载电商联盟信息
+                BusinessSite$.getBusinessInfoByISBN(json.id, function (infos) {
+                    $scope.businessInfos = infos;
+                });
+            } else {
+                alert('没有找到图书信息,再去搜搜看~');
+                $state.go('tab.book_searchList');
+            }
         });
 
         //显示作者介绍
@@ -198,8 +203,11 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 image: '',
                 title: ''
             };
+            if ($scope.usedBookInfo.isbn13) {
+                loadDoubanBookInfo();
+            }
+            $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
         });
-        $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
 
         $ionicModal.fromTemplateUrl('template/noBarCodeModalView.html', {
             scope: $scope
@@ -211,21 +219,17 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         function loadDoubanBookInfo() {
             $scope.isLoading = true;
             DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
-                if (json.code && json.code == 6000) {//没有获得对应ISBN的图书信息
-                    alert('没有找到图书信息,再去搜搜看~');
-                    $state.go('tab.book_searchList');
-                } else {
+                if (json) {
                     $scope.doubanBookInfo = json;
                     $scope.isLoading = false;
                     $scope.usedBookInfo.image = json.image.replace('mpic', 'lpic');//大图显示
                     $scope.usedBookInfo.title = json.title;
                     $scope.$apply();
+                } else {
+                    alert('没有找到图书信息,再去搜搜看~');
+                    $state.go('tab.book_searchList');
                 }
             });
-        }
-
-        if ($scope.usedBookInfo.isbn13) {
-            loadDoubanBookInfo();
         }
 
         $scope.scanQRBtnOnClick = function () {

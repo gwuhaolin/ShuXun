@@ -13,7 +13,7 @@ APP.service('DoubanBook$', function () {
      * 用书的ISBN号码获得书的信息
      * @param bookISBN 书的ISBN号码
      * @param fields 要返回的字段
-     * @param callback
+     * @param callback 如果找到了对应的书就返回JSON书信息,否则返回null
      */
     this.getBookByISBD = function (bookISBN, callback, fields) {
         var url = baseUri + '/isbn/' + bookISBN;
@@ -21,7 +21,13 @@ APP.service('DoubanBook$', function () {
             fields = 'id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
         }
         url += '?fields=' + fields;
-        jsonp(url, callback);
+        jsonp(url, function (json) {
+            if (json.code) {//没有获得对应ISBN的图书信息
+                callback(null);
+            } else {
+                callback(json);
+            }
+        });
     };
     /**
      * 只要部分必要的字段
