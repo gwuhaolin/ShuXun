@@ -415,25 +415,19 @@ APP.service('DoubanBook$', function () {
 
         /**
          * 调用微信接口显示地图
-         * @param lat
-         * @param lon
+         * @param latitude
+         * @param longitude
          */
-        this.openMap = function (lat, lon) {
-            function open(lat, lon) {
-                wx.openLocation({
-                    latitude: lat, // 纬度，浮点数，范围为90 ~ -90
-                    longitude: lon, // 经度，浮点数，范围为180 ~ -180。
-                    name: '该同学位置' // 位置名
-                });
-            }
-
+        this.openMap = function (latitude, longitude) {
             //调用腾讯lbs API把GPS经纬度转换为腾讯地图经纬度
-            jsonp('http://apis.map.qq.com/ws/coord/v1/translate?type=1&key=R3DBZ-HEYRF-ZSZJ3-JAJJN-2ZWFF-SLBJV&output=jsonp&locations=' + lat + ',' + lon, function (json) {
+            jsonp('http://apis.map.qq.com/ws/coord/v1/translate?type=1&key=R3DBZ-HEYRF-ZSZJ3-JAJJN-2ZWFF-SLBJV&output=jsonp&locations=' + latitude + ',' + longitude, function (json) {
                 if (json.status == 0) {
                     var location = json.locations[0];
-                    open(location.lat, location.lon);
-                } else {//转换失败直接打开
-                    open(lat, lon);
+                    wx.openLocation({
+                        latitude: location.lat, // 纬度，浮点数，范围为90 ~ -90
+                        longitude: location.lng, // 经度，浮点数，范围为180 ~ -180。
+                        name: '该同学位置' // 位置名
+                    });
                 }
             });
         }
