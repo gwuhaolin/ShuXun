@@ -90,26 +90,38 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
 
 /**
  * 根据我的IP地址更新我经纬度
+ * 如果有latitude和longitude参数就用这两个参数更新,否则调用根据IP地址获得地理位置更新
  * @参数:latitude 纬度
  * @参数:longitude 经度
  * 如果更新成功就返回success,否则返回error
  */
 AV.Cloud.define('updateMyLocation', function (req, res) {
-    var latitude = parseFloat(req.params['latitude']);
-    var longitude = parseFloat(req.params['longitude']);
-    var user = req.user;
-    if (user) {
-        var point = new AV.GeoPoint(latitude, longitude);
-        user.set('location', point);
-        user.save().done(function () {
-            res.success();
-        }).fail(function (error) {
-            res.error(error);
+    var latitude;
+    var longitude;
+    if (req.params['latitude'] && req.params['longitude']) {//用户提交的GPS地位
+        latitude = parseFloat(req.params['latitude']);
+        longitude = parseFloat(req.params['longitude']);
+        updateLocation();
+    } else {//使用IP地址定位
+        var ip = request.remoteAddress;
+        LBS.getLocationByIP(ip, function (location) {
+            latitude = parseFloat(location.lat);
+            longitude = parseFloat(location.lng);
+            updateLocation();
         })
-    } else {
-        res.error('需要先登入');
     }
-
+    function updateLocation() {
+        var user = req.user;
+        if (user) {
+            LBS.updateUserLocation(user, latitude, longitude).done(function () {
+                res.success();
+            }).fail(function (error) {
+                res.error(error);
+            })
+        } else {
+            res.error('需要先登入');
+        }
+    }
 });
 
 /**

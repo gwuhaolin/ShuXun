@@ -56,8 +56,10 @@ gulp.task('wechat_js', function () {
 gulp.task('wechat_index', function () {
     return gulp.src('src/wechat/index.html')
         .pipe(htmlreplace({
-            'AngularJS': 'main.js',
-            'WechatJS': 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js'
+            'AppJS': 'main.js',
+            'WechatJS': 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
+            'IonicCSS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.4/css/ionic.min.css',
+            'IonicJS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.4/js/ionic.bundle.min.js'
         }))
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('public/wechat'));

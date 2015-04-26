@@ -11,8 +11,23 @@ var BaiDu = {
 var Request = require('request');
 
 /**
+ * 更新用户的地理位置
+ * @param avosUser AVOS User对象
+ * @param latitude 纬度
+ * @param longitude 经度
+ */
+exports.updateUserLocation = function (avosUser, latitude, longitude) {
+    if (latitude && longitude) {
+        var point = new AV.GeoPoint(latitude, longitude);
+        user.set('location', point);
+        return user.save();
+    }
+    return AV.Promise.error('缺少经纬度参数');
+};
+
+/**
  * 通过用户的IP地址获取用户的经纬度
- * @param req express请求
+ * @param ip ip地址
  * @param onSuccess 返回经纬度
  *              {
                     lng: point.x,
@@ -20,8 +35,7 @@ var Request = require('request');
                 }
  * @param onError
  */
-exports.getLocationByIP = function (req, onSuccess, onError) {
-    var ip = req.headers['x-real-ip'];
+exports.getLocationByIP = function (ip, onSuccess, onError) {
     Request.get({
         url: 'http://api.map.baidu.com/location/ip',
         qs: {

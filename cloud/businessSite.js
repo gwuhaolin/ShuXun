@@ -86,25 +86,24 @@ function updateURLParameter(url, param, paramVal) {
  * @return string 替换后的URL
  */
 function replaceUnionID(url) {
-    var re = '';
-    if (url.indexOf('dangdang.com') >= 0) {
-        re = updateURLParameter(url, 'form', UnionID.DangDang);
-    } else if (url.indexOf('jd.com') >= 0) {
-        re = url;//TODO 加密了
-    } else if (url.indexOf('winxuan.com') >= 0) {
-        re = updateURLParameter(url, 'customerID', UnionID.WenXuan);
-    } else if (url.indexOf('beifabook.com') >= 0) {
-        re = updateURLParameter(url, 'extra', UnionID.BeiFa)
-    } else if (url.indexOf('amazon.cn') >= 0) {
-        re = url;//TODO 加密了
-    } else if (url.indexOf('bookschina.com') >= 0) {
-        re = updateURLParameter(url, 'adservice', UnionID.BooksChina);
-    } else if (url.indexOf('china-pub.com') >= 0) {
-        re = updateURLParameter(url, 'ljid', UnionID.ChinaPub);
-    } else if (url.indexOf('taoshu.com') >= 0) {
-        re = updateURLParameter(url, 'from', UnionID.TaoShu);
-    }
-    return re;
+    //if (url.indexOf('dangdang.com') >= 0) {
+    //    url = updateURLParameter(url, 'form', UnionID.DangDang);
+    //} else if (url.indexOf('jd.com') >= 0) {
+    //
+    //} else if (url.indexOf('winxuan.com') >= 0) {
+    //    url = updateURLParameter(url, 'customerID', UnionID.WenXuan);
+    //} else if (url.indexOf('beifabook.com') >= 0) {
+    //    url = updateURLParameter(url, 'extra', UnionID.BeiFa)
+    //} else if (url.indexOf('amazon.cn') >= 0) {
+    //
+    //} else if (url.indexOf('bookschina.com') >= 0) {
+    //    url = updateURLParameter(url, 'adservice', UnionID.BooksChina);
+    //} else if (url.indexOf('china-pub.com') >= 0) {
+    //    url = updateURLParameter(url, 'ljid', UnionID.ChinaPub);
+    //} else if (url.indexOf('taoshu.com') >= 0) {
+    //    url = updateURLParameter(url, 'from', UnionID.TaoShu);
+    //}
+    return url;
 }
 
 /**

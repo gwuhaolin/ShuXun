@@ -352,6 +352,12 @@ APP.service('DoubanBook$', function () {
                         latitude: res.latitude,
                         longitude: res.longitude
                     });
+                },
+                fail: function () {//使用IP地址地位
+                    AV.Cloud.run('updateMyLocation');
+                },
+                cancel: function () {//使用IP地址地位
+                    AV.Cloud.run('updateMyLocation');
                 }
             });
         });
