@@ -428,7 +428,7 @@ APP.service('DoubanBook$', function () {
             }
 
             //调用腾讯lbs API把GPS经纬度转换为腾讯地图经纬度
-            jsonp('http://apis.map.qq.com/ws/coord/v1/translate?type=1&key=R3DBZ-HEYRF-ZSZJ3-JAJJN-2ZWFF-SLBJV&output=json&locations=' + lat + ',' + lon, function (json) {
+            jsonp('http://apis.map.qq.com/ws/coord/v1/translate?type=1&key=R3DBZ-HEYRF-ZSZJ3-JAJJN-2ZWFF-SLBJV&output=jsonp&locations=' + lat + ',' + lon, function (json) {
                 if (json.status == 0) {
                     var location = json.locations[0];
                     open(location.lat, location.lon);
