@@ -25,14 +25,29 @@ exports.MsgHandler = Wechat(config)
     }).link(function (message, req, res) {
         res.reply('ishuxun');
     }).event(function (message, req, res) {
-        res.reply('');
         switch (message['Event']) {
-            case 'LOCATION':
+            case 'LOCATION'://上报地理位置事件
                 var openId = message['FromUserName'];
                 var lat = message['Latitude'];
                 var lon = message['Longitude'];
                 saveLocationToUser(openId, lat, lon);
-                break;
+                res.reply('上报地理位置事件');
+                return;
+            case 'subscribe'://关注事件
+                res.reply('关注事件');
+                return;
+            case 'unsubscribe'://取消关注事件
+                res.reply('取消关注事件');
+                return;
+            case 'SCAN'://用户已关注时扫描带参数二维码事件事件推送
+                res.reply('用户已关注时扫描带参数二维码事件事件推送');
+                return;
+            case 'CLICK'://用户点击自定义菜单后
+                res.reply('用户点击自定义菜单后');
+                return;
+            case 'VIEW'://点击菜单跳转链接时的事件推送
+                res.reply('点击菜单跳转链接时的事件推送');
+                return;
         }
     }).middlewarify();
 
