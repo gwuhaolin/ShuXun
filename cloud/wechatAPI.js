@@ -112,10 +112,10 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
                 data.first.value = '有同学咨询你的旧书-' + bookTitle;
             }
         }).always(function () {
-            return send();
+            send();
         });
     } else {
-        return send();
+        send();
     }
 
     var promise = new AV.Promise(null);
@@ -127,7 +127,6 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
             } else {
                 promise.resolve(result);
             }
-            return promise;
         })
     }
 
