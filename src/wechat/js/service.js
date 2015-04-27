@@ -293,7 +293,7 @@ APP.service('DoubanBook$', function () {
                     query.near("location", avosGeo);
                 }
                 query.skip(that.NearUser.jsonUsers.length);
-                query.limit(5);
+                query.limit(10);
                 query.find().done(function (avosUsers) {
                     if (avosUsers.length > 0) {
                         for (var i = 0; i < avosUsers.length; i++) {
