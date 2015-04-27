@@ -101,7 +101,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
     if (usedBookAvosObjectId) {
         url += '&usedBookAvosObjectId=' + usedBookAvosObjectId;
         var query = new AV.Query('UsedBook');
-        query.select('title');
+        query.select('title', 'owner');
         query.get(usedBookAvosObjectId).done(function (usedBook) {
             var bookTitle = usedBook.get('title');
             if (usedBook.get('owner').id == senderId) {//图书主人在回应咨询者

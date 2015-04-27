@@ -19,8 +19,8 @@ var Request = require('request');
 exports.updateUserLocation = function (avosUser, latitude, longitude) {
     if (latitude && longitude) {
         var point = new AV.GeoPoint(latitude, longitude);
-        user.set('location', point);
-        return user.save();
+        avosUser.set('location', point);
+        return avosUser.save();
     }
     return AV.Promise.error('缺少经纬度参数');
 };
