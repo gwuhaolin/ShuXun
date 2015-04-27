@@ -375,7 +375,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
          */
         $scope.sendOnClick = function () {
             $scope.isLoading = true;
-            User$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId).done(function () {
+            User$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId, $scope.msg.role).done(function () {
                 alert('回复成功');
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();

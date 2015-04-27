@@ -99,6 +99,13 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
     };
     var templateId = TemplateId_ToSeller;
     var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg;
+    if (role == 'sell') {//图书主人在回应咨询者
+        url += '&role=buy';//我是卖家,所以你是买家
+        templateId = TemplateId_ToBuyer;
+    } else if (role == 'buy') {
+        url += '&role=sell';
+        templateId = TemplateId_ToSeller;
+    }
     if (usedBookAvosObjectId) {
         url += '&usedBookAvosObjectId=' + usedBookAvosObjectId;
         var query = new AV.Query('UsedBook');
@@ -106,12 +113,8 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
         query.get(usedBookAvosObjectId).done(function (usedBook) {
             var bookTitle = usedBook.get('title');
             if (role == 'sell') {//图书主人在回应咨询者
-                url += '&role=buy';//我是卖家,所以你是买家
-                templateId = TemplateId_ToBuyer;
                 data.first.value = bookTitle + '-主人回复你';
             } else if (role == 'buy') {
-                url += '&role=sell';
-                templateId = TemplateId_ToSeller;
                 data.first.value = '有同学咨询你的旧书-' + bookTitle;
             }
         }).always(function () {
