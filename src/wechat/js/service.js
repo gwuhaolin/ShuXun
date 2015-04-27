@@ -817,7 +817,7 @@ APP.service('DoubanBook$', function () {
          * 把JSON格式的UsedBook转换为AVOS格式的
          */
         this.jsonUsedBookToAvos = function (jsonUsedBook) {
-            var UsedBook = new AV.Object.extend("UsedBook");
+            var UsedBook = AV.Object.extend("UsedBook");
             var usedBook = new UsedBook();
             for (var i = 0; i < UsedBookAttrNames.length; i++) {
                 var attrName = UsedBookAttrNames[i];
