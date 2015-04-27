@@ -71,42 +71,51 @@ exports.getOAuthUserInfo = function (code, callback) {
  * @param receiverId 接收者的微信openID
  * @param msg 消息内容
  * @param usedBookAvosObjectId 当前咨询的二手书的objectId
- * @param onSuccess 发送成功时
- * @param onError 发送失败时
+ * @return AV.Promise
  */
-exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, usedBookAvosObjectId, onSuccess, onError) {
-    var templateId = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';
-    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg + '&usedBookAvosObjectId=' + usedBookAvosObjectId;
-    var color = '#30bf4c';
+exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, usedBookAvosObjectId) {
+    var TemplateId_ToBuyer = 'nYdPsuIRJl8RFgh1WBv28xfDGU_IcjQVz6AGFO6uVr8';
+    var TemplateId_ToSeller = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';
+    var Color_Title = '#46bfb9';
+    var Color_Context = '#30bf4c';
     var data = {
         first: {//标题
             value: '有同学咨询你的旧书',
-            color: '#46bfb9'
+            color: Color_Title
         },
         keyword1: {//用户名称
             value: senderName,
-            color: color
+            color: Color_Context
         },
         keyword2: {//咨询内容
             value: '',
-            color: color
+            color: Color_Context
         },
         remark: {//底部
             value: msg,
-            color: color
+            color: Color_Context
         }
     };
-
+    var templateId;
+    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg + '&usedBookAvosObjectId=' + usedBookAvosObjectId;
     var query = new AV.Query('UsedBook');
     query.select('title');
     query.get(usedBookAvosObjectId).done(function (usedBook) {
-        data.first.value += '-' + usedBook.get('title');
+        var bookTitle = usedBook.get('title');
+        if (usedBook.get('owner').id == senderId) {//图书主人在回应咨询者
+            templateId = TemplateId_ToBuyer;
+            data.first.value = bookTitle + '-主人回复你';
+        } else {
+            templateId = TemplateId_ToSeller;
+            data.first.value = '有同学咨询你的旧书-' + bookTitle;
+        }
+
     }).always(function () {
         exports.APIClient.sendTemplate(receiverId, templateId, url, color, data, function (err, result) {
             if (err) {
-                onError(err);
+                return AV.Promise.error(err);
             } else {
-                onSuccess(result);
+                return AV.Promise.done(result);
             }
         })
     });

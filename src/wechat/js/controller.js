@@ -341,6 +341,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, User$, UsedBook$) {
         var receiverId = $stateParams['openId'];
+        $scope.isLoading = false;
         $scope.msg = {
             receiveMsg: $stateParams['msg'],
             sendMsg: '',
@@ -371,13 +372,17 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
          * 发出消息
          */
         $scope.sendOnClick = function () {
+            $scope.isLoading = true;
             User$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId).done(function () {
                 alert('回复成功');
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert('发送失败:' + JSON.stringify(error));
-            });
+            }).always(function () {
+                $scope.isLoading = false;
+                $scope.$apply();
+            })
         }
     })
 
