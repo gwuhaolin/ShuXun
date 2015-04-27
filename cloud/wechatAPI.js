@@ -119,15 +119,18 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
     }
 
     function send() {
-        exports.APIClient.sendTemplate(receiverId, templateId, url, Color_Title, data, function (err, result) {
-            var promise = new AV.Promise(null);
-            if (err) {
-                promise.reject(err);
-            } else {
-                promise.resolve(result);
-            }
-            return promise;
-        })
+        var promise = new AV.Promise(function (resolve, reject) {
+            exports.APIClient.sendTemplate(receiverId, templateId, url, Color_Title, data, function (err, result) {
+                var promise = new AV.Promise(null);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+                return promise;
+            })
+        });
+        return promise;
     }
 
 };

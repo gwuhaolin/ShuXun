@@ -24,7 +24,7 @@
                 ng-click="sendOnClick()">发送
         </button>
         <!-- 常用回复语-->
-        <ion-list>+
+        <ion-list ng-if="commonReplayWords.length>0">
             <ion-item class="item-divider item-button-right">快速回复内容</ion-item>
             <ion-item style="white-space:normal;padding: 5px">
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
