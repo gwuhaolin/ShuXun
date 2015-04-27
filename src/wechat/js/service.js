@@ -697,10 +697,10 @@ APP.service('DoubanBook$', function () {
         this.sendMsgToUser = function (receiverId, msg, usedBookAvosObjectId) {
             var myJsonInfo = that.getCurrentJsonUser();
             var sendName = myJsonInfo.nickName;
-            var sendId = myJsonInfo.openId;
+            var senderId = myJsonInfo.openId;
             return AV.Cloud.run('sendTemplateMsgToUser', {
                 sendName: sendName,
-                sendId: sendId,
+                senderId: senderId,
                 receiverId: receiverId,
                 msg: msg,
                 usedBookAvosObjectId: usedBookAvosObjectId

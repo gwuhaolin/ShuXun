@@ -104,7 +104,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
         query.select('title', 'owner');
         query.get(usedBookAvosObjectId).done(function (usedBook) {
             var bookTitle = usedBook.get('title');
-            if (usedBook.get('owner').id == senderId) {//图书主人在回应咨询者
+            if (usedBook.get('owner').id == receiverId) {//图书主人在回应咨询者
                 templateId = TemplateId_ToBuyer;
                 data.first.value = bookTitle + '-主人回复你';
             } else {

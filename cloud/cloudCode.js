@@ -77,11 +77,11 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
  */
 AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
     var sendName = request.params['sendName'];
-    var sendId = request.params['sendId'];
+    var senderId = request.params['senderId'];
     var receiverId = request.params['receiverId'];
     var msg = request.params['msg'];
     var usedBookAvosObjectId = request.params['usedBookAvosObjectId'];
-    WechatAPI.senderSendMsgToReceiver(sendName, sendId, receiverId, msg, usedBookAvosObjectId).done(function () {
+    WechatAPI.senderSendMsgToReceiver(sendName, senderId, receiverId, msg, usedBookAvosObjectId).done(function () {
         response.success();
     }).fail(function (error) {
         response.error(error);
