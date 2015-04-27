@@ -135,7 +135,8 @@ var APP = angular.module('APP', ['ionic'], null)
         $urlRouterProvider.otherwise('/tab/book/recommend');
     });
 
-APP.run(function ($rootScope, $state, User$) {
+APP.run(function ($rootScope, $state, User$, WeChatJS$) {
+    WeChatJS$.config();//马上调用配置微信
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
         var stateName = nextState['name'];
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录

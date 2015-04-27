@@ -321,10 +321,13 @@ APP.service('DoubanBook$', function () {
     })
 
     .service('WeChatJS$', function ($rootScope) {
+        var that = this;
         //先配置好微信
-        jsonp('/wechat/getJsConfig', function (json) {
-            wx.config(json);
-        });
+        this.config = function () {
+            jsonp('/wechat/getJsConfig', function (json) {
+                wx.config(json);
+            });
+        };
 
         //分享出去时的数据
         /**
@@ -366,6 +369,10 @@ APP.service('DoubanBook$', function () {
                     AV.Cloud.run('updateMyLocation');
                 }
             });
+        });
+
+        wx.error(function () {
+            that.config();
         });
 
 
