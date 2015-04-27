@@ -109,7 +109,7 @@ var APP = angular.module('APP', ['ionic'], null)
                     }
                 }
             }).state('tab.person_sendMsgToUser', {
-                url: '/person/sendMsgToUser?openId&msg&usedBookAvosObjectId',
+                url: '/person/sendMsgToUser?openId&msg&usedBookAvosObjectId&role',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/person/sendMsgToUser.html'

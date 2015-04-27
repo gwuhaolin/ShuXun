@@ -71,9 +71,10 @@ exports.getOAuthUserInfo = function (code, callback) {
  * @param receiverId 接收者的微信openID
  * @param msg 消息内容
  * @param usedBookAvosObjectId 当前咨询的二手书的objectId
+ * @param role 发送者的当前角色是卖家还是买家 sell | buy
  * @return AV.Promise
  */
-exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, usedBookAvosObjectId) {
+exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, usedBookAvosObjectId, role) {
     var TemplateId_ToBuyer = 'nYdPsuIRJl8RFgh1WBv28xfDGU_IcjQVz6AGFO6uVr8';//咨询回复消息提醒
     var TemplateId_ToSeller = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';//用户咨询提醒
     var Color_Title = '#46bfb9';
@@ -101,13 +102,15 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
     if (usedBookAvosObjectId) {
         url += '&usedBookAvosObjectId=' + usedBookAvosObjectId;
         var query = new AV.Query('UsedBook');
-        query.select('title', 'owner');
+        query.select('title');
         query.get(usedBookAvosObjectId).done(function (usedBook) {
             var bookTitle = usedBook.get('title');
-            if (usedBook.get('owner').id == receiverId) {//图书主人在回应咨询者
+            if (role == 'sell') {//图书主人在回应咨询者
+                url += '&role=buy';//我是卖家,所以你是买家
                 templateId = TemplateId_ToBuyer;
                 data.first.value = bookTitle + '-主人回复你';
-            } else {
+            } else if (role == 'buy') {
+                url += '&role=sell';
                 templateId = TemplateId_ToSeller;
                 data.first.value = '有同学咨询你的旧书-' + bookTitle;
             }

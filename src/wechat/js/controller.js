@@ -345,7 +345,8 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         $scope.msg = {
             receiveMsg: $stateParams['msg'],
             sendMsg: '',
-            usedBookAvosObjectId: $stateParams['usedBookAvosObjectId']
+            usedBookAvosObjectId: $stateParams['usedBookAvosObjectId'],
+            role: $stateParams['role']
         };
         User$.getAvosUserByOpenId(receiverId).done(function (avosUser) {
             $scope.jsonUser = User$.avosUserToJson(avosUser);
@@ -357,18 +358,15 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
          * @type {Array}
          */
         $scope.commonReplayWords = [];
-
+        if ($scope.msg.role == 'sell') {//我是卖家
+            $scope.commonReplayWords = ['成交', '不能再便宜了', '这本书已经卖出去了'];
+        } else {//我是买家
+            $scope.commonReplayWords = ['成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
+        }
         if ($scope.msg.usedBookAvosObjectId) {
             UsedBook$.getJsonUsedBookByAvosObjectId($scope.msg.usedBookAvosObjectId, function (jsonUsedBook) {
-                if (jsonUsedBook) {
-                    $scope.jsonUsedBook = jsonUsedBook;
-                    if (User$.getCurrentAvosUser().id == $scope.jsonUsedBook.owner.id) {//我是卖家
-                        $scope.commonReplayWords = ['成交', '不能再便宜了', '这本书已经卖出去了'];
-                    } else {//我是买家
-                        $scope.commonReplayWords = ['成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
-                    }
-                    $scope.$apply();
-                }
+                $scope.jsonUsedBook = jsonUsedBook;
+                $scope.$apply();
             });
         }
 

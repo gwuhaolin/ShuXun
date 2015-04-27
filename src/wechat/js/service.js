@@ -693,8 +693,9 @@ APP.service('DoubanBook$', function () {
          * @param receiverId 接收者的openID
          * @param msg 消息内容
          * @param usedBookAvosObjectId 当前正在咨询的二手书的objectID
+         * @param role 发送者当前的角色是卖家还是买家 sell | buy
          */
-        this.sendMsgToUser = function (receiverId, msg, usedBookAvosObjectId) {
+        this.sendMsgToUser = function (receiverId, msg, usedBookAvosObjectId, role) {
             var myJsonInfo = that.getCurrentJsonUser();
             var sendName = myJsonInfo.nickName;
             var senderId = myJsonInfo.openId;
@@ -703,7 +704,8 @@ APP.service('DoubanBook$', function () {
                 senderId: senderId,
                 receiverId: receiverId,
                 msg: msg,
-                usedBookAvosObjectId: usedBookAvosObjectId
+                usedBookAvosObjectId: usedBookAvosObjectId,
+                role: role
             });
         };
     })
