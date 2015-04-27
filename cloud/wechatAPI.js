@@ -74,50 +74,60 @@ exports.getOAuthUserInfo = function (code, callback) {
  * @return AV.Promise
  */
 exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, usedBookAvosObjectId) {
-    var TemplateId_ToBuyer = 'nYdPsuIRJl8RFgh1WBv28xfDGU_IcjQVz6AGFO6uVr8';
-    var TemplateId_ToSeller = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';
+    var TemplateId_ToBuyer = 'nYdPsuIRJl8RFgh1WBv28xfDGU_IcjQVz6AGFO6uVr8';//咨询回复消息提醒
+    var TemplateId_ToSeller = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';//用户咨询提醒
     var Color_Title = '#46bfb9';
     var Color_Context = '#30bf4c';
     var data = {
         first: {//标题
-            value: '有同学咨询你的旧书',
+            value: '有同学发消息给你',
             color: Color_Title
         },
         keyword1: {//用户名称
             value: senderName,
             color: Color_Context
         },
-        keyword2: {//咨询内容
+        keyword2: {
             value: '',
             color: Color_Context
         },
-        remark: {//底部
+        remark: {//咨询内容
             value: msg,
             color: Color_Context
         }
     };
-    var templateId;
-    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg + '&usedBookAvosObjectId=' + usedBookAvosObjectId;
-    var query = new AV.Query('UsedBook');
-    query.select('title');
-    query.get(usedBookAvosObjectId).done(function (usedBook) {
-        var bookTitle = usedBook.get('title');
-        if (usedBook.get('owner').id == senderId) {//图书主人在回应咨询者
-            templateId = TemplateId_ToBuyer;
-            data.first.value = bookTitle + '-主人回复你';
-        } else {
-            templateId = TemplateId_ToSeller;
-            data.first.value = '有同学咨询你的旧书-' + bookTitle;
-        }
-
-    }).always(function () {
-        exports.APIClient.sendTemplate(receiverId, templateId, url, color, data, function (err, result) {
-            if (err) {
-                return AV.Promise.error(err);
+    var templateId = TemplateId_ToSeller;
+    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg;
+    if (usedBookAvosObjectId) {
+        url += '&usedBookAvosObjectId=' + usedBookAvosObjectId;
+        var query = new AV.Query('UsedBook');
+        query.select('title');
+        query.get(usedBookAvosObjectId).done(function (usedBook) {
+            var bookTitle = usedBook.get('title');
+            if (usedBook.get('owner').id == senderId) {//图书主人在回应咨询者
+                templateId = TemplateId_ToBuyer;
+                data.first.value = bookTitle + '-主人回复你';
             } else {
-                return AV.Promise.done(result);
+                templateId = TemplateId_ToSeller;
+                data.first.value = '有同学咨询你的旧书-' + bookTitle;
             }
+        }).always(function () {
+            return send();
+        });
+    } else {
+        return send();
+    }
+
+    function send() {
+        exports.APIClient.sendTemplate(receiverId, templateId, url, Color_Title, data, function (err, result) {
+            var promise = new AV.Promise(null);
+            if (err) {
+                promise.reject(err);
+            } else {
+                promise.resolve(result);
+            }
+            return promise;
         })
-    });
+    }
 
 };

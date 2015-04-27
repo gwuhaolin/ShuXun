@@ -81,7 +81,7 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
     var receiverId = request.params['receiverId'];
     var msg = request.params['msg'];
     var usedBookAvosObjectId = request.params['usedBookAvosObjectId'];
-    WechatAPI.senderSendMsgToReceiver(sendName, sendId, receiverId, msg, usedBookAvosObjectId).done(function (result) {
+    WechatAPI.senderSendMsgToReceiver(sendName, sendId, receiverId, msg, usedBookAvosObjectId).done(function () {
         response.success();
     }).fail(function (error) {
         response.error(error);
