@@ -15,15 +15,21 @@ var WECHAT = {
  * 自定义的jsonp调用
  * @param url 目标url
  * @param callback
+ * @param onError 当发生错误时调用
  * callback返回json
  */
-function jsonp(url, callback) {
+function jsonp(url, callback, onError) {
     var script = document.createElement('script');
     script.type = "text/javascript";
     var random = Date.now();
     script.src = url + (url.indexOf('?') > 0 ? '&' : '?') + 'callback=CB' + random;
     script.onload = function () {
         script.parentNode.removeChild(script);
+    };
+    script.onerror = function (error) {
+        if (onError) {
+            onError(error);
+        }
     };
     window['CB' + random] = function (json) {
         callback(json);

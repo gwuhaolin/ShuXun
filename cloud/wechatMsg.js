@@ -28,11 +28,18 @@ exports.MsgHandler = Wechat(config)
             res.reply('');
         });
     }).image(function (message, req, res) {//图片
-        res.reply('');
+        res.reply('你的反馈已经收到,我们会尽快处理好');
     }).video(function (message, req, res) {//视频
         res.reply('');
     }).location(function (message, req, res) {//地理位置
-        res.reply('');
+        var lat = message['Location_X'];
+        var lon = message['Location_Y'];
+        var point = new AV.GeoPoint({latitude: lat, longitude: lon});
+        nearLocationUsedBook(point).done(function (re) {
+            res.reply(re);
+        }).fail(function () {
+            res.reply('');
+        });
     }).link(function (message, req, res) {//链接
         res.reply('');
     }).event(function (message, req, res) {//事件
@@ -66,8 +73,12 @@ function compute(queryText) {
     var promise = new AV.Promise(null);
 
     //搜索图书
-    searchBook(queryText).done(function (re) {
-        promise.resolve(re);
+    searchBookFromDouban(queryText).done(function (re) {
+        if (re.length > 0) {
+            promise.resolve(re);
+        } else {//没有找到对于的书
+            promise.resolve(ReplyMaker.text('没有找到你需要的书,<a href="http://ishuxun.cn/wechat/#/tab/book/searchList/">来这里</a>再试试'));
+        }
     }).fail(function (err) {
         promise.reject(err);
     });
@@ -80,7 +91,7 @@ function compute(queryText) {
  * @param keyword 搜索关键字
  * @returns {AV.Promise} 如果成功返回可以直接回复给用户的json数组,没有找到书时返回的json数组长度为0
  */
-function searchBook(keyword) {
+function searchBookFromDouban(keyword) {
     var promise = new AV.Promise(null);
     Request.get({
         url: 'https://api.douban.com/v2/book/search',
@@ -109,6 +120,32 @@ function searchBook(keyword) {
             }
             promise.resolve(re);
         }
+    });
+    return promise;
+}
+
+/**
+ * 获得这个经纬度附近的二手书
+ * @param avosGeo 地理位置
+ * @returns {AV.Promise} 如果成功返回可以直接回复给用户的json数组,没有找到书时返回的json数组长度为0
+ */
+function nearLocationUsedBook(avosGeo) {
+    var promise = new AV.Promise(null);
+    var query = new AV.Query('UsedBook');
+    query.near("location", avosGeo);
+    query.select('title', 'image', 'price');
+    query.limit(9);
+    query.find().done(function (avosBooks) {
+        var re = [];
+        for (var i = 0; i < avosBooks.length; i++) {
+            var title = avosBooks[i].get('title');
+            var image = avosBooks[i].get('image');
+            var price = avosBooks[i].get('price');
+            re.push(ReplyMaker.oneImageAndText('二手-' + title + '-' + price + '元', image, 'http://ishuxun.cn/wechat/#/tab/book/oneUsedBook/' + avosBooks[i].id));
+        }
+        promise.resolve(re);
+    }).fail(function (error) {
+        promise.reject(error);
     });
     return promise;
 }

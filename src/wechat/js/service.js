@@ -22,10 +22,12 @@ APP.service('DoubanBook$', function () {
         }
         url += '?fields=' + fields;
         jsonp(url, function (json) {
-            if (json.code) {//没有获得对应ISBN的图书信息
-                callback(null);
-            } else {
-                callback(json);
+            callback(json);
+        }, function () {//没有找到对于的书的信息
+            if (bookISBN.length == 13) {
+                that.getBookByISBD(correctISBN13(bookISBN), function (json) {
+                    callback(json);
+                }, fields);
             }
         });
     };
@@ -87,6 +89,29 @@ APP.service('DoubanBook$', function () {
             callback(json);
         });
     };
+
+    /**
+     * 修正有问题的ISBN13错误的号码
+     * @param isbn13
+     * @return String 正确的10为的ISBN
+     */
+    function correctISBN13(isbn13) {
+        var isbn9 = isbn13.substring(3, 12);
+        var s = 0;
+        for (var i = 0; i < 9; i++) {
+            var num = parseInt(isbn9.charAt(i));
+            s += num * (10 - i);
+        }
+        var m = s % 11;
+        var n = 11 - m;
+        var check = String(n);
+        if (n == 10) {
+            check = 'X';
+        } else if (n == 11) {
+            check = '0';
+        }
+        return String(isbn9 + check);
+    }
 })
 
 /**
