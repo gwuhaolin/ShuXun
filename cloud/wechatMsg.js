@@ -87,7 +87,7 @@ function searchBook(keyword) {
         qs: {
             q: keyword,
             count: 10,
-            fields: 'author,pubdate,image,publisher,title,price,isbn13'
+            fields: 'image,title,isbn13'
         }
     }, function (err, res, body) {
         if (err) {
@@ -100,12 +100,11 @@ function searchBook(keyword) {
                 var books = json.books;
                 for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
                     var title = books[i].title;
-                    var des = books[i].price + '元 ' + books[i].author.toString() + '著 ' + books[i]['publisher'] + '|' + books[i]['pubdate'];
                     var bookUrl = 'http://ishuxun.cn/wechat/#/tab/book/oneBook/' + books[i].isbn13;
-                    re.push(ReplyMaker.oneImageAndText(title, des, books[i].image, bookUrl));
+                    re.push(ReplyMaker.oneImageAndText(title, books[i].image, bookUrl));
                 }
                 if (total > 9) {//因为微信最多可以显示10本,当有的书大于9本时为用户提供显示更多
-                    re.push(ReplyMaker.oneImageAndText('还有剩下' + (total - json.count) + '本相关的书', '点击查看所有相关的书', 'http://ishuxun.cn/wechat/img/logo.png', 'http://ishuxun.cn/wechat/#/tab/book/searchList/' + keyword));
+                    re.push(ReplyMaker.oneImageAndText('还有剩下' + (total - json.count) + '本相关的书,点击查看', 'http://ishuxun.cn/wechat/img/logo-R.png', 'http://ishuxun.cn/wechat/#/tab/book/searchList/' + keyword));
                 }
             }
             promise.resolve(re);
@@ -193,14 +192,13 @@ var ReplyMaker = {
     /**
      * 生成一条图文
      * @param title 图文消息标题
-     * @param description 图文消息描述
      * @param picurl 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
      * @param url 点击图文消息跳转链接
      */
-    oneImageAndText: function (title, description, picurl, url) {
+    oneImageAndText: function (title, picurl, url) {
         return {
             title: title,
-            description: description,
+            description: '',
             picurl: picurl,
             url: url
         }
