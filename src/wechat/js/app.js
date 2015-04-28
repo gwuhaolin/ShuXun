@@ -23,7 +23,7 @@ var APP = angular.module('APP', ['ionic'], null)
                     }
                 }
             }).state('tab.book_searchList', {
-                url: '/book/searchList',
+                url: '/book/searchList/:keyword',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/searchList.html'

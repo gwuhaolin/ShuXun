@@ -17,8 +17,14 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 })
 
     //图书搜索
-    .controller('book_searchList', function ($scope, $timeout, $state, SearchBook$, WeChatJS$) {
+    .controller('book_searchList', function ($scope, $timeout, $state, $stateParams, SearchBook$, WeChatJS$) {
         $scope.SearchBook$ = SearchBook$;
+
+        var keyword = $stateParams['keyword'];
+        if (keyword) {//如果url里附带keyword参数就自动执行搜索
+            SearchBook$.keyword = keyword;
+            SearchBook$.searchBtnOnClick();
+        }
 
         $scope.scanQRBtnOnClick = function () {
             WeChatJS$.scanQRCode(function (code) {
