@@ -42,17 +42,22 @@ exports.MsgHandler = Wechat(config)
                 var lat = message['Latitude'];
                 var lon = message['Longitude'];
                 saveLocationToUser(openId, lat, lon);
+                res.reply('');
                 return;
             case 'subscribe'://关注事件
                 res.reply('书循,让你的课本循环利用');
                 return;
             case 'unsubscribe'://取消关注事件
+                res.reply('');
                 return;
             case 'SCAN'://用户已关注时扫描带参数二维码事件事件推送
+                res.reply('');
                 return;
             case 'CLICK'://用户点击自定义菜单后
+                res.reply('');
                 return;
             case 'VIEW'://点击菜单跳转链接时的事件推送
+                res.reply('');
                 return;
         }
     }).middlewarify();
