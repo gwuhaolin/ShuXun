@@ -939,7 +939,7 @@ APP.service('DoubanBook$', function () {
 
     .service('Chat$', function (User$) {
         var Chat = AV.Object.extend('Chat');
-
+        var AttrsName = ['from', 'to', 'msg', 'usedBook'];
         /**
          * 我发送消息给其他用户
          * @param receiverId 接收者的openID
@@ -963,13 +963,25 @@ APP.service('DoubanBook$', function () {
             });
         };
 
+        this.avosChatToJson = function (avosChat) {
+            var re = {};
+            for (var i = 0; i < AttrsName.length; i++) {
+                var attr = AttrsName[i];
+                re[attr] = avosChat.get(attr);
+            }
+            re.objectId = avosChat.id;
+            re.updatedAt = avosChat.updatedAt;
+            return re;
+        };
+
         /**
          * 获得所有关于这本书的聊天记录
-         * @param avosUsedBook
+         * @param avosUsedBookId
          * @returns {*|{}|AV.Promise}
          */
-        this.getChatList_UsedBook = function (avosUsedBook) {
+        this.getChatList_UsedBook = function (avosUsedBookId) {
             var query = new AV.Query(Chat);
+            var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
             query.equalTo('usedBook', avosUsedBook);
             return query.find();
         };

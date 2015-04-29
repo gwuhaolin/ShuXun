@@ -25,7 +25,7 @@
                 ng-click="sendOnClick()">发送
         </button>
         <!-- 是否私信-->
-        <ion-toggle ng-model="msg.isPrivate">是否私信</ion-toggle>
+        <ion-toggle ng-if="jsonUsedBook" ng-model="msg.isPrivate">是否私信</ion-toggle>
         <!-- 常用回复语-->
         <ion-list ng-if="commonReplayWords.length>0">
             <ion-item class="item-divider item-button-right">快速回复内容</ion-item>

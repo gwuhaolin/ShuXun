@@ -178,9 +178,11 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         });
     })
 
-    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$) {
+    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$, Chat$) {
         $scope.WeChatJS$ = WeChatJS$;
         $scope.usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
+
+        //加载二手书数据
         UsedBook$.getJsonUsedBookByAvosObjectId($scope.usedBookAvosObjectId, function (json) {
             json.image = json.image ? json.image.replace('mpic', 'lpic') : '';//大图显示
             $scope.jsonUsedBook = json;
@@ -194,6 +196,22 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 $scope.ownerUsedBookNumber = number;
                 $scope.$apply();
             });
+        });
+
+        //加载评论数据
+        Chat$.getChatList_UsedBook($scope.usedBookAvosObjectId).done(function (avosChats) {
+            $scope.jsonChats = [];
+            for (var i = 0; i < avosChats.length; i++) {
+                var jsonChat = Chat$.avosChatToJson(avosChats[i]);
+                jsonChat.from.fetch().done(function () {
+                    $scope.$apply();
+                });
+                jsonChat.to.fetch().done(function () {
+                    $scope.$apply();
+                });
+                $scope.jsonChats.push(jsonChat);
+            }
+            $scope.$apply();
         })
     })
 
@@ -375,6 +393,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         if ($scope.msg.usedBookAvosObjectId) {
             UsedBook$.getJsonUsedBookByAvosObjectId($scope.msg.usedBookAvosObjectId, function (jsonUsedBook) {
                 $scope.jsonUsedBook = jsonUsedBook;
+                $scope.msg.isPrivate = (jsonUsedBook == null);//没有对应书的发私信
                 $scope.$apply();
             });
         }
