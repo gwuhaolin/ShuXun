@@ -73,6 +73,7 @@ AV.Cloud.define('usedBookHasSell', function (request, response) {
  * @参数:msg 信息内容
  * @参数:usedBookAvosObjectId 当前咨询的二手书的objectId
  * @参数:role 发送者的当前角色是卖家还是买家 sell | buy
+ * @参数:isPrivate 聊天是否私信
  * @返回 发送成功时返回
  *      发送失败时返回 error
  */
@@ -83,7 +84,8 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
     var msg = request.params['msg'];
     var usedBookAvosObjectId = request.params['usedBookAvosObjectId'];
     var role = request.params['role'];
-    WechatAPI.senderSendMsgToReceiver(sendName, senderId, receiverId, msg, usedBookAvosObjectId, role).done(function () {
+    var isPrivate =  request.params['isPrivate'];
+    WechatAPI.senderSendMsgToReceiver(sendName, senderId, receiverId, msg, usedBookAvosObjectId, role, isPrivate).done(function () {
         response.success();
     }).fail(function (error) {
         response.error(error);

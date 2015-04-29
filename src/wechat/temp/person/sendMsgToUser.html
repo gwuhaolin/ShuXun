@@ -9,10 +9,10 @@
             <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
         </div>
         <ion-list>
-            <!-- 二手书信息-->
-            <one-used-book ng-if="jsonUsedBook" json-used-book="jsonUsedBook"></one-used-book>
             <!-- 对方用户信息-->
             <user-info ng-if="jsonUser" json-user-info="jsonUser"></user-info>
+            <!-- 二手书信息-->
+            <one-used-book ng-if="jsonUsedBook" json-used-book="jsonUsedBook"></one-used-book>
             <!-- 对方发的消息-->
             <ion-item ng-if="msg.receiveMsg">{{msg.receiveMsg}}</ion-item>
             <!-- 我的输入框-->
@@ -20,9 +20,12 @@
                 <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容" autofocus="autofocus">
             </label>
         </ion-list>
+        <!-- 发送-->
         <button ng-disabled="!msg.sendMsg || isLoading" class="button button-block button-outline button-balanced"
                 ng-click="sendOnClick()">发送
         </button>
+        <!-- 是否私信-->
+        <ion-toggle ng-model="msg.isPrivate">是否私信</ion-toggle>
         <!-- 常用回复语-->
         <ion-list ng-if="commonReplayWords.length>0">
             <ion-item class="item-divider item-button-right">快速回复内容</ion-item>

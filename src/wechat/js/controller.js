@@ -110,6 +110,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             if (json) {
                 json.image = json.image.replace('mpic', 'lpic');//大图显示
                 $scope.book = json;
+                $scope.isbn13 = json.isbn13;
                 $scope.isLoading = false;
                 $scope.$apply();
                 //加载电商联盟信息
@@ -227,6 +228,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
                 if (json) {
                     $scope.doubanBookInfo = json;
+                    $scope.usedBookInfo.isbn13 = json.isbn13;
                     $scope.isLoading = false;
                     $scope.usedBookInfo.image = json.image.replace('mpic', 'lpic');//大图显示
                     $scope.usedBookInfo.title = json.title;
@@ -345,14 +347,15 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, User$, UsedBook$) {
+    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, User$, UsedBook$, Chat$) {
         var receiverId = $stateParams['openId'];
         $scope.isLoading = false;
         $scope.msg = {
             receiveMsg: $stateParams['msg'],
             sendMsg: '',
             usedBookAvosObjectId: $stateParams['usedBookAvosObjectId'],
-            role: $stateParams['role']
+            role: $stateParams['role'],
+            isPrivate: $stateParams['isPrivate'] == 'true'
         };
         User$.getAvosUserByOpenId(receiverId).done(function (avosUser) {
             $scope.jsonUser = User$.avosUserToJson(avosUser);
@@ -381,7 +384,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
          */
         $scope.sendOnClick = function () {
             $scope.isLoading = true;
-            User$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId, $scope.msg.role).done(function () {
+            Chat$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId, $scope.msg.role, $scope.msg.isPrivate).done(function () {
                 alert('回复成功');
                 $state.go('tab.person_my');
                 $ionicHistory.clearHistory();

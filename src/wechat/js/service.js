@@ -28,6 +28,8 @@ APP.service('DoubanBook$', function () {
                 that.getBookByISBD(correctISBN13(bookISBN), function (json) {
                     callback(json);
                 }, fields);
+            } else {
+                callback(null);
             }
         });
     };
@@ -719,27 +721,6 @@ APP.service('DoubanBook$', function () {
             query.equalTo('username', unionId);
             return query.first();
         };
-
-        /**
-         * 我发送消息给其他用户
-         * @param receiverId 接收者的openID
-         * @param msg 消息内容
-         * @param usedBookAvosObjectId 当前正在咨询的二手书的objectID
-         * @param role 发送者当前的角色是卖家还是买家 sell | buy
-         */
-        this.sendMsgToUser = function (receiverId, msg, usedBookAvosObjectId, role) {
-            var myJsonInfo = that.getCurrentJsonUser();
-            var sendName = myJsonInfo.nickName;
-            var senderId = myJsonInfo.openId;
-            return AV.Cloud.run('sendTemplateMsgToUser', {
-                sendName: sendName,
-                senderId: senderId,
-                receiverId: receiverId,
-                msg: msg,
-                usedBookAvosObjectId: usedBookAvosObjectId,
-                role: role
-            });
-        };
     })
 
     //还没有卖出的二手书
@@ -953,5 +934,63 @@ APP.service('DoubanBook$', function () {
                     alert(error.message);
                 })
             }
+        };
+    })
+
+    .service('Chat$', function (User$) {
+        var Chat = AV.Object.extend('Chat');
+
+        /**
+         * 我发送消息给其他用户
+         * @param receiverId 接收者的openID
+         * @param msg 消息内容
+         * @param usedBookAvosObjectId 当前正在咨询的二手书的objectID
+         * @param role 发送者当前的角色是卖家还是买家 sell | buy
+         * @param isPrivate 聊天是否私信 true 或者 'true' 时私信
+         */
+        this.sendMsgToUser = function (receiverId, msg, usedBookAvosObjectId, role, isPrivate) {
+            var myJsonInfo = User$.getCurrentJsonUser();
+            var sendName = myJsonInfo.nickName;
+            var senderId = myJsonInfo.openId;
+            return AV.Cloud.run('sendTemplateMsgToUser', {
+                sendName: sendName,
+                senderId: senderId,
+                receiverId: receiverId,
+                msg: msg,
+                usedBookAvosObjectId: usedBookAvosObjectId,
+                role: role,
+                isPrivate: isPrivate
+            });
+        };
+
+        /**
+         * 获得所有关于这本书的聊天记录
+         * @param avosUsedBook
+         * @returns {*|{}|AV.Promise}
+         */
+        this.getChatList_UsedBook = function (avosUsedBook) {
+            var query = new AV.Query(Chat);
+            query.equalTo('usedBook', avosUsedBook);
+            return query.find();
+        };
+
+        /**
+         * 获得两个人关于一本二手书的所有聊天
+         * @param avosUsedBook
+         * @param avosUser1
+         * @param avosUser2
+         * @returns {*|{}|AV.Promise}
+         */
+        this.getChatList_UsedBook_TwoUser = function (avosUsedBook, avosUser1, avosUser2) {
+            var query1 = new AV.Query(Chat);
+            query1.equalTo('usedBook', avosUsedBook);
+            query1.equalTo('from', avosUser1);
+            query1.equalTo('to', avosUser2);
+            var query2 = new AV.Query(Chat);
+            query2.equalTo('usedBook', avosUsedBook);
+            query2.equalTo('from', avosUser2);
+            query2.equalTo('to', avosUser1);
+            var mainQuery = AV.Query.or(query1, query2);
+            return mainQuery.find();
         };
     });
