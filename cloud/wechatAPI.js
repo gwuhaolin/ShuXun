@@ -146,7 +146,8 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
                     from: avosSender,
                     to: avosReceiver,
                     msg: msg,
-                    usedBook: avosUsedBook
+                    usedBook: avosUsedBook,
+                    isPrivate: Boolean(isPrivate)
                 }).done(function (re) {
                     promise.resolve(re);
                 }).fail(function (err) {
@@ -169,9 +170,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
                 promise.reject(err);
             } else {
                 promise.resolve(result);
-                if (isPrivate == 'false' || isPrivate == false) {
-                    saveChat();
-                }
+                saveChat();
             }
         })
     }

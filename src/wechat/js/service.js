@@ -983,6 +983,7 @@ APP.service('DoubanBook$', function () {
             var query = new AV.Query(Chat);
             var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
             query.equalTo('usedBook', avosUsedBook);
+            query.equalTo('isPrivate', false);
             return query.find();
         };
 
