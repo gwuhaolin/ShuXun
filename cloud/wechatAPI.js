@@ -99,7 +99,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
         }
     };
     var templateId = TemplateId_ToSeller;
-    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderOpenId + '&msg=' + msg + '&isPrivate=' + isPrivate;
+    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderOpenId + '&isPrivate=' + isPrivate;
     if (role == 'sell') {//图书主人在回应咨询者
         url += '&role=buy';//我是卖家,所以你是买家
         templateId = TemplateId_ToBuyer;

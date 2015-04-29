@@ -988,12 +988,15 @@ APP.service('DoubanBook$', function () {
 
         /**
          * 获得两个人关于一本二手书的所有聊天
-         * @param avosUsedBook
-         * @param avosUser1
-         * @param avosUser2
+         * @param avosUsedBookId
+         * @param avosUser1Id
+         * @param avosUser2Id
          * @returns {*|{}|AV.Promise}
          */
-        this.getChatList_UsedBook_TwoUser = function (avosUsedBook, avosUser1, avosUser2) {
+        this.getChatList_UsedBook_TwoUser = function (avosUsedBookId, avosUser1Id, avosUser2Id) {
+            var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
+            var avosUser1 = AV.Object.createWithoutData('UsedBook', avosUser1Id);
+            var avosUser2 = AV.Object.createWithoutData('UsedBook', avosUser2Id);
             var query1 = new AV.Query(Chat);
             query1.equalTo('usedBook', avosUsedBook);
             query1.equalTo('from', avosUser1);

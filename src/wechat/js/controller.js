@@ -365,25 +365,38 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, User$, UsedBook$, Chat$) {
+    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, User$, UsedBook$, Chat$) {
         var receiverId = $stateParams['openId'];
+        var usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
         $scope.isLoading = false;
         $scope.msg = {
-            receiveMsg: $stateParams['msg'],
             sendMsg: '',
-            usedBookAvosObjectId: $stateParams['usedBookAvosObjectId'],
+            usedBookAvosObjectId: usedBookAvosObjectId,
             role: $stateParams['role'],
             isPrivate: $stateParams['isPrivate'] == 'true'
         };
+        //加载用户信息
         User$.getAvosUserByOpenId(receiverId).done(function (avosUser) {
             $scope.jsonUser = User$.avosUserToJson(avosUser);
+            loadChat();
             $scope.$apply();
         });
 
-        /**
-         * 常用快捷回复
-         * @type {Array}
-         */
+        //加载聊天记录
+        function loadChat() {
+            if (usedBookAvosObjectId) {
+                Chat$.getChatList_UsedBook_TwoUser(usedBookAvosObjectId, $scope.jsonUser.objectId, User$.getCurrentAvosUser().id).done(function (avosChats) {
+                    $scope.jsonChats = [];
+                    for (var i = 0; i < avosChats.length; i++) {
+                        var jsonChat = Chat$.avosChatToJson(avosChats[i]);
+                        $scope.jsonChats.push(jsonChat);
+                    }
+                    $scope.$apply();
+                });
+            }
+        }
+
+        //常用快捷回复
         $scope.commonReplayWords = [];
         if ($scope.msg.role == 'sell') {//我是卖家
             $scope.commonReplayWords = ['成交', '不能再便宜了', '这本书已经卖出去了'];
@@ -398,19 +411,19 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             });
         }
 
-        /**
-         * 发出消息
-         */
+        //发出消息
         $scope.sendOnClick = function () {
             $scope.isLoading = true;
             Chat$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId, $scope.msg.role, $scope.msg.isPrivate).done(function () {
-                alert('回复成功');
-                $state.go('tab.person_my');
-                $ionicHistory.clearHistory();
+                $scope.jsonChats.push({
+                    msg: $scope.msg.sendMsg
+                });
+                $ionicScrollDelegate.scrollBottom(true);
             }).fail(function (error) {
                 alert('发送失败:' + JSON.stringify(error));
             }).always(function () {
                 $scope.isLoading = false;
+                $scope.msg.sendMsg = '';
                 $scope.$apply();
             })
         }
