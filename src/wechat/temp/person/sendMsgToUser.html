@@ -8,6 +8,7 @@
             padding: 5px;
             margin: 5px;
             max-width: 80%;
+            white-space:normal;
         }
     </style>
     <ion-nav-buttons side="right">
@@ -22,10 +23,10 @@
         <ion-toggle ng-if="jsonUsedBook" ng-model="msg.isPrivate">是否私信</ion-toggle>
         <!-- 聊天记录-->
         <ion-item style="margin: 0;padding: 0;border-right: none;border-left: none">
-            <ol ng-if="jsonChats.length>0" style="margin: 0;padding: 0;list-style-type:none;">
+            <ol ng-if="jsonChats.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
                 <li ng-repeat="jsonChat in jsonChats"
                     class="message"
-                    ng-style="{float:jsonChat.from.id==jsonUser.objectId ? 'left':'right',backgroundColor:jsonChat.from.id==jsonUser.objectId ? '#62bb68':'#c5c6c6'}">
+                    ng-style="{float:jsonChat.from.id==jsonUser.objectId ? 'left':'right',backgroundColor:jsonChat.from.id==jsonUser.objectId ? '#30bf4c':'#e6e5eb'}">
                     {{jsonChat.msg}}
                 </li>
             </ol>
