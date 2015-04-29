@@ -8,7 +8,7 @@
             padding: 5px;
             margin: 5px;
             max-width: 80%;
-            white-space:normal;
+            white-space: normal;
         }
     </style>
     <ion-nav-buttons side="right">
@@ -33,7 +33,7 @@
         </ion-item>
         <!-- 我的输入框-->
         <label class="item item-input">
-            <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容" autofocus="autofocus">
+            <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容">
         </label>
         <!-- 发送-->
         <button ng-disabled="!msg.sendMsg || isLoading" class="button button-block button-outline button-balanced"

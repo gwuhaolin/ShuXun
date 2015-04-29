@@ -169,8 +169,11 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
             if (err) {
                 promise.reject(err);
             } else {
-                promise.resolve(result);
-                saveChat();
+                saveChat().done(function () {
+                    promise.resolve(result);
+                }).fail(function (err) {
+                    promise.reject(err);
+                })
             }
         })
     }
