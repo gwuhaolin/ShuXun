@@ -158,7 +158,8 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
             })
         }).fail(function (err) {
             promise.reject(err);
-        })
+        });
+        return promise;
     }
 
     /**
