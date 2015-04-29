@@ -125,7 +125,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
         send();
     }
 
-    var promise = new AV.Promise(null);
+    var mainPromise = new AV.Promise(null);
 
     /**
      * 保存下这条聊天记录
@@ -168,16 +168,16 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
     function send() {
         exports.APIClient.sendTemplate(receiverOpenId, templateId, url, Color_Title, data, function (err, result) {
             if (err) {
-                promise.reject(err);
+                mainPromise.reject(err);
             } else {
                 saveChat().done(function () {
-                    promise.resolve(result);
+                    mainPromise.resolve(result);
                 }).fail(function (err) {
-                    promise.reject(err);
+                    mainPromise.reject(err);
                 })
             }
         })
     }
 
-    return promise;
+    return mainPromise;
 };
