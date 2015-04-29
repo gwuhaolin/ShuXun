@@ -383,10 +383,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         });
 
         //加载聊天记录
+        $scope.jsonChats = [];
         function loadChat() {
             if (usedBookAvosObjectId) {
                 Chat$.getChatList_UsedBook_TwoUser(usedBookAvosObjectId, $scope.jsonUser.objectId, User$.getCurrentAvosUser().id).done(function (avosChats) {
-                    $scope.jsonChats = [];
                     for (var i = 0; i < avosChats.length; i++) {
                         var jsonChat = Chat$.avosChatToJson(avosChats[i]);
                         $scope.jsonChats.push(jsonChat);
