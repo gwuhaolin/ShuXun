@@ -67,15 +67,15 @@ exports.getOAuthUserInfo = function (code, callback) {
 /**
  * 用户之间相互发送消息
  * @param senderName 发送者的昵称
- * @param senderId 发送者的微信openID
- * @param receiverId 接收者的微信openID
+ * @param senderOpenId 发送者的微信openID
+ * @param receiverOpenId 接收者的微信openID
  * @param msg 消息内容
  * @param usedBookAvosObjectId 当前咨询的二手书的objectId
  * @param role 发送者的当前角色是卖家还是买家 sell | buy
  * @param isPrivate 聊天是否私信
  * @return AV.Promise
  */
-exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, msg, usedBookAvosObjectId, role, isPrivate) {
+exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOpenId, msg, usedBookAvosObjectId, role, isPrivate) {
     var TemplateId_ToBuyer = 'nYdPsuIRJl8RFgh1WBv28xfDGU_IcjQVz6AGFO6uVr8';//咨询回复消息提醒
     var TemplateId_ToSeller = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';//用户咨询提醒
     var Color_Title = '#46bfb9';
@@ -99,7 +99,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
         }
     };
     var templateId = TemplateId_ToSeller;
-    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderId + '&msg=' + msg + '&isPrivate=' + isPrivate;
+    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderOpenId + '&msg=' + msg + '&isPrivate=' + isPrivate;
     if (role == 'sell') {//图书主人在回应咨询者
         url += '&role=buy';//我是卖家,所以你是买家
         templateId = TemplateId_ToBuyer;
@@ -132,18 +132,31 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
      * @returns AV.Promise
      */
     function saveChat() {
-        var avosSender = new AV.User();
-        avosSender.id = senderId;
-        var avosReceiver = new AV.User();
-        avosReceiver.id = receiverId;
-        var avosUsedBook = AV.Object.createWithoutData('UsedBook', usedBookAvosObjectId);
-        var Chat = AV.Object.extend('Chat');
-        var chat = new Chat();
-        return chat.save({
-            from: avosSender,
-            to: avosReceiver,
-            msg: msg,
-            usedBook: avosUsedBook
+        var promise = new AV.Promise(null);
+        var query = new AV.Query(AV.User);
+        query.equalTo('openId', senderOpenId);
+        query.first().done(function (avosSender) {
+            query = new AV.Query(AV.User);
+            query.equalTo('openId', receiverOpenId);
+            query.first().done(function (avosReceiver) {
+                var avosUsedBook = AV.Object.createWithoutData('UsedBook', usedBookAvosObjectId);
+                var Chat = AV.Object.extend('Chat');
+                var chat = new Chat();
+                chat.save({
+                    from: avosSender,
+                    to: avosReceiver,
+                    msg: msg,
+                    usedBook: avosUsedBook
+                }).done(function (re) {
+                    promise.resolve(re);
+                }).fail(function (err) {
+                    promise.reject(err);
+                })
+            }).fail(function (err) {
+                promise.reject(err);
+            })
+        }).fail(function (err) {
+            promise.reject(err);
         })
     }
 
@@ -151,7 +164,7 @@ exports.senderSendMsgToReceiver = function (senderName, senderId, receiverId, ms
      * 通过微信API发送这条消息
      */
     function send() {
-        exports.APIClient.sendTemplate(receiverId, templateId, url, Color_Title, data, function (err, result) {
+        exports.APIClient.sendTemplate(receiverOpenId, templateId, url, Color_Title, data, function (err, result) {
             if (err) {
                 promise.reject(err);
             } else {
