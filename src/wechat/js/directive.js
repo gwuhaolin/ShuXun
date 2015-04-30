@@ -43,9 +43,10 @@ APP.directive('reviewStar', function () {
  * 显示用户消息
  */
 
-    .directive('userInfo', function (WeChatJS$) {
+    .directive('userInfo', function (WeChatJS$, User$) {
         function link($scope) {
             $scope.WeChatJS$ = WeChatJS$;
+            $scope.User$ = User$;
         }
 
         return {

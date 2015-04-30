@@ -666,7 +666,7 @@ APP.service('DoubanBook$', function () {
 
     })
 
-    .service('User$', function () {
+    .service('User$', function ($state) {
         var that = this;
 
         /**
@@ -756,16 +756,23 @@ APP.service('DoubanBook$', function () {
             return query.first();
         };
 
-        /***
-         * 获得微信openId的用户
-         * @param unionId
-         * @returns {*|AV.Promise|{value, color}}
+        /**
+         * 我关注一个用户
+         * @param userObjectId 用户的AVOS ID
+         * @return AV.Promise
          */
-        this.getAvosUserByUnionId = function (unionId) {
-            var query = new AV.Query(AV.User);
-            query.equalTo('username', unionId);
-            return query.first();
-        };
+        this.followUser = function (userObjectId) {
+            var me = that.getCurrentAvosUser();
+            if (me) {
+                me.follow(userObjectId).done(function () {
+                    alert('关注成功');
+                }).fail(function (err) {
+                    alert('关注失败:' + err.message);
+                })
+            } else {
+                alert('请先登入');
+            }
+        }
     })
 
     //还没有卖出的二手书
@@ -785,10 +792,7 @@ APP.service('DoubanBook$', function () {
          * @returns {*|AV.Promise}
          */
         this.loadUsedBookListForOwner = function (avosUser) {
-            var query = new AV.Query('UsedBook');
-            query.equalTo('owner', avosUser);
-            query.descending("updatedAt");
-            return query.find();
+            return avosUser.relation('usedBooks').query().find();
         };
 
         /**
@@ -801,15 +805,12 @@ APP.service('DoubanBook$', function () {
          */
         this.loadMyAvosUsedBookList = function () {
             that.isLoading = true;
-            var query = new AV.Query('UsedBook');
-            query.equalTo('owner', AV.User.current());
-            query.descending("updatedAt");
-            query.find().done(function (avosUsedBooks) {
+            AV.User.current().relation('usedBooks').query().find().done(function (avosUsedBooks) {
                 that.myAvosUsedBookList = avosUsedBooks;
             }).always(function () {
                 that.isLoading = false;
                 $rootScope.$apply();
-            })
+            });
         };
 
         /**

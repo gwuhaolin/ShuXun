@@ -11,7 +11,7 @@ var Info = require('cloud/info.js');
  * 更新微信菜单
  * 微信菜单格式见 http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html
  */
-AV.Cloud.define('updateWechatMenu', function (request, response) {
+AV.Cloud.define('updateWechatMenu', function (req, res) {
     var wechatMenu = {
         "button": [
             {
@@ -26,11 +26,11 @@ AV.Cloud.define('updateWechatMenu', function (request, response) {
             }
         ]
     };
-    WechatAPI.APIClient.createMenu(wechatMenu, function (error, result) {
-        if (error) {
-            response.error(error);
+    WechatAPI.APIClient.createMenu(wechatMenu, function (err, result) {
+        if (err) {
+            res.error(err);
         } else {
-            response.success(result);
+            res.success(result);
         }
     });
 });
@@ -47,18 +47,18 @@ AV.Cloud.define('updateWechatMenu', function (request, response) {
  * @返回 发送成功时返回
  *      发送失败时返回 error
  */
-AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
-    var sendName = request.params['sendName'];
-    var senderId = request.params['senderId'];
-    var receiverId = request.params['receiverId'];
-    var msg = request.params['msg'];
-    var usedBookAvosObjectId = request.params['usedBookAvosObjectId'];
-    var role = request.params['role'];
-    var isPrivate = request.params['isPrivate'];
+AV.Cloud.define('sendTemplateMsgToUser', function (req, res) {
+    var sendName = req.params['sendName'];
+    var senderId = req.params['senderId'];
+    var receiverId = req.params['receiverId'];
+    var msg = req.params['msg'];
+    var usedBookAvosObjectId = req.params['usedBookAvosObjectId'];
+    var role = req.params['role'];
+    var isPrivate = req.params['isPrivate'];
     WechatAPI.senderSendMsgToReceiver(sendName, senderId, receiverId, msg, usedBookAvosObjectId, role, isPrivate).done(function () {
-        response.success();
-    }).fail(function (error) {
-        response.error(error);
+        res.success();
+    }).fail(function (err) {
+        res.error(err);
     })
 });
 
@@ -89,8 +89,8 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
         if (user) {
             LBS.updateUserLocation(user, latitude, longitude).done(function () {
                 res.success();
-            }).fail(function (error) {
-                res.error(error);
+            }).fail(function (err) {
+                res.error(err);
             })
         } else {
             res.error('需要先登入');
@@ -99,7 +99,7 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
 });
 
 
-AV.Cloud.beforeSave('UsedBook', function (req, res) {
+AV.Cloud.afterSave('UsedBook', function (req, res) {
     var user = req.user;
     //设置二手书的地理位置
     var location = user.get('location');
@@ -117,7 +117,7 @@ AV.Cloud.beforeSave('UsedBook', function (req, res) {
 AV.Cloud.beforeDelete('UsedBook', function (req, res) {
     //把当前usedBook从主人的usedBooks属性中移除
     var user = req.user;
-    user.relation('usedBooks').remove(request.object);
+    user.relation('usedBooks').remove(req.object);
     user.save().done(function () {
         res.success();
     }).fail(function (err) {
@@ -141,38 +141,38 @@ function updateSchoolLocation(avosSchool) {
 /**
  * 避免添加重名的学校
  */
-AV.Cloud.beforeSave('School', function (request, response) {
-    var avosSchool = request.object;
+AV.Cloud.beforeSave('School', function (req, res) {
+    var avosSchool = req.object;
     var query = new AV.Query('School');
     query.equalTo('name', avosSchool.get('name'));
     query.count().done(function (number) {
         if (number > 0) {
-            response.error('这个学校已经添加了');
+            res.error('这个学校已经添加了');
         } else {
-            response.success();
+            res.success();
         }
     });
 });
 /**
  * 当添加了一个学校之后,会根据学校的名称自动调用百度API去获得这个学校的经纬度
  */
-AV.Cloud.afterSave('School', function (request, response) {
-    var avosSchool = request.object;
+AV.Cloud.afterSave('School', function (req, res) {
+    var avosSchool = req.object;
     updateSchoolLocation(avosSchool);
-    response.success();
+    res.success();
 });
 /**
  * 当更新了一个学校之后,会根据学校的名称自动调用百度API去获得这个学校的经纬度
  */
-AV.Cloud.afterUpdate('School', function (request, response) {
-    var avosSchool = request.object;
+AV.Cloud.afterUpdate('School', function (req, res) {
+    var avosSchool = req.object;
     updateSchoolLocation(avosSchool);
-    response.success();
+    res.success();
 });
 /**
  * 更新全国大学信息
  */
-AV.Cloud.define('updateSchoolInfo', function (request, response) {
+AV.Cloud.define('updateSchoolInfo', function (req, res) {
     Info.spiderSchoolsFromMyFriday();
-    response.success();
+    res.success();
 });

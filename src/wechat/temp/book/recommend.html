@@ -62,7 +62,7 @@
             </ion-item>
             <ion-item style="padding: 0;">
                 <img ng-repeat="one in BookRecommend$.NearUser.jsonUsers" ng-src="{{one.avatarUrl}}"
-                     ui-sref="tab.book_usedBookListByOwner({ownerId:one.objectId})"
+                     ui-sref="tab.book_userHome({ownerId:one.objectId})"
                      style="width: 40px;height: 40px;border-radius: 50%;overflow: hidden;margin: 5px">
             </ion-item>
         </div>

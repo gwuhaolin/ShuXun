@@ -38,7 +38,11 @@ gulp.task('wechat_js', function () {
         gulp.src(
             //把模板变成js
             ['src/wechat/temp/**/*.html', 'src/wechat/temp/*.html'])
-            .pipe(htmlmin({collapseWhitespace: true}))
+            .pipe(htmlmin({
+                collapseWhitespace: true,
+                removeComments: true,
+                removeCommentsFromCDATA: true
+            }))
             .pipe(templateCache({
                 root: 'temp/',
                 module: 'APP'
@@ -61,7 +65,11 @@ gulp.task('wechat_index', function () {
             'IonicCSS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.4/css/ionic.min.css',
             'IonicJS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.4/js/ionic.bundle.min.js'
         }))
-        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            removeCommentsFromCDATA: true
+        }))
         .pipe(gulp.dest('public/wechat'));
 });
 
@@ -85,7 +93,11 @@ gulp.task('desktop_index', function () {
             'Semantic-js': 'http://cdn.bootcss.com/semantic-ui/1.11.8/semantic.min.js',
             'Semantic-css': 'http://cdn.bootcss.com/semantic-ui/1.11.8/semantic.min.css'
         }))
-        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            removeCommentsFromCDATA: true
+        }))
         .pipe(gulp.dest('public'));
 });
 

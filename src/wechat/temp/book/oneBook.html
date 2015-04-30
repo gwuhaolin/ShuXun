@@ -65,7 +65,7 @@
             <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0"
                       ng-repeat="oneJsonUsedBook in UsedBook$.ISBN.nowEqualISBNJsonUsedBookList"
                       ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneJsonUsedBook.objectId})">
-                <h3>要价:{{oneJsonUsedBook.price}}元 {{oneJsonUsedBook.des}}</h3>
+                <h3>{{oneJsonUsedBook.price}}元 {{oneJsonUsedBook.des}}</h3>
 
                 <p>上传于:{{oneJsonUsedBook.updatedAt | date:'mediumDate' }} </p>
             </ion-item>

@@ -173,7 +173,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         $scope.WeChatJS$ = WeChatJS$;
     })
 
-    .controller('book_usedBookListByOwner', function ($scope, $stateParams, UsedBook$, User$) {
+    .controller('book_userHome', function ($scope, $stateParams, UsedBook$, User$) {
         $scope.UsedBook$ = UsedBook$;
         var ownerId = $stateParams.ownerId;
         var query = new AV.Query(AV.User);
@@ -286,6 +286,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 alert(error.message);
             }).always(function () {
                 $scope.isLoading = false;
+                $scope.$apply();
             })
         }
 
@@ -404,9 +405,9 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         //常用快捷回复
         $scope.commonReplayWords = [];
         if ($scope.msg.role == 'sell') {//我是卖家
-            $scope.commonReplayWords = ['成交', '不能再便宜了', '这本书已经卖出去了'];
+            $scope.commonReplayWords = ['求微信号', '成交', '不能再便宜了', '这本书已经卖出去了'];
         } else {//我是买家
-            $scope.commonReplayWords = ['成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
+            $scope.commonReplayWords = ['求微信号', '成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
         }
         if ($scope.msg.usedBookAvosObjectId) {
             UsedBook$.getJsonUsedBookByAvosObjectId($scope.msg.usedBookAvosObjectId, function (jsonUsedBook) {

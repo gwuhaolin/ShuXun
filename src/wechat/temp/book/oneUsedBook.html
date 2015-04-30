@@ -42,13 +42,13 @@
             </ion-item>
             <ion-item class="item-avatar" ng-repeat="jsonChat in jsonChats">
                 <img ng-src="{{jsonChat.from.get('avatarUrl')}}"
-                     ui-sref="tab.book_usedBookListByOwner({ownerId:jsonChat.from.id})">
+                     ui-sref="tab.book_userHome({ownerId:jsonChat.from.id})">
 
                 <h2 style="white-space: pre-wrap">{{jsonChat.msg}}</h2>
 
                 <p>{{jsonChat.updatedAt | date:'mediumDate'}}</p>
                 <img style="width: 40px;height: 40px;position: absolute;top: 16px;right: 16px;border-radius: 50%;"
-                     ui-sref="tab.book_usedBookListByOwner({ownerId:jsonChat.to.id})"
+                     ui-sref="tab.book_userHome({ownerId:jsonChat.to.id})"
                      ng-src="{{jsonChat.to.get('avatarUrl')}}">
             </ion-item>
         </div>

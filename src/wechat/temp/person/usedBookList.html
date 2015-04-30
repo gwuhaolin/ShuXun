@@ -26,10 +26,10 @@
 
                 <p ng-if="oneAvosUsedBook.get('des')">描述:{{oneAvosUsedBook.get('des')}}</p>
                 <button class="button button-small button-outline button-assertive"
-                        ng-click="UsedBook$.removeUsedBook(oneAvosUsedBook)">删除
+                        ng-click="UsedBook$.removeUsedBook(oneAvosUsedBook)">已卖删除
                 </button>
                 <button class="button button-small button-outline button-balanced"
-                        ui-sref="tab.person_editOneUsedBook({indexInMyAvosUsedBook_notSell:$index})">编辑
+                        ui-sref="tab.person_editOneUsedBook({indexInMyAvosUsedBook_notSell:$index})">修改信息
                 </button>
             </ion-item>
             <ion-item ng-if="UsedBook$.myAvosUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>

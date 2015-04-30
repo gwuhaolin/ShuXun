@@ -24,14 +24,14 @@
             </ion-item>
             <ion-item>
                 <p>
-                    {{doubanBookInfo.title}}/<span ng-if="doubanBookInfo.price">{{doubanBookInfo.price}}</span>
+                    {{doubanBookInfo.title}} <span ng-if="doubanBookInfo.price">{{doubanBookInfo.price}}</span>
                 </p>
                 <!-- 作者-->
-                <p ng-if="doubanBookInfo.author.length>0" class="item-button-right">
+                <p ng-if="doubanBookInfo.author.length>0">
                     {{doubanBookInfo.author.toString()}} 著
                 </p>
                 <!-- 出版信息-->
-                <p ng-if="doubanBookInfo['publisher']">{{doubanBookInfo['publisher']}}/{{doubanBookInfo['pubdate']}}</p>
+                <p ng-if="doubanBookInfo['publisher']">{{doubanBookInfo['publisher']}} {{doubanBookInfo['pubdate']}}</p>
             </ion-item>
         </div>
         <hr style="margin: 10px">

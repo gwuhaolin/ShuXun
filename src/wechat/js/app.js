@@ -76,14 +76,14 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/book/oneBook.html'
                     }
                 }
-            }).state('tab.book_usedBookListByOwner', {
+            }).state('tab.book_userHome', {
                 /**
                  * 参数:ownerId 主人的AVOS ID
                  */
-                url: '/book/usedBookListByOwner/:ownerId',
+                url: '/book/userHome/:ownerId',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/usedBookListByOwner.html'
+                        templateUrl: 'temp/book/userHome.html'
                     }
                 }
             }).state('tab.book_oneUsedBook', {
