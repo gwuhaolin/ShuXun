@@ -84,7 +84,7 @@ AV.Cloud.define('sendTemplateMsgToUser', function (request, response) {
     var msg = request.params['msg'];
     var usedBookAvosObjectId = request.params['usedBookAvosObjectId'];
     var role = request.params['role'];
-    var isPrivate =  request.params['isPrivate'];
+    var isPrivate = request.params['isPrivate'];
     WechatAPI.senderSendMsgToReceiver(sendName, senderId, receiverId, msg, usedBookAvosObjectId, role, isPrivate).done(function () {
         response.success();
     }).fail(function (error) {
@@ -107,7 +107,7 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
         longitude = parseFloat(req.params['longitude']);
         updateLocation();
     } else {//使用IP地址定位
-        var ip = request.remoteAddress;
+        var ip = req.remoteAddress;
         LBS.getLocationByIP(ip, function (location) {
             latitude = parseFloat(location.lat);
             longitude = parseFloat(location.lng);

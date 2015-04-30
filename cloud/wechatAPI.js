@@ -139,7 +139,10 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
             query = new AV.Query(AV.User);
             query.equalTo('openId', receiverOpenId);
             query.first().done(function (avosReceiver) {
-                var avosUsedBook = AV.Object.createWithoutData('UsedBook', usedBookAvosObjectId);
+                var avosUsedBook = null;
+                if (usedBookAvosObjectId) {//如果有二手书的ID
+                    avosUsedBook = AV.Object.createWithoutData('UsedBook', usedBookAvosObjectId);
+                }
                 var Chat = AV.Object.extend('Chat');
                 var chat = new Chat();
                 chat.save({
