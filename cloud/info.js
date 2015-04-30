@@ -3,7 +3,7 @@
  * 静态信息提供
  */
 "use strict";
-var request = require('request');
+var Request = require('request');
 
 //所有专业
 exports.Majors = [
@@ -1070,6 +1070,38 @@ exports.Majors = [
  * @type {{文学: string[], 流行: string[], 文化: string[], 生活: string[], 经管: string[], 科技: string[]}}
  */
 exports.BookTags = {
+    "经管": [
+        "经济学",
+        "管理",
+        "经济",
+        "金融",
+        "商业",
+        "投资",
+        "营销",
+        "理财",
+        "创业",
+        "广告",
+        "股票",
+        "企业史",
+        "策划"
+    ],
+    "科技": [
+        "科普",
+        "互联网",
+        "编程",
+        "科学",
+        "交互设计",
+        "用户体验",
+        "算法",
+        "web",
+        "科技",
+        "UE",
+        "通信",
+        "UCD",
+        "交互",
+        "神经网络",
+        "程序"
+    ],
     "文学": [
         "小说",
         "外国文学",
@@ -1194,38 +1226,6 @@ exports.BookTags = {
         "家居",
         "人际关系",
         "自助游"
-    ],
-    "经管": [
-        "经济学",
-        "管理",
-        "经济",
-        "金融",
-        "商业",
-        "投资",
-        "营销",
-        "理财",
-        "创业",
-        "广告",
-        "股票",
-        "企业史",
-        "策划"
-    ],
-    "科技": [
-        "科普",
-        "互联网",
-        "编程",
-        "科学",
-        "交互设计",
-        "用户体验",
-        "算法",
-        "web",
-        "科技",
-        "UE",
-        "通信",
-        "UCD",
-        "交互",
-        "神经网络",
-        "程序"
     ]
 };
 
@@ -1235,7 +1235,7 @@ exports.BookTags = {
 exports.spiderSchoolsFromMyFriday = function () {
     var url = 'http://course.myfriday.cn:80/V2/School/getNewSchoolList.action';
     var AvosSchool = AV.Object.extend('School');
-    request.post(url, function (err, res, body) {
+    Request.post(url, function (err, res, body) {
         if (!err) {
             var json = JSON.parse(body);
             var schools = json.data.updateList;
@@ -1248,4 +1248,92 @@ exports.spiderSchoolsFromMyFriday = function () {
             }
         }
     })
+};
+
+/**
+ * 去豆瓣图书获取最新图书
+ * @param start 开始位置
+ * @param count 取多少个
+ * @returns {AV.Promise}
+ */
+exports.getNewBooks = function (start, count) {
+    var url1 = 'http://topbook.zconly.com/v1/top/category/10104/books';
+    var url2 = 'http://topbook.zconly.com/v1/top/category/10105/books';
+    var start1 = Math.ceil(start / 2);
+    var start2 = start - start1;
+    var count1, count2;
+    if (start % 2 == 0) {
+        count1 = Math.ceil(count / 2);
+    } else {
+        count1 = Math.floor(count / 2);
+    }
+    count2 = count - count1;
+
+    var rePromise = new AV.Promise(null);
+    var hasDone1 = false, hasDone2 = false;
+    var reJSON = [];
+    Request.get({
+        url: url1,
+        qs: {
+            start: start1,
+            count: count1
+        }
+    }, function (err, res, body) {
+        if (err) {
+            rePromise.reject(err);
+        } else {
+            var json = JSON.parse(body);
+            var books = json.books;
+            for (var i = 0; i < books.length; i++) {
+                var oneBook = JSON.parse(books[i].book);
+                reJSON.push(simpleOneBook(oneBook));
+            }
+            hasDone1 = true;
+            re();
+        }
+    });
+    Request.get({
+        url: url2,
+        qs: {
+            start: start2,
+            count: count2
+        }
+    }, function (err, res, body) {
+        if (err) {
+            rePromise.reject(err);
+        } else {
+            var json = JSON.parse(body);
+            var books = json.books;
+            for (var i = 0; i < books.length; i++) {
+                var oneBook = JSON.parse(books[i].book);
+                reJSON.push(simpleOneBook(oneBook));
+            }
+            hasDone2 = true;
+            re();
+        }
+    });
+
+    /**
+     * 简化信息,去掉不必要的信息
+     * @param book
+     */
+    function simpleOneBook(book) {
+        return {
+            title: book.title,
+            isbn13: book.isbn13,
+            image: book.image,
+            price: book.price,
+            publisher: book.publisher,
+            author: book.author,
+            pubdate: book.pubdate
+        }
+    }
+
+    function re() {
+        if (hasDone1 && hasDone2) {
+            rePromise.resolve(reJSON);
+        }
+    }
+
+    return rePromise;
 };

@@ -14,7 +14,8 @@
             <user-info json-user-info="one"
                        user-used-book-number="one.usedBookNumber"></user-info>
         </div>
-        <ion-infinite-scroll on-infinite="loadMore()"
+        <ion-infinite-scroll ng-if="hasMore()"
+                             on-infinite="loadMore()"
                              distance="1%">
         </ion-infinite-scroll>
     </ion-content>

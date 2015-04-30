@@ -15,9 +15,9 @@
             <one-used-book ng-repeat="jsonUsedBook in jsonUsedBooks | orderBy:sortWay"
                            json-used-book="jsonUsedBook"></one-used-book>
         </ion-list>
-        <ion-infinite-scroll
-                on-infinite="loadMore()"
-                distance="1%">
+        <ion-infinite-scroll ng-if="hasMore()"
+                             on-infinite="loadMore()"
+                             distance="1%">
         </ion-infinite-scroll>
     </ion-content>
 </ion-view>

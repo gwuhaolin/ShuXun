@@ -52,10 +52,17 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         } else if (cmd == 'need') {
             $scope.books = BookRecommend$.NeedBook.books;
             $scope.loadMore = BookRecommend$.NeedBook.loadMore;
+            $scope.hasMore = BookRecommend$.NeedBook.hasMore;
         } else if (cmd == 'major') {
             $scope.books = BookRecommend$.MajorBook.books;
             $scope.loadMore = BookRecommend$.MajorBook.loadMore;
             $scope.title = BookRecommend$.MajorBook.major;
+            $scope.hasMore = BookRecommend$.MajorBook.hasMore;
+        } else if (cmd == 'new') {
+            $scope.books = BookRecommend$.NewBook.books;
+            $scope.loadMore = BookRecommend$.NewBook.loadMore;
+            $scope.title = '新书速递';
+            $scope.hasMore = BookRecommend$.NewBook.hasMore;
         }
     })
 
@@ -67,12 +74,14 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.title = '你附近的二手书';
             $scope.jsonUsedBooks = BookRecommend$.NearBook.jsonBooks;
             $scope.loadMore = BookRecommend$.NearBook.loadMore;
+            $scope.hasMore = BookRecommend$.NearBook.hasMore;
         } else if (cmd == 'isbn') {
             $scope.title = '对应的二手书';
             var isbn13 = $stateParams['isbn13'];
             UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
             $scope.jsonUsedBooks = UsedBook$.ISBN.nowEqualISBNJsonUsedBookList;
             $scope.loadMore = UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
+            $scope.hasMore = BookRecommend$.ISBN.hasMore;
         }
     })
 
@@ -96,6 +105,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
                 userBookNumber($scope.jsonUsers[i]);
             }
             $scope.loadMore = BookRecommend$.NearUser.loadMore;
+            $scope.hasMore = BookRecommend$.NearUser.hasMore;
         }
     })
 

@@ -191,6 +191,32 @@ APP.service('DoubanBook$', function () {
         var that = this;
 
         /**
+         * 新书速递
+         * @type {{books: Array, loadMore: Function}}
+         */
+        this.NewBook = {
+            books: [],
+            hasMoreFlag: true,
+            loadMore: function () {
+                jsonp('/info/getNewBooks?count=5&start=' + that.NewBook.books.length, function (books) {
+                    if (books.length > 0) {
+                        for (var i = 0; i < books.length; i++) {
+                            that.NewBook.books.push(books[i]);
+                        }
+                    } else {
+                        that.NewBook.hasMoreFlag = false;
+                    }
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                })
+            },
+            hasMore: function () {
+                return that.NewBook.hasMoreFlag;
+            }
+        };
+        that.NewBook.loadMore();
+
+        /**
          * 所有图书分类
          * @type {Array}
          */
@@ -220,10 +246,6 @@ APP.service('DoubanBook$', function () {
              * 当前搜索的图书分类
              */
             nowTag: '',
-            /**
-             * 该关键字一共检索到的书的数量
-             */
-            totalNum: 0,
             setTag: function (tag) {
                 if (tag != that.TagBook.nowTag) {
                     that.TagBook.books = [];
@@ -231,19 +253,23 @@ APP.service('DoubanBook$', function () {
                 }
             },
             books: [],
+            hasMoreFlag: true,
             loadMore: function () {
                 DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, 5, function (json) {
-                    that.TagBook.totalNum = json['total'];
                     var booksJSON = json['books'];
-                    for (var i = 0; i < booksJSON.length; i++) {
-                        that.TagBook.books.push(booksJSON[i]);
+                    if (booksJSON.length > 0) {
+                        for (var i = 0; i < booksJSON.length; i++) {
+                            that.TagBook.books.push(booksJSON[i]);
+                        }
+                    } else {
+                        that.TagBook.hasMoreTag = false;
                     }
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
             },
             hasMore: function () {
-                return that.TagBook.books.length < that.TagBook.totalNum;
+                return that.TagBook.hasMoreFlag;
             }
         };
 
@@ -254,19 +280,24 @@ APP.service('DoubanBook$', function () {
         this.MajorBook = {
             major: User$.getCurrentJsonUser() ? User$.getCurrentJsonUser().major : '',
             books: [],
+            hasMoreFlag: true,
             loadMore: function () {
                 DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length, 5, function (json) {
                     that.MajorBook.totalNum = json['total'];
                     var booksJSON = json['books'];
-                    for (var i = 0; i < booksJSON.length; i++) {
-                        that.MajorBook.books.push(booksJSON[i]);
+                    if (booksJSON.length > 0) {
+                        for (var i = 0; i < booksJSON.length; i++) {
+                            that.MajorBook.books.push(booksJSON[i]);
+                        }
+                    } else {
+                        that.MajorBook.hasMoreFlag = false;
                     }
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
             },
             hasMore: function () {
-                return that.MajorBook.books.length < that.MajorBook.totalNum;
+                return that.MajorBook.hasMoreFlag;
             }
         };
 
@@ -288,6 +319,7 @@ APP.service('DoubanBook$', function () {
          */
         this.NearBook = {
             jsonBooks: [],
+            hasMoreFlag: true,
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query('UsedBook');
@@ -301,9 +333,15 @@ APP.service('DoubanBook$', function () {
                         for (var i = 0; i < avosUsedBooks.length; i++) {
                             that.NearBook.jsonBooks.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
                         }
+                    } else {
+                        that.NearBook.hasMoreFlag = false;
                     }
                     $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
+            },
+            hasMore: function () {
+                return that.NearBook.hasMoreFlag;
             }
         };
 
@@ -313,6 +351,7 @@ APP.service('DoubanBook$', function () {
          */
         this.NearUser = {
             jsonUsers: [],
+            hasMoreFlag: true,
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query(AV.User);
@@ -326,9 +365,15 @@ APP.service('DoubanBook$', function () {
                         for (var i = 0; i < avosUsers.length; i++) {
                             that.NearUser.jsonUsers.push(User$.avosUserToJson(avosUsers[i]));
                         }
+                    } else {
+                        that.NearUser.hasMoreFlag = false;
                     }
                     $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
+            },
+            hasMore: function () {
+                return that.NearUser.hasMoreFlag;
             }
         };
         this.NearUser.loadMore();

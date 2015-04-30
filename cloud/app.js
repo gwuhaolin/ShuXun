@@ -53,6 +53,19 @@ app.get('/info/getAllBookTags', function (req, res) {
     res.jsonp(tags);
 });
 
+/**
+ * 新书速递功能
+ */
+app.get('/info/getNewBooks', function (req, res) {
+    var start = req.query.start;
+    var count = req.query.count;
+    Info.getNewBooks(start, count).done(function (json) {
+        res.jsonp(json);
+    }).fail(function (err) {
+        res.jsonp(err);
+    })
+});
+
 ////////////////////// 图书电商信息 /////////////////////////
 /**
  * @queryParam id 豆瓣图书id
