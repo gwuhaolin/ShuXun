@@ -10,7 +10,7 @@
                 <img ng-src="{{jsonUsedBook.image}}" style="height: 180px"
                      ng-click="WeChatJS$.previewOneImage(jsonUsedBook.image)">
             </ion-item>
-            <ion-item>
+            <ion-item ui-sref="tab.book_oneBook({isbn13:jsonUsedBook.isbn13})">
                 <h3>要价:{{jsonUsedBook.price}}</h3>
 
                 <p>时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>

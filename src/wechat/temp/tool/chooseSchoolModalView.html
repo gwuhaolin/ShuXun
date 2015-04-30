@@ -16,6 +16,7 @@
     <ion-content class="has-header">
         <ul class="list">
             <ion-item item-height="55px"
+                      item-width="100%"
                       collection-repeat="school in InfoService$.School.schools | filter:InfoService$.School.filter_schoolByKeyword"
                       ng-click="schoolOnChoose(school)">
                 {{school}}

@@ -92,10 +92,11 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         $scope.sortWay = '';
 
         function userBookNumber(oneJsonUser) {
-            UsedBook$.getUsedBookNumberForOwner(oneJsonUser.objectId).done(function (number) {
+            var user = AV.Object.createWithoutData('_User', oneJsonUser.objectId);
+            user.relation('usedBooks').query().count().done(function (number) {
                 oneJsonUser.usedBookNumber = number;
                 $scope.$apply();
-            })
+            });
         }
 
         if (cmd == 'near') {
@@ -201,10 +202,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             avosOwner.fetch().done(function (avosOwner) {
                 $scope.ownerInfo = User$.avosUserToJson(avosOwner);
                 $scope.$apply();
-            });
-            UsedBook$.getUsedBookNumberForOwner(avosOwner.id).done(function (number) {
-                $scope.ownerUsedBookNumber = number;
-                $scope.$apply();
+                avosOwner.relation('usedBooks').query().count().done(function (number) {
+                    $scope.ownerUsedBookNumber = number;
+                    $scope.$apply();
+                })
             });
         });
 
@@ -329,7 +330,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
     .controller('person_my', function ($scope, $state, $stateParams, User$, UsedBook$) {
         function load() {
             $scope.userInfo = User$.getCurrentJsonUser();
-            UsedBook$.getUsedBookNumberForOwner(User$.getCurrentAvosUser().id).done(function (number) {
+            User$.getCurrentAvosUser().relation('usedBooks').query().count().done(function (number) {
                 $scope.myUsedBookNumber = number;
                 $scope.$apply();
             });
@@ -347,14 +348,10 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_usedBookList', function ($scope, UsedBook$, HasSellUsedBook$) {
+    .controller('person_usedBookList', function ($scope, UsedBook$) {
         //还没有卖出
         $scope.UsedBook$ = UsedBook$;
         UsedBook$.loadMyAvosUsedBookList();
-
-        //已经卖出的二手书
-        $scope.HasSellUsedBook$ = HasSellUsedBook$;
-        HasSellUsedBook$.loadMyAvosUsedBookList();
 
     })
 

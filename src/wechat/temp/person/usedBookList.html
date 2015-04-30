@@ -31,27 +31,8 @@
                 <button class="button button-small button-outline button-balanced"
                         ui-sref="tab.person_editOneUsedBook({indexInMyAvosUsedBook_notSell:$index})">编辑
                 </button>
-                <button class="button button-small button-outline button-positive"
-                        ng-click="UsedBook$.usedBookHasSell(oneAvosUsedBook)">已卖
-                </button>
             </ion-item>
             <ion-item ng-if="UsedBook$.myAvosUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>
-
-            <!-- 已经卖出-->
-            <ion-item class="item-divider">已经卖出</ion-item>
-            <ion-item ng-repeat="oneAvosUsedBook in HasSellUsedBook$.myAvosUsedBookList" class="item-avatar item-button-right">
-                <img ng-if="oneAvosUsedBook.get('image')"
-                     ng-src="{{oneAvosUsedBook.get('image')}}"
-                     ui-sref="tab.book_oneBook({isbn13:oneAvosUsedBook.get('isbn13')})">
-
-                <h3 ng-if="oneAvosUsedBook.get('title')">书名:{{oneAvosUsedBook.get('title')}}</h3>
-
-                <p ng-if="oneAvosUsedBook.get('des')">描述:{{oneAvosUsedBook.get('des')}}</p>
-                <button class="button button-small button-outline button-assertive" style="float: right"
-                        ng-click="HasSellUsedBook$.removeUsedBook(oneAvosUsedBook)">删除
-                </button>
-            </ion-item>
-            <ion-item ng-if="HasSellUsedBook$.myAvosUsedBookList.length==0">你还没有已经卖出的书,点击 已卖</ion-item>
         </ion-list>
     </ion-content>
 </ion-view>

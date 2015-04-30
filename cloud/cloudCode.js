@@ -36,36 +36,6 @@ AV.Cloud.define('updateWechatMenu', function (request, response) {
 });
 
 /**
- * 当一本二手书被卖出时
- * 参数: id 被卖出的二手书的AVOS ID
- * 返回: 事物完成成功返回success,否则返回error
- */
-AV.Cloud.define('usedBookHasSell', function (request, response) {
-    var usedBookId = request.params['id'];
-    var query = new AV.Query('UsedBook');
-    query.get(usedBookId).done(function (avosUsedBook) {//从UsedBook表获得被卖的二手书
-        var HasSellUsedBook = AV.Object.extend('HasSellUsedBook');
-        var hasUsedBook = new HasSellUsedBook();
-        hasUsedBook.save({//从UsedBook表获得被卖的二手书的信息转移到HasSellUsedBook表
-            owner: avosUsedBook.get('owner'),
-            des: avosUsedBook.get('des'),
-            price: avosUsedBook.get('price'),
-            isbn13: avosUsedBook.get('isbn13'),
-            title: avosUsedBook.get('title'),
-            image: avosUsedBook.get('image')
-        }).done(function () {
-            avosUsedBook.destroy().done(function () {//删除UsedBook表获得被卖的二手书
-                response.success();
-            }).fail(function (error) {
-                response.error(error);
-            })
-        })
-    }).fail(function (error) {
-        response.error(error);
-    })
-});
-
-/**
  * 给分数发送模板消息
  * @参数:sendName 发送者的昵称
  * @参数:sendId 发送者的微信openId
@@ -128,15 +98,31 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
     }
 });
 
-/**
- * 上传一本二手书时,把二手书的位置定为主人当前的位置
- */
-AV.Cloud.beforeSave('UsedBook', function (request, response) {
-    var location = request.user.get('location');
+
+AV.Cloud.beforeSave('UsedBook', function (req, res) {
+    var user = req.user;
+    //设置二手书的地理位置
+    var location = user.get('location');
     var point = new AV.GeoPoint(location);
-    request.object.set('location', point);
-    request.object.save();
-    response.success();
+    req.object.set('location', point);
+    req.object.save();
+    //设置用户的二手书的relations
+    user.relation('usedBooks').add(req.object);
+    user.save().done(function () {
+        res.success();
+    }).fail(function (err) {
+        res.error(err);
+    });
+});
+AV.Cloud.beforeDelete('UsedBook', function (req, res) {
+    //把当前usedBook从主人的usedBooks属性中移除
+    var user = req.user;
+    user.relation('usedBooks').remove(request.object);
+    user.save().done(function () {
+        res.success();
+    }).fail(function (err) {
+        res.err(err);
+    });
 });
 
 

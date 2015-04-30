@@ -769,7 +769,7 @@ APP.service('DoubanBook$', function () {
     })
 
     //还没有卖出的二手书
-    .service('UsedBook$', function ($rootScope, HasSellUsedBook$) {
+    .service('UsedBook$', function ($rootScope) {
         var that = this;
         var UsedBookAttrNames = ['owner', 'isbn13', 'price', 'des', 'image', 'title'];
 
@@ -778,20 +778,6 @@ APP.service('DoubanBook$', function () {
          * @type {boolean}
          */
         this.isLoading = false;
-
-        /**
-         * 获得这位主人还没有卖出的二手书的数量
-         * @param avosUserObjectId
-         * @returns {*|AV.Promise}
-         */
-        this.getUsedBookNumberForOwner = function (avosUserObjectId) {
-            var query = new AV.Query('UsedBook');
-            var avosUser = new AV.User();
-            avosUser.id = avosUserObjectId;
-            query.equalTo("owner", avosUser);
-            query.descending("updatedAt");
-            return query.count();
-        };
 
         /**
          * 加载对应用户所有还没有卖出的二手书
@@ -831,29 +817,12 @@ APP.service('DoubanBook$', function () {
          * @param avosUsedBook
          */
         this.removeUsedBook = function (avosUsedBook) {
-            if (window.confirm('你确定要删除它吗?')) {
+            if (window.confirm('你确定要删除它吗?将不可恢复')) {
                 avosUsedBook.destroy().done(function () {
                     that.loadMyAvosUsedBookList();
                 }).fail(function (error) {
                     alert(error.message);
                 })
-            }
-        };
-
-        /**
-         * 把一本二手书设置为已经卖出
-         * @param avosUsedBook
-         */
-        this.usedBookHasSell = function (avosUsedBook) {
-            if (window.confirm('你确定它已经卖出了吗?')) {
-                AV.Cloud.run('usedBookHasSell', {
-                    id: avosUsedBook.id
-                }, null).done(function () {
-                    that.loadMyAvosUsedBookList();
-                    HasSellUsedBook$.loadMyAvosUsedBookList();
-                }).fail(function (error) {
-                    alert(error.message);
-                });
             }
         };
 
@@ -940,43 +909,6 @@ APP.service('DoubanBook$', function () {
                 }).always(function () {
                     that.isLoading = false;
                     $rootScope.$apply();
-                })
-            }
-        };
-    })
-
-    //已经卖出的二手书
-    .service('HasSellUsedBook$', function ($rootScope) {
-        var that = this;
-        /**
-         * 所有我上传的还已经卖出的二手书
-         * @type {Array}
-         */
-        this.myAvosUsedBookList = [];
-
-        /**
-         * 加载所有我已经卖出二手书到myAvosUsedBookList
-         */
-        this.loadMyAvosUsedBookList = function () {
-            var query = new AV.Query('HasSellUsedBook');
-            query.equalTo('owner', AV.User.current());
-            query.find().done(function (avosUsedBooks) {
-                that.myAvosUsedBookList = avosUsedBooks;
-            }).always(function () {
-                $rootScope.$apply();
-            })
-        };
-
-        /**
-         * 删除一本已经卖出的二手书
-         * @param avosUsedBook
-         */
-        this.removeUsedBook = function (avosUsedBook) {
-            if (window.confirm('你确定要删除它吗?')) {
-                avosUsedBook.destroy().done(function () {
-                    that.loadMyAvosUsedBookList();
-                }).fail(function (error) {
-                    alert(error.message);
                 })
             }
         };

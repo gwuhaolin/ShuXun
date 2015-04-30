@@ -13,6 +13,7 @@
     <ion-content class="has-header">
         <ul class="list">
             <ion-item item-height="55px"
+                      item-width="100%"
                       collection-repeat="oneMajor in InfoService$.majors | filter:InfoService$.filter_majorByKeyword"
                       ng-click="majorOnChoose(oneMajor['name'])">
                 {{oneMajor['name']}}
