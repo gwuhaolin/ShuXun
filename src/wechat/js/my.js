@@ -71,5 +71,3 @@ function loginWithUnionId(unionId) {
     }
     return AV.Promise.error("unionId错误");
 }
-loginWithUnionId(readCookie('unionId'));
-

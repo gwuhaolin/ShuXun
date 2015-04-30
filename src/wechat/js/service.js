@@ -995,7 +995,10 @@ APP.service('DoubanBook$', function () {
          * @returns {*|{}|AV.Promise}
          */
         this.getChatList_UsedBook_TwoUser = function (avosUsedBookId, avosUser1Id, avosUser2Id) {
-            var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
+            var avosUsedBook = null;
+            if (avosUsedBookId) {
+                avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
+            }
             var avosUser1 = AV.Object.createWithoutData('UsedBook', avosUser1Id);
             var avosUser2 = AV.Object.createWithoutData('UsedBook', avosUser2Id);
             var query1 = new AV.Query(Chat);

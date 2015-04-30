@@ -385,15 +385,13 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         //加载聊天记录
         $scope.jsonChats = [];
         function loadChat() {
-            if (usedBookAvosObjectId) {
-                Chat$.getChatList_UsedBook_TwoUser(usedBookAvosObjectId, $scope.jsonUser.objectId, User$.getCurrentAvosUser().id).done(function (avosChats) {
-                    for (var i = 0; i < avosChats.length; i++) {
-                        var jsonChat = Chat$.avosChatToJson(avosChats[i]);
-                        $scope.jsonChats.push(jsonChat);
-                    }
-                    $scope.$apply();
-                });
-            }
+            Chat$.getChatList_UsedBook_TwoUser(usedBookAvosObjectId, $scope.jsonUser.objectId, User$.getCurrentAvosUser().id).done(function (avosChats) {
+                for (var i = 0; i < avosChats.length; i++) {
+                    var jsonChat = Chat$.avosChatToJson(avosChats[i]);
+                    $scope.jsonChats.push(jsonChat);
+                }
+                $scope.$apply();
+            });
         }
 
         //常用快捷回复
@@ -438,13 +436,9 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
-            User$.getAvosUserByUnionId(userInfo.unionId).done(function (avosUser) {
-                if (avosUser) {//这个用户已经注册,直接去主页
-                    loginWithUnionId(userInfo.unionId).done(function () {
-                        $state.go(shouldGoState);
-                        $ionicHistory.clearHistory();
-                    })
-                }
+            loginWithUnionId(userInfo.unionId).done(function () {//已经注册过
+                $state.go(shouldGoState);
+                $ionicHistory.clearHistory();
             });
             $scope.$apply();
         });
@@ -475,7 +469,11 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
 
     })
 
-    .controller('hello', function ($scope, $stateParams, WeChatJS$) {
-        var state = $stateParams['state'];
-        $scope.OAuthURL = WeChatJS$.getOAuthURL(state);
+    .controller('hello', function ($scope, $state, $stateParams, WeChatJS$) {
+        var shouldGoState = $stateParams['state'];//验证完成后要去的状态
+        loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
+            $state.go(shouldGoState);
+            $ionicHistory.clearHistory();
+        });
+        $scope.OAuthURL = WeChatJS$.getOAuthURL(shouldGoState);
     });
