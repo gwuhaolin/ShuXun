@@ -11,8 +11,7 @@
                ng-class="{'button-balanced':sortWay=='location'}">离你距离</a>
         </div>
         <div class="card" ng-repeat="one in jsonUsers | orderBy:sortWay:true">
-            <user-info json-user-info="one"
-                       user-used-book-number="one.usedBookNumber"></user-info>
+            <user-info json-user-info="one"></user-info>
         </div>
         <ion-infinite-scroll ng-if="hasMore()"
                              on-infinite="loadMore()"

@@ -64,10 +64,15 @@
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
             <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0"
                       ng-repeat="oneJsonUsedBook in UsedBook$.ISBN.nowEqualISBNJsonUsedBookList"
-                      ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneJsonUsedBook.objectId})">
-                <h3>{{oneJsonUsedBook.price}}元 {{oneJsonUsedBook.des}}</h3>
+                      class="item-avatar">
+                <img ng-src="{{oneJsonUsedBook.owner.get('avatarUrl')}}"
+                     ui-sref="tab.userHome({ownerId:oneJsonUsedBook.owner.id})">
 
-                <p>上传于:{{oneJsonUsedBook.updatedAt | date:'mediumDate' }} </p>
+                <div ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneJsonUsedBook.objectId})">
+                    <h3 style="white-space: pre-wrap">{{oneJsonUsedBook.price}}元 {{oneJsonUsedBook.des}}</h3>
+
+                    <p>上传于:{{oneJsonUsedBook.updatedAt | date:'mediumDate' }} </p>
+                </div>
             </ion-item>
             <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0"
                       style="padding: 0;text-align: center">

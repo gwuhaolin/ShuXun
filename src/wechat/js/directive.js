@@ -48,6 +48,17 @@ APP.directive('reviewStar', function () {
             $scope.WeChatJS$ = WeChatJS$;
             $scope.User$ = User$;
 
+            //加载它的二手书的数量
+            function loadHeUsedBookNumber() {
+                if ($scope.jsonUserInfo) {
+                    var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
+                    he.relation('usedBooks').query().count().done(function (number) {
+                        $scope.userUsedBookNumber = number;
+                        $scope.$apply();
+                    });
+                }
+            }
+
             //判断是否我已经关注ta
             $scope.isMyFollowee = false;
             function loadIsMyFollowee() {
@@ -65,6 +76,9 @@ APP.directive('reviewStar', function () {
                 return $scope.jsonUserInfo;
             }, function () {
                 loadIsMyFollowee();
+                if ($scope.hideUsedBook) {
+                    loadHeUsedBookNumber();
+                }
             });
             $scope.$on('FollowSomeone', function () {
                 loadIsMyFollowee();
@@ -79,7 +93,8 @@ APP.directive('reviewStar', function () {
             scope: {
                 //用户的AVOS objectID
                 jsonUserInfo: '=',
-                userUsedBookNumber: '='
+                //是否隐藏二手书的数量
+                hideUsedBook: '=?'
             },
             templateUrl: 'temp/tool/userInfoTemplate.html',
             link: link

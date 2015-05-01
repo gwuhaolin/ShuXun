@@ -21,13 +21,13 @@
             ng-click="User$.followUser(jsonUserInfo.objectId)">关注Ta
     </button>
     <button ng-if="isMyFollowee"
-            class="button button-small button-clear button-assertive"
+            class="button button-small button-clear button-energized"
             style="float: right"
             ng-click="User$.unfollowUser(jsonUserInfo.objectId)">取消关注
     </button>
 </div>
 <!-- 主人所有旧书链接-->
-<ion-item ng-if="userUsedBookNumber" style="padding: 0;text-align: center">
+<ion-item ng-if="!hideUsedBook && userUsedBookNumber" style="padding: 0;text-align: center">
     <a ng-if="userUsedBookNumber>0" class="button button-small button-clear button-balanced"
        ui-sref="tab.userHome({ownerId:jsonUserInfo.objectId})">查看主人要卖的{{userUsedBookNumber}}本旧书</a>
     <a ng-if="userUsedBookNumber==0" class="button button-small button-clear button-balanced">主人还没有在买的二手书</a>

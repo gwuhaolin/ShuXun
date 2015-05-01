@@ -164,10 +164,6 @@ APP.controller('tabs', function ($scope, User$) {
             avosOwner.fetch().done(function (avosOwner) {
                 $scope.ownerInfo = User$.avosUserToJson(avosOwner);
                 $scope.$apply();
-                avosOwner.relation('usedBooks').query().count().done(function (number) {
-                    $scope.ownerUsedBookNumber = number;
-                    $scope.$apply();
-                })
             });
         });
 
@@ -468,36 +464,19 @@ APP.controller('tabs', function ($scope, User$) {
 
         $scope.sortWay = '';
 
-        function userBookNumber(oneJsonUser) {
-            var user = AV.Object.createWithoutData('_User', oneJsonUser.objectId);
-            user.relation('usedBooks').query().count().done(function (number) {
-                oneJsonUser.usedBookNumber = number;
-                $scope.$apply();
-            });
-        }
-
         if (cmd == 'near') {
             $scope.title = '你附近的同学';
             $scope.jsonUsers = BookRecommend$.NearUser.jsonUsers;
-            for (var i = 0; i < $scope.jsonUsers.length; i++) {
-                userBookNumber($scope.jsonUsers[i]);
-            }
             $scope.loadMore = BookRecommend$.NearUser.loadMore;
             $scope.hasMore = BookRecommend$.NearUser.hasMore;
         } else if (cmd == 'followee') {//我关注的同学
             $scope.title = '我关注的同学';
             $scope.jsonUsers = User$.Followee.jsonUserList;
-            for (i = 0; i < $scope.jsonUsers.length; i++) {
-                userBookNumber($scope.jsonUsers[i]);
-            }
             $scope.loadMore = User$.Followee.loadMore;
             $scope.hasMore = User$.Followee.hasMore;
         } else if (cmd == 'follower') {//我的粉丝
             $scope.title = '我的粉丝';
             $scope.jsonUsers = User$.Follower.jsonUserList;
-            for (i = 0; i < $scope.jsonUsers.length; i++) {
-                userBookNumber($scope.jsonUsers[i]);
-            }
             $scope.loadMore = User$.Follower.loadMore;
             $scope.hasMore = User$.Follower.hasMore;
         }

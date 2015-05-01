@@ -990,6 +990,7 @@ APP.service('DoubanBook$', function () {
                 query.descending("updatedAt");
                 query.skip(that.ISBN.nowEqualISBNJsonUsedBookList.length);
                 query.limit(5);
+                query.include('owner');
                 query.find().done(function (avosUsedBooks) {
                     if (avosUsedBooks.length > 0) {
                         for (var i = 0; i < avosUsedBooks.length; i++) {
