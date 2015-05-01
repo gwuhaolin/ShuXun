@@ -4,17 +4,20 @@
  */
 "use strict";
 //图书推荐
-APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) {
-    $scope.BookRecommend$ = BookRecommend$;
-    BookRecommend$.MajorBook.loadMore();
-    BookRecommend$.NeedBook.loadMore();
-    BookRecommend$.NearBook.loadMore();
-    $ionicModal.fromTemplateUrl('template/bookTags.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.bookTagsModalView = modal;
-    });
+APP.controller('tabs', function ($scope, User$) {
+    $scope.User$ = User$;
 })
+    .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) {
+        $scope.BookRecommend$ = BookRecommend$;
+        BookRecommend$.MajorBook.loadMore();
+        BookRecommend$.NeedBook.loadMore();
+        BookRecommend$.NearBook.loadMore();
+        $ionicModal.fromTemplateUrl('template/bookTags.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.bookTagsModalView = modal;
+        });
+    })
 
     //图书搜索
     .controller('book_searchList', function ($scope, $timeout, $state, $stateParams, SearchBook$, WeChatJS$) {
@@ -85,31 +88,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    //用户列表
-    .controller('book_userList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
-        var cmd = $stateParams['cmd'];
-
-        $scope.sortWay = '';
-
-        function userBookNumber(oneJsonUser) {
-            var user = AV.Object.createWithoutData('_User', oneJsonUser.objectId);
-            user.relation('usedBooks').query().count().done(function (number) {
-                oneJsonUser.usedBookNumber = number;
-                $scope.$apply();
-            });
-        }
-
-        if (cmd == 'near') {
-            $scope.title = '你附近的同学';
-            $scope.jsonUsers = BookRecommend$.NearUser.jsonUsers;
-            for (var i = 0; i < $scope.jsonUsers.length; i++) {
-                userBookNumber($scope.jsonUsers[i]);
-            }
-            $scope.loadMore = BookRecommend$.NearUser.loadMore;
-            $scope.hasMore = BookRecommend$.NearUser.hasMore;
-        }
-    })
-
     //展示一本书详细信息
     .controller('book_oneBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
         //////////// 豆瓣图书信息 /////////
@@ -171,22 +149,6 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         UsedBook$.ISBN.loadMoreUsedBookEqualISBN($scope.isbn13);//先加载5个
 
         $scope.WeChatJS$ = WeChatJS$;
-    })
-
-    .controller('book_userHome', function ($scope, $stateParams, UsedBook$, User$) {
-        $scope.UsedBook$ = UsedBook$;
-        var ownerId = $stateParams.ownerId;
-        var query = new AV.Query(AV.User);
-        $scope.jsonUsedBookList = [];
-        query.get(ownerId).done(function (avosOwner) {
-            $scope.jsonOwnerInfo = User$.avosUserToJson(avosOwner);
-            UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
-                for (var i = 0; i < avosUsedBooks.length; i++) {
-                    $scope.jsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
-                }
-                $scope.$apply();
-            })
-        });
     })
 
     .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$, Chat$) {
@@ -328,11 +290,24 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
         }
     })
 
-    .controller('person_my', function ($scope, $state, $stateParams, User$, UsedBook$) {
+    .controller('person_my', function ($scope, $state, $stateParams, User$) {
         function load() {
             $scope.userInfo = User$.getCurrentJsonUser();
+            //加载我上传的二手书的数量
             User$.getCurrentAvosUser().relation('usedBooks').query().count().done(function (number) {
                 $scope.myUsedBookNumber = number;
+                $scope.$apply();
+            });
+            //加载我关注的同学的数量
+            var query = AV.User.current().followeeQuery();
+            query.count().done(function (followeeNumber) {
+                $scope.followeeNumber = followeeNumber;
+                $scope.$apply();
+            });
+            //加载我的粉丝的数量
+            query = AV.User.current().followerQuery();
+            query.count().done(function (followerNumber) {
+                $scope.followerNumber = followerNumber;
                 $scope.$apply();
             });
         }
@@ -445,6 +420,7 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
             loginWithUnionId(userInfo.unionId).done(function () {//已经注册过
+                User$.loadUnreadStatusesCount();//加载未读消息数量
                 $state.go(shouldGoState);
                 $ionicHistory.clearHistory();
             });
@@ -484,4 +460,61 @@ APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) 
             $ionicHistory.clearHistory();
         });
         $scope.OAuthURL = WeChatJS$.getOAuthURL(shouldGoState);
+    })
+
+    //用户列表
+    .controller('userList', function ($scope, $stateParams, UsedBook$, BookRecommend$, User$) {
+        var cmd = $stateParams['cmd'];
+
+        $scope.sortWay = '';
+
+        function userBookNumber(oneJsonUser) {
+            var user = AV.Object.createWithoutData('_User', oneJsonUser.objectId);
+            user.relation('usedBooks').query().count().done(function (number) {
+                oneJsonUser.usedBookNumber = number;
+                $scope.$apply();
+            });
+        }
+
+        if (cmd == 'near') {
+            $scope.title = '你附近的同学';
+            $scope.jsonUsers = BookRecommend$.NearUser.jsonUsers;
+            for (var i = 0; i < $scope.jsonUsers.length; i++) {
+                userBookNumber($scope.jsonUsers[i]);
+            }
+            $scope.loadMore = BookRecommend$.NearUser.loadMore;
+            $scope.hasMore = BookRecommend$.NearUser.hasMore;
+        } else if (cmd == 'followee') {//我关注的同学
+            $scope.title = '我关注的同学';
+            $scope.jsonUsers = User$.Followee.jsonUserList;
+            for (i = 0; i < $scope.jsonUsers.length; i++) {
+                userBookNumber($scope.jsonUsers[i]);
+            }
+            $scope.loadMore = User$.Followee.loadMore;
+            $scope.hasMore = User$.Followee.hasMore;
+        } else if (cmd == 'follower') {//我的粉丝
+            $scope.title = '我的粉丝';
+            $scope.jsonUsers = User$.Follower.jsonUserList;
+            for (i = 0; i < $scope.jsonUsers.length; i++) {
+                userBookNumber($scope.jsonUsers[i]);
+            }
+            $scope.loadMore = User$.Follower.loadMore;
+            $scope.hasMore = User$.Follower.hasMore;
+        }
+    })
+
+    .controller('userHome', function ($scope, $stateParams, UsedBook$, User$) {
+        $scope.UsedBook$ = UsedBook$;
+        var ownerId = $stateParams.ownerId;
+        var query = new AV.Query(AV.User);
+        $scope.jsonUsedBookList = [];
+        query.get(ownerId).done(function (avosOwner) {
+            $scope.jsonOwnerInfo = User$.avosUserToJson(avosOwner);
+            UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
+                for (var i = 0; i < avosUsedBooks.length; i++) {
+                    $scope.jsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
+                }
+                $scope.$apply();
+            })
+        });
     });

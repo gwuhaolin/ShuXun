@@ -281,8 +281,10 @@ APP.service('DoubanBook$', function () {
             major: User$.getCurrentJsonUser() ? User$.getCurrentJsonUser().major : '',
             books: [],
             hasMoreFlag: true,
+            //随机产生一个开始数,每次打开看到的专业推荐都不一样
+            randomStart: (new Date().getDay()) * Math.floor(Math.random() * 10),
             loadMore: function () {
-                DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length, 5, function (json) {
+                DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length + that.MajorBook.randomStart, 5, function (json) {
                     that.MajorBook.totalNum = json['total'];
                     var booksJSON = json['books'];
                     if (booksJSON.length > 0) {
@@ -666,7 +668,7 @@ APP.service('DoubanBook$', function () {
 
     })
 
-    .service('User$', function ($state) {
+    .service('User$', function ($rootScope) {
         var that = this;
 
         /**
@@ -674,6 +676,28 @@ APP.service('DoubanBook$', function () {
          * @type {string[]}
          */
         var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
+
+        /**
+         * 我未读的消息的数量
+         */
+        this.unreadStatusesCount = null;
+        /**
+         * 加载我未读的消息的数量,并且显示在Tab上
+         */
+        this.loadUnreadStatusesCount = function () {
+            var user = AV.User.current();
+            if (user) {
+                AV.Status.countUnreadStatuses(user).done(function (result) {
+                    var num = parseInt(result['unread']);
+                    if (num > 0) {
+                        that.unreadStatusesCount = String(num);
+                    } else {
+                        that.unreadStatusesCount = null;
+                    }
+                    $rootScope.$apply();
+                });
+            }
+        };
 
         /**
          * 用户注册 用户名=Email
@@ -759,20 +783,85 @@ APP.service('DoubanBook$', function () {
         /**
          * 我关注一个用户
          * @param userObjectId 用户的AVOS ID
-         * @return AV.Promise
          */
         this.followUser = function (userObjectId) {
             var me = that.getCurrentAvosUser();
             if (me) {
                 me.follow(userObjectId).done(function () {
-                    alert('关注成功');
+                    $rootScope.$broadcast('FollowSomeone');
                 }).fail(function (err) {
                     alert('关注失败:' + err.message);
                 })
             } else {
                 alert('请先登入');
             }
-        }
+        };
+
+        /**
+         * 我取消关注一个用户
+         * @param userObjectId 用户的AVOS ID
+         */
+        this.unfollowUser = function (userObjectId) {
+            var me = that.getCurrentAvosUser();
+            if (me) {
+                me.unfollow(userObjectId).done(function () {
+                    $rootScope.$broadcast('UnfollowSomeone');
+                }).fail(function (err) {
+                    alert('取消关注失败:' + err.message);
+                })
+            } else {
+                alert('请先登入');
+            }
+        };
+
+        this.Followee = {
+            jsonUserList: [],
+            loadMore: function () {
+                var query = AV.User.current().followeeQuery();
+                query.include('followee');
+                query.skip(that.Followee.jsonUserList.length);
+                query.limit(10);
+                query.find().done(function (followees) {
+                    if (followees.length > 0) {
+                        for (var i = 0; i < followees.length; i++) {
+                            that.Followee.jsonUserList.push(that.avosUserToJson(followees[i]));
+                        }
+                    } else {
+                        that.Followee.hasMoreFlag = false;
+                    }
+                    $rootScope.$apply();
+                });
+            },
+            hasMoreFlag: true,
+            hasMore: function () {
+                return that.Followee.hasMoreFlag;
+            }
+        };
+
+        this.Follower = {
+            jsonUserList: [],
+            loadMore: function () {
+                var query = AV.User.current().followerQuery();
+                query.include('followee');
+                query.skip(that.Follower.jsonUserList.length);
+                query.limit(10);
+                query.find().done(function (followers) {
+                    if (followers.length > 0) {
+                        for (var i = 0; i < followers.length; i++) {
+                            that.Follower.jsonUserList.push(that.avosUserToJson(followers[i]));
+                        }
+                    } else {
+                        that.Follower.hasMoreFlag = false;
+                    }
+                    $rootScope.$apply();
+                });
+            },
+            hasMoreFlag: true,
+            hasMore: function () {
+                return that.Follower.hasMoreFlag;
+            }
+        };
+
     })
 
     //还没有卖出的二手书

@@ -57,12 +57,14 @@
         <div ng-if="BookRecommend$.NearUser.jsonUsers.length>0">
             <ion-item class="item-divider item-button-right">附近的同学
                 <button class="button button-small button-clear button-balanced" style="top: 0"
-                        ui-sref="tab.book_userList({cmd:'near'})">更多
+                        ui-sref="tab.userList({cmd:'near'})">更多
                 </button>
             </ion-item>
             <ion-item style="padding: 0;">
-                <img ng-repeat="one in BookRecommend$.NearUser.jsonUsers" ng-src="{{one.avatarUrl}}"
-                     ui-sref="tab.book_userHome({ownerId:one.objectId})"
+                <img ng-repeat="one in BookRecommend$.NearUser.jsonUsers"
+                     ng-if="one.avatarUrl"
+                     ng-src="{{one.avatarUrl}}"
+                     ui-sref="tab.userHome({ownerId:one.objectId})"
                      style="width: 40px;height: 40px;border-radius: 50%;overflow: hidden;margin: 5px">
             </ion-item>
         </div>

@@ -15,15 +15,20 @@
             style="float: right"
             ng-click="WeChatJS$.openMap(jsonUserInfo.location.latitude,jsonUserInfo.location.longitude)">地图
     </button>
-    <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id"
+    <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id && !isMyFollowee"
             class="button button-small button-clear button-balanced"
             style="float: right"
             ng-click="User$.followUser(jsonUserInfo.objectId)">关注Ta
+    </button>
+    <button ng-if="isMyFollowee"
+            class="button button-small button-clear button-assertive"
+            style="float: right"
+            ng-click="User$.unfollowUser(jsonUserInfo.objectId)">取消关注
     </button>
 </div>
 <!-- 主人所有旧书链接-->
 <ion-item ng-if="userUsedBookNumber" style="padding: 0;text-align: center">
     <a ng-if="userUsedBookNumber>0" class="button button-small button-clear button-balanced"
-       ui-sref="tab.book_userHome({ownerId:jsonUserInfo.objectId})">查看主人要卖的{{userUsedBookNumber}}本旧书</a>
+       ui-sref="tab.userHome({ownerId:jsonUserInfo.objectId})">查看主人要卖的{{userUsedBookNumber}}本旧书</a>
     <a ng-if="userUsedBookNumber==0" class="button button-small button-clear button-balanced">主人还没有在买的二手书</a>
 </ion-item>

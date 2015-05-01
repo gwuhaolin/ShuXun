@@ -63,7 +63,8 @@ gulp.task('wechat_index', function () {
             'AppJS': 'main.js',
             'WechatJS': 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
             'IonicCSS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.4/css/ionic.min.css',
-            'IonicJS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.4/js/ionic.bundle.min.js'
+            'IonicJS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.4/js/ionic.bundle.min.js',
+            'AvosJS': 'http://7xiv48.com1.z0.glb.clouddn.com/av-core.js'
         }))
         .pipe(htmlmin({
             collapseWhitespace: true,

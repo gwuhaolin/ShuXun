@@ -47,6 +47,31 @@ APP.directive('reviewStar', function () {
         function link($scope) {
             $scope.WeChatJS$ = WeChatJS$;
             $scope.User$ = User$;
+
+            //判断是否我已经关注ta
+            $scope.isMyFollowee = false;
+            function loadIsMyFollowee() {
+                if ($scope.jsonUserInfo) {
+                    var query = AV.User.current().followeeQuery();
+                    query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId));
+                    query.count().done(function (number) {
+                        $scope.isMyFollowee = (number == 1);
+                        $scope.$apply();
+                    })
+                }
+            }
+
+            $scope.$watch(function () {
+                return $scope.jsonUserInfo;
+            }, function () {
+                loadIsMyFollowee();
+            });
+            $scope.$on('FollowSomeone', function () {
+                loadIsMyFollowee();
+            });
+            $scope.$on('UnfollowSomeone', function () {
+                loadIsMyFollowee();
+            })
         }
 
         return {

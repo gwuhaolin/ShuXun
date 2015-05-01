@@ -21,7 +21,7 @@ var WECHAT = {
 function jsonp(url, callback, onError) {
     var script = document.createElement('script');
     script.type = "text/javascript";
-    var random = Date.now();
+    var random = Date.now() + String(Math.floor(Math.random() * 100));
     script.src = url + (url.indexOf('?') > 0 ? '&' : '?') + 'callback=CB' + random;
     script.onload = function () {
         script.parentNode.removeChild(script);

@@ -55,17 +55,6 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/book/usedBookList.html'
                     }
                 }
-            }).state('tab.book_userList', {
-                /**
-                 * 参数:cmd 当前模式 =near时显示你附近的用户
-                 * 参数:title 当前View要显示的标题
-                 */
-                url: '/book/userList?cmd&title',
-                views: {
-                    'tab-book': {
-                        templateUrl: 'temp/book/userList.html'
-                    }
-                }
             }).state('tab.book_oneBook', {
                 /**
                  * 参数:isbn13 一本书的isbn13号码
@@ -74,16 +63,6 @@ var APP = angular.module('APP', ['ionic'], null)
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/oneBook.html'
-                    }
-                }
-            }).state('tab.book_userHome', {
-                /**
-                 * 参数:ownerId 主人的AVOS ID
-                 */
-                url: '/book/userHome/:ownerId',
-                views: {
-                    'tab-book': {
-                        templateUrl: 'temp/book/userHome.html'
                     }
                 }
             }).state('tab.book_oneUsedBook', {
@@ -176,12 +155,34 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/tool/signUp.html'
                     }
                 }
+            }).state('tab.userList', {
+                /**
+                 * 参数:cmd 当前模式 =near时显示你附近的用户
+                 * 参数:title 当前View要显示的标题
+                 */
+                url: '/userList?cmd&title',
+                views: {
+                    'tab-book': {
+                        templateUrl: 'temp/tool/userList.html'
+                    }
+                }
+            }).state('tab.userHome', {
+                /**
+                 * 参数:ownerId 主人的AVOS ID
+                 */
+                url: '/userHome/:ownerId',
+                views: {
+                    'tab-book': {
+                        templateUrl: 'temp/tool/userHome.html'
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/tab/book/recommend');
     });
 
 APP.run(function ($rootScope, $state, User$, WeChatJS$) {
     WeChatJS$.config();//马上调用配置微信
+    User$.loadUnreadStatusesCount();//加载未读消息数量
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
         var stateName = nextState['name'];
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录
