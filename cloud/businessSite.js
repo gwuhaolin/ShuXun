@@ -109,27 +109,34 @@ function replaceUnionID(url) {
 }
 
 /**
- *
  * @param doubanId 图书的豆瓣ID
- * @param callback 返回数据
+ * @return {AV.Promise}
  */
-function spider(doubanId, callback) {
-    Request('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks', function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var $ = Cheerio.load(body);
-            var re = [];
-            $("ck-part[type='item']").each(function () {
-                var one = {};
-                var first = $(this).children().first();
-                var urlParam = getQueryParams($(first).attr('href').trim());
-                one.url = replaceUnionID(urlParam.url);
-                one.name = $(first).text().trim().replace(/网|商城/, '');
-                one.price = parseFloat($(first).next().text().trim());
-                re.push(one);
-            });
-            callback(re);
+function spider(doubanId) {
+    var rePromise = new AV.Promise(null);
+    Request('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks', function (err, res, body) {
+        if (err) {
+            rePromise.reject(err);
+        } else {
+            if (res.statusCode == 200) {
+                var $ = Cheerio.load(body);
+                var re = [];
+                $("ck-part[type='item']").each(function () {
+                    var one = {};
+                    var first = $(this).children().first();
+                    var urlParam = getQueryParams($(first).attr('href').trim());
+                    one.url = replaceUnionID(urlParam.url);
+                    one.name = $(first).text().trim().replace(/网|商城/, '');
+                    one.price = parseFloat($(first).next().text().trim());
+                    re.push(one);
+                });
+                rePromise.resolve(re);
+            } else {
+                rePromise.reject('没有找到对应信息');
+            }
         }
-    })
+    });
+    return rePromise;
 }
 
 exports.spider = spider;

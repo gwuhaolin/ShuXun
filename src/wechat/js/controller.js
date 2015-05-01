@@ -104,7 +104,7 @@ APP.controller('tabs', function ($scope, User$) {
                 $scope.isLoading = false;
                 $scope.$apply();
                 //加载电商联盟信息
-                BusinessSite$.getBusinessInfoByISBN(json.id, function (infos) {
+                BusinessSite$.getBusinessInfoByISBN(json.id).done(function (infos) {
                     $scope.businessInfos = infos;
                 });
             } else {
@@ -160,9 +160,9 @@ APP.controller('tabs', function ($scope, User$) {
             $scope.BookReview.clear();
         });
         $scope.showFull = function (title, reviewId) {
-            DoubanBook$.BookReview.getOneFullReview(reviewId, function (pre) {
+            DoubanBook$.BookReview.getOneFullReview(reviewId).done(function (pre) {
                 IonicModalView$.alertTitleAndPreModalView(title, pre);
-            });
+            })
         }
     })
 

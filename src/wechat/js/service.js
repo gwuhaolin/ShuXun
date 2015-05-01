@@ -97,7 +97,10 @@ APP.service('DoubanBook$', function ($rootScope) {
         nowBookId: null,
         hasMoreFlag: true,
         loadMore: function () {
-            jsonp('/info/getDoubanBookReview?start=' + that.BookReview.reviewList.length + '&id=' + that.BookReview.nowBookId, function (json) {
+            AV.Cloud.run('getDoubanBookReview', {
+                id: that.BookReview.nowBookId,
+                start: that.BookReview.reviewList.length
+            }, null).done(function (json) {
                 if (json.length > 0) {
                     for (var i = 0; i < json.length; i++) {
                         that.BookReview.reviewList.push(json[i]);
@@ -123,12 +126,12 @@ APP.service('DoubanBook$', function ($rootScope) {
         /**
          * 获得一个书评的完整内容
          * @param reviewId 评论的id
-         * @param callback 返回完整的内容
+         * @return {AV.Promise}
          */
-        getOneFullReview: function (reviewId, callback) {
-            jsonp('/info/getOneFullDoubanBookReview?id=' + reviewId, function (re) {
-                callback(re);
-            })
+        getOneFullReview: function (reviewId) {
+            return AV.Cloud.run('getOneFullDoubanBookReview', {
+                id: reviewId
+            }, null);
         }
     };
 
@@ -239,7 +242,10 @@ APP.service('DoubanBook$', function ($rootScope) {
             books: [],
             hasMoreFlag: true,
             loadMore: function () {
-                jsonp('/info/getNewBooks?count=' + that.LoadCount + '&start=' + that.NewBook.books.length, function (books) {
+                AV.Cloud.run('getNewBooks', {
+                    start: that.NewBook.books.length,
+                    count: that.LoadCount
+                }, null).done(function (books) {
                     if (books.length > 0) {
                         for (var i = 0; i < books.length; i++) {
                             that.NewBook.books.push(books[i]);
@@ -249,7 +255,7 @@ APP.service('DoubanBook$', function ($rootScope) {
                     }
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
-                })
+                });
             },
             hasMore: function () {
                 return that.NewBook.hasMoreFlag;
@@ -264,10 +270,10 @@ APP.service('DoubanBook$', function ($rootScope) {
         this.BookTag = {
             tag: null,
             load: function () {
-                jsonp('/info/getAllBookTags', function (tag) {
+                AV.Cloud.run('getAllBookTags', null, null).done(function (tag) {
                     that.BookTag.tag = tag;
                     $rootScope.$apply();
-                })
+                });
             },
             getTagAttrNames: function () {
                 if (that['BookTag']['tag']) {
@@ -422,16 +428,16 @@ APP.service('DoubanBook$', function ($rootScope) {
         this.NearUser.loadMore();
     })
 
-    .service('BusinessSite$', function ($http) {
+    .service('BusinessSite$', function () {
         /**
          * 获得对应的ISBN号码的图书在各大电商平台的价格信息
          * @param doubanId 图书的豆瓣ID
-         * @param callback 返回图书的电商信息
+         * @return {AV.Promise}
          */
-        this.getBusinessInfoByISBN = function (doubanId, callback) {
-            $http.jsonp('/business/' + doubanId + '?callback=JSON_CALLBACK').success(function (json) {
-                callback(json);
-            });
+        this.getBusinessInfoByISBN = function (doubanId) {
+            return AV.Cloud.run('getBusinessInfo', {
+                id: doubanId
+            }, null);
         }
     })
 
@@ -439,7 +445,9 @@ APP.service('DoubanBook$', function ($rootScope) {
         var that = this;
         //先配置好微信
         this.config = function () {
-            jsonp('/wechat/getJsConfig', function (json) {
+            AV.Cloud.run('getWechatJsConfig', {
+                url: location.href.split('#')[0]
+            }, null).done(function (json) {
                 wx.config(json);
             });
         };
@@ -530,11 +538,14 @@ APP.service('DoubanBook$', function ($rootScope) {
          * 用户Web OAuth后
          * 获取Openid
          * @param code
-         * @param callback
+         * @param onSuccess
+         * @param onError
          * 返回 已经关注了用户的微信提供的所有信息
          */
-        this.getOAuthUserInfo = function (code, callback) {
-            jsonp('/wechat/getOAuthUserInfo/' + code, function (wechatInfo) {
+        this.getOAuthUserInfo = function (code, onSuccess, onError) {
+            AV.Cloud.run('getWechatOAuthUserInfo', {
+                code: code
+            }, null).done(function (wechatInfo) {
                 var re = {
                     openId: wechatInfo['openid'],
                     unionId: wechatInfo['unionid'],
@@ -543,8 +554,10 @@ APP.service('DoubanBook$', function ($rootScope) {
                     avatarUrl: wechatInfo['headimgurl']
                 };
                 createCookie('unionId', re.unionId, 365);
-                callback(re);
-            })
+                onSuccess(re);
+            }).fail(function (err) {
+                onError(err);
+            });
         };
 
         /**
@@ -576,7 +589,7 @@ APP.service('DoubanBook$', function ($rootScope) {
          */
         this.majors = [];
         //加载所有专业信息
-        $http.jsonp('/info/getAllMajor?callback=JSON_CALLBACK').success(function (majors) {
+        AV.Cloud.run('getAllMajor', null, null).done(function (majors) {
             that.majors = majors;
         });
         /**

@@ -76,10 +76,3 @@ AV.Cloud.afterUpdate('School', function (req, res) {
     updateSchoolLocation(avosSchool);
     res.success();
 });
-/**
- * 更新全国大学信息
- */
-AV.Cloud.define('updateSchoolInfo', function (req, res) {
-    Info.spiderSchoolsFromMyFriday();
-    res.success();
-});

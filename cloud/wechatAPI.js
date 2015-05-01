@@ -19,9 +19,10 @@ exports.OAuthClient = new exports.Config.OAuthClient(exports.Config.AppID, expor
  * 使用wechat js接口前必须获得这个
  * 返回 wechat js sdk所有需要的config
  * @param url 微信浏览器当前打开的网页的URL
- * @param callback 返回JSON格式的config
+ * @returns {AV.Promise}
  */
-exports.getJsConfig = function (url, callback) {
+exports.getJsConfig = function (url) {
+    var rePromise = new AV.Promise(null);
     //如果发布了就关闭微信调试
     var isDebug = true;
     if (__production) {
@@ -34,34 +35,36 @@ exports.getJsConfig = function (url, callback) {
         jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode']
     }, function (err, data) {
         if (err) {
-            callback(err);
+            rePromise.reject(err);
         } else {
-            callback(data);
+            rePromise.resolve(data);
         }
     });
+    return rePromise;
 };
 
 /**
  * 用户Web OAuth后
  * 获取Openid
  * @param code
- * @param callback
- * 返回 已经关注了用户的微信提供的所有信息
+ * @returns {AV.Promise}
  */
-exports.getOAuthUserInfo = function (code, callback) {
+exports.getOAuthUserInfo = function (code) {
+    var rePromise = new AV.Promise(null);
     exports.OAuthClient.getAccessToken(code, function (err, result) {
         if (err) {
-            callback(err);
+            rePromise.reject(err);
         } else {
             exports.OAuthClient.getUser(result.data.openid, function (err, userInfo) {
                 if (err) {
-                    callback(err);
+                    rePromise.reject(err);
                 } else {
-                    callback(userInfo);
+                    rePromise.resolve(userInfo);
                 }
             })
         }
     });
+    return rePromise;
 };
 
 /**

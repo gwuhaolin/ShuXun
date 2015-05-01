@@ -5,44 +5,46 @@
 "use strict";
 var WechatAPI = require('cloud/wechatAPI.js');
 var LBS = require('cloud/lbs.js');
+var Info = require('cloud/info.js');
+var BusinessSite = require('cloud/businessSite.js');
 
 /**
- * 更新微信菜单
+ * 更新全国大学信息
+ */
+AV.Cloud.define('updateSchoolInfo', function (req, res) {
+    Info.spiderSchoolsFromMyFriday();
+    res.success();
+});
+
+/**
+ * 更新微信菜单为新的menu
  * 微信菜单格式见 http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html
+ * @param:menu 微信菜单的json表示,见微信文档
  */
 AV.Cloud.define('updateWechatMenu', function (req, res) {
-    var wechatMenu = {
-        "button": [
-            {
-                "type": "view",
-                "name": "买书",
-                "url": "http://ishuxun.cn/wechat/"
-            },
-            {
-                "type": "view",
-                "name": "卖书",
-                "url": "http://ishuxun.cn/wechat/#/tab/person/uploadOneUsedBook/"
+    var menu = req.params.menu;
+    if (menu == null) {
+        res.error('不能为空');
+    } else {
+        WechatAPI.APIClient.createMenu(menu, function (err, result) {
+            if (err) {
+                res.error(err);
+            } else {
+                res.success(result);
             }
-        ]
-    };
-    WechatAPI.APIClient.createMenu(wechatMenu, function (err, result) {
-        if (err) {
-            res.error(err);
-        } else {
-            res.success(result);
-        }
-    });
+        });
+    }
 });
 
 /**
  * 给分数发送模板消息
- * @参数:sendName 发送者的昵称
- * @参数:sendId 发送者的微信openId
- * @参数:receiverId 接收者的微信openId
- * @参数:msg 信息内容
- * @参数:usedBookAvosObjectId 当前咨询的二手书的objectId
- * @参数:role 发送者的当前角色是卖家还是买家 sell | buy
- * @参数:isPrivate 聊天是否私信
+ * @param:sendName 发送者的昵称
+ * @param:sendId 发送者的微信openId
+ * @param:receiverId 接收者的微信openId
+ * @param:msg 信息内容
+ * @param:usedBookAvosObjectId 当前咨询的二手书的objectId
+ * @param:role 发送者的当前角色是卖家还是买家 sell | buy
+ * @param:isPrivate 聊天是否私信
  * @返回 发送成功时返回
  *      发送失败时返回 error
  */
@@ -64,8 +66,8 @@ AV.Cloud.define('sendTemplateMsgToUser', function (req, res) {
 /**
  * 根据我的IP地址更新我经纬度
  * 如果有latitude和longitude参数就用这两个参数更新,否则调用根据IP地址获得地理位置更新
- * @参数:latitude 纬度
- * @参数:longitude 经度
+ * @param:latitude 纬度
+ * @param:longitude 经度
  * 如果更新成功就返回success,否则返回error
  */
 AV.Cloud.define('updateMyLocation', function (req, res) {
@@ -95,4 +97,104 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
             res.error('需要先登入');
         }
     }
+});
+
+////////////////////// Wechat /////////////////////////
+
+/**
+ * 获得微信JS-SDK配置
+ * @param:url 当前微信浏览器的url
+ */
+AV.Cloud.define('getWechatJsConfig', function (req, res) {
+    var url = req.params.url;
+    WechatAPI.getJsConfig(url).done(function (config) {
+        res.success(config);
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
+
+/**
+ * 微信获取用户信息 OAuth step 2
+ * @param:code 微信获取信息的凭证
+ */
+AV.Cloud.define('getWechatOAuthUserInfo', function (req, res) {
+    var code = req.params.code;
+    WechatAPI.getOAuthUserInfo(code).done(function (userInfo) {
+        res.success(userInfo);
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
+
+////////////////////// Info /////////////////////////
+
+/**
+ * 用户注册时获得所有专业
+ */
+AV.Cloud.define('getAllMajor', function (req, res) {
+    res.success(Info.Majors);
+});
+
+/**
+ * 获得图书分类信息
+ */
+AV.Cloud.define('getAllBookTags', function (req, res) {
+    res.success(Info.BookTags);
+});
+
+/**
+ * 获得豆瓣书评列表
+ * @param:id 豆瓣图书id
+ * @param:start 开始的位置
+ */
+AV.Cloud.define('getDoubanBookReview', function (req, res) {
+    var id = req.params.id;
+    var start = req.params.start;
+    Info.spiderDoubanBookReview(id, start).done(function (json) {
+        res.success(json);
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
+
+/**
+ * 获得豆瓣书评的完整内容
+ * @param:id 豆瓣书评的id
+ */
+AV.Cloud.define('getOneFullDoubanBookReview', function (req, res) {
+    var id = req.params.id;
+    Info.spiderDoubanBookOneFullReview(id).done(function (re) {
+        res.success(re);
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
+
+/**
+ * 新书速递功能
+ * @param:start
+ * @param:count
+ */
+AV.Cloud.define('getNewBooks', function (req, res) {
+    var start = req.params.start;
+    var count = req.params.count;
+    Info.getNewBooks(start, count).done(function (json) {
+        res.success(json);
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
+
+/**
+ * 获得图书电商购买信息
+ * @param:id 豆瓣图书id
+ */
+AV.Cloud.define('getBusinessInfo', function (req, res) {
+    var id = req.params.id;
+    BusinessSite.spider(id).done(function (json) {
+        res.success(json);
+    }).fail(function (err) {
+        res.error(err);
+    })
 });
