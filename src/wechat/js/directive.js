@@ -76,7 +76,7 @@ APP.directive('reviewStar', function () {
                 return $scope.jsonUserInfo;
             }, function () {
                 loadIsMyFollowee();
-                if ($scope.hideUsedBook) {
+                if ($scope.hideUsedBook == null || $scope.hideUsedBook == false) {
                     loadHeUsedBookNumber();
                 }
             });

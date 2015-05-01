@@ -7,7 +7,8 @@
 APP.controller('tabs', function ($scope, User$) {
     $scope.User$ = User$;
 })
-    .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$) {
+    .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$, User$) {
+        $scope.User$ = User$;
         $scope.BookRecommend$ = BookRecommend$;
         BookRecommend$.MajorBook.loadMore();
         BookRecommend$.NeedBook.loadMore();
@@ -151,7 +152,22 @@ APP.controller('tabs', function ($scope, User$) {
         $scope.WeChatJS$ = WeChatJS$;
     })
 
+    .controller('book_bookReview', function ($scope, $stateParams, DoubanBook$, IonicModalView$) {
+        $scope.BookReview = DoubanBook$.BookReview;
+        $scope.BookReview.nowBookId = $stateParams['doubanBookId'];
+        $scope.title = $stateParams['bookTitle'] + ' 书评';
+        $scope.$on('$ionicView.afterLeave', function () {
+            $scope.BookReview.clear();
+        });
+        $scope.showFull = function (title, reviewId) {
+            DoubanBook$.BookReview.getOneFullReview(reviewId, function (pre) {
+                IonicModalView$.alertTitleAndPreModalView(title, pre);
+            });
+        }
+    })
+
     .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$, Chat$) {
+        $scope.User$ = User$;
         $scope.WeChatJS$ = WeChatJS$;
         $scope.usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
 
@@ -415,10 +431,15 @@ APP.controller('tabs', function ($scope, User$) {
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
-            loginWithUnionId(userInfo.unionId).done(function () {//已经注册过
+            loginWithUnionId(userInfo.unionId).done(function (me) {//已经注册过
                 User$.loadUnreadStatusesCount();//加载未读消息数量
                 $state.go(shouldGoState);
                 $ionicHistory.clearHistory();
+                me.save({//更新微信信息
+                    nickName: userInfo['nickname'],
+                    sex: userInfo['sex'],
+                    avatarUrl: userInfo['headimgurl']
+                });
             });
             $scope.$apply();
         });

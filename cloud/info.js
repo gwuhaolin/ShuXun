@@ -4,6 +4,7 @@
  */
 "use strict";
 var Request = require('request');
+var Cheerio = require('cheerio');
 
 //所有专业
 exports.Majors = [
@@ -1335,5 +1336,67 @@ exports.getNewBooks = function (start, count) {
         }
     }
 
+    return rePromise;
+};
+
+/**
+ * 去豆瓣抓取书评,
+ * 每次返回25个
+ * @param doubanBookId 豆瓣的图书id
+ * @param start 开始
+ * @returns {AV.Promise}
+ */
+exports.spiderDoubanBookReview = function (doubanBookId, start) {
+    var rePromise = new AV.Promise(null);
+    Request.get({
+        url: 'http://book.douban.com/subject/' + doubanBookId + '/reviews',
+        qs: {
+            start: start
+        }
+    }, function (err, res, body) {
+        if (err) {
+            rePromise.reject(err);
+        } else {
+            var re = [];
+            var $ = Cheerio.load(body);
+            $('.ctsh').each(function () {
+                var avatarUrl = $(this).find('img').first().attr('src');
+                var a = $(this).find('h3').first().children('a').first();
+                var reviewId = $(a).attr('href').split('/')[4];
+                var title = $(a).text();
+                var context = $(this).find('.review-short').first().children('span').first().text();
+                re.push({
+                    reviewId: reviewId,
+                    avatarUrl: avatarUrl,
+                    title: title,
+                    context: context
+                })
+            });
+            rePromise.resolve(re);
+        }
+    });
+    return rePromise;
+};
+
+/**
+ * TODO not work
+ * 去豆瓣抓取单条评论的完整内容
+ * @param doubanReviewId
+ * @returns {AV.Promise}
+ */
+exports.spiderDoubanBookOneFullReview = function (doubanReviewId) {
+    var rePromise = new AV.Promise(null);
+    Request.get({
+        url: 'http://book.douban.com/j/review/' + doubanReviewId + '/fullinfo'
+    }, function (err, res, body) {
+        if (err) {
+            rePromise.reject(err);
+        } else {
+            var html = JSON.parse(body).html;
+            var $ = Cheerio.load(html);
+            $('div').remove();
+            rePromise.resolve($.text());
+        }
+    });
     return rePromise;
 };

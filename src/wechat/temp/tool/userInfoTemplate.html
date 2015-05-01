@@ -1,6 +1,6 @@
 <!-- 用户基本信息-->
 <div class="item item-avatar" ng-if="jsonUserInfo">
-    <img ng-src="{{jsonUserInfo.avatarUrl}}"
+    <img ng-src="{{User$.changeWechatAvatarSize(jsonUserInfo.avatarUrl,64)}}"
          ui-sref="tab.person_sendMsgToUser({openId:jsonUserInfo.openId,role:'buy'})">
 
     <h2>{{jsonUserInfo.nickName}}

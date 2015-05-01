@@ -54,7 +54,35 @@ app.get('/info/getAllBookTags', function (req, res) {
 });
 
 /**
+ * @参数:start
+ * @参数:id 豆瓣图书id
+ */
+app.get('/info/getDoubanBookReview', function (req, res) {
+    var start = req.query.start;
+    var id = req.query.id;
+    Info.spiderDoubanBookReview(id, start).done(function (json) {
+        res.jsonp(json);
+    }).fail(function (err) {
+        res.jsonp(err);
+    })
+});
+
+/**
+ * @参数:id 豆瓣书评id
+ */
+app.get('/info/getOneFullDoubanBookReview', function (req, res) {
+    var id = req.query.id;
+    Info.spiderDoubanBookOneFullReview(id).done(function (re) {
+        res.jsonp(re);
+    }).fail(function (err) {
+        res.jsonp(err);
+    })
+});
+
+/**
  * 新书速递功能
+ * @参数:start
+ * @参数:count
  */
 app.get('/info/getNewBooks', function (req, res) {
     var start = req.query.start;

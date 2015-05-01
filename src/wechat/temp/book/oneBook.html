@@ -34,12 +34,16 @@
                 <i ng-if="book.price">定价:{{book.price}}</i>
                 <i>&nbsp;</i>
                 <i ng-if="book['publisher']">{{book['publisher']}}/{{book['pubdate']}}</i>
-                <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版信息</button>
+                <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版</button>
             </ion-item>
             <!-- 豆瓣书评-->
-            <ion-item ng-if="book['rating']">
+            <ion-item ng-if="book['rating']"
+                      class="item-button-right">
                 <review-star num-stars="{{book['rating']['average']/2}}" score="{{book['rating']['average']}}"
                              num-raters="{{book['rating']['numRaters']}}"></review-star>
+                <button class="button button-small button-clear button-balanced"
+                        ui-sref="tab.book_bookReview({doubanBookId:book.id,bookTitle:book.title})">书评
+                </button>
             </ion-item>
         </div>
 

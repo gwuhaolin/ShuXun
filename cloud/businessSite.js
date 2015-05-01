@@ -3,8 +3,8 @@
  * 获得图书的电商购买信息
  */
 "use strict";
-var cheerio = require('cheerio');
-var request = require('request');
+var Cheerio = require('cheerio');
+var Request = require('request');
 
 var UnionID = {
     JD: '287386251',//京东
@@ -47,13 +47,14 @@ function updateURLParameter(url, param, paramVal) {
     var baseURL = tempArray[0];
     var additionalURL = tempArray[1];
     var temp = "";
-
+    var tmpAnchor, TheParams;
     if (additionalURL) {
-        var tmpAnchor = additionalURL.split("#");
-        var TheParams = tmpAnchor[0];
+        tmpAnchor = additionalURL.split("#");
+        TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
-        if (TheAnchor)
+        if (TheAnchor) {
             additionalURL = TheParams;
+        }
 
         tempArray = additionalURL.split("&");
 
@@ -65,16 +66,17 @@ function updateURLParameter(url, param, paramVal) {
         }
     }
     else {
-        var tmpAnchor = baseURL.split("#");
-        var TheParams = tmpAnchor[0];
+        tmpAnchor = baseURL.split("#");
+        TheParams = tmpAnchor[0];
         TheAnchor = tmpAnchor[1];
-
-        if (TheParams)
+        if (TheParams) {
             baseURL = TheParams;
+        }
     }
 
-    if (TheAnchor)
+    if (TheAnchor) {
         paramVal += "#" + TheAnchor;
+    }
 
     var rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
@@ -112,9 +114,9 @@ function replaceUnionID(url) {
  * @param callback 返回数据
  */
 function spider(doubanId, callback) {
-    request('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks', function (error, response, body) {
+    Request('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks', function (error, response, body) {
         if (!error && response.statusCode == 200) {
-            var $ = cheerio.load(body);
+            var $ = Cheerio.load(body);
             var re = [];
             $("ck-part[type='item']").each(function () {
                 var one = {};

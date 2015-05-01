@@ -6,7 +6,7 @@
 /**
  * 豆瓣图书接口
  */
-APP.service('DoubanBook$', function () {
+APP.service('DoubanBook$', function ($rootScope) {
     var that = this;
     var baseUri = 'http://api.douban.com/v2/book';
     /**
@@ -90,6 +90,46 @@ APP.service('DoubanBook$', function () {
         jsonp(url, function (json) {
             callback(json);
         });
+    };
+
+    this.BookReview = {
+        reviewList: [],
+        nowBookId: null,
+        hasMoreFlag: true,
+        loadMore: function () {
+            jsonp('/info/getDoubanBookReview?start=' + that.BookReview.reviewList.length + '&id=' + that.BookReview.nowBookId, function (json) {
+                if (json.length > 0) {
+                    for (var i = 0; i < json.length; i++) {
+                        that.BookReview.reviewList.push(json[i]);
+                    }
+                } else {
+                    that.BookReview.hasMoreFlag = false;
+                }
+                $rootScope.$apply();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            });
+        },
+        hasMore: function () {
+            return that.BookReview.hasMoreFlag;
+        },
+        /**
+         * 清空当前数据
+         */
+        clear: function () {
+            that.BookReview.reviewList = [];
+            that.BookReview.hasMoreFlag = true;
+            $rootScope.$broadcast('scroll.infiniteScrollComplete');
+        },
+        /**
+         * 获得一个书评的完整内容
+         * @param reviewId 评论的id
+         * @param callback 返回完整的内容
+         */
+        getOneFullReview: function (reviewId, callback) {
+            jsonp('/info/getOneFullDoubanBookReview?id=' + reviewId, function (re) {
+                callback(re);
+            })
+        }
     };
 
     /**
@@ -189,6 +229,7 @@ APP.service('DoubanBook$', function () {
  */
     .service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$) {
         var that = this;
+        this.LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,默认加载慢屏幕
 
         /**
          * 新书速递
@@ -198,7 +239,7 @@ APP.service('DoubanBook$', function () {
             books: [],
             hasMoreFlag: true,
             loadMore: function () {
-                jsonp('/info/getNewBooks?count=5&start=' + that.NewBook.books.length, function (books) {
+                jsonp('/info/getNewBooks?count=' + that.LoadCount + '&start=' + that.NewBook.books.length, function (books) {
                     if (books.length > 0) {
                         for (var i = 0; i < books.length; i++) {
                             that.NewBook.books.push(books[i]);
@@ -255,7 +296,7 @@ APP.service('DoubanBook$', function () {
             books: [],
             hasMoreFlag: true,
             loadMore: function () {
-                DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, 5, function (json) {
+                DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, that.LoadCount, function (json) {
                     var booksJSON = json['books'];
                     if (booksJSON.length > 0) {
                         for (var i = 0; i < booksJSON.length; i++) {
@@ -284,7 +325,7 @@ APP.service('DoubanBook$', function () {
             //随机产生一个开始数,每次打开看到的专业推荐都不一样
             randomStart: (new Date().getDay()) * Math.floor(Math.random() * 10),
             loadMore: function () {
-                DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length + that.MajorBook.randomStart, 5, function (json) {
+                DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length + that.MajorBook.randomStart, that.LoadCount, function (json) {
                     that.MajorBook.totalNum = json['total'];
                     var booksJSON = json['books'];
                     if (booksJSON.length > 0) {
@@ -329,7 +370,7 @@ APP.service('DoubanBook$', function () {
                     query.near("location", avosGeo);
                 }
                 query.skip(that.NearBook.jsonBooks.length);
-                query.limit(5);
+                query.limit(that.LoadCount);
                 query.find().done(function (avosUsedBooks) {
                     if (avosUsedBooks.length > 0) {
                         for (var i = 0; i < avosUsedBooks.length; i++) {
@@ -361,7 +402,7 @@ APP.service('DoubanBook$', function () {
                     query.near("location", avosGeo);
                 }
                 query.skip(that.NearUser.jsonUsers.length);
-                query.limit(10);
+                query.limit(Math.floor(document.body.clientWidth / 50));//默认加载满屏幕
                 query.find().done(function (avosUsers) {
                     if (avosUsers.length > 0) {
                         for (var i = 0; i < avosUsers.length; i++) {
@@ -577,6 +618,7 @@ APP.service('DoubanBook$', function () {
                         }
                     }
                     $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
             },
             /**
@@ -830,6 +872,7 @@ APP.service('DoubanBook$', function () {
                         that.Followee.hasMoreFlag = false;
                     }
                     $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 });
             },
             hasMoreFlag: true,
@@ -842,7 +885,7 @@ APP.service('DoubanBook$', function () {
             jsonUserList: [],
             loadMore: function () {
                 var query = AV.User.current().followerQuery();
-                query.include('followee');
+                query.include('follower');
                 query.skip(that.Follower.jsonUserList.length);
                 query.limit(10);
                 query.find().done(function (followers) {
@@ -854,6 +897,7 @@ APP.service('DoubanBook$', function () {
                         that.Follower.hasMoreFlag = false;
                     }
                     $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 });
             },
             hasMoreFlag: true,
@@ -861,6 +905,20 @@ APP.service('DoubanBook$', function () {
                 return that.Follower.hasMoreFlag;
             }
         };
+
+        /**
+         * 替换微信默认的头像的大小
+         * @param avatarUrl 头像的url
+         * @param size 替换后获得的大小 有0、46、64、96、132数值可选，0代表640*640正方形头像
+         * @returns {string} 替换后头像的url
+         */
+        this.changeWechatAvatarSize = function (avatarUrl, size) {
+            if (avatarUrl) {
+                return avatarUrl.substring(0, avatarUrl.length - 1) + size;
+            } else {
+                return null;
+            }
+        }
 
     })
 
@@ -1000,6 +1058,7 @@ APP.service('DoubanBook$', function () {
                 }).always(function () {
                     that.isLoading = false;
                     $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
             }
         };
