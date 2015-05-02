@@ -17,26 +17,6 @@ AV.Cloud.define('updateSchoolInfo', function (req, res) {
 });
 
 /**
- * 更新微信菜单为新的menu
- * 微信菜单格式见 http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html
- * @param:menu 微信菜单的json表示,见微信文档
- */
-AV.Cloud.define('updateWechatMenu', function (req, res) {
-    var menu = req.params.menu;
-    if (menu == null) {
-        res.error('不能为空');
-    } else {
-        WechatAPI.APIClient.createMenu(menu, function (err, result) {
-            if (err) {
-                res.error(err);
-            } else {
-                res.success(result);
-            }
-        });
-    }
-});
-
-/**
  * 给分数发送模板消息
  * @param:sendName 发送者的昵称
  * @param:sendId 发送者的微信openId

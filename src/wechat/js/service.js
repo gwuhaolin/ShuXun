@@ -483,13 +483,13 @@ APP.service('DoubanBook$', function ($rootScope) {
                     AV.Cloud.run('updateMyLocation', {
                         latitude: res.latitude,
                         longitude: res.longitude
-                    });
+                    }, null);
                 },
                 fail: function () {//使用IP地址地位
-                    AV.Cloud.run('updateMyLocation');
+                    AV.Cloud.run('updateMyLocation', null, null);
                 },
                 cancel: function () {//使用IP地址地位
-                    AV.Cloud.run('updateMyLocation');
+                    AV.Cloud.run('updateMyLocation', null, null);
                 }
             });
         });
