@@ -4,8 +4,8 @@
  */
 "use strict";
 //图书推荐
-APP.controller('tabs', function ($scope, User$) {
-    $scope.User$ = User$;
+APP.controller('tabs', function ($scope, Status$) {
+    $scope.Status$ = Status$;
 })
     .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$, User$) {
         $scope.User$ = User$;
@@ -166,13 +166,12 @@ APP.controller('tabs', function ($scope, User$) {
         }
     })
 
-    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$, Chat$) {
+    .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$, Status$) {
         $scope.User$ = User$;
         $scope.WeChatJS$ = WeChatJS$;
-        $scope.usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
+        $scope.usedBookObjectId = $stateParams['usedBookAvosObjectId'];
 
-        //加载二手书数据
-        UsedBook$.getJsonUsedBookByAvosObjectId($scope.usedBookAvosObjectId, function (json) {
+        UsedBook$.getJsonUsedBookByAvosObjectId($scope.usedBookObjectId, function (json) {
             json.image = json.image ? json.image.replace('mpic', 'lpic') : '';//大图显示
             $scope.jsonUsedBook = json;
             $scope.$apply();
@@ -184,17 +183,17 @@ APP.controller('tabs', function ($scope, User$) {
         });
 
         //加载评论数据
-        Chat$.getChatList_UsedBook($scope.usedBookAvosObjectId).done(function (avosChats) {
-            $scope.jsonChats = [];
-            for (var i = 0; i < avosChats.length; i++) {
-                var jsonChat = Chat$.avosChatToJson(avosChats[i]);
-                jsonChat.from.fetch().done(function () {
+        Status$.getStatusList_reviewBook($scope.usedBookObjectId).done(function (avosStatusList) {
+            $scope.jsonStatusList = [];
+            for (var i = 0; i < avosStatusList.length; i++) {
+                var jsonStatus = Status$.avosStatusToJson(avosStatusList[i]);
+                jsonStatus.source.fetch().done(function () {
                     $scope.$apply();
                 });
-                jsonChat.to.fetch().done(function () {
+                jsonStatus.to.fetch().done(function () {
                     $scope.$apply();
                 });
-                $scope.jsonChats.push(jsonChat);
+                $scope.jsonStatusList.push(jsonStatus);
             }
             $scope.$apply();
         })
@@ -202,7 +201,7 @@ APP.controller('tabs', function ($scope, User$) {
 
     ////////////////// person ////////////////////
 
-    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
+    .controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
         $scope.isLoading = false;
         $scope.WeChatJS$ = WeChatJS$;
         $scope.$on('$ionicView.afterEnter', function () {
@@ -213,6 +212,7 @@ APP.controller('tabs', function ($scope, User$) {
                 image: '',
                 title: ''
             };
+            $ionicScrollDelegate.scrollTop();
             if ($scope.usedBookInfo.isbn13) {
                 loadDoubanBookInfo();
             }
@@ -284,7 +284,7 @@ APP.controller('tabs', function ($scope, User$) {
         //点击提交修改时
         $scope.submitOnClick = function () {
             var unionId = readCookie('unionId');
-            loginWithUnionId(unionId).done(function (avosUser) {
+            User$.loginWithUnionId(unionId).done(function (avosUser) {
                 avosUser.fetchWhenSave(true);
                 avosUser.save({
                     school: $scope.userInfo['school'],
@@ -337,10 +337,10 @@ APP.controller('tabs', function ($scope, User$) {
     })
 
     .controller('person_usedBookList', function ($scope, UsedBook$) {
-        //还没有卖出
         $scope.UsedBook$ = UsedBook$;
-        UsedBook$.loadMyAvosUsedBookList();
-
+        $scope.$on('$ionicView.afterEnter', function () {
+            UsedBook$.loadMyAvosUsedBookList();
+        });
     })
 
     .controller('person_editOneUsedBook', function ($scope, $state, $ionicHistory, $stateParams, UsedBook$) {
@@ -360,34 +360,46 @@ APP.controller('tabs', function ($scope, User$) {
         }
     })
 
-    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, User$, UsedBook$, Chat$) {
-        var receiverId = $stateParams['openId'];
-        var usedBookAvosObjectId = $stateParams['usedBookAvosObjectId'];
+    .controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, User$, UsedBook$, Status$) {
+        var receiverObjectId = $stateParams['receiverObjectId'];//消息接受者的AVOS ID
         $scope.isLoading = false;
         $scope.msg = {
-            sendMsg: '',
-            usedBookAvosObjectId: usedBookAvosObjectId,
-            role: $stateParams['role'],
-            isPrivate: $stateParams['isPrivate'] == 'true'
+            inboxType: $stateParams['inboxType'],//必须
+            role: $stateParams['role'],//我当前是买家还是卖家,必须
+            sendMsg: '',//必须
+            usedBookObjectId: $stateParams['usedBookObjectId']//在私信下为空
         };
+
+        //当前聊天模式
+        $scope.nowModel = function () {
+            if ($scope.msg.inboxType == 'private') {//发私信
+                if ($scope.msg.role == 'sell') {
+                    return '回应卖家的私信';
+                } else if ($scope.msg.role == 'buy') {
+                    return '给图书主人发私信';
+                }
+            } else if ($scope.msg.inboxType == 'reviewUsedBook') {//评价二手书
+                if ($scope.msg.role == 'sell') {
+                    return '回复买家对旧书的评论';
+                } else if ($scope.msg.role == 'buy') {
+                    return '对主人的旧书发表评论';
+                }
+            }
+        };
+
         //加载用户信息
-        User$.getAvosUserByOpenId(receiverId).done(function (avosUser) {
+        AV.Object.createWithoutData('_User', receiverObjectId).fetch().done(function (avosUser) {
             $scope.jsonUser = User$.avosUserToJson(avosUser);
-            loadChat();
             $scope.$apply();
         });
 
         //加载聊天记录
-        $scope.jsonChats = [];
-        function loadChat() {
-            Chat$.getChatList_UsedBook_TwoUser(usedBookAvosObjectId, $scope.jsonUser.objectId, User$.getCurrentAvosUser().id).done(function (avosChats) {
-                for (var i = 0; i < avosChats.length; i++) {
-                    var jsonChat = Chat$.avosChatToJson(avosChats[i]);
-                    $scope.jsonChats.push(jsonChat);
-                }
-                $scope.$apply();
-            });
-        }
+        $scope.jsonStatusList = [];
+        Status$.getStatusList_twoUser(receiverObjectId, $scope.msg.usedBookObjectId).done(function (avosStatusList) {
+            for (var i = 0; i < avosStatusList.length; i++) {
+                $scope.jsonStatusList.push(Status$.avosStatusToJson(avosStatusList[i]));
+            }
+        });
 
         //常用快捷回复
         $scope.commonReplayWords = [];
@@ -396,10 +408,11 @@ APP.controller('tabs', function ($scope, User$) {
         } else {//我是买家
             $scope.commonReplayWords = ['求微信号', '成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
         }
-        if ($scope.msg.usedBookAvosObjectId) {
-            UsedBook$.getJsonUsedBookByAvosObjectId($scope.msg.usedBookAvosObjectId, function (jsonUsedBook) {
+
+        //加载二手书信息
+        if ($scope.msg.usedBookObjectId) {
+            UsedBook$.getJsonUsedBookByAvosObjectId($scope.msg.usedBookObjectId, function (jsonUsedBook) {
                 $scope.jsonUsedBook = jsonUsedBook;
-                $scope.msg.isPrivate = (jsonUsedBook == null);//没有对应书的发私信
                 $scope.$apply();
             });
         }
@@ -407,22 +420,30 @@ APP.controller('tabs', function ($scope, User$) {
         //发出消息
         $scope.sendOnClick = function () {
             $scope.isLoading = true;
-            Chat$.sendMsgToUser(receiverId, $scope.msg.sendMsg, $scope.msg.usedBookAvosObjectId, $scope.msg.role, $scope.msg.isPrivate).done(function () {
-                $scope.jsonChats.push({
-                    msg: $scope.msg.sendMsg
+            var promise;
+            if ($scope.msg.inboxType == 'private') {
+                promise = Status$.sendPrivateMsg(receiverObjectId, $scope.msg.sendMsg, $scope.msg.role);
+            } else if ($scope.msg.inboxType == 'reviewUsedBook') {
+                promise = Status$.reviewUsedBook($scope.msg.usedBookObjectId, $scope.msg.sendMsg, $scope.msg.role);
+            }
+            promise.done(function () {
+                $scope.jsonStatusList.push({
+                    message: $scope.msg.sendMsg
                 });
                 $ionicScrollDelegate.scrollBottom(true);
-            }).fail(function (error) {
-                alert('发送失败:' + JSON.stringify(error));
+            }).fail(function (err) {
+                alert('发送失败:' + JSON.stringify(err));
             }).always(function () {
                 $scope.isLoading = false;
                 $scope.msg.sendMsg = '';
                 $scope.$apply();
-            })
+            });
         }
-    })
+    }
+)
 
-    .controller('signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, IonicModalView$) {
+    .
+    controller('signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, Status$, IonicModalView$) {
         //是否正在加载中..
         $scope.isLoading = true;
         //调用微信接口获取用户信息
@@ -431,8 +452,8 @@ APP.controller('tabs', function ($scope, User$) {
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
-            loginWithUnionId(userInfo.unionId).done(function (me) {//已经注册过
-                User$.loadUnreadStatusesCount();//加载未读消息数量
+            User$.loginWithUnionId(userInfo.unionId).done(function (me) {//已经注册过
+                Status$.loadUnreadStatusesCount();//加载未读消息数量
                 $state.go(shouldGoState);
                 $ionicHistory.clearHistory();
                 me.save({//更新微信信息
@@ -470,9 +491,9 @@ APP.controller('tabs', function ($scope, User$) {
 
     })
 
-    .controller('hello', function ($scope, $state, $stateParams, WeChatJS$) {
+    .controller('hello', function ($scope, $state, $stateParams, WeChatJS$, User$) {
         var shouldGoState = $stateParams['state'];//验证完成后要去的状态
-        loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
+        User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
             $state.go(shouldGoState);
             $ionicHistory.clearHistory();
         });

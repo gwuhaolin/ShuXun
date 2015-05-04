@@ -68,24 +68,21 @@ exports.getOAuthUserInfo = function (code) {
 };
 
 /**
- * 用户之间相互发送消息
- * @param senderName 发送者的昵称
- * @param senderOpenId 发送者的微信openID
- * @param receiverOpenId 接收者的微信openID
+ * 给用户发送模板信息
+ * @param title 标题内容
+ * @param senderName 发送者昵称
  * @param msg 消息内容
- * @param usedBookAvosObjectId 当前咨询的二手书的objectId
- * @param role 发送者的当前角色是卖家还是买家 sell | buy
- * @param isPrivate 聊天是否私信
- * @return AV.Promise
+ * @param url 用户点击后打开的网页内容
+ * @param receiverOpenId 接受者的微信openID
+ * @returns {AV.Promise}
  */
-exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOpenId, msg, usedBookAvosObjectId, role, isPrivate) {
-    var TemplateId_ToBuyer = 'nYdPsuIRJl8RFgh1WBv28xfDGU_IcjQVz6AGFO6uVr8';//咨询回复消息提醒
-    var TemplateId_ToSeller = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';//用户咨询提醒
+exports.sendTemplateMsg = function (title, senderName, msg, url, receiverOpenId) {
+    var TemplateId = 'Gguvq37B78_L8Uv9LZgp0gf8kQ5O8Xmthqttb7IrwVY';//用户咨询提醒
     var Color_Title = '#46bfb9';
     var Color_Context = '#30bf4c';
     var data = {
         first: {//标题
-            value: '有同学发消息给你',
+            value: title,
             color: Color_Title
         },
         keyword1: {//用户名称
@@ -93,97 +90,21 @@ exports.senderSendMsgToReceiver = function (senderName, senderOpenId, receiverOp
             color: Color_Context
         },
         keyword2: {
-            value: '',
+            value: msg,
             color: Color_Context
         },
         remark: {//咨询内容
-            value: msg,
-            color: Color_Context
+            value: '点击回复' + senderName,
+            color: Color_Title
         }
     };
-    var templateId = TemplateId_ToSeller;
-    var url = 'http://ishuxun.cn/wechat/#/tab/person/sendMsgToUser?openId=' + senderOpenId + '&isPrivate=' + isPrivate;
-    if (role == 'sell') {//图书主人在回应咨询者
-        url += '&role=buy';//我是卖家,所以你是买家
-        templateId = TemplateId_ToBuyer;
-    } else if (role == 'buy') {
-        url += '&role=sell';
-        templateId = TemplateId_ToSeller;
-    }
-    if (usedBookAvosObjectId) {
-        url += '&usedBookAvosObjectId=' + usedBookAvosObjectId;
-        var query = new AV.Query('UsedBook');
-        query.select('title');
-        query.get(usedBookAvosObjectId).done(function (usedBook) {
-            var bookTitle = usedBook.get('title');
-            if (role == 'sell') {//图书主人在回应咨询者
-                data.first.value = bookTitle + '-主人回复你';
-            } else if (role == 'buy') {
-                data.first.value = '有同学咨询你的旧书-' + bookTitle;
-            }
-        }).always(function () {
-            send();
-        });
-    } else {
-        send();
-    }
-
-    var mainPromise = new AV.Promise(null);
-
-    /**
-     * 保存下这条聊天记录
-     * @returns AV.Promise
-     */
-    function saveChat() {
-        var promise = new AV.Promise(null);
-        var query = new AV.Query(AV.User);
-        query.equalTo('openId', senderOpenId);
-        query.first().done(function (avosSender) {
-            query = new AV.Query(AV.User);
-            query.equalTo('openId', receiverOpenId);
-            query.first().done(function (avosReceiver) {
-                var avosUsedBook = null;
-                if (usedBookAvosObjectId) {//如果有二手书的ID
-                    avosUsedBook = AV.Object.createWithoutData('UsedBook', usedBookAvosObjectId);
-                }
-                var Chat = AV.Object.extend('Chat');
-                var chat = new Chat();
-                chat.save({
-                    from: avosSender,
-                    to: avosReceiver,
-                    msg: msg,
-                    usedBook: avosUsedBook,
-                    isPrivate: Boolean(isPrivate)
-                }).done(function (re) {
-                    promise.resolve(re);
-                }).fail(function (err) {
-                    promise.reject(err);
-                })
-            }).fail(function (err) {
-                promise.reject(err);
-            })
-        }).fail(function (err) {
-            promise.reject(err);
-        });
-        return promise;
-    }
-
-    /**
-     * 通过微信API发送这条消息
-     */
-    function send() {
-        exports.APIClient.sendTemplate(receiverOpenId, templateId, url, Color_Title, data, function (err, result) {
-            if (err) {
-                mainPromise.reject(err);
-            } else {
-                saveChat().done(function () {
-                    mainPromise.resolve(result);
-                }).fail(function (err) {
-                    mainPromise.reject(err);
-                })
-            }
-        })
-    }
-
-    return mainPromise;
+    var rePromise = new AV.Promise(null);
+    exports.APIClient.sendTemplate(receiverOpenId, TemplateId, url, Color_Title, data, function (err, result) {
+        if (err) {
+            rePromise.reject(err);
+        } else {
+            rePromise.resolve(result);
+        }
+    });
+    return rePromise;
 };

@@ -131,13 +131,12 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.person_sendMsgToUser', {
                 /**
-                 * 参数:openId 接受者的微信openID
-                 * 参数:msg 发送的消息内容
-                 * 参数:usedBookAvosObjectId 当前太难的二手书的AVOS ID
+                 * 参数:receiverObjectId 接受者的微信openID
+                 * 参数:usedBookObjectId 当前太难的二手书的AVOS ID
                  * 参数:role 消息发送者扮演的身份是 buy | sell
-                 * 参数:isPrivate 是否为发私信
+                 * 参数:inboxType 是否为发私信
                  */
-                url: '/person/sendMsgToUser?openId&msg&usedBookAvosObjectId&role&isPrivate',
+                url: '/person/sendMsgToUser?receiverObjectId&usedBookObjectId&role&inboxType',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/person/sendMsgToUser.html'
@@ -191,9 +190,9 @@ var APP = angular.module('APP', ['ionic'], null)
         $urlRouterProvider.otherwise('/tab/book/recommend');
     });
 
-APP.run(function ($rootScope, $state, User$, WeChatJS$) {
+APP.run(function ($rootScope, $state, User$, Status$, WeChatJS$) {
     WeChatJS$.config();//马上调用配置微信
-    User$.loadUnreadStatusesCount();//加载未读消息数量
+    User$.loginWithUnionId(readCookie('unionId'));
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
         var stateName = nextState['name'];
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录

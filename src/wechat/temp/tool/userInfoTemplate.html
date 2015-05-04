@@ -1,7 +1,6 @@
 <!-- 用户基本信息-->
 <div class="item item-avatar" ng-if="jsonUserInfo">
-    <img ng-src="{{User$.changeWechatAvatarSize(jsonUserInfo.avatarUrl,64)}}"
-         ui-sref="tab.person_sendMsgToUser({openId:jsonUserInfo.openId,role:'buy'})">
+    <img ng-src="{{User$.changeWechatAvatarSize(jsonUserInfo.avatarUrl,64)}}">
 
     <h2>{{jsonUserInfo.nickName}}
         <i class="icon ion-male" style="color: #5eb1ed" ng-if="jsonUserInfo.sex==1"></i>
@@ -11,6 +10,12 @@
     </h2>
 
     <p style="white-space: pre-wrap">{{jsonUserInfo.major}}/{{jsonUserInfo.school}}</p>
+    <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id"
+            class="button button-small button-clear button-balanced"
+            style="float: right"
+            ui-sref="tab.person_sendMsgToUser({receiverObjectId:jsonUserInfo.objectId,role:'buy',inboxType:'private'})">
+        发私信
+    </button>
     <button ng-if="jsonUserInfo.location" class="button button-small button-clear button-balanced"
             style="float: right"
             ng-click="WeChatJS$.openMap(jsonUserInfo.location.latitude,jsonUserInfo.location.longitude)">地图

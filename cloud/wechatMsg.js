@@ -87,11 +87,11 @@ function searchBookFromDouban(keyword) {
                 var books = json.books;
                 for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
                     var title = books[i].title;
-                    var bookUrl = 'http://ishuxun.cn/wechat/#/tab/book/oneBook/' + books[i].isbn13;
+                    var bookUrl = 'http://www.ishuxun.cn/wechat/#/tab/book/oneBook/' + books[i].isbn13;
                     re.push(ReplyMaker.oneImageAndText(title, books[i].image, bookUrl));
                 }
                 if (total > 9) {//因为微信最多可以显示10本,当有的书大于9本时为用户提供显示更多
-                    re.push(ReplyMaker.oneImageAndText('还有剩下' + (total - json.count) + '本相关的书,点击查看', 'http://ishuxun.cn/wechat/img/logo-R.png', 'http://ishuxun.cn/wechat/#/tab/book/searchList/' + keyword));
+                    re.push(ReplyMaker.oneImageAndText('还有剩下' + (total - json.count) + '本相关的书,点击查看', 'http://www.ishuxun.cn/wechat/img/logo-R.png', 'http://www.ishuxun.cn/wechat/#/tab/book/searchList/' + keyword));
                 }
             }
             promise.resolve(re);

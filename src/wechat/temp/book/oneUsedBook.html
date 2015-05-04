@@ -11,45 +11,38 @@
                      ng-click="WeChatJS$.previewOneImage(jsonUsedBook.image)">
             </ion-item>
             <ion-item ui-sref="tab.book_oneBook({isbn13:jsonUsedBook.isbn13})">
-                <h3>要价:{{jsonUsedBook.price}}</h3>
+                <h3>书名:{{jsonUsedBook.title}}</h3>
 
-                <p>时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
+                <p>要价:{{jsonUsedBook.price}}</p>
 
-                <p>书名:{{jsonUsedBook.title}}</p>
+                <p>上传时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
 
-                <p ng-if="jsonUsedBook.des" style="white-space: pre-wrap">描述:{{jsonUsedBook.des}}</p>
+                <p ng-if="jsonUsedBook.des" style="white-space: pre-wrap">主人描述:{{jsonUsedBook.des}}</p>
             </ion-item>
         </div>
         <!-- 主人信息-->
         <div class="list card">
-            <ion-item class="item-divider item-button-right">主人信息
-                <a class="button button-clear button-balanced" style="top: 0"
-                   ui-sref="tab.person_sendMsgToUser({openId:ownerInfo.openId,usedBookAvosObjectId:usedBookAvosObjectId,role:'buy'})">联系主人
-                </a>
-            </ion-item>
+            <ion-item class="item-divider">主人信息</ion-item>
             <user-info json-user-info="ownerInfo"></user-info>
         </div>
         <!-- 用户评论-->
         <div class="list card">
             <ion-item class="item-divider item-button-right">大家都说
                 <a class="button button-clear button-balanced" style="top: 0"
-                   ui-sref="tab.person_sendMsgToUser({openId:ownerInfo.openId,usedBookAvosObjectId:usedBookAvosObjectId,role:'buy'})">我也要说
+                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:ownerInfo.objectId,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">我也要说
                 </a>
             </ion-item>
-            <ion-item ng-if="jsonChats.length==0"
-                      ui-sref="tab.person_sendMsgToUser({openId:ownerInfo.openId,usedBookAvosObjectId:usedBookAvosObjectId,role:'buy'})">
-                还没有同学评论,快来抢沙发~
-            </ion-item>
-            <ion-item class="item-avatar" ng-repeat="jsonChat in jsonChats">
-                <img ng-src="{{User$.changeWechatAvatarSize(jsonChat.from.get('avatarUrl'),64)}}"
-                     ui-sref="tab.userHome({ownerId:jsonChat.from.id})">
+            <ion-item ng-if="jsonStatusList.length==0">还没有同学评论,快来抢沙发~</ion-item>
+            <ion-item class="item-avatar" ng-repeat="jsonStatus in jsonStatusList">
+                <img ng-src="{{User$.changeWechatAvatarSize(jsonStatus.source.get('avatarUrl'),64)}}"
+                     ui-sref="tab.userHome({ownerId:jsonStatus.source.id})">
 
-                <h2 style="white-space: pre-wrap">{{jsonChat.msg}}</h2>
+                <h2 style="white-space: pre-wrap">{{jsonStatus.message}}</h2>
 
-                <p>{{jsonChat.updatedAt | date:'mediumDate'}}</p>
+                <p>{{jsonStatus.updatedAt | date:'mediumDate'}}</p>
                 <img style="width: 40px;height: 40px;position: absolute;top: 16px;right: 16px;border-radius: 50%;"
-                     ui-sref="tab.userHome({ownerId:jsonChat.to.id})"
-                     ng-src="{{User$.changeWechatAvatarSize(jsonChat.to.get('avatarUrl'),64)}}">
+                     ui-sref="tab.userHome({ownerId:jsonStatus.to.id})"
+                     ng-src="{{User$.changeWechatAvatarSize(jsonStatus.to.get('avatarUrl'),64)}}">
             </ion-item>
         </div>
     </ion-content>

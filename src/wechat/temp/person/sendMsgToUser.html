@@ -19,18 +19,18 @@
         <user-info ng-if="jsonUser" json-user-info="jsonUser"></user-info>
         <!-- 二手书信息-->
         <one-used-book ng-if="jsonUsedBook" json-used-book="jsonUsedBook"></one-used-book>
-        <!-- 是否私信-->
-        <ion-toggle ng-if="jsonUsedBook" ng-model="msg.isPrivate">是否私信</ion-toggle>
         <!-- 聊天记录-->
         <ion-item style="margin: 0;padding: 0;border-right: none;border-left: none">
-            <ol ng-if="jsonChats.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
-                <li ng-repeat="jsonChat in jsonChats"
+            <ol ng-if="jsonStatusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
+                <li ng-repeat="jsonStatus in jsonStatusList"
                     class="message"
-                    ng-style="{float:jsonChat.from.id==jsonUser.objectId ? 'left':'right',backgroundColor:jsonChat.from.id==jsonUser.objectId ? '#30bf4c':'#e6e5eb'}">
-                    {{jsonChat.msg}}
+                    ng-style="{float:jsonStatus.source.id==jsonUser.objectId ? 'left':'right',backgroundColor:jsonStatus.source.id==jsonUser.objectId ? '#30bf4c':'#e6e5eb'}">
+                    {{jsonStatus.message}}
                 </li>
             </ol>
         </ion-item>
+        <!-- 当前聊天模式-->
+        <ion-item class="item-divider" style="text-align: center" ng-if="nowModel()">{{nowModel()}}</ion-item>
         <!-- 我的输入框-->
         <label class="item item-input">
             <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容">

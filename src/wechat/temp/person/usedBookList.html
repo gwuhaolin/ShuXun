@@ -33,6 +33,8 @@
                 </button>
             </ion-item>
             <ion-item ng-if="UsedBook$.myAvosUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>
+            <ion-item ui-sref="tab.person_uploadOneUsedBook({isbn13:book.isbn13})" style="text-align: center">继续上传旧书
+            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>

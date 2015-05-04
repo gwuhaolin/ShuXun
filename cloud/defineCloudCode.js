@@ -9,41 +9,6 @@ var Info = require('cloud/info.js');
 var BusinessSite = require('cloud/businessSite.js');
 
 /**
- * 更新全国大学信息
- */
-AV.Cloud.define('updateSchoolInfo', function (req, res) {
-    Info.spiderSchoolsFromMyFriday();
-    res.success();
-});
-
-/**
- * 给分数发送模板消息
- * @param:sendName 发送者的昵称
- * @param:sendId 发送者的微信openId
- * @param:receiverId 接收者的微信openId
- * @param:msg 信息内容
- * @param:usedBookAvosObjectId 当前咨询的二手书的objectId
- * @param:role 发送者的当前角色是卖家还是买家 sell | buy
- * @param:isPrivate 聊天是否私信
- * @返回 发送成功时返回
- *      发送失败时返回 error
- */
-AV.Cloud.define('sendTemplateMsgToUser', function (req, res) {
-    var sendName = req.params['sendName'];
-    var senderId = req.params['senderId'];
-    var receiverId = req.params['receiverId'];
-    var msg = req.params['msg'];
-    var usedBookAvosObjectId = req.params['usedBookAvosObjectId'];
-    var role = req.params['role'];
-    var isPrivate = req.params['isPrivate'];
-    WechatAPI.senderSendMsgToReceiver(sendName, senderId, receiverId, msg, usedBookAvosObjectId, role, isPrivate).done(function () {
-        res.success();
-    }).fail(function (err) {
-        res.error(err);
-    })
-});
-
-/**
  * 根据我的IP地址更新我经纬度
  * 如果有latitude和longitude参数就用这两个参数更新,否则调用根据IP地址获得地理位置更新
  * @param:latitude 纬度

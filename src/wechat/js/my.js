@@ -59,15 +59,3 @@ function readCookie(name) {
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
-
-/**
- * 使用微信写在cookie里的unionId登入
- * @param unionId 微信ID
- * @returns {*|AV.Promise}
- */
-function loginWithUnionId(unionId) {
-    if (unionId) {
-        return AV.User.logIn(unionId, unionId);
-    }
-    return AV.Promise.error("unionId错误");
-}

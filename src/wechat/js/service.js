@@ -723,7 +723,7 @@ APP.service('DoubanBook$', function ($rootScope) {
 
     })
 
-    .service('User$', function ($rootScope) {
+    .service('User$', function ($rootScope, Status$) {
         var that = this;
 
         /**
@@ -731,28 +731,6 @@ APP.service('DoubanBook$', function ($rootScope) {
          * @type {string[]}
          */
         var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
-
-        /**
-         * 我未读的消息的数量
-         */
-        this.unreadStatusesCount = null;
-        /**
-         * 加载我未读的消息的数量,并且显示在Tab上
-         */
-        this.loadUnreadStatusesCount = function () {
-            var user = AV.User.current();
-            if (user) {
-                AV.Status.countUnreadStatuses(user).done(function (result) {
-                    var num = parseInt(result['unread']);
-                    if (num > 0) {
-                        that.unreadStatusesCount = String(num);
-                    } else {
-                        that.unreadStatusesCount = null;
-                    }
-                    $rootScope.$apply();
-                });
-            }
-        };
 
         /**
          * 用户注册 用户名=Email
@@ -822,17 +800,6 @@ APP.service('DoubanBook$', function ($rootScope) {
                 user.set(attrName, jsonUser[attrName]);
             }
             return user;
-        };
-
-        /***
-         * 获得微信openId的用户
-         * @param openId
-         * @returns {*|AV.Promise|{value, color}}
-         */
-        this.getAvosUserByOpenId = function (openId) {
-            var query = new AV.Query(AV.User);
-            query.equalTo('openId', openId);
-            return query.first();
         };
 
         /**
@@ -933,6 +900,26 @@ APP.service('DoubanBook$', function ($rootScope) {
             }
         }
 
+        /**
+         * 使用微信写在cookie里的unionId登入,
+         * 登陆成功后回加载未读消息数量
+         * @param unionId 微信ID
+         * @returns {*|AV.Promise}
+         */
+        this.loginWithUnionId = function (unionId) {
+            var rePromise = new AV.Promise(null);
+            if (unionId) {
+                AV.User.logIn(unionId, unionId).done(function (me) {
+                    rePromise.resolve(me);
+                    Status$.loadUnreadStatusesCount();//加载未读消息数量
+                }).fail(function (err) {
+                    rePromise.reject(err);
+                })
+            } else {
+                rePromise.reject('unionId错误');
+            }
+            return rePromise;
+        }
     })
 
     //还没有卖出的二手书
@@ -965,7 +952,9 @@ APP.service('DoubanBook$', function ($rootScope) {
          */
         this.loadMyAvosUsedBookList = function () {
             that.isLoading = true;
-            AV.User.current().relation('usedBooks').query().find().done(function (avosUsedBooks) {
+            var query = AV.User.current().relation('usedBooks').query();
+            query.descending('updatedAt');
+            query.find().done(function (avosUsedBooks) {
                 that.myAvosUsedBookList = avosUsedBooks;
             }).always(function () {
                 that.isLoading = false;
@@ -1077,79 +1066,122 @@ APP.service('DoubanBook$', function ($rootScope) {
         };
     })
 
-    .service('Chat$', function (User$) {
-        var Chat = AV.Object.extend('Chat');
-        var AttrsName = ['from', 'to', 'msg', 'usedBook'];
+    .service('Status$', function ($rootScope) {
+        var that = this;
+        var AttrName = ['inboxType', 'message', 'source', 'to', 'usedBook'];
+
         /**
-         * 我发送消息给其他用户
-         * @param receiverId 接收者的openID
-         * @param msg 消息内容
-         * @param usedBookAvosObjectId 当前正在咨询的二手书的objectID
-         * @param role 发送者当前的角色是卖家还是买家 sell | buy
-         * @param isPrivate 聊天是否私信 true 或者 'true' 时私信
+         * 我未读的消息的数量
          */
-        this.sendMsgToUser = function (receiverId, msg, usedBookAvosObjectId, role, isPrivate) {
-            var myJsonInfo = User$.getCurrentJsonUser();
-            var sendName = myJsonInfo.nickName;
-            var senderId = myJsonInfo.openId;
-            return AV.Cloud.run('sendTemplateMsgToUser', {
-                sendName: sendName,
-                senderId: senderId,
-                receiverId: receiverId,
-                msg: msg,
-                usedBookAvosObjectId: usedBookAvosObjectId,
-                role: role,
-                isPrivate: isPrivate
-            });
+        this.unreadStatusesCount = null;
+        /**
+         * 加载我未读的消息的数量,并且显示在Tab上
+         */
+        this.loadUnreadStatusesCount = function () {
+            var user = AV.User.current();
+            if (user) {
+                AV.Status.countUnreadStatuses(user).done(function (result) {
+                    var num = parseInt(result['unread']);
+                    if (num > 0) {
+                        that.unreadStatusesCount = String(num);
+                    } else {
+                        that.unreadStatusesCount = null;
+                    }
+                    $rootScope.$apply();
+                });
+            }
         };
 
-        this.avosChatToJson = function (avosChat) {
+        this.avosStatusToJson = function (avosStatus) {
             var re = {};
-            for (var i = 0; i < AttrsName.length; i++) {
-                var attr = AttrsName[i];
-                re[attr] = avosChat.get(attr);
+            for (var i = 0; i < AttrName.length; i++) {
+                re[AttrName[i]] = avosStatus.get(AttrName[i]);
             }
-            re.objectId = avosChat.id;
-            re.updatedAt = avosChat.updatedAt;
+            re.updatedAt = avosStatus.get('updatedAt');
+            re.objectId = avosStatus.id;
             return re;
         };
 
         /**
-         * 获得所有关于这本书的聊天记录
-         * @param avosUsedBookId
+         * 我发送私信给用户
+         * @param receiverObjectId 接受者的avos id
+         * @param msg 消息内容
+         * @param role 我当前扮演的角色是卖家(=sell)还是买家(=buy)
+         * @returns {AV.Promise}
+         */
+        this.sendPrivateMsg = function (receiverObjectId, msg, role) {
+            var status = new AV.Status(null, msg);
+            status.set('to', AV.Object.createWithoutData('_User', receiverObjectId));
+            status.set('role', role);
+            return AV.Status.sendPrivateStatus(status, receiverObjectId);
+        };
+
+        /**
+         * 对一本二手书进行评论,评论的内容会被所有人看到
+         * @param usedBookObjectId 二手书的AVOS id
+         * @param msg 评论内容
+         * @param role 我当前扮演的角色是卖家(=sell)还是买家(=buy)
+         * @returns {AV.Promise}
+         */
+        this.reviewUsedBook = function (usedBookObjectId, msg, role) {
+            var rePromise = new AV.Promise(null);
+            var query = new AV.Query('UsedBook');
+            query.select('owner');
+            query.get(usedBookObjectId).done(function (avosUsedBook) {
+                var bookOwner = avosUsedBook.get('owner');
+                query = new AV.Query(AV.User);
+                query.equalTo('objectId', bookOwner.id);
+                var status = new AV.Status(null, msg);
+                status.query = query;
+                status.inboxType = 'reviewUsedBook';
+                status.set('to', bookOwner);
+                status.set('role', role);
+                status.set('usedBook', avosUsedBook);
+                status.send().done(function (status) {
+                    rePromise.resolve(status);
+                }).fail(function (err) {
+                    rePromise.reject(err);
+                })
+            }).fail(function (err) {
+                rePromise.reject(err);
+            });
+            return rePromise;
+        };
+
+        /**
+         * 获得关于一本书的所有评价
+         * @param usedBookId
          * @returns {*|{}|AV.Promise}
          */
-        this.getChatList_UsedBook = function (avosUsedBookId) {
-            var query = new AV.Query(Chat);
-            var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
-            query.equalTo('usedBook', avosUsedBook);
-            query.equalTo('isPrivate', false);
+        this.getStatusList_reviewBook = function (usedBookId) {
+            var query = new AV.Query('_Status');
+            var usedBook = AV.Object.createWithoutData('UsedBook', usedBookId);
+            query.equalTo('inboxType', 'reviewUsedBook');
+            query.equalTo('usedBook', usedBook);
             return query.find();
         };
 
         /**
-         * 获得两个人关于一本二手书的所有聊天
-         * @param avosUsedBookId
-         * @param avosUser1Id
-         * @param avosUser2Id
+         * 获得所有关于我和另一个用户之间的消息
+         * @param avosUserId 对方用户的id
+         * @param avosUsedBookId 二手书的id 两个有这个参数就只显示关于这部二手书的私信,否则显示所有的私信
          * @returns {*|{}|AV.Promise}
          */
-        this.getChatList_UsedBook_TwoUser = function (avosUsedBookId, avosUser1Id, avosUser2Id) {
-            var avosUsedBook = null;
+        this.getStatusList_twoUser = function (avosUserId, avosUsedBookId) {
+            var me = AV.User.current();
+            var he = AV.Object.createWithoutData('_User', avosUserId);
+            var query1 = new AV.Query('_Status');
+            query1.equalTo('source', me);
+            query1.equalTo('to', he);
+            var query2 = new AV.Query('_Status');
+            query2.equalTo('source', he);
+            query2.equalTo('to', me);
             if (avosUsedBookId) {
-                avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
+                var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
+                query1.equalTo('usedBook', avosUsedBook);
+                query2.equalTo('usedBook', avosUsedBook);
             }
-            var avosUser1 = AV.Object.createWithoutData('UsedBook', avosUser1Id);
-            var avosUser2 = AV.Object.createWithoutData('UsedBook', avosUser2Id);
-            var query1 = new AV.Query(Chat);
-            query1.equalTo('usedBook', avosUsedBook);
-            query1.equalTo('from', avosUser1);
-            query1.equalTo('to', avosUser2);
-            var query2 = new AV.Query(Chat);
-            query2.equalTo('usedBook', avosUsedBook);
-            query2.equalTo('from', avosUser2);
-            query2.equalTo('to', avosUser1);
             var mainQuery = AV.Query.or(query1, query2);
             return mainQuery.find();
-        };
+        }
     });
