@@ -20,9 +20,8 @@
   },
   "dependencies": {
     "cheerio": "^0.19.0",
-    "ejs": "^2.3.1",
     "express": "3.4.x",
-    "request": "^2.54.0",
+    "superagent": "^1.2.0",
     "wechat": "^1.2.3",
     "wechat-api": "^1.7.1",
     "wechat-oauth": "^1.0.1"

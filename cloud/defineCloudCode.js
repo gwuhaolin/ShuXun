@@ -7,6 +7,23 @@ var WechatAPI = require('cloud/wechatAPI.js');
 var LBS = require('cloud/lbs.js');
 var Info = require('cloud/info.js');
 var BusinessSite = require('cloud/businessSite.js');
+var DoubanBook = require('cloud/doubanBook.js');
+
+/**
+ * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
+ */
+AV.Cloud.define('spiderLatestBook', function (req, res) {
+    DoubanBook.spiderLatestBook().done(function (bookIds) {
+        res.success(bookIds.length);
+        for (var i = 0; i < bookIds.length; i++) {
+            DoubanBook.saveOneLatestBook_Id(bookIds[i], i * 1000).fail(function (err) {
+                console.error(err);
+            })
+        }
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
 
 /**
  * 根据我的IP地址更新我经纬度
@@ -24,10 +41,12 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
         updateLocation();
     } else {//使用IP地址定位
         var ip = req.remoteAddress;
-        LBS.getLocationByIP(ip, function (location) {
+        LBS.getLocationByIP(ip).done(function (location) {
             latitude = parseFloat(location.lat);
             longitude = parseFloat(location.lng);
             updateLocation();
+        }).fail(function (err) {
+            res.error(err);
         })
     }
     function updateLocation() {
@@ -96,7 +115,7 @@ AV.Cloud.define('getAllBookTags', function (req, res) {
 AV.Cloud.define('getDoubanBookReview', function (req, res) {
     var id = req.params.id;
     var start = req.params.start;
-    Info.spiderDoubanBookReview(id, start).done(function (json) {
+    DoubanBook.spiderDoubanBookReview(id, start).done(function (json) {
         res.success(json);
     }).fail(function (err) {
         res.error(err);
@@ -109,23 +128,8 @@ AV.Cloud.define('getDoubanBookReview', function (req, res) {
  */
 AV.Cloud.define('getOneFullDoubanBookReview', function (req, res) {
     var id = req.params.id;
-    Info.spiderDoubanBookOneFullReview(id).done(function (re) {
+    DoubanBook.spiderDoubanBookOneFullReview(id).done(function (re) {
         res.success(re);
-    }).fail(function (err) {
-        res.error(err);
-    })
-});
-
-/**
- * 新书速递功能
- * @param:start
- * @param:count
- */
-AV.Cloud.define('getNewBooks', function (req, res) {
-    var start = req.params.start;
-    var count = req.params.count;
-    Info.getNewBooks(start, count).done(function (json) {
-        res.success(json);
     }).fail(function (err) {
         res.error(err);
     })

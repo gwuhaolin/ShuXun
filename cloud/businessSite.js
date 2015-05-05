@@ -3,8 +3,8 @@
  * 获得图书的电商购买信息
  */
 "use strict";
+var SuperAgent = require('superagent');
 var Cheerio = require('cheerio');
-var Request = require('request');
 
 var UnionID = {
     JD: '287386251',//京东
@@ -112,33 +112,32 @@ function replaceUnionID(url) {
  * @param doubanId 图书的豆瓣ID
  * @return {AV.Promise}
  */
-function spider(doubanId) {
+exports.spider = function (doubanId) {
     var rePromise = new AV.Promise(null);
-    Request('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks', function (err, res, body) {
-        if (err) {
-            rePromise.reject(err);
-        } else {
-            if (res.statusCode == 200) {
-                var $ = Cheerio.load(body);
-                var re = [];
-                $("ck-part[type='item']").each(function () {
-                    var one = {};
-                    var first = $(this).children().first();
-                    var urlParam = getQueryParams($(first).attr('href').trim());
-                    one.url = replaceUnionID(urlParam.url);
-                    one.name = $(first).text().trim().replace(/网|商城/, '');
-                    one.price = parseFloat($(first).next().text().trim());
-                    re.push(one);
-                });
-                rePromise.resolve(re);
+    SuperAgent
+        .get('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks')
+        .end(function (err, res) {
+            if (err) {
+                rePromise.reject(err);
             } else {
-                rePromise.reject('没有找到对应信息');
+                if (res.ok) {
+                    var $ = Cheerio.load(res.text);
+                    var re = [];
+                    $("ck-part[type='item']").each(function () {
+                        var one = {};
+                        var first = $(this).children().first();
+                        var urlParam = getQueryParams($(first).attr('href').trim());
+                        one.url = replaceUnionID(urlParam.url);
+                        one.name = $(first).text().trim().replace(/网|商城/, '');
+                        one.price = parseFloat($(first).next().text().trim());
+                        re.push(one);
+                    });
+                    rePromise.resolve(re);
+                } else {
+                    rePromise.reject(res.text);
+                }
             }
-        }
-    });
+        });
     return rePromise;
-}
-
-exports.spider = spider;
-
+};
 

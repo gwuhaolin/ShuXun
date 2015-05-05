@@ -8,7 +8,7 @@
 var BaiDu = {
     AppID: 'D9748868fb527b49a546fa88932b8cd9'
 };
-var Request = require('request');
+var SuperAgent = require('superagent');
 
 /**
  * 更新用户的地理位置
@@ -28,53 +28,56 @@ exports.updateUserLocation = function (avosUser, latitude, longitude) {
 /**
  * 通过用户的IP地址获取用户的经纬度
  * @param ip ip地址
- * @param onSuccess 返回经纬度
+ * 返回经纬度
  *              {
                     lng: point.x,
                     lat: point.y
                 }
- * @param onError
  */
-exports.getLocationByIP = function (ip, onSuccess, onError) {
-    Request.get({
-        url: 'http://api.map.baidu.com/location/ip',
-        qs: {
+exports.getLocationByIP = function (ip) {
+    var rePromise = new AV.Promise(null);
+    SuperAgent.get('http://api.map.baidu.com/location/ip')
+        .query({
             ak: BaiDu.AppID,
             ip: ip,
             coor: 'bd09ll'
-        }
-    }, function (err, res, body) {
-        if (err) {
-            onError(err);
-        } else {
-            var json = JSON.parse(body);
-            if (json.status == 0) {
-                var point = json['content']['point'];
-                onSuccess({
-                    lng: point.x,
-                    lat: point.y
-                });
+        })
+        .end(function (err, res) {
+            if (err) {
+                rePromise.reject(err);
             } else {
-                onError(json);
+                if (res.ok) {
+                    var json = res.body;
+                    if (json.status == 0) {
+                        var point = json['content']['point'];
+                        rePromise.resolve({
+                            lng: point.x,
+                            lat: point.y
+                        });
+                    } else {
+                        rePromise.reject(json);
+                    }
+                } else {
+                    rePromise.reject(res.text);
+                }
             }
-        }
-    })
+        });
+    return rePromise;
 };
 
 /**
  * 获得学校的地理经纬度
  * @param schoolName 学校的名称
- * @param onSuccess 返回
+ * 返回
  *          {
 				lat : 30.522385,
 				lng : 114.369487
 			}
- * @param onError 返回错误原因
  */
-exports.getSchoolLocation = function (schoolName, onSuccess, onError) {
-    Request.get({
-        url: 'http://api.map.baidu.com/place/v2/search',
-        qs: {
+exports.getSchoolLocation = function (schoolName) {
+    var rePromise = new AV.Promise(null);
+    SuperAgent.get('http://api.map.baidu.com/place/v2/search')
+        .query({
             ak: BaiDu.AppID,
             query: schoolName,
             scope: 1,
@@ -82,18 +85,22 @@ exports.getSchoolLocation = function (schoolName, onSuccess, onError) {
             page_num: 0,
             region: '全国',
             output: 'json'
-        }
-    }, function (err, res, body) {
-        if (err) {
-            onError(err);
-        } else {
-            var json = JSON.parse(body);
-            if (json.status == 0 && json.results.length > 0 && json.results[0].location) {
-                var location = json.results[0].location;
-                onSuccess(location);
+        }).end(function (err, res) {
+            if (err) {
+                rePromise.reject(err);
             } else {
-                onError(json);
+                if (res.ok) {
+                    var json = res.body;
+                    if (json.status == 0 && json.results.length > 0 && json.results[0].location) {
+                        var location = json.results[0].location;
+                        rePromise.resolve(location);
+                    } else {
+                        rePromise.reject(json);
+                    }
+                } else {
+                    rePromise.reject(res.text);
+                }
             }
-        }
-    })
+        });
+    return rePromise;
 };

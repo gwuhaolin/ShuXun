@@ -123,7 +123,11 @@ AV.Cloud.afterSave('_Status', function (req) {
             receiver.fetch().done(function () {
                 var receiverOpenId = receiver.get('openId');
                 if (receiverOpenId) {
-                    rePromise = WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId);
+                    WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId).done(function (re) {
+                        rePromise.resolve(re);
+                    }).fail(function (err) {
+                        rePromise.reject(err);
+                    })
                 } else {
                     rePromise.reject('对方还没有关注书循,不能给他发消息');//获取不到openID
                 }

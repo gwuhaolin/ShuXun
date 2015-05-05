@@ -7,9 +7,11 @@
 APP.controller('tabs', function ($scope, Status$) {
     $scope.Status$ = Status$;
 })
-    .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$, User$) {
+    .controller('book_recommend', function ($scope, $ionicModal, BookRecommend$, User$, LatestBook$) {
         $scope.User$ = User$;
         $scope.BookRecommend$ = BookRecommend$;
+        $scope.LatestBook$ = LatestBook$;
+        LatestBook$.loadMore();
         BookRecommend$.MajorBook.loadMore();
         BookRecommend$.NeedBook.loadMore();
         BookRecommend$.NearBook.loadMore();
@@ -42,7 +44,7 @@ APP.controller('tabs', function ($scope, Status$) {
     })
 
     //豆瓣图书列表
-    .controller('book_bookList', function ($scope, $stateParams, BookRecommend$) {
+    .controller('book_bookList', function ($scope, $stateParams, BookRecommend$, LatestBook$) {
         $scope.title = $stateParams['title'];
         var cmd = $stateParams['cmd'];
         if (cmd == 'tag') {
@@ -63,10 +65,10 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.title = BookRecommend$.MajorBook.major;
             $scope.hasMore = BookRecommend$.MajorBook.hasMore;
         } else if (cmd == 'new') {
-            $scope.books = BookRecommend$.NewBook.books;
-            $scope.loadMore = BookRecommend$.NewBook.loadMore;
+            $scope.books = LatestBook$.jsonBooks;
+            $scope.loadMore = LatestBook$.loadMore;
             $scope.title = '新书速递';
-            $scope.hasMore = BookRecommend$.NewBook.hasMore;
+            $scope.hasMore = LatestBook$.hasMore;
         }
     })
 
@@ -90,7 +92,8 @@ APP.controller('tabs', function ($scope, Status$) {
     })
 
     //展示一本书详细信息
-    .controller('book_oneBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$) {
+    .controller('book_oneBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$, User$) {
+        $scope.User$ = User$;
         //////////// 豆瓣图书信息 /////////
         $scope.isbn13 = $stateParams.isbn13;
         $scope.book = null;
@@ -424,7 +427,7 @@ APP.controller('tabs', function ($scope, Status$) {
             if ($scope.msg.inboxType == 'private') {
                 promise = Status$.sendPrivateMsg(receiverObjectId, $scope.msg.sendMsg, $scope.msg.role);
             } else if ($scope.msg.inboxType == 'reviewUsedBook') {
-                promise = Status$.reviewUsedBook($scope.msg.usedBookObjectId, $scope.msg.sendMsg, $scope.msg.role);
+                promise = Status$.reviewUsedBook(receiverObjectId, $scope.msg.usedBookObjectId, $scope.msg.sendMsg, $scope.msg.role);
             }
             promise.done(function () {
                 $scope.jsonStatusList.push({

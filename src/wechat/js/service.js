@@ -235,35 +235,6 @@ APP.service('DoubanBook$', function ($rootScope) {
         this.LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,默认加载慢屏幕
 
         /**
-         * 新书速递
-         * @type {{books: Array, loadMore: Function}}
-         */
-        this.NewBook = {
-            books: [],
-            hasMoreFlag: true,
-            loadMore: function () {
-                AV.Cloud.run('getNewBooks', {
-                    start: that.NewBook.books.length,
-                    count: that.LoadCount
-                }, null).done(function (books) {
-                    if (books.length > 0) {
-                        for (var i = 0; i < books.length; i++) {
-                            that.NewBook.books.push(books[i]);
-                        }
-                    } else {
-                        that.NewBook.hasMoreFlag = false;
-                    }
-                    $rootScope.$apply();
-                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
-                });
-            },
-            hasMore: function () {
-                return that.NewBook.hasMoreFlag;
-            }
-        };
-        that.NewBook.loadMore();
-
-        /**
          * 所有图书分类
          * @type {Array}
          */
@@ -898,7 +869,7 @@ APP.service('DoubanBook$', function ($rootScope) {
             } else {
                 return null;
             }
-        }
+        };
 
         /**
          * 使用微信写在cookie里的unionId登入,
@@ -919,10 +890,9 @@ APP.service('DoubanBook$', function ($rootScope) {
                 rePromise.reject('unionId错误');
             }
             return rePromise;
-        }
+        };
     })
 
-    //还没有卖出的二手书
     .service('UsedBook$', function ($rootScope) {
         var that = this;
         var UsedBookAttrNames = ['owner', 'isbn13', 'price', 'des', 'image', 'title'];
@@ -1118,12 +1088,13 @@ APP.service('DoubanBook$', function ($rootScope) {
 
         /**
          * 对一本二手书进行评论,评论的内容会被所有人看到
+         * @param receiverObjectId 微信通知消息接受者的AVOS Id
          * @param usedBookObjectId 二手书的AVOS id
          * @param msg 评论内容
          * @param role 我当前扮演的角色是卖家(=sell)还是买家(=buy)
          * @returns {AV.Promise}
          */
-        this.reviewUsedBook = function (usedBookObjectId, msg, role) {
+        this.reviewUsedBook = function (receiverObjectId, usedBookObjectId, msg, role) {
             var rePromise = new AV.Promise(null);
             var query = new AV.Query('UsedBook');
             query.select('owner');
@@ -1134,7 +1105,7 @@ APP.service('DoubanBook$', function ($rootScope) {
                 var status = new AV.Status(null, msg);
                 status.query = query;
                 status.inboxType = 'reviewUsedBook';
-                status.set('to', bookOwner);
+                status.set('to', AV.Object.createWithoutData('_User', receiverObjectId));
                 status.set('role', role);
                 status.set('usedBook', avosUsedBook);
                 status.send().done(function (status) {
@@ -1183,5 +1154,44 @@ APP.service('DoubanBook$', function ($rootScope) {
             }
             var mainQuery = AV.Query.or(query1, query2);
             return mainQuery.find();
+        }
+    })
+
+    .service('LatestBook$', function ($rootScope) {
+        var AttrName = ['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price'];
+        var that = this;
+
+        this.avosLatestBookToJson = function (avosBook) {
+            var re = {};
+            for (var i = 0; i < AttrName.length; i++) {
+                var attr = AttrName[i];
+                re[attr] = avosBook.get(attr);
+            }
+            re.updatedAt = avosBook.updatedAt;
+            re.objectId = avosBook.id;
+            return re;
+        };
+
+        this.jsonBooks = [];
+        this.hasMoreFlag = true;
+        this.loadMore = function () {
+            var query = new AV.Query('LatestBook');
+            query.descending('pubdate');
+            query.skip(that.jsonBooks.length);
+            query.limit(10);
+            query.find().done(function (avosLatestBookList) {
+                if (avosLatestBookList.length > 0) {
+                    for (var i = 0; i < avosLatestBookList.length; i++) {
+                        that.jsonBooks.push(that.avosLatestBookToJson(avosLatestBookList[i]));
+                    }
+                } else {
+                    that.hasMoreFlag = false;
+                }
+                $rootScope.$apply();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            });
+        };
+        this.hasMore = function () {
+            return that.hasMoreFlag;
         }
     });

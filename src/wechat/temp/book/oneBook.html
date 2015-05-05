@@ -69,7 +69,7 @@
             <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0"
                       ng-repeat="oneJsonUsedBook in UsedBook$.ISBN.nowEqualISBNJsonUsedBookList"
                       class="item-avatar">
-                <img ng-src="{{oneJsonUsedBook.owner.get('avatarUrl')}}"
+                <img ng-src="{{User$.changeWechatAvatarSize(oneJsonUsedBook.owner.get('avatarUrl'),64)}}"
                      ui-sref="tab.userHome({ownerId:oneJsonUsedBook.owner.id})">
 
                 <div ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneJsonUsedBook.objectId})">
