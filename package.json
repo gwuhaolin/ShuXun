@@ -20,7 +20,9 @@
   },
   "dependencies": {
     "cheerio": "^0.19.0",
+    "event-stream": "^3.3.0",
     "express": "3.4.x",
+    "jade": "^1.9.2",
     "superagent": "^1.2.0",
     "wechat": "^1.2.3",
     "wechat-api": "^1.7.1",
