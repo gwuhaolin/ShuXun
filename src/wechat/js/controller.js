@@ -87,7 +87,7 @@ APP.controller('tabs', function ($scope, Status$) {
             UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
             $scope.jsonUsedBooks = UsedBook$.ISBN.nowEqualISBNJsonUsedBookList;
             $scope.loadMore = UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
-            $scope.hasMore = BookRecommend$.ISBN.hasMore;
+            $scope.hasMore = UsedBook$.ISBN.hasMore;
         }
     })
 
@@ -118,7 +118,7 @@ APP.controller('tabs', function ($scope, Status$) {
 
         //显示作者介绍
         $scope.showAuthorIntro = function () {
-            var title = $scope.book.author.toString();
+            var title = $scope.book['author'].toString();
             var pre = $scope.book['author_intro'];
             IonicModalView$.alertTitleAndPreModalView(title, pre);
         };
@@ -126,7 +126,7 @@ APP.controller('tabs', function ($scope, Status$) {
         $scope.showPubInfo = function () {
             var title = '出版信息';
             var b = $scope.book;
-            var pre = '作者:' + b.author.toString() +
+            var pre = '作者:' + b['author'].toString() +
                 '\n出版社:' + b['publisher'] +
                 '\n出版年:' + b['pubdate'] +
                 '\n页数:' + b['pages'] +
@@ -155,18 +155,13 @@ APP.controller('tabs', function ($scope, Status$) {
         $scope.WeChatJS$ = WeChatJS$;
     })
 
-    .controller('book_bookReview', function ($scope, $stateParams, DoubanBook$, IonicModalView$) {
+    .controller('book_bookReview', function ($scope, $stateParams, DoubanBook$) {
         $scope.BookReview = DoubanBook$.BookReview;
         $scope.BookReview.nowBookId = $stateParams['doubanBookId'];
         $scope.title = $stateParams['bookTitle'] + ' 书评';
         $scope.$on('$ionicView.afterLeave', function () {
             $scope.BookReview.clear();
         });
-        $scope.showFull = function (title, reviewId) {
-            DoubanBook$.BookReview.getOneFullReview(reviewId).done(function (pre) {
-                IonicModalView$.alertTitleAndPreModalView(title, pre);
-            })
-        }
     })
 
     .controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$, Status$) {
@@ -257,6 +252,7 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.isLoading = true;
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
             avosUsedBook.save(null).done(function () {
+                UsedBook$.loadMyAvosUsedBookList();
                 $state.go('tab.person_usedBooksList');
                 $ionicHistory.clearHistory();
             }).fail(function (error) {
@@ -339,10 +335,11 @@ APP.controller('tabs', function ($scope, Status$) {
         }
     })
 
-    .controller('person_usedBookList', function ($scope, UsedBook$) {
+    .controller('person_usedBookList', function ($scope, $ionicScrollDelegate, UsedBook$) {
         $scope.UsedBook$ = UsedBook$;
+        UsedBook$.loadMyAvosUsedBookList();
         $scope.$on('$ionicView.afterEnter', function () {
-            UsedBook$.loadMyAvosUsedBookList();
+            $ionicScrollDelegate.scrollTop(true);
         });
     })
 
@@ -425,7 +422,7 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.isLoading = true;
             var promise;
             if ($scope.msg.inboxType == 'private') {
-                promise = Status$.sendPrivateMsg(receiverObjectId, $scope.msg.sendMsg, $scope.msg.role);
+                promise = Status$.sendPrivateMsg(receiverObjectId, $scope.msg.sendMsg, $scope.msg.role, $scope.msg.usedBookObjectId);
             } else if ($scope.msg.inboxType == 'reviewUsedBook') {
                 promise = Status$.reviewUsedBook(receiverObjectId, $scope.msg.usedBookObjectId, $scope.msg.sendMsg, $scope.msg.role);
             }

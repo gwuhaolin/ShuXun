@@ -10,9 +10,6 @@
             <h3>{{one.title}}</h3>
 
             <p style="white-space: pre-wrap">{{one.context}}</p>
-            <button class="button button-clear button-balanced button-small" style="float: right"
-                    ng-click="showFull(one.title,one.reviewId)">查看全部
-            </button>
         </ion-item>
         <ion-infinite-scroll ng-if="BookReview.hasMore()"
                              on-infinite="BookReview.loadMore()"

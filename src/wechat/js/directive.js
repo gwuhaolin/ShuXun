@@ -94,7 +94,9 @@ APP.directive('reviewStar', function () {
                 //用户的AVOS objectID
                 jsonUserInfo: '=',
                 //是否隐藏二手书的数量
-                hideUsedBook: '=?'
+                hideUsedBook: '=?',
+                //当给用户发送私信时,如果要显示当前二手书就传入
+                usedBookObjectId: '=?'
             },
             templateUrl: 'temp/tool/userInfoTemplate.html',
             link: link

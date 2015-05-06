@@ -140,31 +140,6 @@ exports.spiderDoubanBookReview = function (doubanBookId, start) {
 };
 
 /**
- * TODO not work
- * 去豆瓣抓取单条评论的完整内容
- * @param doubanReviewId
- * @returns {AV.Promise}
- */
-exports.spiderDoubanBookOneFullReview = function (doubanReviewId) {
-    var rePromise = new AV.Promise(null);
-    SuperAgent.get('http://book.douban.com/j/review/' + doubanReviewId + '/fullinfo').end(function (err, res) {
-        if (err) {
-            rePromise.reject(err);
-        } else {
-            if (res.ok) {
-                var html = res.body.html;
-                var $ = Cheerio.load(html);
-                $('div').remove();
-                rePromise.resolve($.text());
-            } else {
-                rePromise.reject(res.text);
-            }
-        }
-    });
-    return rePromise;
-};
-
-/**
  * 调用豆瓣图书接口按照关键字搜索书
  * @param keyword 搜索关键字
  * @returns {AV.Promise} 如果成功返回可以直接回复给用户的json{title,image,url}数组,没有找到书时返回的json数组长度为0
@@ -184,7 +159,7 @@ exports.searchBook = function (keyword) {
                 if (res.ok) {
                     var re = [];
                     var json = res.body;
-                    var total = json.total;
+                    var total = json['total'];
                     if (total > 0) {//找到了对于的书
                         var books = json.books;
                         for (var i = 0; i < books.length && i < 9; i++) {//最多9本书

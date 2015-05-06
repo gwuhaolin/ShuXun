@@ -122,16 +122,6 @@ APP.service('DoubanBook$', function ($rootScope) {
             that.BookReview.reviewList = [];
             that.BookReview.hasMoreFlag = true;
             $rootScope.$broadcast('scroll.infiniteScrollComplete');
-        },
-        /**
-         * 获得一个书评的完整内容
-         * @param reviewId 评论的id
-         * @return {AV.Promise}
-         */
-        getOneFullReview: function (reviewId) {
-            return AV.Cloud.run('getOneFullDoubanBookReview', {
-                id: reviewId
-            }, null);
         }
     };
 
@@ -193,12 +183,16 @@ APP.service('DoubanBook$', function ($rootScope) {
             if (that.keyword.length > 0) {
                 DoubanBook$.searchBooks(that.keyword, that.books.length, 10, function (json) {
                     that.totalNum = json['total'];
-                    var booksJSON = json['books'];
-                    for (var i = 0; i < booksJSON.length; i++) {
-                        that.books.push(booksJSON[i]);
+                    if (that.totalNum > 0) {
+                        var booksJSON = json['books'];
+                        for (var i = 0; i < booksJSON.length; i++) {
+                            that.books.push(booksJSON[i]);
+                        }
+                        $rootScope.$apply();
+                        $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                    } else {
+                        alert('没有找到你想要的图书');
                     }
-                    $rootScope.$apply();
-                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
             }
         };
@@ -233,6 +227,7 @@ APP.service('DoubanBook$', function ($rootScope) {
     .service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$) {
         var that = this;
         this.LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,默认加载慢屏幕
+        this.RandomStart = (new Date().getDay()) * Math.floor(Math.random() * 10);//随机产生一个开始数,每次打开看到的专业推荐都不一样
 
         /**
          * 所有图书分类
@@ -299,10 +294,8 @@ APP.service('DoubanBook$', function ($rootScope) {
             major: User$.getCurrentJsonUser() ? User$.getCurrentJsonUser().major : '',
             books: [],
             hasMoreFlag: true,
-            //随机产生一个开始数,每次打开看到的专业推荐都不一样
-            randomStart: (new Date().getDay()) * Math.floor(Math.random() * 10),
             loadMore: function () {
-                DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length + that.MajorBook.randomStart, that.LoadCount, function (json) {
+                DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length + that.RandomStart, that.LoadCount, function (json) {
                     that.MajorBook.totalNum = json['total'];
                     var booksJSON = json['books'];
                     if (booksJSON.length > 0) {
@@ -540,7 +533,7 @@ APP.service('DoubanBook$', function ($rootScope) {
             //调用腾讯lbs API把GPS经纬度转换为腾讯地图经纬度
             jsonp('http://apis.map.qq.com/ws/coord/v1/translate?type=1&key=R3DBZ-HEYRF-ZSZJ3-JAJJN-2ZWFF-SLBJV&output=jsonp&locations=' + latitude + ',' + longitude, function (json) {
                 if (json.status == 0) {
-                    var location = json.locations[0];
+                    var location = json['locations'][0];
                     wx.openLocation({
                         latitude: location.lat, // 纬度，浮点数，范围为90 ~ -90
                         longitude: location.lng, // 经度，浮点数，范围为180 ~ -180。
@@ -1014,6 +1007,7 @@ APP.service('DoubanBook$', function ($rootScope) {
                 if (isbn13 != that.ISBN.nowISBN13) {//如果是新的ISBN号码就清空以前的
                     that.ISBN.nowISBN13 = isbn13;
                     that.ISBN.nowEqualISBNJsonUsedBookList = [];
+                    that.ISBN.hasMoreFlag = true;
                 }
                 var query = new AV.Query('UsedBook');
                 query.equalTo("isbn13", that.ISBN.nowISBN13);
@@ -1026,12 +1020,18 @@ APP.service('DoubanBook$', function ($rootScope) {
                         for (var i = 0; i < avosUsedBooks.length; i++) {
                             that.ISBN.nowEqualISBNJsonUsedBookList.push(that.avosUsedBookToJson(avosUsedBooks[i]));
                         }
+                    } else {
+                        that.ISBN.hasMoreFlag = false;
                     }
                 }).always(function () {
                     that.isLoading = false;
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
+            },
+            hasMoreFlag: true,
+            hasMore: function () {
+                return that.ISBN.hasMoreFlag;
             }
         };
     })
@@ -1077,11 +1077,13 @@ APP.service('DoubanBook$', function ($rootScope) {
          * @param receiverObjectId 接受者的avos id
          * @param msg 消息内容
          * @param role 我当前扮演的角色是卖家(=sell)还是买家(=buy)
+         * @param usedBookObjectId 当前二手书的AVOS ID(可为空)
          * @returns {AV.Promise}
          */
-        this.sendPrivateMsg = function (receiverObjectId, msg, role) {
+        this.sendPrivateMsg = function (receiverObjectId, msg, role, usedBookObjectId) {
             var status = new AV.Status(null, msg);
             status.set('to', AV.Object.createWithoutData('_User', receiverObjectId));
+            usedBookObjectId && status.set('usedBook', AV.Object.createWithoutData('UsedBook', usedBookObjectId));
             status.set('role', role);
             return AV.Status.sendPrivateStatus(status, receiverObjectId);
         };
@@ -1157,7 +1159,7 @@ APP.service('DoubanBook$', function ($rootScope) {
         }
     })
 
-    .service('LatestBook$', function ($rootScope) {
+    .service('LatestBook$', function ($rootScope, BookRecommend$) {
         var AttrName = ['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price'];
         var that = this;
 
@@ -1177,8 +1179,8 @@ APP.service('DoubanBook$', function ($rootScope) {
         this.loadMore = function () {
             var query = new AV.Query('LatestBook');
             query.descending('pubdate');
-            query.skip(that.jsonBooks.length);
-            query.limit(10);
+            query.skip(that.jsonBooks.length + BookRecommend$.RandomStart);
+            query.limit(BookRecommend$.LoadCount);
             query.find().done(function (avosLatestBookList) {
                 if (avosLatestBookList.length > 0) {
                     for (var i = 0; i < avosLatestBookList.length; i++) {

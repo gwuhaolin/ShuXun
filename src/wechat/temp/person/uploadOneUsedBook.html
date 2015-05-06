@@ -27,8 +27,8 @@
                     {{doubanBookInfo.title}} <span ng-if="doubanBookInfo.price">{{doubanBookInfo.price}}</span>
                 </p>
                 <!-- 作者-->
-                <p ng-if="doubanBookInfo.author.length>0">
-                    {{doubanBookInfo.author.toString()}} 著
+                <p ng-if="doubanBookInfo['author'].length>0">
+                    {{doubanBookInfo['author'].toString()}} 著
                 </p>
                 <!-- 出版信息-->
                 <p ng-if="doubanBookInfo['publisher']">{{doubanBookInfo['publisher']}} {{doubanBookInfo['pubdate']}}</p>

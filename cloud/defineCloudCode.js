@@ -123,19 +123,6 @@ AV.Cloud.define('getDoubanBookReview', function (req, res) {
 });
 
 /**
- * 获得豆瓣书评的完整内容
- * @param:id 豆瓣书评的id
- */
-AV.Cloud.define('getOneFullDoubanBookReview', function (req, res) {
-    var id = req.params.id;
-    DoubanBook.spiderDoubanBookOneFullReview(id).done(function (re) {
-        res.success(re);
-    }).fail(function (err) {
-        res.error(err);
-    })
-});
-
-/**
  * 获得图书电商购买信息
  * @param:id 豆瓣图书id
  */

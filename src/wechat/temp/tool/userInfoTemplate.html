@@ -13,7 +13,7 @@
     <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id"
             class="button button-small button-clear button-balanced"
             style="float: right"
-            ui-sref="tab.person_sendMsgToUser({receiverObjectId:jsonUserInfo.objectId,role:'buy',inboxType:'private'})">
+            ui-sref="tab.person_sendMsgToUser({receiverObjectId:jsonUserInfo.objectId,role:'buy',inboxType:'private',usedBookObjectId:usedBookObjectId})">
         发私信
     </button>
     <button ng-if="jsonUserInfo.location" class="button button-small button-clear button-balanced"

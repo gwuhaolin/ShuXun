@@ -93,23 +93,12 @@ AV.Cloud.afterSave('_Status', function (req) {
     } else if (role == 'sell') {
         url += '&role=buy';
     }
-    if (inboxType == 'private') {//发私信
-        if (role == 'sell') {
-            title = '主人回复了你的私信';
-        } else if (role == 'buy') {
-            title = '有同学对你的书感兴趣,给你发了私信';
-        }
-        sendWechatMsgTo(status.get('to'));
-    } else if (inboxType == 'reviewUsedBook') {//评价二手书
-        usedBook.fetch().done(function () {
-            var bookTitle = usedBook.get('title');
-            if (role == 'sell') {
-                title = '主人回复了你对 ' + bookTitle + ' 的评论';
-            } else if (role == 'buy') {
-                title = '有同学对你的 ' + bookTitle + ' 发表了评论';
-            }
+    if (usedBook) {
+        usedBook.fetch().always(function () {
             sendWechatMsgTo(status.get('to'));
-        });
+        })
+    } else {
+        sendWechatMsgTo(status.get('to'));
     }
 
     /**
@@ -118,6 +107,22 @@ AV.Cloud.afterSave('_Status', function (req) {
      * @returns {AV.Promise}
      */
     function sendWechatMsgTo(receiver) {
+        //生成title
+        var bookTitle = usedBook.get('title');
+        bookTitle = bookTitle ? bookTitle : '';
+        if (inboxType == 'private') {//发私信
+            if (role == 'sell') {
+                title = bookTitle + '-主人回复了你的私信';
+            } else if (role == 'buy') {
+                title = bookTitle + '-有同学给你发私信';
+            }
+        } else if (inboxType == 'reviewUsedBook') {//评价二手书
+            if (role == 'sell') {
+                title = bookTitle + '-主人回复了你对旧书的评论';
+            } else if (role == 'buy') {
+                title = bookTitle + '-有同学对你的旧书发表了评论';
+            }
+        }
         var rePromise = new AV.Promise(null);
         if (receiver) {
             receiver.fetch().done(function () {
