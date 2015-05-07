@@ -108,8 +108,7 @@ AV.Cloud.afterSave('_Status', function (req) {
      */
     function sendWechatMsgTo(receiver) {
         //生成title
-        var bookTitle = usedBook.get('title');
-        bookTitle = bookTitle ? bookTitle : '';
+        var bookTitle = usedBook ? usedBook.get('title') : '';
         if (inboxType == 'private') {//发私信
             if (role == 'sell') {
                 title = bookTitle + '-主人回复了你的私信';

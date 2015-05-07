@@ -8,11 +8,28 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var templateCache = require('gulp-angular-templatecache');
 var ngAnnotate = require('gulp-ng-annotate');
-var imagemin = require('gulp-imagemin');
 var es = require("event-stream");
 var htmlreplace = require('gulp-html-replace');
 var htmlmin = require('gulp-htmlmin');
 var clean = require('gulp-clean');
+
+function CDN(cdn) {
+    var re = {
+        'Wechat-js': 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
+        'Avos-js': 'http://7xiytg.com1.z0.glb.clouddn.com/avos/av-mini.js',
+        'jQuery-js': 'http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
+        'Semantic-js': 'http://cdn.bootcss.com/semantic-ui/1.12.1/semantic.min.js',
+        'Semantic-css': 'http://cdn.bootcss.com/semantic-ui/1.12.1/semantic.min.css',
+        'Ionic-css': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',
+        'Ionic-js': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/js/ionic.bundle.min.js'
+    };
+    for (var attrName in cdn) {
+        if (cdn.hasOwnProperty(attrName)) {
+            re[attrName] = cdn[attrName];
+        }
+    }
+    return re;
+}
 
 gulp.task('default', ['clear'], function () {
     gulp.start('wechat', 'desktop');
@@ -28,7 +45,6 @@ gulp.task('clear', function () {
 //图片压缩
 gulp.task('wechat_image', function () {
     return gulp.src('src/wechat/img/*.*')
-        .pipe(imagemin())
         .pipe(gulp.dest('public/wechat/img'));
 });
 
@@ -59,13 +75,9 @@ gulp.task('wechat_js', function () {
 //生成主页
 gulp.task('wechat_index', function () {
     return gulp.src('src/wechat/index.html')
-        .pipe(htmlreplace({
-            'AppJS': 'main.js',
-            'WechatJS': 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
-            'IonicCSS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',
-            'IonicJS': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/js/ionic.bundle.min.js',
-            'AvosJS': 'http://7xiv48.com1.z0.glb.clouddn.com/av-core.js'
-        }))
+        .pipe(htmlreplace(CDN({
+            'App-js': 'main.js'
+        })))
         .pipe(htmlmin({
             collapseWhitespace: true,
             removeComments: true,
@@ -83,17 +95,12 @@ gulp.task('wechat', function () {
 //图片压缩
 gulp.task('desktop_image', function () {
     return gulp.src('src/desktop/img/*.*')
-        .pipe(imagemin())
         .pipe(gulp.dest('public/desktop/img'));
 });
 
 gulp.task('desktop_index', function () {
     return gulp.src('src/index.html')
-        .pipe(htmlreplace({
-            'jQuery': 'http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
-            'Semantic-js': 'http://cdn.bootcss.com/semantic-ui/1.12.0/semantic.min.js',
-            'Semantic-css': 'http://cdn.bootcss.com/semantic-ui/1.12.0/semantic.min.css'
-        }))
+        .pipe(htmlreplace(CDN()))
         .pipe(htmlmin({
             collapseWhitespace: true,
             removeComments: true,

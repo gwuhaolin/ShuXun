@@ -3,7 +3,6 @@
  *
  */
 "use strict";
-var Request = require('request');
 var Wechat = require('wechat');
 var WechatAPI = require('cloud/wechatAPI.js');
 var DoubanBook = require('cloud/doubanBook.js');
@@ -37,7 +36,7 @@ exports.MsgHandler = Wechat(config)
                 saveLocationToUser(openId, lat, lon);
                 res.reply('');
                 return;
-            case 'subscribe'://关注事件
+            case 'subscribe'://关注事件 TODO 发送使用说明和书循介绍
                 res.reply('书循,让你的课本循环利用');
                 return;
             case 'unsubscribe'://取消关注事件
