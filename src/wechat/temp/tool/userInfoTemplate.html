@@ -1,0 +1,39 @@
+<!-- 用户基本信息-->
+<div class="item item-avatar" ng-if="jsonUserInfo">
+    <img ng-src="{{User$.changeWechatAvatarSize(jsonUserInfo.avatarUrl,64)}}">
+
+    <h2>{{jsonUserInfo.nickName}}
+        <i class="icon ion-male" style="color: #5eb1ed" ng-if="jsonUserInfo.sex==1"></i>
+        <i class="icon ion-female" style="color: #ff6d9e" ng-if="jsonUserInfo.sex==2"></i>
+        <i>{{jsonUserInfo.startSchoolYear}}级</i>
+
+    </h2>
+
+    <p style="white-space: pre-wrap">{{jsonUserInfo.major}}/{{jsonUserInfo.school}}</p>
+    <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id"
+            class="button button-small button-clear button-balanced"
+            style="float: right"
+            ui-sref="tab.person_sendMsgToUser({receiverObjectId:jsonUserInfo.objectId,role:'buy',inboxType:'private',usedBookObjectId:usedBookObjectId})">
+        发私信
+    </button>
+    <button ng-if="jsonUserInfo.location" class="button button-small button-clear button-balanced"
+            style="float: right"
+            ng-click="WeChatJS$.openMap(jsonUserInfo.location.latitude,jsonUserInfo.location.longitude)">地图
+    </button>
+    <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id && !isMyFollowee"
+            class="button button-small button-clear button-balanced"
+            style="float: right"
+            ng-click="User$.followUser(jsonUserInfo.objectId)">关注Ta
+    </button>
+    <button ng-if="isMyFollowee"
+            class="button button-small button-clear button-energized"
+            style="float: right"
+            ng-click="User$.unfollowUser(jsonUserInfo.objectId)">取消关注
+    </button>
+</div>
+<!-- 主人所有旧书链接-->
+<ion-item ng-if="!hideUsedBook && userUsedBookNumber" style="padding: 0;text-align: center">
+    <a ng-if="userUsedBookNumber>0" class="button button-small button-clear button-balanced"
+       ui-sref="tab.userHome({ownerId:jsonUserInfo.objectId})">查看主人要卖的{{userUsedBookNumber}}本旧书</a>
+    <a ng-if="userUsedBookNumber==0" class="button button-small button-clear button-balanced">主人还没有在买的二手书</a>
+</ion-item>

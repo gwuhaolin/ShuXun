@@ -1,0 +1,36 @@
+<!--编辑个人信息-->
+<ion-view ng-controller="person_editPersonInfo" view-title="修改你的信息">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+        <!-- 基本信息-->
+        <user-info json-user-info="userInfo"></user-info>
+        <!-- 填写其他信息-->
+        <div class="list list-inset">
+            <ion-item class="item-icon-right" ng-click="chooseSchoolModalView.show()">
+                在读学校
+                <span class="item-note" ng-if="userInfo.school">{{userInfo.school}}</span>
+                <i class="icon ion-ios-arrow-right balanced"></i>
+            </ion-item>
+            <ion-item class="item-icon-right" ng-click="chooseMajorModalView.show()">
+                所学专业
+                <span class="item-note" ng-if="userInfo.major">{{userInfo.major}}</span>
+                <i class="icon ion-ios-arrow-right balanced"></i>
+            </ion-item>
+            <label class="item item-input item-select">
+                <span class="input-label">
+                    大学入学时间
+                </span>
+                <select ng-model="userInfo.startSchoolYear" ng-change="attrHasChange=true"
+                        ng-options="one as one for one in startSchoolYearOptions">
+                </select>
+            </label>
+        </div>
+        <!-- 提交-->
+        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
+                ng-disabled="!attrHasChange">
+            提交修改
+        </button>
+    </ion-content>
+</ion-view>

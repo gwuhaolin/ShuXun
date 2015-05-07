@@ -1,0 +1,18 @@
+<!--用户主页-->
+<ion-view ng-controller="userHome" view-title="主人的二手书">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_recommend">书循</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-list>
+            <user-info json-user-info="jsonOwnerInfo" hide-used-book="true"></user-info>
+            <!-- 搜索结果列表-->
+            <one-used-book ng-if="jsonUsedBookList.length>0" ng-repeat="oneJsonUsedBook in jsonUsedBookList"
+                           json-used-book="oneJsonUsedBook"></one-used-book>
+            <ion-item ng-if="jsonUsedBookList.length==0" style="text-align: center;padding: 0">
+                <a class="button button-small button-clear button-balanced"
+                   ui-sref="tab.book_recommend">主人还没旧书要卖,再去逛逛</a>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,19 @@
+<!--豆瓣书评-->
+<ion-view ng-controller="book_bookReview" view-title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-item ng-repeat="one in BookReview.reviewList" class="item-avatar">
+            <img ng-src="{{one.avatarUrl}}">
+
+            <h3>{{one.title}}</h3>
+
+            <p style="white-space: pre-wrap">{{one.context}}</p>
+        </ion-item>
+        <ion-infinite-scroll ng-if="BookReview.hasMore()"
+                             on-infinite="BookReview.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

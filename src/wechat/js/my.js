@@ -1,0 +1,61 @@
+/**
+ * Created by wuhaolin on 4/1/15.
+ *
+ */
+"use strict";
+//AVOSCloud
+AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08zxttpt7upqxwgt6oy47lzb3f8c4juf34otfm");
+
+//微信公共平台
+var WECHAT = {
+    AppID: 'wx2940a8d3ddcad5e9'
+};
+
+/**
+ * 自定义的jsonp调用
+ * @param url 目标url
+ * @param callback
+ * @param onError 当发生错误时调用
+ * callback返回json
+ */
+function jsonp(url, callback, onError) {
+    var script = document.createElement('script');
+    script.type = "text/javascript";
+    var random = Date.now() + String(Math.floor(Math.random() * 100));
+    script.src = url + (url.indexOf('?') > 0 ? '&' : '?') + 'callback=CB' + random;
+    script.onload = function () {
+        script.parentNode.removeChild(script);
+    };
+    script.onerror = function (error) {
+        if (onError) {
+            onError(error);
+        }
+    };
+    window['CB' + random] = function (json) {
+        callback(json);
+    };
+    document.head.appendChild(script);
+}
+
+function createCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {
+    createCookie(name, "", -1);
+}

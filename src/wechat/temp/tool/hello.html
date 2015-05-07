@@ -1,0 +1,12 @@
+<!-- 提示用户登入验证身份信息,进入书循-->
+<ion-view ng-controller="hello" view-title="需要验证你的身份">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_recommend">书循</button>
+    </ion-nav-buttons>
+    <ion-content style="text-align: center">
+        <hr style="margin: 30px">
+        <a class="button button-outline button-balanced" ng-href="{{OAuthURL}}">
+            进入书循
+        </a>
+    </ion-content>
+</ion-view>

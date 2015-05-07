@@ -1,0 +1,14 @@
+{
+  "button": [
+    {
+      "type": "view",
+      "name": "买书",
+      "url": "http://www.ishuxun.cn/wechat/"
+    },
+    {
+      "type": "view",
+      "name": "卖书",
+      "url": "http://www.ishuxun.cn/wechat/#/tab/person/uploadOneUsedBook/"
+    }
+  ]
+}

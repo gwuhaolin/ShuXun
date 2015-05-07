@@ -1,0 +1,29 @@
+{
+  "name": "HelloAngular",
+  "version": "1.0.0",
+  "description": "test angular",
+  "main": "index.js",
+  "author": "WuHaolin",
+  "license": "ISC",
+  "devDependencies": {
+    "event-stream": "^3.3.0",
+    "gulp": "^3.8.11",
+    "gulp-angular-templatecache": "^1.6.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-concat": "^2.5.2",
+    "gulp-html-replace": "^1.4.5",
+    "gulp-htmlmin": "^1.1.1",
+    "gulp-imagemin": "^2.2.1",
+    "gulp-ng-annotate": "^0.5.2",
+    "gulp-run": "^1.6.8",
+    "gulp-uglify": "^1.2.0"
+  },
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "express": "3.4.x",
+    "superagent": "^1.2.0",
+    "wechat": "^1.2.3",
+    "wechat-api": "^1.7.1",
+    "wechat-oauth": "^1.0.1"
+  }
+}

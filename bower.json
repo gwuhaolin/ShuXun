@@ -1,0 +1,25 @@
+{
+  "name": "ShuXun",
+  "version": "0.0.0",
+  "authors": [
+    "WuHaolin <gwuhaolin@gmail.com>"
+  ],
+  "description": "i书循",
+  "keywords": [
+    "二手教程"
+  ],
+  "license": "MIT",
+  "homepage": "http://ishuxun.cn",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic-ui": "~1.12.2",
+    "avoscloud-sdk": "~0.5.1",
+    "ionic": "1.0.0-rc.5"
+  }
+}

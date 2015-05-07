@@ -1,0 +1,33 @@
+<!--编辑一本上传的二手书-->
+<ion-view ng-controller="person_editOneUsedBook" view-title="编辑你的 图书名称">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+    </ion-nav-buttons>
+    +
+    <ion-content class="padding">
+        <!-- 图片信息-->
+        <div class="list card">
+            <ion-item style="text-align: center">
+                <img ng-src="{{avosUsedBook.get('image')}}" style="height: 180px">
+            </ion-item>
+        </div>
+        <!-- 其他信息-->
+        <div class="list card">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">描述</span>
+                <input type="text" placeholder="这书有什么特别之处" ng-model="jsonUsedBookChangeInfo.des"
+                       ng-change="valueHasChange=true">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">要价</span>
+                <input type="number" placeholder="人民币 只输入数值" ng-model="jsonUsedBookChangeInfo.price"
+                       ng-change="valueHasChange=true">
+            </label>
+        </div>
+        <!-- 提交-->
+        <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"
+                ng-disabled="!valueHasChange">
+            提交修改
+        </button>
+    </ion-content>
+</ion-view>

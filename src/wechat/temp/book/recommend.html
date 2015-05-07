@@ -1,0 +1,99 @@
+<ion-view ng-controller="book_recommend" view-title="书循">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <!-- 图书分类-->
+        <div ng-if="BookRecommend$['BookTag']['tag']">
+            <ion-item class="item-divider item-button-right">图书分类
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ng-click="bookTagsModalView.show()">更多
+                </button>
+            </ion-item>
+            <ion-item style="white-space:normal">
+                <button class="button button-small button-outline button-balanced" style="margin: 5px"
+                        ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
+                        ng-repeat="tag in BookRecommend$['BookTag'].getTagAttrNames()">{{tag}}
+                </button>
+            </ion-item>
+        </div>
+        <!-- 新书速递-->
+        <div ng-if="LatestBook$.jsonBooks.length>0">
+            <ion-item class="item-divider item-button-right">新书速递
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'new'})">更多
+                </button>
+            </ion-item>
+            <douban-book-one-line json-books-info="LatestBook$.jsonBooks"></douban-book-one-line>
+        </div>
+        <!-- 用户附近的二手书-->
+        <div ng-if="BookRecommend$.NearBook.jsonBooks.length>0">
+            <ion-item class="item-divider item-button-right">附近的旧书
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_usedBookList({cmd:'near'})">更多
+                </button>
+            </ion-item>
+            <used-book-one-line json-books-info="BookRecommend$.NearBook.jsonBooks"></used-book-one-line>
+        </div>
+        <!-- 根据专业推荐的书-->
+        <div ng-if="BookRecommend$.MajorBook.books.length>0">
+            <ion-item class="item-divider item-button-right">{{BookRecommend$.MajorBook.major}}
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'major'})">更多
+                </button>
+            </ion-item>
+            <douban-book-one-line json-books-info="BookRecommend$.MajorBook.books"></douban-book-one-line>
+        </div>
+        <!-- 用户下学期需要的书-->
+        <div ng-if="BookRecommend$.NeedBook.books.length>0">
+            <ion-item class="item-divider item-button-right">你可能需要
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_bookList({cmd:'need'})">更多
+                </button>
+            </ion-item>
+            <douban-book-one-line json-books-info="BookRecommend$.NeedBook.books"></douban-book-one-line>
+        </div>
+        <!-- 用户附近的用户-->
+        <div ng-if="BookRecommend$.NearUser.jsonUsers.length>0">
+            <ion-item class="item-divider item-button-right">附近的同学
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.userList({cmd:'near'})">更多
+                </button>
+            </ion-item>
+            <ion-item style="padding: 0;text-align: center">
+                <img ng-repeat="one in BookRecommend$.NearUser.jsonUsers"
+                     ng-if="one.avatarUrl"
+                     ng-src="{{User$.changeWechatAvatarSize(one.avatarUrl,64)}}"
+                     ui-sref="tab.userHome({ownerId:one.objectId})"
+                     style="width: 40px;height: 40px;border-radius: 50%;overflow: hidden;margin: 5px">
+            </ion-item>
+        </div>
+    </ion-content>
+
+    <!-- 图书所有分类-->
+    <script type="text/ng-template" id="template/bookTags.html">
+        <ion-modal-view>
+            <ion-header-bar class="item-input-inset">
+                <h1 class="title">图书热门分类</h1>
+                <button class="button button-clear button-balanced"
+                        ng-click="bookTagsModalView.hide()">返回
+                </button>
+            </ion-header-bar>
+            <ion-content class="has-header">
+                <ion-list>
+                    <div ng-repeat="bigTag in BookRecommend$['BookTag'].getTagAttrNames()">
+                        <ion-item class="item-divider item-button-right">{{bigTag}}</ion-item>
+                        <ion-item style="white-space:normal">
+                            <button class="button button-small button-outline button-balanced" style="margin: 5px"
+                                    ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
+                                    ng-click="bookTagsModalView.hide()"
+                                    ng-repeat="tag in BookRecommend$['BookTag']['tag'][bigTag]">
+                                {{tag}}
+                            </button>
+                        </ion-item>
+                    </div>
+                </ion-list>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+</ion-view>
