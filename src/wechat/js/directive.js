@@ -52,8 +52,23 @@ APP.directive('reviewStar', function () {
             function loadHeUsedBookNumber() {
                 if ($scope.jsonUserInfo) {
                     var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
-                    he.relation('usedBooks').query().count().done(function (number) {
+                    var query = he.relation('usedBooks').query();
+                    query.equalTo('role', 'sell');
+                    query.count().done(function (number) {
                         $scope.userUsedBookNumber = number;
+                        $scope.$apply();
+                    });
+                }
+            }
+
+            //加载它的求书的数量
+            function loadHeNeedBookNumber() {
+                if ($scope.jsonUserInfo) {
+                    var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
+                    var query = he.relation('usedBooks').query();
+                    query.equalTo('role', 'need');
+                    query.count().done(function (number) {
+                        $scope.userNeedBookNumber = number;
                         $scope.$apply();
                     });
                 }
@@ -78,6 +93,7 @@ APP.directive('reviewStar', function () {
                 loadIsMyFollowee();
                 if ($scope.hideUsedBook == null || $scope.hideUsedBook == false) {
                     loadHeUsedBookNumber();
+                    loadHeNeedBookNumber();
                 }
             });
             $scope.$on('FollowSomeone', function () {
@@ -142,5 +158,16 @@ APP.directive('reviewStar', function () {
                 jsonUsedBook: '='
             },
             templateUrl: 'temp/tool/oneUsedBookTemplate.html'
+        }
+    })
+
+    .directive('oneNeedBook', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                //三本图书的信息
+                jsonNeedBook: '='
+            },
+            templateUrl: 'temp/tool/oneNeedBookTemplate.html'
         }
     });

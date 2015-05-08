@@ -60,14 +60,14 @@
 
         <!-- 二手书-->
         <div class="list card">
-            <ion-item class="item-divider item-button-right">二手书
+            <ion-item class="item-divider item-button-right">要卖对应旧书的同学
                 <button class="button button-clear button-balanced" style="top: 0"
                         ui-sref="tab.person_uploadOneUsedBook({isbn13:book.isbn13})">上传旧书
                 </button>
             </ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
-            <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0"
-                      ng-repeat="oneJsonUsedBook in UsedBook$.ISBN.nowEqualISBNJsonUsedBookList"
+            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length>0"
+                      ng-repeat="oneJsonUsedBook in UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList"
                       class="item-avatar">
                 <img ng-src="{{User$.changeWechatAvatarSize(oneJsonUsedBook.owner.get('avatarUrl'),64)}}"
                      ui-sref="tab.userHome({ownerId:oneJsonUsedBook.owner.id})">
@@ -78,10 +78,40 @@
                     <p>上传于:{{oneJsonUsedBook.updatedAt | date:'mediumDate' }} </p>
                 </div>
             </ion-item>
-            <ion-item ng-if="UsedBook$.ISBN.nowEqualISBNJsonUsedBookList.length>0"
+            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length>0"
                       style="padding: 0;text-align: center">
                 <a class="button button-small button-clear button-balanced"
-                   ui-sref="tab.book_usedBookList({cmd:'isbn',isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
+                   ui-sref="tab.book_usedBookList({cmd:'isbnUsed',isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
+            </ion-item>
+
+        </div>
+
+        <!-- 求书-->
+        <div class="list card">
+            <ion-item class="item-divider item-button-right">正需要它的同学
+                <button class="button button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.person_uploadOneNeedBook({isbn13:book.isbn13})">发布求书
+                </button>
+            </ion-item>
+            <ion-item ng-if="needBookNumber==0" style="text-align: center">还没有同学想要它</ion-item>
+            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList.length>0"
+                      ng-repeat="oneJsonUsedBook in UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList"
+                      class="item-avatar">
+                <img ng-src="{{User$.changeWechatAvatarSize(oneJsonUsedBook.owner.get('avatarUrl'),64)}}"
+                     ui-sref="tab.userHome({ownerId:oneJsonUsedBook.owner.id})">
+
+                <div ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:oneJsonUsedBook.objectId})">
+                    <p ng-if="oneJsonUsedBook.price">最高承受{{oneJsonUsedBook.price}}元</p>
+
+                    <p ng-if="oneJsonUsedBook.des">{{oneJsonUsedBook.des}}</p>
+
+                    <p>发布于:{{oneJsonUsedBook.updatedAt | date:'mediumDate' }} </p>
+                </div>
+            </ion-item>
+            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList.length>0"
+                      style="padding: 0;text-align: center">
+                <a class="button button-small button-clear button-balanced"
+                   ui-sref="tab.book_usedBookList({cmd:'isbnNeed',isbn13:isbn13})">共{{needBookNumber}}位同学想要这本书,查看全部</a>
             </ion-item>
 
         </div>

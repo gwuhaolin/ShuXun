@@ -75,7 +75,18 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/book/oneUsedBook.html'
                     }
                 }
-            }).state('tab.book_bookReview', {
+            }).state('tab.book_oneNeedBook', {
+                /**
+                 * 参数:usedBookAvosObjectId 二手书的AVOS ID
+                 */
+                url: '/book/oneNeedBook/:usedBookAvosObjectId',
+                views: {
+                    'tab-book': {
+                        templateUrl: 'temp/book/oneNeedBook.html'
+                    }
+                }
+            })
+            .state('tab.book_bookReview', {
                 /**
                  * 参数:doubanBookId 豆瓣图书id
                  * 参数:图书的名称
@@ -90,9 +101,9 @@ var APP = angular.module('APP', ['ionic'], null)
             //tab-person
             .state('tab.person_editOneUsedBook', {
                 /**
-                 * 参数:indexInMyAvosUsedBook_notSell 要编辑的二手书在List里的index
+                 * 参数:usedBookId 要编辑的二手书的AVOS usedBookId
                  */
-                url: '/person/editOneUsedBook/:indexInMyAvosUsedBook_notSell',
+                url: '/person/editOneUsedBook/:usedBookId',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/person/editOneUsedBook.html'
@@ -108,14 +119,33 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/person/uploadOneUsedBook.html'
                     }
                 }
-            }).state('tab.person_usedBooksList', {
+            }).state('tab.person_uploadOneNeedBook', {
+                /**
+                 * 参数:isbn13 要上传的二手书的isbn13号码
+                 */
+                url: '/person/uploadOneNeedBook/:isbn13',
+                views: {
+                    'tab-person': {
+                        templateUrl: 'temp/person/uploadOneNeedBook.html'
+                    }
+                }
+            })
+            .state('tab.person_usedBooksList', {
                 url: '/person/usedBookList',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/person/usedBookList.html'
                     }
                 }
-            }).state('tab.person_editPersonInfo', {
+            }).state('tab.person_needBooksList', {
+                url: '/person/needBookList',
+                views: {
+                    'tab-person': {
+                        templateUrl: 'temp/person/needBookList.html'
+                    }
+                }
+            })
+            .state('tab.person_editPersonInfo', {
                 url: '/person/editPersonInfo',
                 views: {
                     'tab-person': {

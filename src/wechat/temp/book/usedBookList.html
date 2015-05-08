@@ -12,11 +12,16 @@
         </div>
         <ion-list>
             <!-- 二手书列表-->
-            <one-used-book ng-repeat="jsonUsedBook in jsonUsedBooks | orderBy:sortWay"
+            <one-used-book ng-if="cmd=='nearUsed' || cmd =='isbnUsed'"
+                           ng-repeat="jsonUsedBook in jsonUsedBooks | orderBy:sortWay"
                            json-used-book="jsonUsedBook"></one-used-book>
+            <!-- 求书列表-->
+            <one-need-book ng-if="cmd=='nearNeed' || cmd == 'isbnNeed'"
+                           ng-repeat="jsonNeedBook in jsonUsedBooks | orderBy:sortWay"
+                           json-need-book="jsonNeedBook"></one-need-book>
         </ion-list>
         <ion-infinite-scroll ng-if="hasMore()"
-                             on-infinite="loadMore()"
+                             on-infinite="loadMore(isbn13)"
                              distance="1%">
         </ion-infinite-scroll>
     </ion-content>

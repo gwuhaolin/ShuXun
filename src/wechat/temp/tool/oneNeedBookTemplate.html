@@ -1,0 +1,12 @@
+<!--一本二手书-->
+<ion-item class="item-thumbnail-left" ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:jsonNeedBook.objectId})">
+    <img ng-if="jsonNeedBook.image" ng-src="{{jsonNeedBook.image}}">
+
+    <h3>最高承受价:{{jsonNeedBook.price}}</h3>
+
+    <p>时间:{{jsonNeedBook.updatedAt | date:'mediumDate' }}</p>
+
+    <p ng-if="jsonNeedBook.title">书名:{{jsonNeedBook.title}}</p>
+
+    <p ng-if="jsonNeedBook.des">描述:{{jsonNeedBook.des}}</p>
+</ion-item>

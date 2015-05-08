@@ -26,14 +26,23 @@
             </ion-item>
             <douban-book-one-line json-books-info="LatestBook$.jsonBooks"></douban-book-one-line>
         </div>
-        <!-- 用户附近的二手书-->
-        <div ng-if="BookRecommend$.NearBook.jsonBooks.length>0">
+        <!-- 附近用户上传的旧书-->
+        <div ng-if="BookRecommend$.NearUsedBook.jsonBooks.length>0">
             <ion-item class="item-divider item-button-right">附近的旧书
                 <button class="button button-small button-clear button-balanced" style="top: 0"
-                        ui-sref="tab.book_usedBookList({cmd:'near'})">更多
+                        ui-sref="tab.book_usedBookList({cmd:'nearUsed'})">更多
                 </button>
             </ion-item>
-            <used-book-one-line json-books-info="BookRecommend$.NearBook.jsonBooks"></used-book-one-line>
+            <used-book-one-line json-books-info="BookRecommend$.NearUsedBook.jsonBooks"></used-book-one-line>
+        </div>
+        <!-- 附近用户发布的求书-->
+        <div ng-if="BookRecommend$.NearNeedBook.jsonBooks.length>0">
+            <ion-item class="item-divider item-button-right">附近的求书
+                <button class="button button-small button-clear button-balanced" style="top: 0"
+                        ui-sref="tab.book_usedBookList({cmd:'nearNeed'})">更多
+                </button>
+            </ion-item>
+            <used-book-one-line json-books-info="BookRecommend$.NearNeedBook.jsonBooks"></used-book-one-line>
         </div>
         <!-- 根据专业推荐的书-->
         <div ng-if="BookRecommend$.MajorBook.books.length>0">
@@ -45,13 +54,13 @@
             <douban-book-one-line json-books-info="BookRecommend$.MajorBook.books"></douban-book-one-line>
         </div>
         <!-- 用户下学期需要的书-->
-        <div ng-if="BookRecommend$.NeedBook.books.length>0">
+        <div ng-if="BookRecommend$.NearNeedBook.books.length>0">
             <ion-item class="item-divider item-button-right">你可能需要
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_bookList({cmd:'need'})">更多
                 </button>
             </ion-item>
-            <douban-book-one-line json-books-info="BookRecommend$.NeedBook.books"></douban-book-one-line>
+            <douban-book-one-line json-books-info="BookRecommend$.NearNeedBook.books"></douban-book-one-line>
         </div>
         <!-- 用户附近的用户-->
         <div ng-if="BookRecommend$.NearUser.jsonUsers.length>0">

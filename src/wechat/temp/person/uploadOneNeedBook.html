@@ -1,4 +1,4 @@
-<ion-view ng-controller="person_uploadOneUsedBook" view-title="上传二手书">
+<ion-view ng-controller="person_uploadOneUsedBook" view-title="发布求书">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
     </ion-nav-buttons>
@@ -9,10 +9,10 @@
         </div>
         <!-- 扫码-->
         <div ng-if="!usedBookInfo.isbn13">
-            <h5>扫码书后面的条形码获得图书信息</h5>
-            <button class="button button-outline button-balanced" ng-click="scanQRBtnOnClick()">扫条形码</button>
+            <h5>获得你需要的图书信息</h5>
+            <button class="button button-outline button-balanced" ng-click="noBarCodeModalView.show()">开始获取</button>
             <br>
-            <button class="button button-clear button-small button-balanced" ng-click="noBarCodeModalView.show()">没条码?
+            <button class="button button-clear button-small button-balanced" ng-click="scanQRBtnOnClick()">扫码获得
             </button>
         </div>
         <!-- 图书基本信息-->
@@ -38,23 +38,23 @@
         <!-- 填写价格和描述-->
         <div class="list list-inset">
             <label class="item item-input">
-                <input type="number" ng-model="usedBookInfo.price" placeholder="输入要价(人民币)">
+                <input type="number" ng-model="usedBookInfo.price" placeholder="输入你最高承受价(人民币)">
             </label>
             <label class="item item-input">
                 <input type="text" ng-model="usedBookInfo.des" placeholder="对这本书你还有什么想说的吗?">
             </label>
         </div>
 
-        <button ng-disabled="!(!isLoading && usedBookInfo.isbn13 && usedBookInfo.price)"
-                class="button button-block button-outline button-balanced" ng-click="submitOnClick('sell')">
-            提交二手书
+        <button ng-disabled="!(!isLoading && usedBookInfo.isbn13)"
+                class="button button-block button-outline button-balanced" ng-click="submitOnClick('need')">
+            发布求书
         </button>
 
     </ion-content>
     <script type="text/ng-template" id="template/helpModalView.html">
         <ion-modal-view>
             <ion-header-bar>
-                <h2 class="title">书没条码时上传方法</h2>
+                <h2 class="title">发布求书方法</h2>
                 <button class="button button-clear button-balanced"
                         ng-click="noBarCodeModalView.hide()">返回
                 </button>
@@ -62,7 +62,7 @@
             <ion-content class="padding" style="text-align: center">
                 <button class="button button-block button-outline button-balanced" ui-sref="tab.book_searchList"
                         ng-click="noBarCodeModalView.hide()">
-                    开始上传
+                    开始获取
                 </button>
                 <img style="max-width: 98%" ng-src="img/uploadHelp.png">
             </ion-content>

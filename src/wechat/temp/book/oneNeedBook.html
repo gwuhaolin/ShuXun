@@ -1,5 +1,5 @@
 <!--一本二手书信息-->
-<ion-view ng-controller="book_oneUsedBook" view-title="二手 {{jsonUsedBook.title}}">
+<ion-view ng-controller="book_oneUsedBook" view-title="求书 {{jsonUsedBook.title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
@@ -13,16 +13,16 @@
             <ion-item ui-sref="tab.book_oneBook({isbn13:jsonUsedBook.isbn13})">
                 <h3>书名:{{jsonUsedBook.title}}</h3>
 
-                <p>要价:{{jsonUsedBook.price}}</p>
+                <p>最高承受价:{{jsonUsedBook.price}}</p>
 
-                <p>上传时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
+                <p>发布时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
 
-                <p ng-if="jsonUsedBook.des" style="white-space: pre-wrap">主人描述:{{jsonUsedBook.des}}</p>
+                <p ng-if="jsonUsedBook.des" style="white-space: pre-wrap">附加描述:{{jsonUsedBook.des}}</p>
             </ion-item>
         </div>
         <!-- 主人信息-->
         <div class="list card">
-            <ion-item class="item-divider">旧书主人信息</ion-item>
+            <ion-item class="item-divider">求书同学信息</ion-item>
             <user-info json-user-info="ownerInfo" used-book-object-id="jsonUsedBook.objectId"></user-info>
         </div>
         <!-- 用户评论-->

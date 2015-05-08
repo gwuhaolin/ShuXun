@@ -32,8 +32,7 @@
     </button>
 </div>
 <!-- 主人所有旧书链接-->
-<ion-item ng-if="!hideUsedBook && userUsedBookNumber" style="padding: 0;text-align: center">
-    <a ng-if="userUsedBookNumber>0" class="button button-small button-clear button-balanced"
-       ui-sref="tab.userHome({ownerId:jsonUserInfo.objectId})">查看主人要卖的{{userUsedBookNumber}}本旧书</a>
-    <a ng-if="userUsedBookNumber==0" class="button button-small button-clear button-balanced">主人还没有在买的二手书</a>
+<ion-item ng-if="!hideUsedBook" style="padding: 0;text-align: center">
+    <a class="button button-small button-clear button-balanced"
+       ui-sref="tab.userHome({ownerId:jsonUserInfo.objectId})">主人有{{userUsedBookNumber}}本旧书要卖,发布了{{userNeedBookNumber}}个求书</a>
 </ion-item>

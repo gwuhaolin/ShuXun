@@ -13,8 +13,8 @@ APP.controller('tabs', function ($scope, Status$) {
         $scope.LatestBook$ = LatestBook$;
         LatestBook$.loadMore();
         BookRecommend$.MajorBook.loadMore();
-        BookRecommend$.NeedBook.loadMore();
-        BookRecommend$.NearBook.loadMore();
+        BookRecommend$.NearUsedBook.loadMore();
+        BookRecommend$.NearNeedBook.loadMore();
         $ionicModal.fromTemplateUrl('template/bookTags.html', {
             scope: $scope
         }).then(function (modal) {
@@ -56,9 +56,9 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.loadMore = BookRecommend$.TagBook.loadMore;
             $scope.hasMore = BookRecommend$.TagBook.hasMore;
         } else if (cmd == 'need') {
-            $scope.books = BookRecommend$.NeedBook.books;
-            $scope.loadMore = BookRecommend$.NeedBook.loadMore;
-            $scope.hasMore = BookRecommend$.NeedBook.hasMore;
+            $scope.books = BookRecommend$.NearNeedBook.books;
+            $scope.loadMore = BookRecommend$.NearNeedBook.loadMore;
+            $scope.hasMore = BookRecommend$.NearNeedBook.hasMore;
         } else if (cmd == 'major') {
             $scope.books = BookRecommend$.MajorBook.books;
             $scope.loadMore = BookRecommend$.MajorBook.loadMore;
@@ -74,20 +74,30 @@ APP.controller('tabs', function ($scope, Status$) {
 
     //二手书列表
     .controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
-        var cmd = $stateParams['cmd'];
+        $scope.cmd = $stateParams['cmd'];
         $scope.sortWay = '';
-        if (cmd == 'near') {
+        if ($scope.cmd == 'nearUsed') {
             $scope.title = '你附近的二手书';
-            $scope.jsonUsedBooks = BookRecommend$.NearBook.jsonBooks;
-            $scope.loadMore = BookRecommend$.NearBook.loadMore;
-            $scope.hasMore = BookRecommend$.NearBook.hasMore;
-        } else if (cmd == 'isbn') {
-            $scope.title = '对应的二手书';
-            var isbn13 = $stateParams['isbn13'];
-            UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
-            $scope.jsonUsedBooks = UsedBook$.ISBN.nowEqualISBNJsonUsedBookList;
-            $scope.loadMore = UsedBook$.ISBN.loadMoreUsedBookEqualISBN(isbn13);
-            $scope.hasMore = UsedBook$.ISBN.hasMore;
+            $scope.jsonUsedBooks = BookRecommend$.NearUsedBook.jsonBooks;
+            $scope.loadMore = BookRecommend$.NearUsedBook.loadMore;
+            $scope.hasMore = BookRecommend$.NearUsedBook.hasMore;
+        } else if ($scope.cmd == 'nearNeed') {
+            $scope.title = '你附近的求书';
+            $scope.jsonUsedBooks = BookRecommend$.NearNeedBook.jsonBooks;
+            $scope.loadMore = BookRecommend$.NearNeedBook.loadMore;
+            $scope.hasMore = BookRecommend$.NearNeedBook.hasMore;
+        } else if ($scope.cmd == 'isbnUsed') {
+            $scope.title = '对应要卖的旧书';
+            $scope.isbn13 = $stateParams['isbn13'];
+            $scope.jsonUsedBooks = UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList;
+            $scope.loadMore = UsedBook$.ISBN_sell.loadMoreUsedBookEqualISBN;
+            $scope.hasMore = UsedBook$.ISBN_sell.hasMore;
+        } else if ($scope.cmd == 'isbnNeed') {
+            $scope.title = '需要这本书的同学';
+            $scope.isbn13 = $stateParams['isbn13'];
+            $scope.jsonUsedBooks = UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList;
+            $scope.loadMore = UsedBook$.ISBN_need.loadMoreNeedBookEqualISBN;
+            $scope.hasMore = UsedBook$.ISBN_need.hasMore;
         }
     })
 
@@ -146,11 +156,18 @@ APP.controller('tabs', function ($scope, Status$) {
 
         //////////// 二手书信息 /////////
         $scope.UsedBook$ = UsedBook$;
-        UsedBook$.getUsedBookNumberEqualISBN($scope.isbn13).done(function (number) {
+        UsedBook$.ISBN_sell.getUsedBookNumberEqualISBN($scope.isbn13).done(function (number) {
             //对应的图书有多少本二手书
             $scope.usedBookNumber = number;
         });
-        UsedBook$.ISBN.loadMoreUsedBookEqualISBN($scope.isbn13);//先加载5个
+        UsedBook$.ISBN_sell.loadMoreUsedBookEqualISBN($scope.isbn13);//先加载5个
+
+        //////////// 求书信息 /////////
+        UsedBook$.ISBN_need.getNeedBookNumberEqualISBN($scope.isbn13).done(function (number) {
+            //对应的图书有多少本二手书
+            $scope.needBookNumber = number;
+        });
+        UsedBook$.ISBN_need.loadMoreNeedBookEqualISBN($scope.isbn13);//先加载5个
 
         $scope.WeChatJS$ = WeChatJS$;
     })
@@ -217,7 +234,7 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
         });
 
-        $ionicModal.fromTemplateUrl('template/noBarCodeModalView.html', {
+        $ionicModal.fromTemplateUrl('template/helpModalView.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.noBarCodeModalView = modal;
@@ -248,12 +265,21 @@ APP.controller('tabs', function ($scope, Status$) {
             });
         };
 
-        $scope.submitOnClick = function () {
+        /**
+         * @param role 是要卖掉二手书(sell)还是发布需求(need)
+         */
+        $scope.submitOnClick = function (role) {
+            $scope.usedBookInfo.role = role;
             $scope.isLoading = true;
             var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
             avosUsedBook.save(null).done(function () {
-                UsedBook$.loadMyAvosUsedBookList();
-                $state.go('tab.person_usedBooksList');
+                if (role == 'sell') {
+                    UsedBook$.loadMyAvosUsedBookList();
+                    $state.go('tab.person_usedBooksList');
+                } else if (role == 'need') {
+                    UsedBook$.loadMyAvosNeedBookList();
+                    $state.go('tab.person_needBooksList');
+                }
                 $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
@@ -305,12 +331,22 @@ APP.controller('tabs', function ($scope, Status$) {
         function load() {
             $scope.userInfo = User$.getCurrentJsonUser();
             //加载我上传的二手书的数量
-            User$.getCurrentAvosUser().relation('usedBooks').query().count().done(function (number) {
+            var myUsedBookRelation = User$.getCurrentAvosUser().relation('usedBooks');
+            var query = myUsedBookRelation.query();
+            query.equalTo('role', 'sell');
+            query.count().done(function (number) {
                 $scope.myUsedBookNumber = number;
                 $scope.$apply();
             });
+            //加载我发布的求书需求的数量
+            query = myUsedBookRelation.query();
+            query.equalTo('role', 'need');
+            query.count().done(function (number) {
+                $scope.myNeedBookNumber = number;
+                $scope.$apply();
+            });
             //加载我关注的同学的数量
-            var query = AV.User.current().followeeQuery();
+            query = AV.User.current().followeeQuery();
             query.count().done(function (followeeNumber) {
                 $scope.followeeNumber = followeeNumber;
                 $scope.$apply();
@@ -343,16 +379,33 @@ APP.controller('tabs', function ($scope, Status$) {
         });
     })
 
+    .controller('person_needBookList', function ($scope, $ionicScrollDelegate, UsedBook$) {
+        $scope.UsedBook$ = UsedBook$;
+        UsedBook$.loadMyAvosNeedBookList();
+        $scope.$on('$ionicView.afterEnter', function () {
+            $ionicScrollDelegate.scrollTop(true);
+        });
+    })
+
     .controller('person_editOneUsedBook', function ($scope, $state, $ionicHistory, $stateParams, UsedBook$) {
-        var indexInMyAvosUsedBook_notSell = $stateParams['indexInMyAvosUsedBook_notSell'];
-        $scope.avosUsedBook = UsedBook$.myAvosUsedBookList[indexInMyAvosUsedBook_notSell];
+        var usedBookId = $stateParams['usedBookId'];
+        $scope.avosUsedBook = AV.Object.createWithoutData('UsedBook', usedBookId);
+        $scope.avosUsedBook.fetch().done(function () {
+            $scope.jsonUsedBookChangeInfo = UsedBook$.avosUsedBookToJson($scope.avosUsedBook);
+            $scope.$apply();
+        });
         $scope.valueHasChange = false;
-        $scope.jsonUsedBookChangeInfo = UsedBook$.avosUsedBookToJson($scope.avosUsedBook);
         $scope.submitOnClick = function () {
             $scope.avosUsedBook.set('des', $scope.jsonUsedBookChangeInfo.des);
             $scope.avosUsedBook.set('price', $scope.jsonUsedBookChangeInfo.price);
             $scope.avosUsedBook.save(null).done(function () {
-                $state.go('tab.person_usedBooksList');
+                if ($scope.avosUsedBook.get('role') == 'sell') {
+                    UsedBook$.loadMyAvosUsedBookList();
+                    $state.go('tab.person_usedBooksList');
+                } else if ($scope.avosUsedBook.get('role') == 'need') {
+                    UsedBook$.loadMyAvosNeedBookList();
+                    $state.go('tab.person_needBooksList');
+                }
                 $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
@@ -439,8 +492,7 @@ APP.controller('tabs', function ($scope, Status$) {
                 $scope.$apply();
             });
         }
-    }
-)
+    })
 
     .controller('signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, Status$, IonicModalView$) {
         //是否正在加载中..
@@ -528,11 +580,18 @@ APP.controller('tabs', function ($scope, Status$) {
         var ownerId = $stateParams.ownerId;
         var query = new AV.Query(AV.User);
         $scope.jsonUsedBookList = [];
+        $scope.jsonNeedBookList = [];
         query.get(ownerId).done(function (avosOwner) {
             $scope.jsonOwnerInfo = User$.avosUserToJson(avosOwner);
             UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
                 for (var i = 0; i < avosUsedBooks.length; i++) {
                     $scope.jsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
+                }
+                $scope.$apply();
+            });
+            UsedBook$.loadNeedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
+                for (var i = 0; i < avosUsedBooks.length; i++) {
+                    $scope.jsonNeedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
                 }
                 $scope.$apply();
             })
