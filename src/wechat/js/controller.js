@@ -442,19 +442,18 @@ APP.controller('tabs', function ($scope, Status$) {
     }
 )
 
-    .
-    controller('signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, Status$, IonicModalView$) {
+    .controller('signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, Status$, IonicModalView$) {
         //是否正在加载中..
         $scope.isLoading = true;
         //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
-        var shouldGoState = $stateParams['state'];
+        var nextState = $stateParams['nextState'];
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
             User$.loginWithUnionId(userInfo.unionId).done(function (me) {//已经注册过
                 Status$.loadUnreadStatusesCount();//加载未读消息数量
-                $state.go(shouldGoState);
+                $state.go(nextState);
                 $ionicHistory.clearHistory();
                 me.save({//更新微信信息
                     nickName: userInfo['nickname'],
@@ -479,7 +478,7 @@ APP.controller('tabs', function ($scope, Status$) {
         $scope.submitOnClick = function () {
             $scope.isLoading = true;
             User$.signUpWithJSONUser($scope.userInfo).done(function () {
-                $state.go(shouldGoState);
+                $state.go(nextState);
                 $ionicHistory.clearHistory();
             }).fail(function (error) {
                 alert(error.message);
@@ -492,12 +491,12 @@ APP.controller('tabs', function ($scope, Status$) {
     })
 
     .controller('hello', function ($scope, $state, $stateParams, WeChatJS$, User$) {
-        var shouldGoState = $stateParams['state'];//验证完成后要去的状态
+        var nextState = $stateParams['nextState'];//验证完成后要去的状态
         User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
-            $state.go(shouldGoState);
+            $state.go(nextState);
             $ionicHistory.clearHistory();
         });
-        $scope.OAuthURL = WeChatJS$.getOAuthURL(shouldGoState);
+        $scope.OAuthURL = WeChatJS$.getOAuthURL(nextState);
     })
 
     //用户列表

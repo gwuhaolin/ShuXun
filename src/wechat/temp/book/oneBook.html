@@ -23,9 +23,9 @@
                 </button>
             </ion-item>
             <!-- 作者-->
-            <ion-item ng-if="book.author.length>0" class="item-button-right">
-                {{book.author.toString()}} 著
-                <button class="button button-small button-clear button-balanced" ng-if="book.author_intro"
+            <ion-item ng-if="book['author'].length>0" class="item-button-right">
+                {{book['author'].toString()}} 著
+                <button class="button button-small button-clear button-balanced" ng-if="book['author_intro']"
                         ng-click="showAuthorIntro()">作者简介
                 </button>
             </ion-item>

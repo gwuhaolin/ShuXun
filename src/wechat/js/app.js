@@ -146,9 +146,9 @@ var APP = angular.module('APP', ['ionic'], null)
             //公共
             .state('tab.hello', {
                 /**
-                 * 参数:state 验证完身份后要去的状态
+                 * 参数:nextState 验证完身份后要去的状态
                  */
-                url: '/hello?state',
+                url: '/hello?nextState',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/tool/hello.html'
@@ -198,7 +198,7 @@ APP.run(function ($rootScope, $state, User$, Status$, WeChatJS$) {
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录
             if (!User$.getCurrentAvosUser()) {
                 event.preventDefault();//停止当前
-                $state.go('tab.hello', {state: stateName});//去验证身份
+                $state.go('tab.hello', {nextState: stateName});//去验证身份 TODO bug 有些state依赖必须的参数
             }
         }
     });
