@@ -26,6 +26,9 @@
                         ng-options="one as one for one in startSchoolYearOptions">
                 </select>
             </label>
+            <ion-toggle ng-model="userInfo.wechatAlert"
+                        ng-change="attrHasChange=true;confirmWechatAlert()">消息提醒
+            </ion-toggle>
         </div>
         <!-- 提交-->
         <button class="button button-block button-outline button-balanced" ng-click="submitOnClick()"

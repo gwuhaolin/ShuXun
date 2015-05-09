@@ -117,9 +117,9 @@ AV.Cloud.afterSave('_Status', function (req) {
             }
         } else if (inboxType == 'reviewUsedBook') {//评价二手书
             if (role == 'sell') {
-                title = bookTitle + '-主人回复了你对旧书的评论';
+                title = bookTitle + '-主人回复了你的评论';
             } else if (role == 'buy') {
-                title = bookTitle + '-有同学对你的旧书发表了评论';
+                title = bookTitle + '-有同学对你的书发表了评论';
             }
         }
         var rePromise = new AV.Promise(null);
@@ -127,11 +127,16 @@ AV.Cloud.afterSave('_Status', function (req) {
             receiver.fetch().done(function () {
                 var receiverOpenId = receiver.get('openId');
                 if (receiverOpenId) {
-                    WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId).done(function (re) {
-                        rePromise.resolve(re);
-                    }).fail(function (err) {
-                        rePromise.reject(err);
-                    })
+                    var wechatAlert = receiver.get('wechatAlert');//用户自己设置的是否接受微信提醒
+                    if (wechatAlert) {
+                        WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId).done(function (re) {
+                            rePromise.resolve(re);
+                        }).fail(function (err) {
+                            rePromise.reject(err);
+                        })
+                    } else {
+                        rePromise.reject('用户设置了不接受微信提醒,不能给他发消息');
+                    }
                 } else {
                     rePromise.reject('对方还没有关注书循,不能给他发消息');//获取不到openID
                 }

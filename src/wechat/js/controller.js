@@ -306,6 +306,12 @@ APP.controller('tabs', function ($scope, Status$) {
         });
         $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
 
+        $scope.confirmWechatAlert = function () {
+            if ($scope.userInfo.wechatAlert == false) {
+                $scope.userInfo.wechatAlert = !window.confirm('关闭后有同学给你发消息时你将收不到通知,确定关闭吗?');
+            }
+        };
+
         //点击提交修改时
         $scope.submitOnClick = function () {
             var unionId = readCookie('unionId');
@@ -314,7 +320,8 @@ APP.controller('tabs', function ($scope, Status$) {
                 avosUser.save({
                     school: $scope.userInfo['school'],
                     major: $scope.userInfo['major'],
-                    startSchoolYear: $scope.userInfo['startSchoolYear']
+                    startSchoolYear: $scope.userInfo['startSchoolYear'],
+                    wechatAlert: $scope.userInfo['wechatAlert']
                 }).done(function () {
                     alert('修改成功');
                 }).fail(function (error) {
@@ -499,7 +506,7 @@ APP.controller('tabs', function ($scope, Status$) {
         $scope.isLoading = true;
         //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
-        var nextState = $stateParams['nextState'];
+        var nextState = $stateParams['state'];
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;

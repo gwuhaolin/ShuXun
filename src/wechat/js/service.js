@@ -716,7 +716,7 @@ APP.service('DoubanBook$', function ($rootScope) {
          * 一个用户所有具有的属性名称
          * @type {string[]}
          */
-        var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear'];
+        var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear', 'wechatAlert'];
 
         /**
          * 用户注册 用户名=Email
