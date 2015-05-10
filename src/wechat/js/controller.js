@@ -192,7 +192,7 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.$apply();
             var avosOwner = $scope.jsonUsedBook.owner;
             avosOwner.fetch().done(function (avosOwner) {
-                $scope.ownerInfo = User$.avosUserToJson(avosOwner);
+                $scope.ownerInfo = avosUserToJson(avosOwner);
                 $scope.$apply();
             });
         });
@@ -334,7 +334,8 @@ APP.controller('tabs', function ($scope, Status$) {
         }
     })
 
-    .controller('person_my', function ($scope, $state, $stateParams, User$) {
+    .controller('person_my', function ($scope, $state, $stateParams, User$, Status$) {
+        $scope.Status$ = Status$;
         function load() {
             $scope.userInfo = User$.getCurrentJsonUser();
             //加载我上传的二手书的数量
@@ -394,6 +395,21 @@ APP.controller('tabs', function ($scope, Status$) {
         });
     })
 
+    .controller('person_statusList', function ($scope, $stateParams, Status$) {
+        $scope.cmd = $stateParams.cmd;
+        if ($scope.cmd == 'newUsedBook') {//显示上传的二手书
+            $scope.title = '同学新上传的旧书';
+            $scope.avosStatusList = Status$.NewUsedBookStatus.avosStatusList;
+            Status$.NewUsedBookStatus.loadMore();
+            Status$.NewUsedBookStatus.unreadCount = 0;
+        } else if ($scope.cmd == 'newNeedBook') {//显示发布的求书
+            $scope.title = '同学新发布的求书';
+            $scope.avosStatusList = Status$.NewNeedBookStatus.avosStatusList;
+            Status$.NewNeedBookStatus.loadMore();
+            Status$.NewNeedBookStatus.unreadCount = 0;
+        }
+    })
+
     .controller('person_editOneUsedBook', function ($scope, $state, $ionicHistory, $stateParams, UsedBook$) {
         var usedBookId = $stateParams['usedBookId'];
         $scope.avosUsedBook = AV.Object.createWithoutData('UsedBook', usedBookId);
@@ -449,7 +465,7 @@ APP.controller('tabs', function ($scope, Status$) {
 
         //加载用户信息
         AV.Object.createWithoutData('_User', receiverObjectId).fetch().done(function (avosUser) {
-            $scope.jsonUser = User$.avosUserToJson(avosUser);
+            $scope.jsonUser = avosUserToJson(avosUser);
             $scope.$apply();
         });
 
@@ -589,7 +605,7 @@ APP.controller('tabs', function ($scope, Status$) {
         $scope.jsonUsedBookList = [];
         $scope.jsonNeedBookList = [];
         query.get(ownerId).done(function (avosOwner) {
-            $scope.jsonOwnerInfo = User$.avosUserToJson(avosOwner);
+            $scope.jsonOwnerInfo = avosUserToJson(avosOwner);
             UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
                 for (var i = 0; i < avosUsedBooks.length; i++) {
                     $scope.jsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));

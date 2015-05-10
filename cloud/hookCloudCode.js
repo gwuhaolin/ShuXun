@@ -8,17 +8,27 @@ var WeChatAPI = require('cloud/wechatAPI.js');
 
 AV.Cloud.afterSave('UsedBook', function (req) {
     var user = req.user;
+    var usedBook = req.object;
     //设置二手书的地理位置
     var location = user.get('location');
     var point = new AV.GeoPoint(location);
-    req.object.set('location', point);
-    req.object.save();
+    usedBook.set('location', point);
+    usedBook.save();
     //设置用户的二手书的relations
-    user.relation('usedBooks').add(req.object);
+    user.relation('usedBooks').add(usedBook);
     user.save();
+    //给用户的粉丝发送状态
+    var status = new AV.Status(null, usedBook.get('des'));
+    status.set('usedBook',usedBook);
+    if (usedBook.get('role') == 'sell') {//上传二手书
+        status.inboxType = 'newUsedBook';
+    } else if (usedBook.get('role') == 'need') {//发布求书
+        status.inboxType = 'newNeedBook';
+    }
+    AV.Status.sendStatusToFollowers(status, null);
 });
 AV.Cloud.beforeDelete('UsedBook', function (req, res) {
-    //把当前usedBook从主人的usedBooks属性中移除
+    //把当前usedBook从主人的relations的usedBooks属性中移除
     var user = req.user;
     user.relation('usedBooks').remove(req.object);
     user.save().done(function () {

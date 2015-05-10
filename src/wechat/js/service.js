@@ -398,7 +398,7 @@ APP.service('DoubanBook$', function ($rootScope) {
                 query.find().done(function (avosUsers) {
                     if (avosUsers.length > 0) {
                         for (var i = 0; i < avosUsers.length; i++) {
-                            that.NearUser.jsonUsers.push(User$.avosUserToJson(avosUsers[i]));
+                            that.NearUser.jsonUsers.push(avosUserToJson(avosUsers[i]));
                         }
                     } else {
                         that.NearUser.hasMoreFlag = false;
@@ -713,18 +713,12 @@ APP.service('DoubanBook$', function ($rootScope) {
         var that = this;
 
         /**
-         * 一个用户所有具有的属性名称
-         * @type {string[]}
-         */
-        var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear', 'wechatAlert'];
-
-        /**
          * 用户注册 用户名=Email
          * @param jsonUser json格式的用户信息
          * @returns {*|AV.Promise}
          */
         this.signUpWithJSONUser = function (jsonUser) {
-            var user = that.jsonToAvosUser(jsonUser);
+            var user = jsonToAvosUser(jsonUser);
             user.set('username', jsonUser.unionId);
             user.set('password', jsonUser.unionId);
             return user.signUp(null);
@@ -757,35 +751,9 @@ APP.service('DoubanBook$', function ($rootScope) {
         this.getCurrentJsonUser = function () {
             var avosUser = that.getCurrentAvosUser();
             if (avosUser) {
-                return that.avosUserToJson(avosUser);
+                return avosUserToJson(avosUser);
             }
             return null;
-        };
-
-        /**
-         * 把AVOS User 转换为 json格式的UserInfo
-         */
-        this.avosUserToJson = function (avosUser) {
-            var json = {};
-            for (var i = 0; i < UserAttrNames.length; i++) {
-                var attrName = UserAttrNames[i];
-                json[attrName] = avosUser.get(attrName);
-            }
-            json.objectId = avosUser.id;
-            json.location = avosUser.get('location');
-            return json;
-        };
-
-        /**
-         * 把 json格式的UserInfo 转换为 AVOS User
-         */
-        this.jsonToAvosUser = function (jsonUser) {
-            var user = new AV.User();
-            for (var i = 0; i < UserAttrNames.length; i++) {
-                var attrName = UserAttrNames[i];
-                user.set(attrName, jsonUser[attrName]);
-            }
-            return user;
         };
 
         /**
@@ -832,7 +800,7 @@ APP.service('DoubanBook$', function ($rootScope) {
                 query.find().done(function (followees) {
                     if (followees.length > 0) {
                         for (var i = 0; i < followees.length; i++) {
-                            that.Followee.jsonUserList.push(that.avosUserToJson(followees[i]));
+                            that.Followee.jsonUserList.push(avosUserToJson(followees[i]));
                         }
                     } else {
                         that.Followee.hasMoreFlag = false;
@@ -857,7 +825,7 @@ APP.service('DoubanBook$', function ($rootScope) {
                 query.find().done(function (followers) {
                     if (followers.length > 0) {
                         for (var i = 0; i < followers.length; i++) {
-                            that.Follower.jsonUserList.push(that.avosUserToJson(followers[i]));
+                            that.Follower.jsonUserList.push(avosUserToJson(followers[i]));
                         }
                     } else {
                         that.Follower.hasMoreFlag = false;
@@ -1159,29 +1127,66 @@ APP.service('DoubanBook$', function ($rootScope) {
         };
     })
 
-    .service('Status$', function ($rootScope) {
+    .service('Status$', function ($rootScope, UsedBook$) {
         var that = this;
         var AttrName = ['inboxType', 'message', 'source', 'to', 'usedBook'];
 
-        /**
-         * 我未读的消息的数量
-         */
-        this.unreadStatusesCount = null;
         /**
          * 加载我未读的消息的数量,并且显示在Tab上
          */
         this.loadUnreadStatusesCount = function () {
             var user = AV.User.current();
             if (user) {
-                AV.Status.countUnreadStatuses(user).done(function (result) {
-                    var num = parseInt(result['unread']);
-                    if (num > 0) {
-                        that.unreadStatusesCount = String(num);
-                    } else {
-                        that.unreadStatusesCount = null;
-                    }
+                AV.Status.countUnreadStatuses(user, 'newUsedBook').done(function (result) {
+                    that.NewUsedBookStatus.unreadCount = result['unread'];
                     $rootScope.$apply();
                 });
+                AV.Status.countUnreadStatuses(user, 'newNeedBook').done(function (result) {
+                    that.NewNeedBookStatus.unreadCount = result['unread'];
+                    $rootScope.$apply();
+                });
+            }
+        };
+
+        this.NewUsedBookStatus = {
+            unreadCount: 0,
+            avosStatusList: [],
+            loadMore: function () {
+                var query = AV.Status.inboxQuery(AV.User.current(), 'newUsedBook');
+                query.include("usedBook");
+                query.include("source");
+                query.limit(that.NewUsedBookStatus.unreadCount);
+                query.find().done(function (statuses) {
+                    for (var i = 0; i < statuses.length; i++) {
+                        var one = statuses[i];
+                        one.jsonUserInfo = avosUserToJson(one.get('source'));
+                        one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
+                        that.NewUsedBookStatus.avosStatusList.push(one);
+                    }
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                })
+            }
+        };
+
+        this.NewNeedBookStatus = {
+            unreadCount: 0,
+            avosStatusList: [],
+            loadMore: function () {
+                var query = AV.Status.inboxQuery(AV.User.current(), 'newNeedBook');
+                query.include("usedBook");
+                query.include("source");
+                query.limit(that.NewNeedBookStatus.unreadCount);
+                query.find().done(function (statuses) {
+                    for (var i = 0; i < statuses.length; i++) {
+                        var one = statuses[i];
+                        one.jsonUserInfo = avosUserToJson(one.get('source'));
+                        one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
+                        that.NewNeedBookStatus.avosStatusList.push(one);
+                    }
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                })
             }
         };
 

@@ -4,12 +4,10 @@
         <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
     </ion-nav-buttons>
     <ion-content>
+        <div style="text-align: center;margin: 10px" ng-if="UsedBook$.isLoading">
+            <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
+        </div>
         <ion-list>
-            <!-- 正在架上-->
-            <div style="text-align: center;margin: 10px" ng-if="UsedBook$.isLoading">
-                <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
-            </div>
-
             <ion-item class="item-divider item-button-right">正在架上
                 <button class="button button-clear button-balanced" style="top: 0"
                         ui-sref="tab.person_uploadOneUsedBook">上传旧书

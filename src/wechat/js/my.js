@@ -59,3 +59,31 @@ function readCookie(name) {
 function eraseCookie(name) {
     createCookie(name, "", -1);
 }
+
+var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear', 'wechatAlert'];
+/**
+ * 把AVOS User 转换为 json格式的UserInfo
+ */
+function avosUserToJson (avosUser) {
+    var json = {};
+    for (var i = 0; i < UserAttrNames.length; i++) {
+        var attrName = UserAttrNames[i];
+        json[attrName] = avosUser.get(attrName);
+    }
+    json.objectId = avosUser.id;
+    json.location = avosUser.get('location');
+    return json;
+}
+/**
+ * 把 json格式的UserInfo 转换为 AVOS User
+ */
+function jsonToAvosUser (jsonUser) {
+    var user = new AV.User();
+    for (var i = 0; i < UserAttrNames.length; i++) {
+        var attrName = UserAttrNames[i];
+        if(jsonUser[attrName]){
+            user.set(attrName, jsonUser[attrName]);
+        }
+    }
+    return user;
+}

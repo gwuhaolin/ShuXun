@@ -4,6 +4,13 @@
         <button class="button button-clear button-balanced" ng-click="logOut()">退出</button>
     </ion-nav-buttons>
     <ion-content>
+        <!-- 未读消息-->
+        <ion-item ng-if="Status$.NewUsedBookStatus.unreadCount>0" ui-sref="tab.person_statusList({cmd:'newUsedBook'})">
+            你关注的同学新上传了旧书<span class="badge badge-assertive">{{Status$.NewUsedBookStatus.unreadCount}}</span>
+        </ion-item>
+        <ion-item ng-if="Status$.NewNeedBookStatus.unreadCount>0" ui-sref="tab.person_statusList({cmd:'newNeedBook'})">
+            你关注的同学新发布了求书<span class="badge badge-assertive">{{Status$.NewNeedBookStatus.unreadCount}}</span>
+        </ion-item>
         <!-- 我的基本信息-->
         <ion-item class="item-divider item-button-right">我的信息
             <button class="button button-clear button-balanced" style="top: 0"

@@ -85,8 +85,7 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/book/oneNeedBook.html'
                     }
                 }
-            })
-            .state('tab.book_bookReview', {
+            }).state('tab.book_bookReview', {
                 /**
                  * 参数:doubanBookId 豆瓣图书id
                  * 参数:图书的名称
@@ -129,8 +128,7 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/person/uploadOneNeedBook.html'
                     }
                 }
-            })
-            .state('tab.person_usedBooksList', {
+            }).state('tab.person_usedBooksList', {
                 url: '/person/usedBookList',
                 views: {
                     'tab-person': {
@@ -144,8 +142,17 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'temp/person/needBookList.html'
                     }
                 }
-            })
-            .state('tab.person_editPersonInfo', {
+            }).state('tab.person_statusList', {
+                /**
+                 * 参数:cmd 当前模式 =newUsedBook时显上传的二手书 =newNeedBook 显示发布的求书
+                 */
+                url: '/person/statusList?cmd',
+                views: {
+                    'tab-person': {
+                        templateUrl: 'temp/person/statusList.html'
+                    }
+                }
+            }).state('tab.person_editPersonInfo', {
                 url: '/person/editPersonInfo',
                 views: {
                     'tab-person': {

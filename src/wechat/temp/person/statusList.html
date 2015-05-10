@@ -1,0 +1,19 @@
+<!-- 我关注的同学发布的新动态-->
+<ion-view ng-controller="person_statusList" view-title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+        <div class="card" ng-if="cmd=='newUsedBook'"
+             ng-repeat="oneAvosStatus in avosStatusList">
+            <one-used-book json-used-book="oneAvosStatus.jsonUsedBook"></one-used-book>
+            <user-info json-user-info="oneAvosStatus.jsonUserInfo"></user-info>
+        </div>
+
+        <div class="card" ng-if="cmd=='newNeedBook'"
+             ng-repeat="oneAvosStatus in avosStatusList">
+            <one-need-book json-need-book="oneAvosStatus.jsonUsedBook"></one-need-book>
+            <user-info json-user-info="oneAvosStatus.jsonUserInfo"></user-info>
+        </div>
+    </ion-content>
+</ion-view>
