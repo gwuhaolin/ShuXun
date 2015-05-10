@@ -38,8 +38,12 @@ exports.MsgHandler = Wechat(config)
                 return;
             case 'subscribe'://关注事件
                 //发送使用说明
-                var guide = ReplyMaker.oneImageAndText('书循,让你的课本循环利用', 'http://www.ishuxun.cn/wechat/img/GuideImageAndTextBanner.png', 'http://create.maka.im/k/N3INP6YN');
-                res.reply(guide);
+                var guide = ReplyMaker.oneImageAndText(
+                    '书循,让你的课本循环利用',
+                    'http://www.ishuxun.cn/wechat/img/GuideImageAndTextBanner.png',
+                    'http://create.maka.im/k/N3INP6YN',
+                    '快来看看书循是如何快捷的帮你找到你想要的最便宜的书吧');
+                res.reply([guide]);
                 return;
             case 'unsubscribe'://取消关注事件
                 res.reply('');
@@ -159,13 +163,14 @@ var ReplyMaker = {
      * @param title 图文消息标题
      * @param picurl 图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
      * @param url 点击图文消息跳转链接
+     * @param description 描述
      */
-    oneImageAndText: function (title, picurl, url) {
+    oneImageAndText: function (title, picurl, url, description) {
         return {
             title: title,
-            description: '',
             picurl: picurl,
-            url: url
+            url: url,
+            description: description
         }
     }
 };
