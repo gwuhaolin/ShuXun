@@ -36,8 +36,10 @@ exports.MsgHandler = Wechat(config)
                 saveLocationToUser(openId, lat, lon);
                 res.reply('');
                 return;
-            case 'subscribe'://关注事件 TODO 发送使用说明和书循介绍
-                res.reply('书循,让你的课本循环利用');
+            case 'subscribe'://关注事件
+                //发送使用说明
+                var guide = ReplyMaker.oneImageAndText('书循,让你的课本循环利用', 'http://www.ishuxun.cn/wechat/img/GuideImageAndTextBanner.png', 'http://create.maka.im/k/N3INP6YN');
+                res.reply(guide);
                 return;
             case 'unsubscribe'://取消关注事件
                 res.reply('');
