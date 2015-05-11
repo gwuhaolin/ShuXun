@@ -6,7 +6,7 @@
 /**
  * 豆瓣图书接口
  */
-APP.service('DoubanBook$', function ($rootScope) {
+APP.service('DoubanBook$', function ($rootScope,$ionicHistory) {
     var that = this;
     var baseUri = 'http://api.douban.com/v2/book';
     /**
@@ -107,6 +107,10 @@ APP.service('DoubanBook$', function ($rootScope) {
                     }
                 } else {
                     that.BookReview.hasMoreFlag = false;
+                    if(that.BookReview.reviewList.length==0){//没有书评时提醒
+                        alert('还没有对应的书评~');
+                        $ionicHistory.goBack();
+                    }
                 }
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
