@@ -6,7 +6,7 @@
 /**
  * 豆瓣图书接口
  */
-APP.service('DoubanBook$', function ($rootScope,$ionicHistory) {
+APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
     var that = this;
     var baseUri = 'http://api.douban.com/v2/book';
     /**
@@ -107,7 +107,7 @@ APP.service('DoubanBook$', function ($rootScope,$ionicHistory) {
                     }
                 } else {
                     that.BookReview.hasMoreFlag = false;
-                    if(that.BookReview.reviewList.length==0){//没有书评时提醒
+                    if (that.BookReview.reviewList.length == 0) {//没有书评时提醒
                         alert('还没有对应的书评~');
                         $ionicHistory.goBack();
                     }
@@ -328,6 +328,7 @@ APP.service('DoubanBook$', function ($rootScope,$ionicHistory) {
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query('UsedBook');
+                query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
                 query.equalTo('role', 'need');
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
@@ -361,6 +362,7 @@ APP.service('DoubanBook$', function ($rootScope,$ionicHistory) {
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query('UsedBook');
+                query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
                 query.equalTo('role', 'sell');
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
@@ -394,6 +396,7 @@ APP.service('DoubanBook$', function ($rootScope,$ionicHistory) {
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query(AV.User);
+                query.notEqualTo('objectId', AV.User.current().id);//不要显示自己
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
                 }
