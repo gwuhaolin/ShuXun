@@ -8,6 +8,7 @@ var LBS = require('cloud/lbs.js');
 var Info = require('cloud/info.js');
 var BusinessSite = require('cloud/businessSite.js');
 var DoubanBook = require('cloud/doubanBook.js');
+var DangDangBook = require('cloud/dangdangBook.js');
 
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
@@ -23,6 +24,18 @@ AV.Cloud.define('spiderLatestBook', function (req, res) {
     }).fail(function (err) {
         res.error(err);
     })
+});
+
+/**
+ * 根据ISBN号码去抓取图书信息,返回的图书信息和豆瓣图书相同
+ */
+AV.Cloud.define('spiderBookByISBN', function (req, res) {
+    var isbn13 = req.isbn13;
+    DangDangBook.spiderBookByISBN(isbn13).done(function (jsonBook) {
+        res.success(jsonBook);
+    }).fail(function (err) {
+        res.error(err);
+    });
 });
 
 /**
