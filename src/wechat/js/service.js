@@ -419,7 +419,9 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query(AV.User);
-                query.notEqualTo('objectId', AV.User.current().id);//不要显示自己
+                if(AV.User.current()){
+                    query.notEqualTo('objectId', AV.User.current().id);//不要显示自己
+                }
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
                 }
