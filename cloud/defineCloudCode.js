@@ -9,6 +9,7 @@ var Info = require('cloud/info.js');
 var BusinessSite = require('cloud/businessSite.js');
 var DoubanBook = require('cloud/doubanBook.js');
 var DangDangBook = require('cloud/dangdangBook.js');
+var JDBook = require('cloud/jdBook.js');
 
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
@@ -27,15 +28,51 @@ AV.Cloud.define('spiderLatestBook', function (req, res) {
 });
 
 /**
- * 根据ISBN号码去抓取图书信息,返回的图书信息和豆瓣图书相同
+ * 根据ISBN号码去抓取图书信息,返回的图书信息和豆瓣图书格式相同
+ * 返回AVOS Object 对象
  */
 AV.Cloud.define('spiderBookByISBN', function (req, res) {
-    var isbn13 = req.isbn13;
-    DangDangBook.spiderBookByISBN(isbn13).done(function (jsonBook) {
-        res.success(jsonBook);
-    }).fail(function (err) {
-        res.error(err);
+    var isbn13 = req.params.isbn13;
+    getBookInfoByISBN(isbn13).done(function (avosBookInfo) {
+        if (avosBookInfo) {
+            res.success(avosBookInfo);
+        } else {
+            DangDangBook.spiderBookByISBN(isbn13).done(function (jsonBook) {//先去当当网
+                saveBookInfo(jsonBook).done(function (avosBookInfo) {
+                    res.success(avosBookInfo);
+                })
+            }).fail(function () {
+                JDBook.spiderBookByISBN(isbn13).done(function (jsonBook) {//不行再去京东
+                    saveBookInfo(jsonBook).done(function (avosBookInfo) {
+                        res.success(avosBookInfo);
+                    })
+                }).fail(function (err) {
+                    res.error(err);
+                });
+            });
+        }
     });
+
+    /**
+     * 从BookInfo 表里查询图书信息
+     * @param isbn13
+     * @returns {*|{value, color}|AV.Promise}
+     */
+    function getBookInfoByISBN(isbn13) {
+        var query = new AV.Query('BookInfo');
+        query.equalTo('isbn13', isbn13);
+        return query.first();
+    }
+
+    /**
+     * 把抓取到的图书信息保存到BookInfo表
+     * @param jsonBook
+     */
+    function saveBookInfo(jsonBook) {
+        var BookInfo = AV.Object.extend('BookInfo');
+        var avosBookInfo = new BookInfo();
+        return avosBookInfo.save(jsonBook);
+    }
 });
 
 /**

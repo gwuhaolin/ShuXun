@@ -9,6 +9,23 @@
 APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
     var that = this;
     var baseUri = 'http://api.douban.com/v2/book';
+
+    /**
+     * 抓取isbn13对应的书
+     * @param isbn13
+     * @param callback json格式的和豆瓣格式相同的书
+     * 如果没有成功就返回 null
+     */
+    this.getBookInfoFromAVOSByISBN = function (isbn13, callback) {
+        AV.Cloud.run('spiderBookByISBN', {
+            isbn13: isbn13
+        }).done(function (avosBookInfo) {
+            callback(avosBookInfo);
+        }).fail(function () {
+            callback(null);
+        })
+    };
+
     /**
      * 用书的ISBN号码获得书的信息
      * @param bookISBN 书的ISBN号码
@@ -16,20 +33,26 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
      * @param callback 如果找到了对应的书就返回JSON书信息,否则返回null
      */
     this.getBookByISBD = function (bookISBN, callback, fields) {
-        var url = baseUri + '/isbn/' + bookISBN;
-        if (fields == null) {//默认是获取所有的字段
-            fields = 'id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+        function buildUrl(isbn13) {
+            var url = baseUri + '/isbn/' + isbn13;
+            if (fields == null) {//默认是获取所有的字段
+                fields = 'id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+            }
+            url += '?fields=' + fields;
+            return url;
         }
-        url += '?fields=' + fields;
-        jsonp(url, function (json) {
+
+        jsonp(buildUrl(bookISBN), function (json) {
             callback(json);
         }, function () {//没有找到对于的书的信息
-            if (bookISBN.length == 13) {
-                that.getBookByISBD(correctISBN13(bookISBN), function (json) {
+            if (bookISBN.length == 13) {//如果isbn编码是13位的就对其进行修正后再尝试一遍
+                jsonp(buildUrl(correctISBN13(bookISBN)), function (json) {
                     callback(json);
-                }, fields);
-            } else {
-                callback(null);
+                }, function () {//去抓取信息
+                    that.getBookInfoFromAVOSByISBN(bookISBN, function (json) {
+                        callback(json);
+                    });
+                });
             }
         });
     };
