@@ -19,7 +19,7 @@
             </ion-item>
 
             <!-- 搜索结果列表-->
-            <ion-item ng-if="book.isbn13" class="item-thumbnail-left" collection-repeat="book in SearchBook$.books"
+            <ion-item class="item-thumbnail-left" collection-repeat="book in SearchBook$.books"
                       ui-sref="tab.book_oneBook({isbn13:book.isbn13})">
                 <img ng-src="{{book.image}}">
 
