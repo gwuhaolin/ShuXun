@@ -42,7 +42,8 @@ exports.spiderBookByISBN = function (isbn13) {
                                             binding: '',
                                             summary: '',
                                             author_intro: '',
-                                            catalog: ''
+                                            catalog: '',
+                                            price:''
                                         };
                                         $ = Cheerio.load(res.text);
                                         //获取标题
@@ -51,8 +52,9 @@ exports.spiderBookByISBN = function (isbn13) {
                                         jsonBook.title = jsonBook.title.text().trim();
                                         //获取封面
                                         jsonBook.image = $('#mainimg_pic').find('img').first().attr('src');
+                                        jsonBook.image = jsonBook.image.replace('_x_', '_w_');//小图换大图
 
-                                        $('div[name="Infodetail_pub"]').first().find('.show_info_right').each(function () {
+                                        $('.show_info_right').each(function () {
                                             var text = $(this).prev().text();
                                             if (text.match(/作*者/)) {
                                                 var authors = $(this).children('a');
@@ -60,11 +62,15 @@ exports.spiderBookByISBN = function (isbn13) {
                                                     jsonBook.author.push(authors.eq(i).text());
                                                 }
                                             } else if (text.match(/出*版*社/)) {
-                                                jsonBook.publisher = $(this).text();
+                                                jsonBook.publisher = $(this).text().trim();
                                             } else if (text == '出版时间') {
-                                                jsonBook.pubdate = $(this).text();
+                                                jsonBook.pubdate = $(this).text().trim();
                                             } else if (text == 'ＩＳＢＮ') {
-                                                console.log($(this).text());
+                                                if ($(this).text() != isbn13) {
+                                                    rePromise.reject('抓取到的图书ISBN编码不符合');
+                                                }
+                                            } else if (text.match(/定*价/)) {
+                                                jsonBook.price = $(this).text().trim();
                                             }
                                         });
 

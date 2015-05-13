@@ -16,10 +16,10 @@ var clean = require('gulp-clean');
 function CDN(cdn) {
     var re = {
         'Wechat-js': 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
-        'Avos-js': 'http://7xiytg.com1.z0.glb.clouddn.com/avos/av-mini.js',
         'jQuery-js': 'http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
-        'Semantic-js': 'http://7xiytg.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
-        'Semantic-css': 'http://7xiytg.com1.z0.glb.clouddn.com/semantic/semantic.min.css',
+        'Avos-js': 'http://7xj22a.com1.z0.glb.clouddn.com/avos/av-mini.js',
+        'Semantic-js': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
+        'Semantic-css': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.css',
         'Ionic-css': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',
         'Ionic-js': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/js/ionic.bundle.min.js'
     };

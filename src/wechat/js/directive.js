@@ -47,7 +47,8 @@ APP.directive('reviewStar', function () {
         function link($scope) {
             $scope.WeChatJS$ = WeChatJS$;
             $scope.User$ = User$;
-
+            $scope.userUsedBookNumber=0;
+            $scope.userNeedBookNumber=0;
             //加载它的二手书的数量
             function loadHeUsedBookNumber() {
                 if ($scope.jsonUserInfo) {
@@ -77,7 +78,7 @@ APP.directive('reviewStar', function () {
             //判断是否我已经关注ta
             $scope.isMyFollowee = false;
             function loadIsMyFollowee() {
-                if ($scope.jsonUserInfo) {
+                if ($scope.jsonUserInfo && AV.User.current()) {
                     var query = AV.User.current().followeeQuery();
                     query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId));
                     query.count().done(function (number) {

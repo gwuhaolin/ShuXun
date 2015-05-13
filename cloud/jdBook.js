@@ -38,7 +38,8 @@ function spiderBookByISBN(isbn) {
                                 binding: '',
                                 summary: '',
                                 author_intro: '',
-                                catalog: ''
+                                catalog: '',
+                                price: ''
                             };
                             $ = Cheerio.load(res.text);
                             //获取标题
@@ -56,7 +57,7 @@ function spiderBookByISBN(isbn) {
                                     jsonBook.publisher = text.split('：')[1].trim();
                                 } else if (text.indexOf('ISBN') >= 0) {
                                     if (text.split('：')[1] != isbn) {
-                                        //error isbn图书不对
+                                        rePromise.reject('抓取到的图书ISBN编码不符合');
                                     }
                                 } else if (text.indexOf('出版时间') >= 0) {
                                     jsonBook.pubdate = text.split('：')[1];
@@ -66,6 +67,8 @@ function spiderBookByISBN(isbn) {
                                     jsonBook.binding = text.split('：')[1];
                                 }
                             });
+                            //获得定价
+                            jsonBook.price = $('#page_maprice').text().trim();
                             //获取简介 TODO error
                             SuperAgent.get('http://d.3.cn/desc/' + jdId)
                                 .charset('gbk')
