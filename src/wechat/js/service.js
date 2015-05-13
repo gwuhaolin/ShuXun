@@ -548,7 +548,7 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
          * @param nextState 验证完成后要去的状态
          */
         this.getOAuthURL = function (nextState) {
-            var redirectUrl = location.href.split('#')[0] + '#tab/signUp';
+            var redirectUrl = location.href.split('#')[0] + '#/tab/signUp';
             return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state=' + nextState + '#wechat_redirect';
         };
 
@@ -574,7 +574,7 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 createCookie('unionId', re.unionId, 365);
                 onSuccess(re);
             }).fail(function (err) {
-                onError(err);
+                onError && onError(err);
             });
         };
 

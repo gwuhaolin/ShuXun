@@ -563,6 +563,9 @@ APP.controller('tabs', function ($scope, Status$) {
                 });
             });
             $scope.$apply();
+        }, function () {
+            alert('让我获取你的基本资料吧~');
+            $state.go('tab.hello');
         });
 
         IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
@@ -591,7 +594,7 @@ APP.controller('tabs', function ($scope, Status$) {
 
     })
 
-    .controller('hello', function ($scope, $state, $stateParams, WeChatJS$, User$) {
+    .controller('hello', function ($scope, $state, $stateParams, $ionicHistory, WeChatJS$, User$) {
         var nextState = $stateParams['nextState'];//验证完成后要去的状态
         User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
             $state.go(nextState);
