@@ -475,11 +475,18 @@ APP.controller('tabs', function ($scope, Status$) {
 
         //加载聊天记录
         $scope.jsonStatusList = [];
-        Status$.getStatusList_twoUser(receiverObjectId, $scope.msg.usedBookObjectId).done(function (avosStatusList) {
-            for (var i = 0; i < avosStatusList.length; i++) {
-                $scope.jsonStatusList.push(Status$.avosStatusToJson(avosStatusList[i]));
-            }
-        });
+        function loadMoreStatus() {
+            var query = Status$.makeQueryStatusList_twoUser(receiverObjectId, $scope.msg.usedBookObjectId);
+            query.skip($scope.jsonStatusList.length);
+            query.find().done(function (avosStatusList) {
+                for (var i = 0; i < avosStatusList.length; i++) {
+                    $scope.jsonStatusList.push(Status$.avosStatusToJson(avosStatusList[i]));
+                }
+                $ionicScrollDelegate.scrollBottom(true);
+                $scope.$apply();
+            });
+        }
+
 
         //常用快捷回复
         $scope.commonReplayWords = [];
@@ -518,7 +525,22 @@ APP.controller('tabs', function ($scope, Status$) {
                 $scope.msg.sendMsg = '';
                 $scope.$apply();
             });
-        }
+        };
+
+        var autoTimer;
+        //自动刷新拿去新信息,模仿真实聊天
+        $scope.$on('$ionicView.afterEnter', function () {
+            autoTimer = setInterval(function () {
+                Status$.makeQueryStatusList_twoUser(receiverObjectId, $scope.msg.usedBookObjectId).count().done(function (count) {
+                    if (count > $scope.jsonStatusList.length) {
+                        loadMoreStatus();
+                    }
+                })
+            }, 1000);
+        });
+        $scope.$on('$ionicView.afterLeave', function () {
+            clearInterval(autoTimer);
+        });
     })
 
     .controller('signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, WeChatJS$, InfoService$, User$, Status$, IonicModalView$) {
@@ -602,7 +624,7 @@ APP.controller('tabs', function ($scope, Status$) {
         }
     })
 
-    .controller('userHome', function ($scope, $stateParams, UsedBook$, User$) {
+    .controller('userHome', function ($scope, $stateParams, UsedBook$) {
         $scope.UsedBook$ = UsedBook$;
         var ownerId = $stateParams.ownerId;
         var query = new AV.Query(AV.User);

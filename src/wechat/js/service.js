@@ -419,7 +419,7 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
             loadMore: function () {
                 var avosGeo = User$.getCurrentUserLocation();
                 var query = new AV.Query(AV.User);
-                if(AV.User.current()){
+                if (AV.User.current()) {
                     query.notEqualTo('objectId', AV.User.current().id);//不要显示自己
                 }
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
@@ -1295,12 +1295,11 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
         };
 
         /**
-         * 获得所有关于我和另一个用户之间的消息
          * @param avosUserId 对方用户的id
          * @param avosUsedBookId 二手书的id 两个有这个参数就只显示关于这部二手书的私信,否则显示所有的私信
-         * @returns {*|{}|AV.Promise}
+         * @returns {*|{}|AV.Query}
          */
-        this.getStatusList_twoUser = function (avosUserId, avosUsedBookId) {
+        this.makeQueryStatusList_twoUser = function (avosUserId, avosUsedBookId) {
             var me = AV.User.current();
             var he = AV.Object.createWithoutData('_User', avosUserId);
             var query1 = new AV.Query('_Status');
@@ -1314,9 +1313,8 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 query1.equalTo('usedBook', avosUsedBook);
                 query2.equalTo('usedBook', avosUsedBook);
             }
-            var mainQuery = AV.Query.or(query1, query2);
-            return mainQuery.find();
-        }
+            return AV.Query.or(query1, query2);
+        };
     })
 
     .service('LatestBook$', function ($rootScope, BookRecommend$) {
