@@ -29,12 +29,13 @@ AV.Cloud.afterSave('UsedBook', function (req) {
 });
 AV.Cloud.beforeDelete('UsedBook', function (req, res) {
     //把当前usedBook从主人的relations的usedBooks属性中移除
-    var user = req.user;
-    user.relation('usedBooks').remove(req.object);
-    user.save().done(function () {
+    var usedBook = req.object;
+    var owner = usedBook.get('owner');
+    owner.relation('usedBooks').remove(usedBook);
+    owner.save().done(function () {
         res.success();
     }).fail(function (err) {
-        res.err(err);
+        res.error(err);
     });
 });
 
