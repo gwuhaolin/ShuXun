@@ -5,10 +5,13 @@
     </ion-nav-buttons>
     <ion-content class="padding">
         <div class="button-bar">
-            <a class="button button-small" ng-click="sortWay='usedBookNumber'"
-               ng-class="{'button-balanced':sortWay=='usedBookNumber'}">旧书数量</a>
+            <!-- 这些属性由 user-info 里加载-->
+            <a class="button button-small" ng-click="sortWay='userUsedBookNumber'"
+               ng-class="{'button-balanced':sortWay=='userUsedBookNumber'}">旧书数量</a>
             <a class="button button-small " ng-click="sortWay='location'"
                ng-class="{'button-balanced':sortWay=='location'}">离你距离</a>
+            <a class="button button-small " ng-click="sortWay='isMyFollowee'"
+               ng-class="{'button-balanced':sortWay=='isMyFollowee'}">我关注的</a>
         </div>
         <div class="card" ng-repeat="one in jsonUsers | orderBy:sortWay:true">
             <user-info json-user-info="one"></user-info>

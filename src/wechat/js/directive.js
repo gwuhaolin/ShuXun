@@ -47,8 +47,8 @@ APP.directive('reviewStar', function () {
         function link($scope) {
             $scope.WeChatJS$ = WeChatJS$;
             $scope.User$ = User$;
-            $scope.userUsedBookNumber=0;
-            $scope.userNeedBookNumber=0;
+            $scope.jsonUserInfo.userUsedBookNumber=0;
+            $scope.jsonUserInfo.userNeedBookNumber=0;
             //加载它的二手书的数量
             function loadHeUsedBookNumber() {
                 if ($scope.jsonUserInfo) {
@@ -56,7 +56,7 @@ APP.directive('reviewStar', function () {
                     var query = he.relation('usedBooks').query();
                     query.equalTo('role', 'sell');
                     query.count().done(function (number) {
-                        $scope.userUsedBookNumber = number;
+                        $scope.jsonUserInfo.userUsedBookNumber = number;
                         $scope.$apply();
                     });
                 }
@@ -69,7 +69,7 @@ APP.directive('reviewStar', function () {
                     var query = he.relation('usedBooks').query();
                     query.equalTo('role', 'need');
                     query.count().done(function (number) {
-                        $scope.userNeedBookNumber = number;
+                        $scope.jsonUserInfo.userNeedBookNumber = number;
                         $scope.$apply();
                     });
                 }
@@ -82,7 +82,7 @@ APP.directive('reviewStar', function () {
                     var query = AV.User.current().followeeQuery();
                     query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId));
                     query.count().done(function (number) {
-                        $scope.isMyFollowee = (number == 1);
+                        $scope.jsonUserInfo.isMyFollowee = (number == 1);
                         $scope.$apply();
                     })
                 }
