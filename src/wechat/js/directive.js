@@ -47,11 +47,10 @@ APP.directive('reviewStar', function () {
         function link($scope) {
             $scope.WeChatJS$ = WeChatJS$;
             $scope.User$ = User$;
-            $scope.jsonUserInfo.userUsedBookNumber=0;
-            $scope.jsonUserInfo.userNeedBookNumber=0;
             //加载它的二手书的数量
             function loadHeUsedBookNumber() {
                 if ($scope.jsonUserInfo) {
+                    $scope.jsonUserInfo.userUsedBookNumber=0;
                     var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
                     var query = he.relation('usedBooks').query();
                     query.equalTo('role', 'sell');
@@ -65,6 +64,7 @@ APP.directive('reviewStar', function () {
             //加载它的求书的数量
             function loadHeNeedBookNumber() {
                 if ($scope.jsonUserInfo) {
+                    $scope.jsonUserInfo.userNeedBookNumber=0;
                     var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
                     var query = he.relation('usedBooks').query();
                     query.equalTo('role', 'need');
