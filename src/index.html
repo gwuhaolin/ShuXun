@@ -17,6 +17,7 @@
             min-width: 320px;
             padding: 40px;
         }
+
         div[class='floated center aligned column'] img[class='ui image'] {
             margin: auto;
             width: 70%;
@@ -30,7 +31,12 @@
     <img src="desktop/img/shuxunlogo.png" style="margin:80px auto auto auto;max-width:140px;max-height:140px">
 
     <h1 class="ui inverted header">书循-最便捷的二手书交易平台</h1>
-    <a class="ui inverted huge button" href="#QRCode" target="_self" style="margin-top:60px">开始使用</a>
+    <a class="ui inverted huge button" style="margin-top:60px" onclick="watchIntroVideo()">
+        <i class="icon play"></i>观看介绍
+    </a>
+    <a class="ui inverted huge button" href="#QRCode" target="_self" style="margin-top:60px">
+        <i class="icon heart"></i>开始使用
+    </a>
 </div>
 
 <div class="two column row">
@@ -76,7 +82,7 @@
 </div>
 <div class="one column row" id="QRCode">
     <div class="centered column">
-        <p>用微信扫二维码或关注微信号ishuxun开始使用书循</p>
+        <p>用微信扫二维码或关注微信号<strong>ishuxun</strong>开始使用书循</p>
         <img src="desktop/img/QRCode.png">
     </div>
 </div>
@@ -86,11 +92,32 @@
         <small>©柠檬工作室 2015</small>
     </div>
 </footer>
+
+<div class="ui modal" id="introVideoModal">
+    <video controls preload="auto" style="width: 100%;height: 100%" id="introVideo">
+        <source src="http://7xj22a.com1.z0.glb.clouddn.com/introVideo.mp4" type='video/mp4'>
+    </video>
+</div>
+
 <!-- build:jQuery-js -->
 <script src="../bower_components/jquery/dist/jquery.js"></script>
 <!-- endbuild -->
 <!-- build:Semantic-js -->
 <script src="../bower_components/semantic-ui/dist/semantic.js"></script>
 <!-- endbuild -->
+<script>
+    //点击观看介绍
+    function watchIntroVideo() {
+        var video = document.getElementById('introVideo');
+        $('#introVideoModal')
+                .modal({
+                    onHide: function () {
+                        video.pause();
+                    }
+                })
+                .modal('show');
+        video.play();
+    }
+</script>
 </body>
 </html>
