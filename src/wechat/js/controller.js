@@ -604,7 +604,7 @@ APP.controller('tabs', function ($scope, Status$) {
     })
 
     //用户列表
-    .controller('userList', function ($scope, $stateParams, UsedBook$, BookRecommend$, User$) {
+    .controller('userList', function ($scope, $stateParams, UsedBook$, BookRecommend$, User$, IonicModalView$) {
         var cmd = $stateParams['cmd'];
 
         $scope.sortWay = '';
@@ -624,6 +624,15 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.jsonUsers = User$.Follower.jsonUserList;
             $scope.loadMore = User$.Follower.loadMore;
             $scope.hasMore = User$.Follower.hasMore;
+        }
+
+        //按照专业筛选
+        IonicModalView$.registerChooseMajorModalView($scope, function (major) {
+            $scope.majorFilter = major;
+        });
+        $scope.majorFilter = null;
+        $scope.filter_major = function (jsonUser) {
+            return $scope.majorFilter == null || jsonUser.major == $scope.majorFilter;
         }
     })
 

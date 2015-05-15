@@ -525,6 +525,7 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
         this.scanQRCode = function (callback) {
             wx.scanQRCode({
                 needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["barCode"],// 可以指定扫二维码还是一维码，默认二者都有
                 success: function (res) {
                     callback(res.resultStr.split(',')[1]);
                     $rootScope.$apply();
