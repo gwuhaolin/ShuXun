@@ -11,22 +11,31 @@ var config = {
     appid: WechatAPI.Config.AppID,
     encodingAESKey: WechatAPI.Config.EncodingAESKey
 };
+var KF_XiongZhun = '001@ishuxun';
+var ProblemKeyword = ['问题', '投资', '合作', '打不开', '查不到', '空白', '闪退', '不能'];
 
 exports.MsgHandler = Wechat(config)
     .text(function (message, req, res) {//文字
         var context = message['Content'];
+        //问题关键字转发到客服
+        for (var i = 0; i < ProblemKeyword.length; i++) {
+            if (ProblemKeyword[i] == context) {
+                res.transfer2CustomerService(KF_XiongZhun);
+                return;
+            }
+        }
         searchBookFromDouban(context, res);
     }).voice(function (message, req, res) {//语音
         var recognition = message['Recognition'];
         searchBookFromDouban(recognition, res);
     }).image(function (message, req, res) {//图片
-        res.reply('你的反馈已经收到,我们会尽快处理好');
+        res.transfer2CustomerService(KF_XiongZhun);
     }).video(function (message, req, res) {//视频
-        res.reply('');
+        res.transfer2CustomerService(KF_XiongZhun);
     }).location(function (message, req, res) {//地理位置
         res.reply('');
     }).link(function (message, req, res) {//链接
-        res.reply('');
+        res.transfer2CustomerService(KF_XiongZhun);
     }).event(function (message, req, res) {//事件
         switch (message['Event']) {
             case 'LOCATION'://上报地理位置事件
