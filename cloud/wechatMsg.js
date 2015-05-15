@@ -21,7 +21,7 @@ exports.MsgHandler = Wechat(config)
         var context = message['Content'];
         //问题关键字转发到客服
         for (var i = 0; i < ProblemKeyword.length; i++) {
-            if (context.indexOf(ProblemKeyword[i] >= 0)) {
+            if (context.indexOf(ProblemKeyword[i]) >= 0) {
                 res.transfer2CustomerService(KeKu.XiongZhun);
                 return;
             }
