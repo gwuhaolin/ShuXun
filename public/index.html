@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta charset="utf-8"><link rel="icon" href="desktop/img/favicon.ico"><title>书循网-最快捷的二手书交易平台</title><meta name="keywords" content="书循,书循网,微信,ishuxun,ishuxun.cn,二手书,二手教材,大学教材,二手书交易,旧书,课本,图书,网上书店,网上图书商城,新书,微信买书,微信交易平台"><meta name="description" content="ishuxun书循,一款包含所有书本的信息的大学生书本交易网,轻松买书,迅速比价,自由淘书。让图书交易更简洁。提供最全的新书、二手书各种书本信息"><link rel="stylesheet" href="http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.css"><style>div[class='floated center aligned column'] {
+            min-width: 320px;
+            padding: 40px;
+        }
+
+        div[class='floated center aligned column'] img[class='ui image'] {
+            margin: auto;
+            width: 70%;
+        }</style></head><body class="ui center aligned grid" style="margin: 0;padding: 0"><div class="sixteen wide column" style="background: url(desktop/img/index.jpg) no-repeat;height:inherit;width:100%;background-position-x:center"><img src="desktop/img/shuxunlogo.png" style="margin:80px auto auto auto;max-width:140px;max-height:140px"><h1 class="ui inverted header">书循-最便捷的二手书交易平台</h1><a class="ui inverted huge button" style="margin-top:60px" onclick="watchIntroVideo()"><i class="icon play"></i>观看介绍</a> <a class="ui inverted huge button" href="#QRCode" target="_self" style="margin-top:60px"><i class="icon heart"></i>开始使用</a></div><div class="two column row"><div class="floated center aligned column"><img class="ui image" src="desktop/img/shouyepic-price.png"><h2>最低价的图书</h2><p class="ui header">新书全网报价加二手书，给你最低价购买途径</p></div><div class="floated center aligned column"><img class="ui image" src="desktop/img/shouyepic-attestation.png"><h2>最简单的方式</h2><p class="ui header">只需扫一下条形码，书本所有信息瞬间展现</p></div></div><div class="ui horizontal divider"><i class="heart icon"></i></div><div class="two column row"><div class="floated center aligned column"><img class="ui image" src="desktop/img/shouyepic-distance.png"><h2>最贴心的距离</h2><p class="ui header">通过定位，找到离你最近的所需书本</p></div><div class="floated center aligned column"><img class="ui image" src="desktop/img/shouyepic-market.png"><h2>最透明的交易</h2><p class="ui header">平台由你和你同学们组成，安全可靠又实用</p></div></div><div class="ui horizontal divider"><i class="heart icon"></i></div><div class="one column row" id="QRCode"><div class="centered column"><p>用微信扫二维码或关注微信号<strong>ishuxun</strong>开始使用书循</p><img src="desktop/img/QRCode.png"></div></div><footer class="one column row"><div class="column"><small>©柠檬工作室 2015</small></div></footer><div class="ui modal" id="introVideoModal"><video controls preload="auto" style="width: 100%;height: 100%" id="introVideo"><source src="http://7xj22a.com1.z0.glb.clouddn.com/introVideo.mp4" type="video/mp4"></source></video></div><script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script><script src="http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.js"></script><script>//点击观看介绍
+    function watchIntroVideo() {
+        var video = document.getElementById('introVideo');
+        $('#introVideoModal')
+                .modal({
+                    onHide: function () {
+                        video.pause();
+                    }
+                })
+                .modal('show');
+        video.play();
+    }</script></body></html>
