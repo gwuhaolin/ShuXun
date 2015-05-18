@@ -11,6 +11,12 @@
         <ion-item ng-if="Status$.NewNeedBookStatus.unreadCount>0" ui-sref="tab.person_statusList({cmd:'newNeedBook'})">
             你关注的同学新发布了求书<span class="badge badge-assertive">{{Status$.NewNeedBookStatus.unreadCount}}</span>
         </ion-item>
+        <ion-item ng-if="Status$.PrivateStatus.unreadCount>0" ui-sref="tab.person_statusList({cmd:'private'})">
+            有同学给你发私信<span class="badge badge-assertive">{{Status$.PrivateStatus.unreadCount}}</span>
+        </ion-item>
+        <ion-item ng-if="Status$.ReviewUsedBookStatus.unreadCount>0" ui-sref="tab.person_statusList({cmd:'reviewUsedBook'})">
+            有同学评价你的书<span class="badge badge-assertive">{{Status$.ReviewUsedBookStatus.unreadCount}}</span>
+        </ion-item>
         <!-- 我的基本信息-->
         <ion-item class="item-divider item-button-right">我的信息
             <button class="button button-clear button-balanced" style="top: 0"

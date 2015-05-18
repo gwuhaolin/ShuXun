@@ -1006,6 +1006,9 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
          * 把AVOS的UsedBook转换为JSON格式的
          */
         this.avosUsedBookToJson = function (avosUsedBook) {
+            if (avosUsedBook == null) {
+                return null;
+            }
             var json = {};
             for (var i = 0; i < UsedBookAttrNames.length; i++) {
                 var attrName = UsedBookAttrNames[i];
@@ -1178,13 +1181,21 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                     that.NewNeedBookStatus.unreadCount = result['unread'];
                     $rootScope.$apply();
                 });
+                AV.Status.countUnreadStatuses(user, 'private').done(function (result) {
+                    that.PrivateStatus.unreadCount = result['unread'];
+                    $rootScope.$apply();
+                });
+                AV.Status.countUnreadStatuses(user, 'reviewUsedBook').done(function (result) {
+                    that.ReviewUsedBookStatus.unreadCount = result['unread'];
+                    $rootScope.$apply();
+                });
             }
         };
 
         this.NewUsedBookStatus = {
             unreadCount: 0,
             avosStatusList: [],
-            loadMore: function () {
+            load: function () {
                 var query = AV.Status.inboxQuery(AV.User.current(), 'newUsedBook');
                 query.include("usedBook");
                 query.include("source");
@@ -1196,6 +1207,7 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                         one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
                         that.NewUsedBookStatus.avosStatusList.push(one);
                     }
+                    that.NewUsedBookStatus.unreadCount = 0;
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
@@ -1205,7 +1217,7 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
         this.NewNeedBookStatus = {
             unreadCount: 0,
             avosStatusList: [],
-            loadMore: function () {
+            load: function () {
                 var query = AV.Status.inboxQuery(AV.User.current(), 'newNeedBook');
                 query.include("usedBook");
                 query.include("source");
@@ -1217,6 +1229,51 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                         one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
                         that.NewNeedBookStatus.avosStatusList.push(one);
                     }
+                    that.NewNeedBookStatus.unreadCount = 0;
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                })
+            }
+        };
+
+        this.PrivateStatus = {
+            unreadCount: 0,
+            avosStatusList: [],
+            load: function () {
+                var query = AV.Status.inboxQuery(AV.User.current(), 'private');
+                query.include("usedBook");
+                query.include("source");
+                query.limit(that.PrivateStatus.unreadCount);
+                query.find().done(function (statuses) {
+                    for (var i = 0; i < statuses.length; i++) {
+                        var one = statuses[i];
+                        one.jsonUserInfo = avosUserToJson(one.get('source'));
+                        one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
+                        that.PrivateStatus.avosStatusList.push(one);
+                    }
+                    that.PrivateStatus.unreadCount = 0;
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                })
+            }
+        };
+
+        this.ReviewUsedBookStatus = {
+            unreadCount: 0,
+            avosStatusList: [],
+            load: function () {
+                var query = AV.Status.inboxQuery(AV.User.current(), 'reviewUsedBook');
+                query.include("usedBook");
+                query.include("source");
+                query.limit(that.ReviewUsedBookStatus.unreadCount);
+                query.find().done(function (statuses) {
+                    for (var i = 0; i < statuses.length; i++) {
+                        var one = statuses[i];
+                        one.jsonUserInfo = avosUserToJson(one.get('source'));
+                        one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
+                        that.ReviewUsedBookStatus.avosStatusList.push(one);
+                    }
+                    that.ReviewUsedBookStatus.unreadCount = 0;
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 })
@@ -1301,20 +1358,24 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
          * @returns {*|{}|AV.Query}
          */
         this.makeQueryStatusList_twoUser = function (avosUserId, avosUsedBookId) {
-            var me = AV.User.current();
-            var he = AV.Object.createWithoutData('_User', avosUserId);
-            var query1 = new AV.Query('_Status');
-            query1.equalTo('source', me);
-            query1.equalTo('to', he);
-            var query2 = new AV.Query('_Status');
-            query2.equalTo('source', he);
-            query2.equalTo('to', me);
-            if (avosUsedBookId) {
-                var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
-                query1.equalTo('usedBook', avosUsedBook);
-                query2.equalTo('usedBook', avosUsedBook);
+            if (avosUserId) {
+                var me = AV.User.current();
+                var he = AV.Object.createWithoutData('_User', avosUserId);
+                var query1 = new AV.Query('_Status');
+                query1.equalTo('source', me);
+                query1.equalTo('to', he);
+                var query2 = new AV.Query('_Status');
+                query2.equalTo('source', he);
+                query2.equalTo('to', me);
+                if (avosUsedBookId) {
+                    var avosUsedBook = AV.Object.createWithoutData('UsedBook', avosUsedBookId);
+                    query1.equalTo('usedBook', avosUsedBook);
+                    query2.equalTo('usedBook', avosUsedBook);
+                }
+                return AV.Query.or(query1, query2);
+            } else {
+                return new AV.Error(1, '缺少avosUserId');
             }
-            return AV.Query.or(query1, query2);
         };
     })
 

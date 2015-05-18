@@ -65,6 +65,9 @@ var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major'
  * 把AVOS User 转换为 json格式的UserInfo
  */
 function avosUserToJson (avosUser) {
+    if(avosUser==null){
+        return null;
+    }
     var json = {};
     for (var i = 0; i < UserAttrNames.length; i++) {
         var attrName = UserAttrNames[i];

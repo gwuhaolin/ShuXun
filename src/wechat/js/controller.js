@@ -365,6 +365,8 @@ APP.controller('tabs', function ($scope, Status$) {
                 $scope.followerNumber = followerNumber;
                 $scope.$apply();
             });
+            //加载我的未读消息
+            Status$.loadUnreadStatusesCount();
         }
 
         $scope.$on('$ionicView.afterEnter', load);
@@ -400,13 +402,19 @@ APP.controller('tabs', function ($scope, Status$) {
         if ($scope.cmd == 'newUsedBook') {//显示上传的二手书
             $scope.title = '同学新上传的旧书';
             $scope.avosStatusList = Status$.NewUsedBookStatus.avosStatusList;
-            Status$.NewUsedBookStatus.loadMore();
-            Status$.NewUsedBookStatus.unreadCount = 0;
+            Status$.NewUsedBookStatus.load();
         } else if ($scope.cmd == 'newNeedBook') {//显示发布的求书
             $scope.title = '同学新发布的求书';
             $scope.avosStatusList = Status$.NewNeedBookStatus.avosStatusList;
-            Status$.NewNeedBookStatus.loadMore();
-            Status$.NewNeedBookStatus.unreadCount = 0;
+            Status$.NewNeedBookStatus.load();
+        } else if ($scope.cmd == 'private') {
+            $scope.title = '你收到的私信';
+            $scope.avosStatusList = Status$.PrivateStatus.avosStatusList;
+            Status$.PrivateStatus.load();
+        } else if ($scope.cmd == 'reviewUsedBook') {
+            $scope.title = '同学对你的书的评论';
+            $scope.avosStatusList = Status$.ReviewUsedBookStatus.avosStatusList;
+            Status$.ReviewUsedBookStatus.load();
         }
     })
 
@@ -556,11 +564,10 @@ APP.controller('tabs', function ($scope, Status$) {
                 Status$.loadUnreadStatusesCount();//加载未读消息数量
                 $state.go(nextState);
                 $ionicHistory.clearHistory();
-                me.save({//更新微信信息
-                    nickName: userInfo['nickname'],
-                    sex: userInfo['sex'],
-                    avatarUrl: userInfo['headimgurl']
-                });
+                me.set('avatarUrl', userInfo.avatarUrl);
+                me.set('nickName', userInfo.nickName);
+                me.set('sex', userInfo.sex);
+                me.save();//更新微信信息
             });
             $scope.$apply();
         }, function () {
