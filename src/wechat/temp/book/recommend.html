@@ -28,7 +28,7 @@
         </div>
         <!-- 附近用户上传的旧书-->
         <div ng-if="BookRecommend$.NearUsedBook.jsonBooks.length>0">
-            <ion-item class="item-divider item-button-right">附近的旧书
+            <ion-item class="item-divider item-button-right">附近卖书
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_usedBookList({cmd:'nearUsed'})">更多
                 </button>
@@ -37,7 +37,7 @@
         </div>
         <!-- 用户附近的用户-->
         <div ng-if="BookRecommend$.NearUser.jsonUsers.length>0">
-            <ion-item class="item-divider item-button-right">附近的同学
+            <ion-item class="item-divider item-button-right">附近同学
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.userList({cmd:'near'})">更多
                 </button>
@@ -52,7 +52,7 @@
         </div>
         <!-- 附近用户发布的求书-->
         <div ng-if="BookRecommend$.NearNeedBook.jsonBooks.length>0">
-            <ion-item class="item-divider item-button-right">附近的求书
+            <ion-item class="item-divider item-button-right">附近求书
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_usedBookList({cmd:'nearNeed'})">更多
                 </button>

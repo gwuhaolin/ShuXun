@@ -223,7 +223,7 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.usedBookInfo = {
                 isbn13: $stateParams.isbn13,
                 price: null,
-                des: null,
+                des: '',
                 image: '',
                 title: ''
             };
@@ -287,7 +287,10 @@ APP.controller('tabs', function ($scope, Status$) {
                 $scope.isLoading = false;
                 $scope.$apply();
             })
-        }
+        };
+
+        //常用描述语
+        $scope.commonWords = ['正版', '新书', '送笔记', '可议价', '不议价', '配光盘', '妹子白送'];
 
     })
 

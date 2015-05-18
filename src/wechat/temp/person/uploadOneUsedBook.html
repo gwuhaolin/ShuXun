@@ -38,7 +38,7 @@
         <!-- 填写价格和描述-->
         <div class="list list-inset">
             <label class="item item-input">
-                <input type="number" ng-model="usedBookInfo.price" placeholder="输入要价(人民币)">
+                <input type="number" ng-model="usedBookInfo.price" placeholder="输入要价(数字,人民币元)">
             </label>
             <label class="item item-input">
                 <input type="text" ng-model="usedBookInfo.des" placeholder="对这本书你还有什么想说的吗?">
@@ -49,6 +49,18 @@
                 class="button button-block button-outline button-balanced" ng-click="submitOnClick('sell')">
             提交二手书
         </button>
+
+        <!-- 常用描述语-->
+        <ion-list ng-if="commonWords.length>0">
+            <ion-item class="item-divider item-button-right">常用描述内容</ion-item>
+            <ion-item style="white-space:normal;padding: 5px">
+                <button class="button button-small button-outline button-balanced" style="margin: 5px"
+                        ng-disabled="isLoading"
+                        ng-repeat="word in commonWords"
+                        ng-click="usedBookInfo.des=usedBookInfo.des+' '+word">{{word}}
+                </button>
+            </ion-item>
+        </ion-list>
 
     </ion-content>
     <script type="text/ng-template" id="template/helpModalView.html">
