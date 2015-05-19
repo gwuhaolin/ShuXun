@@ -73,7 +73,7 @@ APP.controller('tabs', function ($scope, Status$) {
     })
 
     //二手书列表
-    .controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
+    .controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$, IonicModalView$) {
         $scope.cmd = $stateParams['cmd'];
         $scope.sortWay = '';
         if ($scope.cmd == 'nearUsed') {
@@ -81,11 +81,15 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.jsonUsedBooks = BookRecommend$.NearUsedBook.jsonBooks;
             $scope.loadMore = BookRecommend$.NearUsedBook.loadMore;
             $scope.hasMore = BookRecommend$.NearUsedBook.hasMore;
+            $scope.setMajorFilter = BookRecommend$.NearUsedBook.setMajorFilter;
+            $scope.getMajorFilter = BookRecommend$.NearUsedBook.getMajorFilter;
         } else if ($scope.cmd == 'nearNeed') {
             $scope.title = '你附近的求书';
             $scope.jsonUsedBooks = BookRecommend$.NearNeedBook.jsonBooks;
             $scope.loadMore = BookRecommend$.NearNeedBook.loadMore;
             $scope.hasMore = BookRecommend$.NearNeedBook.hasMore;
+            $scope.setMajorFilter = BookRecommend$.NearNeedBook.setMajorFilter;
+            $scope.getMajorFilter = BookRecommend$.NearNeedBook.getMajorFilter;
         } else if ($scope.cmd == 'isbnUsed') {
             $scope.title = '对应要卖的旧书';
             $scope.isbn13 = $stateParams['isbn13'];
@@ -99,6 +103,11 @@ APP.controller('tabs', function ($scope, Status$) {
             $scope.loadMore = UsedBook$.ISBN_need.loadMoreNeedBookEqualISBN;
             $scope.hasMore = UsedBook$.ISBN_need.hasMore;
         }
+
+        //按照专业筛选
+        IonicModalView$.registerChooseMajorModalView($scope, function (major) {
+            $scope.setMajorFilter(major);
+        });
     })
 
     //展示一本书详细信息

@@ -9,6 +9,9 @@
                ng-class="{'button-balanced':sortWay=='price'}">图书价格</a>
             <a class="button button-small " ng-click="sortWay='location'"
                ng-class="{'button-balanced':sortWay=='location'}">离你距离</a>
+            <a class="button button-small" ng-click="chooseMajorModalView.show()">
+                {{getMajorFilter() ? getMajorFilter() :'主人专业'}}
+            </a>
         </div>
         <ion-list>
             <!-- 二手书列表-->

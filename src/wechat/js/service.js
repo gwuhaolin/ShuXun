@@ -356,6 +356,11 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
                 }
+                if(that.NearNeedBook._majorFilter){
+                    var ownerQuery = new AV.Query('_User');
+                    ownerQuery.equalTo('major',that.NearNeedBook._majorFilter);
+                    query.matchesQuery('owner',ownerQuery);
+                }
                 query.skip(that.NearNeedBook.jsonBooks.length);
                 query.limit(that.LoadCount);
                 query.find().done(function (avosUsedBooks) {
@@ -372,6 +377,18 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
             },
             hasMore: function () {
                 return that.NearNeedBook.hasMoreFlag;
+            },
+            _majorFilter: null,
+            setMajorFilter: function (major) {
+                if (major != that.NearNeedBook._majorFilter) {
+                    that.NearNeedBook.jsonBooks.length = 0;
+                    that.NearNeedBook.hasMoreFlag = true;
+                    that.NearNeedBook._majorFilter = major;
+                    that.NearNeedBook.loadMore();
+                }
+            },
+            getMajorFilter: function () {
+                return that.NearNeedBook._majorFilter;
             }
         };
 
@@ -390,6 +407,11 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
                 }
+                if(that.NearUsedBook._majorFilter){
+                    var ownerQuery = new AV.Query('_User');
+                    ownerQuery.equalTo('major',that.NearUsedBook._majorFilter);
+                    query.matchesQuery('owner',ownerQuery);
+                }
                 query.skip(that.NearUsedBook.jsonBooks.length);
                 query.limit(that.LoadCount);
                 query.find().done(function (avosUsedBooks) {
@@ -406,6 +428,18 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
             },
             hasMore: function () {
                 return that.NearUsedBook.hasMoreFlag;
+            },
+            _majorFilter: null,
+            setMajorFilter: function (major) {
+                if (major != that.NearUsedBook._majorFilter) {
+                    that.NearUsedBook.jsonBooks.length = 0;
+                    that.NearUsedBook.hasMoreFlag = true;
+                    that.NearUsedBook._majorFilter = major;
+                    that.NearUsedBook.loadMore();
+                }
+            },
+            getMajorFilter: function () {
+                return that.NearUsedBook._majorFilter;
             }
         };
 
