@@ -13,10 +13,10 @@
             <a class="button button-small" ng-click="sortWay='isMyFollowee'"
                ng-class="{'button-balanced':sortWay=='isMyFollowee'}">关注</a>
             <a class="button button-small" ng-click="chooseMajorModalView.show()">
-                {{majorFilter ? majorFilter :'专业'}}
+                {{getMajorFilter() ? getMajorFilter() :'专业'}}
             </a>
         </div>
-        <div class="card" ng-repeat="one in jsonUsers | orderBy:sortWay:true | filter:filter_major">
+        <div class="card" ng-repeat="one in jsonUsers | orderBy:sortWay:true">
             <user-info json-user-info="one"></user-info>
         </div>
         <ion-infinite-scroll ng-if="hasMore()"

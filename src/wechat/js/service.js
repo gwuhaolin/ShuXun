@@ -425,6 +425,7 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                     query.near("location", avosGeo);
                 }
+                that.NearUser._majorFilter && query.equalTo('major', that.NearUser._majorFilter);
                 query.skip(that.NearUser.jsonUsers.length);
                 query.limit(Math.floor(document.body.clientWidth / 50));//默认加载满屏幕
                 query.find().done(function (avosUsers) {
@@ -441,6 +442,18 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
             },
             hasMore: function () {
                 return that.NearUser.hasMoreFlag;
+            },
+            _majorFilter: null,
+            setMajorFilter: function (major) {
+                if (major != that.NearUser._majorFilter) {
+                    that.NearUser.jsonUsers.length = 0;
+                    that.NearUser.hasMoreFlag = true;
+                    that.NearUser._majorFilter = major;
+                    that.NearUser.loadMore();
+                }
+            },
+            getMajorFilter: function () {
+                return that.NearUser._majorFilter;
             }
         };
         this.NearUser.loadMore();
@@ -829,6 +842,11 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 query.include('followee');
                 query.skip(that.Followee.jsonUserList.length);
                 query.limit(10);
+                if(that.Followee._majorFilter){
+                    var userQuery = new AV.Query('_User');
+                    userQuery.equalTo('major', that.Followee._majorFilter);
+                    query.matchesQuery('followee',userQuery);
+                }
                 query.find().done(function (followees) {
                     if (followees.length > 0) {
                         for (var i = 0; i < followees.length; i++) {
@@ -844,6 +862,18 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
             hasMoreFlag: true,
             hasMore: function () {
                 return that.Followee.hasMoreFlag;
+            },
+            _majorFilter: null,
+            setMajorFilter: function (major) {
+                if (major != that.Followee._majorFilter) {
+                    that.Followee.jsonUserList.length = 0;
+                    that.Followee.hasMoreFlag = true;
+                    that.Followee._majorFilter = major;
+                    that.Followee.loadMore();
+                }
+            },
+            getMajorFilter: function () {
+                return that.Followee._majorFilter;
             }
         };
 
@@ -854,6 +884,11 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 query.include('follower');
                 query.skip(that.Follower.jsonUserList.length);
                 query.limit(10);
+                if(that.Follower._majorFilter){
+                    var userQuery = new AV.Query('_User');
+                    userQuery.equalTo('major', that.Follower._majorFilter);
+                    query.matchesQuery('follower',userQuery);
+                }
                 query.find().done(function (followers) {
                     if (followers.length > 0) {
                         for (var i = 0; i < followers.length; i++) {
@@ -869,6 +904,18 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
             hasMoreFlag: true,
             hasMore: function () {
                 return that.Follower.hasMoreFlag;
+            },
+            _majorFilter: null,
+            setMajorFilter: function (major) {
+                if (major != that.Follower._majorFilter) {
+                    that.Follower.jsonUserList.length = 0;
+                    that.Follower.hasMoreFlag = true;
+                    that.Follower._majorFilter = major;
+                    that.Follower.loadMore();
+                }
+            },
+            getMajorFilter: function () {
+                return that.Follower._majorFilter;
             }
         };
 
