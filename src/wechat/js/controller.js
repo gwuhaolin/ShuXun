@@ -582,9 +582,9 @@ APP.controller('tabs', function ($scope, Status$) {
                 me.save();//更新微信信息
             });
             $scope.$apply();
-        }, function (err) {
-            alert(JSON.stringify(err) + wechatAOuthCode);
-            $state.go('tab.hello');
+        }, function () {//用户还没有关注
+            alert('要先关注书循微信号哦');
+            window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzAwMDQwMjMxNg==&mid=205566574&idx=1&sn=5784b3b5f4d870ca4715c2dd56d8f01e#rd';
         });
 
         IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
