@@ -559,7 +559,7 @@ APP.controller('tabs', function ($scope, Status$) {
         $scope.isLoading = true;
         //调用微信接口获取用户信息
         var wechatAOuthCode = $stateParams['code'];
-        var nextState = $stateParams['state'];
+        var nextState = 'tab.person_my';
         WeChatJS$.getOAuthUserInfo(wechatAOuthCode, function (userInfo) {
             $scope.isLoading = false;
             $scope.userInfo = userInfo;
@@ -573,8 +573,8 @@ APP.controller('tabs', function ($scope, Status$) {
                 me.save();//更新微信信息
             });
             $scope.$apply();
-        }, function () {
-            alert('让我获取你的基本资料吧~');
+        }, function (err) {
+            alert(JSON.stringify(err)+wechatAOuthCode);
             $state.go('tab.hello');
         });
 
@@ -605,12 +605,11 @@ APP.controller('tabs', function ($scope, Status$) {
     })
 
     .controller('hello', function ($scope, $state, $stateParams, $ionicHistory, WeChatJS$, User$) {
-        var nextState = $stateParams['nextState'];//验证完成后要去的状态
         User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
-            $state.go(nextState);
+            $state.go('tab.person_my');
             $ionicHistory.clearHistory();
         });
-        $scope.OAuthURL = WeChatJS$.getOAuthURL(nextState);
+        $scope.OAuthURL = WeChatJS$.getOAuthURL();
     })
 
     //用户列表

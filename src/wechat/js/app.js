@@ -182,10 +182,7 @@ var APP = angular.module('APP', ['ionic'], null)
             })
             //公共
             .state('tab.hello', {
-                /**
-                 * 参数:nextState 验证完身份后要去的状态
-                 */
-                url: '/hello?nextState',
+                url: '/hello',
                 views: {
                     'tab-person': {
                         templateUrl: 'temp/tool/hello.html'
@@ -227,15 +224,15 @@ var APP = angular.module('APP', ['ionic'], null)
         $urlRouterProvider.otherwise('/tab/book/recommend');
     });
 
-APP.run(function ($rootScope, $state, User$, Status$, WeChatJS$) {
+APP.run(function ($rootScope, $state, User$, WeChatJS$) {
     WeChatJS$.config();//马上调用配置微信
     User$.loginWithUnionId(readCookie('unionId'));
-    $rootScope.$on('$stateChangeStart', function (event, nextState) {
+    $rootScope.$on('$stateChangeStart', function (event,nextState) {
         var stateName = nextState['name'];
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录
             if (!User$.getCurrentAvosUser()) {
                 event.preventDefault();//停止当前
-                $state.go('tab.hello', {nextState: stateName});//去验证身份 TODO bug 有些state依赖必须的参数
+                $state.go('tab.hello');//去验证身份
             }
         }
     });

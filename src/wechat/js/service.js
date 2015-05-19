@@ -546,11 +546,10 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
 
         /**
          * 直接生成引导用户Web OAuth点击的URL
-         * @param nextState 验证完成后要去的状态
          */
-        this.getOAuthURL = function (nextState) {
+        this.getOAuthURL = function () {
             var redirectUrl = location.href.split('#')[0] + '#/tab/signUp';
-            return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_userinfo&state=' + nextState + '#wechat_redirect';
+            return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_base&state=#wechat_redirect';
         };
 
         /**

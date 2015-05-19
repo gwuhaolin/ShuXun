@@ -55,7 +55,7 @@ exports.getOAuthUserInfo = function (code) {
         if (err) {
             rePromise.reject(err);
         } else {
-            exports.OAuthClient.getUser(result.data.openid, function (err, userInfo) {
+            exports.APIClient.getUser(result.data.openid, function (err, userInfo) {
                 if (err) {
                     rePromise.reject(err);
                 } else {
