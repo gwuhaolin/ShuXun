@@ -106,7 +106,7 @@ APP.controller('tabs', function ($scope, Status$) {
 
         //按照专业筛选
         IonicModalView$.registerChooseMajorModalView($scope, function (major) {
-            $scope.setMajorFilter(major);
+            $scope.setMajorFilter && $scope.setMajorFilter(major);
         });
     })
 
