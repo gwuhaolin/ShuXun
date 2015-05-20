@@ -6,7 +6,7 @@
 var SuperAgent = require('superagent-charset');
 var Cheerio = require('cheerio');
 
-function spiderBookByISBN(isbn) {
+exports.spiderBookByISBN = function (isbn) {
     var rePromise = new AV.Promise(null);
     SuperAgent.get('http://search.jd.com/bookadvsearch')
         .query({
@@ -29,17 +29,7 @@ function spiderBookByISBN(isbn) {
                         } else {
                             var jsonBook = {
                                 isbn13: isbn,
-                                image: '',
-                                title: '',
-                                author: [],
-                                publisher: '',
-                                pubdate: '',
-                                pages: '',
-                                binding: '',
-                                summary: '',
-                                author_intro: '',
-                                catalog: '',
-                                price: ''
+                                author: []
                             };
                             $ = Cheerio.load(res.text);
                             //获取标题
@@ -95,4 +85,4 @@ function spiderBookByISBN(isbn) {
             }
         });
     return rePromise;
-}
+};

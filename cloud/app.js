@@ -4,7 +4,7 @@
  */
 "use strict";
 var Express = require('express');
-var WechatMsg = require('cloud/wechatMsg.js');
+var WechatMsg = require('cloud/wechat/wechatMsg.js');
 var app = Express();
 app.use(Express.compress(), null);//压缩返回的数据
 app.set('views', 'cloud/views');   // 设置模板目录

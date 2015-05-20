@@ -3,19 +3,19 @@
  * AVOS 运代码
  */
 "use strict";
-var WechatAPI = require('cloud/wechatAPI.js');
-var LBS = require('cloud/lbs.js');
-var Info = require('cloud/info.js');
-var BusinessSite = require('cloud/businessSite.js');
-var DoubanBook = require('cloud/doubanBook.js');
-var DangDangBook = require('cloud/dangdangBook.js');
-var JDBook = require('cloud/jdBook.js');
+var WechatAPI = require('cloud/wechat/wechatAPI.js');
+var LBS = require('cloud/util/lbs.js');
+var Info = require('cloud/util/info.js');
+var BusinessSite = require('cloud/util/businessSite.js');
+var DoubanBook = require('cloud/book/doubanBook.js');
+var DangDangBook = require('cloud/book/dangdangBook.js');
+var JDBook = require('cloud/book/jdBook.js');
 
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
  */
 AV.Cloud.define('spiderLatestBook', function (req, res) {
-    DoubanBook.spiderLatestBook().done(function (bookIds) {
+    DoubanBook.spiderLatestBooksId().done(function (bookIds) {
         res.success(bookIds.length);
         for (var i = 0; i < bookIds.length; i++) {
             DoubanBook.saveOneLatestBook_Id(bookIds[i], i * 1000).fail(function (err) {

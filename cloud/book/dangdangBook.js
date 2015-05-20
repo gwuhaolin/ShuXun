@@ -33,17 +33,7 @@ exports.spiderBookByISBN = function (isbn13) {
                                     if (res.ok) {
                                         var jsonBook = {
                                             isbn13: isbn13,
-                                            title: '',
-                                            image: '',
-                                            author: [],
-                                            publisher: '',
-                                            pubdate: '',
-                                            pages: '',
-                                            binding: '',
-                                            summary: '',
-                                            author_intro: '',
-                                            catalog: '',
-                                            price:''
+                                            author: []
                                         };
                                         $ = Cheerio.load(res.text);
                                         //获取标题

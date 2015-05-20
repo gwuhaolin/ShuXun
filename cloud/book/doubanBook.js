@@ -3,13 +3,12 @@
  *
  */
 "use strict";
-
 var SuperAgent = require('superagent');
 var Cheerio = require('cheerio');
 var DoubanAPIKey = '03cddf77fa33367f0b699e67ee99a37d';
 var LatestBook = {
     _Class: AV.Object.extend('LatestBook'),
-    AttrName: ['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price'],
+    AttrName: ['doubanId', 'isbn13', 'title', 'image', 'author', 'publisher', 'pubdate', 'price'],
     makeQuery: function () {
         return new AV.Query('LatestBook');
     },
@@ -22,7 +21,7 @@ var LatestBook = {
  * 抓取豆瓣首页上的所有新书,返回一个数组,里面是图书的豆瓣Id
  * @returns {AV.Promise}
  */
-exports.spiderLatestBook = function () {
+exports.spiderLatestBooksId = function () {
     var rePromise = new AV.Promise(null);
     SuperAgent.get('http://book.douban.com/latest')
         .end(function (err, res) {
@@ -102,7 +101,12 @@ exports.saveOneLatestBook_Id = function (doubanBookId, delay) {
  * 每次返回25个
  * @param doubanBookId 豆瓣的图书id
  * @param start 开始
- * @returns {AV.Promise}
+ * @returns {AV.Promise} {
+                            reviewId: reviewId,
+                            avatarUrl: avatarUrl,
+                            title: title,
+                            context: context
+                        }
  */
 exports.spiderDoubanBookReview = function (doubanBookId, start) {
     var rePromise = new AV.Promise(null);
@@ -130,55 +134,6 @@ exports.spiderDoubanBookReview = function (doubanBookId, start) {
                             context: context
                         })
                     });
-                    rePromise.resolve(re);
-                } else {
-                    rePromise.reject(res.text);
-                }
-            }
-        });
-    return rePromise;
-};
-
-/**
- * 调用豆瓣图书接口按照关键字搜索书
- * @param keyword 搜索关键字
- * @returns {AV.Promise} 如果成功返回可以直接回复给用户的json{title,image,url}数组,没有找到书时返回的json数组长度为0
- */
-exports.searchBook = function (keyword) {
-    var rePromise = new AV.Promise(null);
-    SuperAgent.get('https://api.douban.com/v2/book/search')
-        .query({
-            q: keyword,
-            count: 10,
-            fields: 'image,title,isbn13'
-        })
-        .end(function (err, res) {
-            if (err) {
-                rePromise.reject(err);
-            } else {
-                if (res.ok) {
-                    var re = [];
-                    var json = res.body;
-                    var total = json['total'];
-                    if (total > 0) {//找到了对于的书
-                        var books = json.books;
-                        for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
-                            var title = books[i].title;
-                            var bookUrl = 'http://www.ishuxun.cn/wechat/#/tab/book/oneBook/' + books[i].isbn13;
-                            re.push({
-                                title: title,
-                                image: books[i].image,
-                                url: bookUrl
-                            });
-                        }
-                        if (total > 9) {//因为微信最多可以显示10本,当有的书大于9本时为用户提供显示更多
-                            re.push({
-                                title: '还有剩下' + (total - json.count) + '本相关的书,点击查看',
-                                image: 'http://www.ishuxun.cn/wechat/img/logo-R.png',
-                                url: 'http://www.ishuxun.cn/wechat/#/tab/book/searchList/' + keyword
-                            });
-                        }
-                    }
                     rePromise.resolve(re);
                 } else {
                     rePromise.reject(res.text);

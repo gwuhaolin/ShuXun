@@ -3,8 +3,8 @@
  *
  */
 "use strict";
-var LBS = require('cloud/lbs.js');
-var WeChatAPI = require('cloud/wechatAPI.js');
+var LBS = require('cloud/util/lbs.js');
+var WeChatAPI = require('cloud/wechat/wechatAPI.js');
 
 AV.Cloud.afterSave('UsedBook', function (req) {
     var user = req.user;

@@ -4,8 +4,8 @@
  */
 "use strict";
 var Wechat = require('wechat');
-var WechatAPI = require('cloud/wechatAPI.js');
-var DoubanBook = require('cloud/doubanBook.js');
+var WechatAPI = require('cloud/wechat/wechatAPI.js');
+var SuperAgent = require('superagent');
 var config = {
     token: WechatAPI.Config.Token,
     appid: WechatAPI.Config.AppID,
@@ -77,7 +77,55 @@ exports.MsgHandler = Wechat(config)
  * @param res 微信消息回应函数
  */
 function searchBookFromDouban(keyword, res) {
-    DoubanBook.searchBook(keyword).done(function (books) {
+    /**
+     * 调用豆瓣图书接口按照关键字搜索书
+     * @param keyword 搜索关键字
+     * @returns {AV.Promise} 如果成功返回可以直接回复给用户的json{title,image,url}数组,没有找到书时返回的json数组长度为0
+     */
+    function searchBook(keyword) {
+        var rePromise = new AV.Promise(null);
+        SuperAgent.get('https://api.douban.com/v2/book/search')
+            .query({
+                q: keyword,
+                count: 10,
+                fields: 'image,title,isbn13'
+            })
+            .end(function (err, res) {
+                if (err) {
+                    rePromise.reject(err);
+                } else {
+                    if (res.ok) {
+                        var re = [];
+                        var json = res.body;
+                        var total = json['total'];
+                        if (total > 0) {//找到了对于的书
+                            var books = json.books;
+                            for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
+                                var title = books[i].title;
+                                var bookUrl = 'http://www.ishuxun.cn/wechat/#/tab/book/oneBook/' + books[i].isbn13;
+                                re.push({
+                                    title: title,
+                                    image: books[i].image,
+                                    url: bookUrl
+                                });
+                            }
+                            if (total > 9) {//因为微信最多可以显示10本,当有的书大于9本时为用户提供显示更多
+                                re.push({
+                                    title: '还有剩下' + (total - json.count) + '本相关的书,点击查看',
+                                    image: 'http://www.ishuxun.cn/wechat/img/logo-R.png',
+                                    url: 'http://www.ishuxun.cn/wechat/#/tab/book/searchList/' + keyword
+                                });
+                            }
+                        }
+                        rePromise.resolve(re);
+                    } else {
+                        rePromise.reject(res.text);
+                    }
+                }
+            });
+        return rePromise;
+    }
+    searchBook(keyword).done(function (books) {
         if (books.length > 0) {
             var re = [];
             for (var i = 0; i < books.length; i++) {
