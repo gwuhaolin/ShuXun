@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 图书搜索
  */
 "use strict";
 

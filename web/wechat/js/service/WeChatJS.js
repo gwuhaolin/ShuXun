@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 微信js接口
  */
 "use strict";
 

@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 编辑用户信息
  */
 "use strict";
 

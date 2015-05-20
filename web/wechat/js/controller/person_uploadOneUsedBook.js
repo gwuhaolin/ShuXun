@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 上传一本二手书
  */
 "use strict";
 

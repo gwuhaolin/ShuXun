@@ -1,12 +1,9 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 图书推荐
  */
 "use strict";
 
-/**
- * 图书推荐
- */
 APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$) {
     var that = this;
     this.LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,默认加载慢屏幕

@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 一本二手书的信息
  */
 "use strict";
 

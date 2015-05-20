@@ -1,12 +1,9 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 豆瓣图书接口
  */
 "use strict";
 
-/**
- * 豆瓣图书接口
- */
 APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
     var that = this;
     var baseUri = 'http://api.douban.com/v2/book';

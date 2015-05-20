@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 3/25/15.
- *
+ * APP路由配置
  */
 "use strict";
 

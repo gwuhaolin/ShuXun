@@ -1,10 +1,9 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 展示一本书详细信息
  */
 "use strict";
 
-//展示一本书详细信息
 APP.controller('book_oneBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$, User$) {
     $scope.User$ = User$;
     //////////// 豆瓣图书信息 /////////

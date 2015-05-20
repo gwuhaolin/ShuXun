@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 3/27/15.
- *
+ * 自定义指令
  */
 "use strict";
 

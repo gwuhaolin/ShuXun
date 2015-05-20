@@ -1,10 +1,9 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 豆瓣图书列表
  */
 "use strict";
 
-//豆瓣图书列表
 APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, LatestBook$) {
     $scope.title = $stateParams['title'];
     var cmd = $stateParams['cmd'];

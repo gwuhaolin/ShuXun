@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 获得图书电商购买途径
  */
 "use strict";
 

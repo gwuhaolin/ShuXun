@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 5/20/15.
- *
+ * 我收到的信息列表
  */
 "use strict";
 
