@@ -44,7 +44,7 @@ gulp.task('clear', function () {
 
 //图片压缩
 gulp.task('wechat_image', function () {
-    return gulp.src('src/wechat/img/*.*')
+    return gulp.src('web/wechat/img/*.*')
         .pipe(gulp.dest('public/wechat/img'));
 });
 
@@ -53,7 +53,7 @@ gulp.task('wechat_js', function () {
     return es.concat(
         gulp.src(
             //把模板变成js
-            ['src/wechat/temp/**/*.html', 'src/wechat/temp/*.html'])
+            ['web/wechat/temp/**/*.html', 'web/wechat/temp/*.html'])
             .pipe(htmlmin({
                 collapseWhitespace: true,
                 removeComments: true,
@@ -64,7 +64,7 @@ gulp.task('wechat_js', function () {
                 module: 'APP'
             })),
         //合并app js
-        gulp.src(['src/wechat/js/my.js', 'src/wechat/js/app.js', 'src/wechat/js/service.js', 'src/wechat/js/controller.js', 'src/wechat/js/directive.js']))
+        gulp.src(['web/wechat/js/my.js', 'web/wechat/js/app.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive.js']))
         //angular依赖
         .pipe(ngAnnotate())
         .pipe(concat('main.js'))//合并
@@ -74,7 +74,7 @@ gulp.task('wechat_js', function () {
 
 //生成主页
 gulp.task('wechat_index', function () {
-    return gulp.src('src/wechat/index.html')
+    return gulp.src('web/wechat/index.html')
         .pipe(htmlreplace(CDN({
             'App-js': 'main.js'
         })))
@@ -94,12 +94,12 @@ gulp.task('wechat', function () {
 
 //图片压缩
 gulp.task('desktop_image', function () {
-    return gulp.src('src/desktop/img/*.*')
+    return gulp.src('web/desktop/img/*.*')
         .pipe(gulp.dest('public/desktop/img'));
 });
 
 gulp.task('desktop_index', function () {
-    return gulp.src('src/index.html')
+    return gulp.src('web/index.html')
         .pipe(htmlreplace(CDN()))
         .pipe(htmlmin({
             collapseWhitespace: true,
