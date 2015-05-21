@@ -18,13 +18,13 @@
             </ion-item>
         </div>
         <!-- 新书速递-->
-        <div ng-if="LatestBook$.jsonBooks.length>0">
+        <div ng-if="LatestBook.jsonBooks.length>0">
             <ion-item class="item-divider item-button-right">新书速递
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_bookList({cmd:'new'})">更多
                 </button>
             </ion-item>
-            <douban-book-one-line json-books-info="LatestBook$.jsonBooks"></douban-book-one-line>
+            <douban-book-one-line json-books-info="LatestBook.jsonBooks"></douban-book-one-line>
         </div>
         <!-- 附近用户上传的旧书-->
         <div ng-if="BookRecommend$.NearUsedBook.jsonBooks.length>0">

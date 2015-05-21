@@ -6,8 +6,6 @@
 
 APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$) {
     var that = this;
-    this.LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,默认加载慢屏幕
-    this.RandomStart = (new Date().getDay()) * Math.floor(Math.random() * 10);//随机产生一个开始数,每次打开看到的专业推荐都不一样
 
     /**
      * 所有图书分类
@@ -48,7 +46,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
         books: [],
         hasMoreFlag: true,
         loadMore: function () {
-            DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, that.LoadCount, function (json) {
+            DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, LoadCount, function (json) {
                 var booksJSON = json['books'];
                 if (booksJSON.length > 0) {
                     for (var i = 0; i < booksJSON.length; i++) {
@@ -75,7 +73,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
         books: [],
         hasMoreFlag: true,
         loadMore: function () {
-            DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length + that.RandomStart, that.LoadCount, function (json) {
+            DoubanBook$.getBooksByTag(that.MajorBook.major, that.MajorBook.books.length + RandomStart, LoadCount, function (json) {
                 that.MajorBook.totalNum = json['total'];
                 var booksJSON = json['books'];
                 if (booksJSON.length > 0) {
@@ -109,13 +107,13 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }
-            if(that.NearNeedBook._majorFilter){
+            if (that.NearNeedBook._majorFilter) {
                 var ownerQuery = new AV.Query('_User');
-                ownerQuery.equalTo('major',that.NearNeedBook._majorFilter);
-                query.matchesQuery('owner',ownerQuery);
+                ownerQuery.equalTo('major', that.NearNeedBook._majorFilter);
+                query.matchesQuery('owner', ownerQuery);
             }
-            query.skip(that.NearNeedBook.jsonBooks.length);
-            query.limit(that.LoadCount);
+            query.skip(that.NearNeedBook.jsonBooks.length + RandomStart);
+            query.limit(LoadCount);
             query.find().done(function (avosUsedBooks) {
                 if (avosUsedBooks.length > 0) {
                     for (var i = 0; i < avosUsedBooks.length; i++) {
@@ -160,13 +158,13 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }
-            if(that.NearUsedBook._majorFilter){
+            if (that.NearUsedBook._majorFilter) {
                 var ownerQuery = new AV.Query('_User');
-                ownerQuery.equalTo('major',that.NearUsedBook._majorFilter);
-                query.matchesQuery('owner',ownerQuery);
+                ownerQuery.equalTo('major', that.NearUsedBook._majorFilter);
+                query.matchesQuery('owner', ownerQuery);
             }
             query.skip(that.NearUsedBook.jsonBooks.length);
-            query.limit(that.LoadCount);
+            query.limit(LoadCount);
             query.find().done(function (avosUsedBooks) {
                 if (avosUsedBooks.length > 0) {
                     for (var i = 0; i < avosUsedBooks.length; i++) {

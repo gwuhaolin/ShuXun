@@ -4,11 +4,11 @@
  */
 "use strict";
 
-APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$, User$, LatestBook$) {
+APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$, User$, BookInfo$) {
     $scope.User$ = User$;
     $scope.BookRecommend$ = BookRecommend$;
-    $scope.LatestBook$ = LatestBook$;
-    LatestBook$.loadMore();
+    $scope.LatestBook = BookInfo$.LatestBook;
+    $scope.LatestBook.loadMore();
     BookRecommend$.MajorBook.loadMore();
     BookRecommend$.NearUsedBook.loadMore();
     BookRecommend$.NearNeedBook.loadMore();

@@ -4,25 +4,9 @@
  */
 "use strict";
 
-APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
+APP.service('DoubanBook$', function ($rootScope, $ionicHistory, BookInfo$) {
     var that = this;
     var baseUri = 'http://api.douban.com/v2/book';
-
-    /**
-     * 抓取isbn13对应的书
-     * @param isbn13
-     * @param callback json格式的和豆瓣格式相同的书
-     * 如果没有成功就返回 null
-     */
-    this.getBookInfoFromAVOSByISBN = function (isbn13, callback) {
-        AV.Cloud.run('spiderBookByISBN', {
-            isbn13: isbn13
-        }).done(function (avosBookInfo) {
-            callback(avosBookInfo);
-        }).fail(function () {
-            callback(null);
-        })
-    };
 
     /**
      * 用书的ISBN号码获得书的信息
@@ -47,8 +31,10 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
                 jsonp(buildUrl(correctISBN13(bookISBN)), function (json) {
                     callback(json);
                 }, function () {//去抓取信息
-                    that.getBookInfoFromAVOSByISBN(bookISBN, function (json) {
-                        callback(json);
+                    BookInfo$.getJsonBookByISBN13(bookISBN).done(function (jsonBook) {
+                        callback(jsonBook);
+                    }).fail(function () {
+                        callback(null);
                     });
                 });
             }
@@ -113,6 +99,9 @@ APP.service('DoubanBook$', function ($rootScope, $ionicHistory) {
         });
     };
 
+    /**
+     * 豆瓣书评
+     */
     this.BookReview = {
         reviewList: [],
         nowBookId: null,

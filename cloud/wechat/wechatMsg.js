@@ -5,6 +5,7 @@
 "use strict";
 var Wechat = require('wechat');
 var WechatAPI = require('cloud/wechat/wechatAPI.js');
+var LBS = require('cloud/util/lbs.js');
 var SuperAgent = require('superagent');
 var config = {
     token: WechatAPI.Config.Token,
@@ -44,7 +45,7 @@ exports.MsgHandler = Wechat(config)
                 var openId = message['FromUserName'];
                 var lat = message['Latitude'];
                 var lon = message['Longitude'];
-                saveLocationToUser(openId, lat, lon);
+                saveLocationToOpenIdUser(openId, lat, lon);
                 res.reply('');
                 return;
             case 'subscribe'://关注事件
@@ -240,16 +241,12 @@ var ReplyMaker = {
  * @param lat 经度
  * @param lon 纬度
  */
-function saveLocationToUser(userOpenId, lat, lon) {
+function saveLocationToOpenIdUser(userOpenId, lat, lon) {
     lat = parseFloat(lat);
     lon = parseFloat(lon);
     var query = new AV.Query(AV.User);
     query.equalTo('openId', userOpenId);
     query.first().done(function (avosUser) {
-        if (avosUser) {
-            var point = new AV.GeoPoint(lat, lon);
-            avosUser.set('location', point);
-            avosUser.save();
-        }
+        LBS.updateUserLocation(avosUser,lat,lon);
     })
 }

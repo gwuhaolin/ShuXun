@@ -120,7 +120,7 @@ AV.Cloud.afterSave('_Status', function (req) {
      */
     function sendWechatMsgTo(receiver) {
         inboxQuery.equalTo('to',receiver);
-        inboxQuery.find();//情况发送者的未读收件箱
+        inboxQuery.find();//清空发送者的未读收件箱
         //生成title
         var bookTitle = usedBook ? usedBook.get('title') : '';
         if (inboxType == 'private') {//发私信

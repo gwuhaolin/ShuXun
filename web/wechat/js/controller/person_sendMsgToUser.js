@@ -6,10 +6,6 @@
 
 APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, User$, UsedBook$, Status$) {
     var receiverObjectId = $stateParams['receiverObjectId'];//消息接受者的AVOS ID
-    if (!receiverObjectId) {//如果参数为空,说明进入了bug状态,要用户重新打开页面
-        alert('遇到了一个问题,重新打开一下就OK了~');
-        wx.closeWindow();
-    }
     $scope.isLoading = false;
     $scope.msg = {
         inboxType: $stateParams['inboxType'],//必须
@@ -103,7 +99,8 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
                 if (count > $scope.jsonStatusList.length) {
                     loadMoreStatus();
                 }
-            })
+            });
+            Status$.loadUnreadStatusesCount();
         }, 1000);
     });
     $scope.$on('$ionicView.afterLeave', function () {

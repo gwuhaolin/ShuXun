@@ -17,12 +17,12 @@ var SuperAgent = require('superagent');
  * @param longitude 经度
  */
 exports.updateUserLocation = function (avosUser, latitude, longitude) {
-    if (latitude && longitude) {
+    if (avosUser && latitude && longitude) {
         var point = new AV.GeoPoint(latitude, longitude);
         avosUser.set('location', point);
         return avosUser.save();
     }
-    return AV.Promise.error('缺少经纬度参数');
+    return AV.Promise.error('缺少必要参数');
 };
 
 /**

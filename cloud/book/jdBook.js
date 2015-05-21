@@ -20,7 +20,6 @@ exports.spiderBookByISBN = function (isbn) {
                 var $ = Cheerio.load(res.text);
                 var bookUrl = $('.item-book').first().find('a[href^="http://item.jd.com/"]').attr('href');
                 var jdId = bookUrl.split('/')[3].split('.')[0];
-                console.log(jdId);
                 SuperAgent.get(bookUrl)
                     .charset('gbk')
                     .end(function (err, res) {

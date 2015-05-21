@@ -6,73 +6,35 @@
 var WechatAPI = require('cloud/wechat/wechatAPI.js');
 var LBS = require('cloud/util/lbs.js');
 var Info = require('cloud/util/info.js');
-var BusinessSite = require('cloud/util/businessSite.js');
 var DoubanBook = require('cloud/book/doubanBook.js');
-var DangDangBook = require('cloud/book/dangdangBook.js');
-var JDBook = require('cloud/book/jdBook.js');
+var BookInfo = require('cloud/book/bookInfo.js');
 
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
  */
-AV.Cloud.define('spiderLatestBook', function (req, res) {
-    DoubanBook.spiderLatestBooksId().done(function (bookIds) {
-        res.success(bookIds.length);
-        for (var i = 0; i < bookIds.length; i++) {
-            DoubanBook.saveOneLatestBook_Id(bookIds[i], i * 1000).fail(function (err) {
-                console.error(err);
-            })
-        }
-    }).fail(function (err) {
-        res.error(err);
-    })
+AV.Cloud.define('spiderAndSaveLatestBooks', function () {
+    DoubanBook.spiderAndSaveLatestBooks();
 });
 
 /**
- * 根据ISBN号码去抓取图书信息,返回的图书信息和豆瓣图书格式相同
- * 返回AVOS Object 对象
+ * 获得对应图书的信息
+ * @param isbn13
+ * @return 返回兼容豆瓣的json格式的图书信息
  */
-AV.Cloud.define('spiderBookByISBN', function (req, res) {
+AV.Cloud.define('getJsonBookByISBN13', function (req, res) {
     var isbn13 = req.params.isbn13;
-    getBookInfoByISBN(isbn13).done(function (avosBookInfo) {
-        if (avosBookInfo) {
+    BookInfo.queryBookInfoByISBN(isbn13).done(function (avosBookInfo) {
+        if (avosBookInfo) {//已经有信息了
             res.success(avosBookInfo);
-        } else {
-            DangDangBook.spiderBookByISBN(isbn13).done(function (jsonBook) {//先去当当网
-                saveBookInfo(jsonBook).done(function (avosBookInfo) {
-                    res.success(avosBookInfo);
-                })
-            }).fail(function () {
-                JDBook.spiderBookByISBN(isbn13).done(function (jsonBook) {//不行再去京东
-                    saveBookInfo(jsonBook).done(function (avosBookInfo) {
-                        res.success(avosBookInfo);
-                    })
-                }).fail(function (err) {
-                    res.error(err);
-                });
-            });
+        } else {//还没有
+            BookInfo.spiderBookInfo(isbn13).done(function (jsonBook) {
+                res.success(jsonBook);
+                BookInfo.saveBookInfo(jsonBook);
+            }).fail(function (err) {
+                res.error(err);
+            })
         }
     });
-
-    /**
-     * 从BookInfo 表里查询图书信息
-     * @param isbn13
-     * @returns {*|{value, color}|AV.Promise}
-     */
-    function getBookInfoByISBN(isbn13) {
-        var query = new AV.Query('BookInfo');
-        query.equalTo('isbn13', isbn13);
-        return query.first();
-    }
-
-    /**
-     * 把抓取到的图书信息保存到BookInfo表
-     * @param jsonBook
-     */
-    function saveBookInfo(jsonBook) {
-        var BookInfo = AV.Object.extend('BookInfo');
-        var avosBookInfo = new BookInfo();
-        return avosBookInfo.save(jsonBook);
-    }
 });
 
 /**
@@ -100,16 +62,11 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
         })
     }
     function updateLocation() {
-        var user = req.user;
-        if (user) {
-            LBS.updateUserLocation(user, latitude, longitude).done(function () {
-                res.success();
-            }).fail(function (err) {
-                res.error(err);
-            })
-        } else {
-            res.error('需要先登入');
-        }
+        LBS.updateUserLocation(req.user, latitude, longitude).done(function () {
+            res.success();
+        }).fail(function (err) {
+            res.error(err);
+        })
     }
 });
 
@@ -178,9 +135,9 @@ AV.Cloud.define('getDoubanBookReview', function (req, res) {
  */
 AV.Cloud.define('getBusinessInfo', function (req, res) {
     var id = req.params.id;
-    BusinessSite.spider(id).done(function (json) {
+    DoubanBook.spiderBusinessInfo(id).done(function (json) {
         res.success(json);
     }).fail(function (err) {
         res.error(err);
-    })
+    });
 });
