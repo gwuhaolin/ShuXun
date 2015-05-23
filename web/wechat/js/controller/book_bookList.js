@@ -24,6 +24,7 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.loadMore = BookRecommend$.MajorBook.loadMore;
         $scope.title = BookRecommend$.MajorBook.major;
         $scope.hasMore = BookRecommend$.MajorBook.hasMore;
+        BookRecommend$.MajorBook.loadFromBookInfo();
     } else if (cmd == 'new') {
         $scope.books = BookInfo$.LatestBook.jsonBooks;
         $scope.loadMore = BookInfo$.LatestBook.loadMore;

@@ -57,5 +57,16 @@ APP.service('BookInfo$', function ($rootScope) {
         hasMore: function () {
             return that.LatestBook.hasMoreFlag;
         }
+    };
+
+    /**
+     * 在BookInfo表里进行全文检索
+     * @param keyword 关键字
+     * @returns {*|AV.Promise}
+     */
+    this.searchBook = function (keyword) {
+        var query = new AV.SearchQuery('BookInfo');
+        query.queryString(keyword);
+        return query.find(null);
     }
 });

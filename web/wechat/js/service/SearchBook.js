@@ -7,7 +7,7 @@
 /**
  * 图书搜索,调用豆瓣接口
  */
-APP.service('SearchBook$', function ($rootScope, DoubanBook$, $timeout) {
+APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo$) {
     var that = this;
     /**
      * 目前正在搜索的关键字
@@ -71,7 +71,22 @@ APP.service('SearchBook$', function ($rootScope, DoubanBook$, $timeout) {
         that.totalNum = 0;
         $timeout.cancel(timer);
         timer = $timeout(function () {
+            that.loadFromBookInfo();
             that.searchBtnOnClick();
         }, 1000);
     };
+
+    /**
+     * 去BookInfo表里全文搜索,把搜索到的结果加载到最前面
+     */
+    this.loadFromBookInfo = function () {
+        BookInfo$.searchBook(that.keyword).done(function (avosBookInfoList) {
+            for (var i = 0; i < avosBookInfoList.length; i++) {
+                var jsonBook = BookInfo$.avosBookInfoToJson(avosBookInfoList[i]);
+                that.books.unshift(jsonBook);
+            }
+            $rootScope.$apply();
+            $rootScope.$broadcast('scroll.infiniteScrollComplete');
+        })
+    }
 });

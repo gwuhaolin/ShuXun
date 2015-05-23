@@ -5,6 +5,7 @@
 "use strict";
 var _ = require('underscore');
 var BookInfo = require('cloud/book/bookInfo.js');
+var DoubanBook = require('cloud/book/doubanBook.js');
 
 /**
  * 对应UsedBook表里的没有Info属性的区抓取图书信息填上该属性
@@ -12,16 +13,24 @@ var BookInfo = require('cloud/book/bookInfo.js');
 exports.fillUsedBookInfoWhereInfoIsNull = function () {
     var query = new AV.Query('UsedBook');
     query.doesNotExist('info');
-    query.find().done(function (avosUsedBookList) {
-        _.each(avosUsedBookList, function (avosUsedBook, index) {
-            setTimeout(function () {
-                BookInfo.fillUsedBookInfo(avosUsedBook).done(function (avosUsedBook) {
-                    console.log(avosUsedBook);
-                }).fail(function (err) {
-                    console.log(err);
+    query.count().done(function (sumNum) {
+        for (var i = 0; i < sumNum; i += 100) {
+            query = new AV.Query('UsedBook');
+            query.doesNotExist('info');
+            query.skip(i);
+            query.limit(100);
+            query.find().done(function (avosUsedBookList) {
+                _.each(avosUsedBookList, function (avosUsedBook, index) {
+                    setTimeout(function () {
+                        BookInfo.fillUsedBookInfo(avosUsedBook).done(function (avosUsedBook) {
+                            console.log(avosUsedBook);
+                        }).fail(function (err) {
+                            console.log(err);
+                        });
+                    }, 1000 * index + sumNum);
                 });
-            }, 1000 * index);
-        });
+            });
+        }
     });
 };
 
@@ -61,4 +70,37 @@ exports.updateBookInfoUsedBooksRelation = function () {
             }
         })
     }
+};
+
+/**
+ * 对于doubanId为空的书的信息,重新去豆瓣抓取一次
+ */
+exports.updateNoDoubanIdBookInfoFromDouban = function () {
+    var query = new AV.Query('BookInfo');
+    query.doesNotExist('doubanId');
+    query.count().done(function (sumNum) {
+        for (var i = 0; i < sumNum; i += 100) {
+            query = new AV.Query('BookInfo');
+            query.doesNotExist('doubanId');
+            query.skip(i);
+            query.limit(100);
+            query.find().done(function (avosBookInfoList) {
+                _.each(avosBookInfoList, function (avosBookInfo, index) {
+                    setTimeout(function () {
+                        var isbn13 = avosBookInfo.get('isbn13');
+                        DoubanBook.spiderBookByISBN(isbn13).done(function (jsonBookInfo) {
+                            BookInfo.updateAvosBookInfo(avosBookInfo, jsonBookInfo).done(function (avosBookInfo) {
+                                console.log(avosBookInfo);
+                            }).fail(function (err) {
+                                console.error(err);
+                            });
+                        }).fail(function (err) {
+                            console.error(err);
+                        });
+                    }, index * 1000 + sumNum);
+                })
+            })
+        }
+    });
+
 };

@@ -100,6 +100,20 @@ exports.saveBookInfo = function (jsonBook) {
 };
 
 /**
+ * 更新一个AvosBookInfo的信息
+ * @param avosBookInfo 要被更新的对象
+ * @param jsonBookInfo 用来更新的信息
+ * @return {AV.Promise}
+ */
+exports.updateAvosBookInfo = function (avosBookInfo, jsonBookInfo) {
+    for (var i = 0; i < exports.AVOS.AttrName.length; i++) {
+        var attrName = exports.AVOS.AttrName[i];
+        avosBookInfo.set(attrName, jsonBookInfo[attrName]);
+    }
+    return avosBookInfo.save();
+};
+
+/**
  * 填充UsedBook对象的bookInfo信息
  * 如果BookInfo表里已经有对应ISBN的图书信息就直接对接,否则先去抓取,抓取到后再去保存,再对接
  * @param avosUsedBook 要填充的UsedBook对象

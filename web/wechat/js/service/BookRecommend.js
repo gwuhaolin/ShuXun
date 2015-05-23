@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$) {
+APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$, BookInfo$) {
     var that = this;
 
     /**
@@ -41,6 +41,13 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
             if (tag != that.TagBook.nowTag) {
                 that.TagBook.books = [];
                 that.TagBook.nowTag = tag;
+                BookInfo$.searchBook(tag).done(function (avosBookInfoList) {
+                    for (var i = 0; i < avosBookInfoList.length; i++) {
+                        that.TagBook.books.unshift(BookInfo$.avosBookInfoToJson(avosBookInfoList[i]));
+                    }
+                    $rootScope.$apply();
+                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                });
             }
         },
         books: [],
@@ -89,6 +96,15 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
         },
         hasMore: function () {
             return that.MajorBook.hasMoreFlag;
+        },
+        loadFromBookInfo: function () {
+            BookInfo$.searchBook(that.MajorBook.major).done(function (avosBookInfoList) {
+                for (var i = 0; i < avosBookInfoList.length; i++) {
+                    that.MajorBook.books.unshift(BookInfo$.avosBookInfoToJson(avosBookInfoList[i]));
+                }
+                $rootScope.$apply();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
         }
     };
 

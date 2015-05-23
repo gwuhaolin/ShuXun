@@ -10,3 +10,6 @@ AV.Cloud.useMasterKey();
 require('cloud/app.js');
 require('cloud/cloudCode/defineCloudCode.js');
 require('cloud/cloudCode/hookCloudCode.js');
+
+var DataRepair = require('cloud/dataRepair.js');
+//DataRepair.updateNoDoubanIdBookInfoFromDouban();
