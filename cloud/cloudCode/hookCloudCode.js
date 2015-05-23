@@ -5,6 +5,7 @@
 "use strict";
 var LBS = require('cloud/util/lbs.js');
 var WeChatAPI = require('cloud/wechat/wechatAPI.js');
+var BookInfo = require('cloud/book/bookInfo.js');
 
 AV.Cloud.afterSave('UsedBook', function (req) {
     var user = req.user;
@@ -19,13 +20,15 @@ AV.Cloud.afterSave('UsedBook', function (req) {
     user.save();
     //给用户的粉丝发送状态
     var status = new AV.Status(null, usedBook.get('des'));
-    status.set('usedBook',usedBook);
+    status.set('usedBook', usedBook);
     if (usedBook.get('role') == 'sell') {//上传二手书
         status.inboxType = 'newUsedBook';
     } else if (usedBook.get('role') == 'need') {//发布求书
         status.inboxType = 'newNeedBook';
     }
     AV.Status.sendStatusToFollowers(status, null);
+    //对接图书信息
+    BookInfo.fillUsedBookInfo(usedBook);
 });
 AV.Cloud.beforeDelete('UsedBook', function (req, res) {
     //把当前usedBook从主人的relations的usedBooks属性中移除
@@ -96,7 +99,7 @@ AV.Cloud.afterSave('_Status', function (req) {
         usedBook = status.get('usedBook');//在 私信,评论二手书时 才有
     var url = 'http://www.ishuxun.cn/wechat/#/tab/person/sendMsgToUser?receiverObjectId=' + sender.id + '&inboxType=' + inboxType,
         title;
-    var inboxQuery = AV.Status.inboxQuery(sender,inboxType);
+    var inboxQuery = AV.Status.inboxQuery(sender, inboxType);
     inboxQuery.select([]);
     if (role == 'buy') {
         url += '&role=sell';
@@ -105,7 +108,7 @@ AV.Cloud.afterSave('_Status', function (req) {
     }
     if (usedBook) {
         url += '&usedBookObjectId=' + usedBook.id;
-        inboxQuery.equalTo('usedBook',usedBook);
+        inboxQuery.equalTo('usedBook', usedBook);
         usedBook.fetch().always(function () {
             sendWechatMsgTo(status.get('to'));
         })
@@ -119,7 +122,7 @@ AV.Cloud.afterSave('_Status', function (req) {
      * @returns {AV.Promise}
      */
     function sendWechatMsgTo(receiver) {
-        inboxQuery.equalTo('to',receiver);
+        inboxQuery.equalTo('to', receiver);
         inboxQuery.find();//清空发送者的未读收件箱
         //生成title
         var bookTitle = usedBook ? usedBook.get('title') : '';

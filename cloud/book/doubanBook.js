@@ -167,6 +167,7 @@ exports.spiderBookByISBN = function (isbn) {
                 rePromise.reject(err);
             } else {
                 res.body['doubanId'] = res.body.id;
+                delete  res.body.id;
                 rePromise.resolve(res.body);
             }
         });
@@ -192,8 +193,6 @@ exports.spiderBusinessInfo = function (doubanId) {
                     $("ck-part[type='item']").each(function () {
                         var one = {};
                         var first = $(this).children().first();
-                        var urlParam = getQueryParams($(first).attr('href').trim());
-                        one.url = replaceUnionID(urlParam.url);
                         one.name = $(first).text().trim().replace(/网|商城/, '');
                         one.price = parseFloat($(first).next().text().trim());
                         re.push(one);

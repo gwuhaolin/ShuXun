@@ -37,6 +37,36 @@ exports.queryBookInfoByISBN = function (isbn13) {
 };
 
 /**
+ * BookInfo表里有对应isbn13的信息不?
+ * @param isbn13
+ * @returns {AV.Promise} json格式{
+               has:true,
+               isbn13:isbn13
+           }
+ */
+exports.hasISBN13Book = function (isbn13) {
+    var rePromise = new AV.Promise(null);
+    var query = new AV.Query('BookInfo');
+    query.equalTo('isbn13', isbn13);
+    query.count().done(function (num) {
+        if (num > 0) {
+            rePromise.resolve({
+                has: true,
+                isbn13: isbn13
+            });
+        } else {
+            rePromise.resolve({
+                has: false,
+                isbn13: isbn13
+            });
+        }
+    }).fail(function (err) {
+        rePromise.reject(err);
+    });
+    return rePromise;
+};
+
+/**
  * 去抓取图书的信息
  * 先去豆瓣>亚马逊>当当>京东
  * @param isbn13 图书的isbn13
@@ -65,7 +95,46 @@ exports.spiderBookInfo = function (isbn13) {
  * @param jsonBook
  */
 exports.saveBookInfo = function (jsonBook) {
-    var BookInfo = AV.Object.extend('BookInfo');
-    var avosBookInfo = new BookInfo();
-    return avosBookInfo.save(jsonBook);
+    var avosBookInfo = exports.AVOS.makeObject(jsonBook);
+    return avosBookInfo.save();
+};
+
+/**
+ * 填充UsedBook对象的bookInfo信息
+ * 如果BookInfo表里已经有对应ISBN的图书信息就直接对接,否则先去抓取,抓取到后再去保存,再对接
+ * @param avosUsedBook 要填充的UsedBook对象
+ * @returns {AV.Promise} 如果填充填充返回UsedBook对象,否则返回错误原因
+ */
+exports.fillUsedBookInfo = function (avosUsedBook) {
+    var rePromise = new AV.Promise(null);
+    var isbn13 = avosUsedBook.get('isbn13');
+    exports.queryBookInfoByISBN(isbn13).done(function (avosBookInfo) {
+        if (avosBookInfo) {//已经有对应图书信息了
+            setUsedBookInfo(avosBookInfo);
+        } else {//还没有图书信息
+            exports.spiderBookInfo(isbn13).done(function (jsonBook) {//去抓取
+                exports.saveBookInfo(jsonBook).done(function (avosBookInfo) {//保存抓取到的
+                    setUsedBookInfo(avosBookInfo);
+                }).fail(function (err) {
+                    rePromise.reject(err);
+                });
+            }).fail(function (err) {
+                rePromise.reject(err);
+            });
+        }
+    }).fail(function (err) {
+        rePromise.reject(err);
+    });
+    return rePromise;
+
+    function setUsedBookInfo(avosBookInfo) {
+        avosUsedBook.set('info', avosBookInfo);
+        avosUsedBook.save().done(function (avosUsedBook) {
+            rePromise.resolve(avosUsedBook);
+        }).fail(function (err) {
+            rePromise.reject(err);
+        });
+        avosBookInfo.relation('usedBooks').add(avosUsedBook);
+        avosBookInfo.save();
+    }
 };
