@@ -3,6 +3,7 @@
  *
  */
 "use strict";
+var url = require('url');
 var SuperAgent = require('superagent');
 var Cheerio = require('cheerio');
 var BookInfo = require('cloud/book/bookInfo.js');
@@ -193,6 +194,8 @@ exports.spiderBusinessInfo = function (doubanId) {
                     $("ck-part[type='item']").each(function () {
                         var one = {};
                         var first = $(this).children().first();
+                        one.url = $(first).attr('href');
+                        one.url = url.parse(one.url,true).query['url'];
                         one.name = $(first).text().trim().replace(/网|商城/, '');
                         one.price = parseFloat($(first).next().text().trim());
                         re.push(one);

@@ -100,7 +100,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
                     loadMoreStatus();
                 }
             });
-            Status$.loadUnreadStatusesCount();
+            //Status$.cleanMyInbox($scope.msg.inboxType, $scope.msg.usedBookObjectId);
         }, 1000);
     });
     $scope.$on('$ionicView.afterLeave', function () {

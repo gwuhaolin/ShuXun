@@ -99,8 +99,6 @@ AV.Cloud.afterSave('_Status', function (req) {
         usedBook = status.get('usedBook');//在 私信,评论二手书时 才有
     var url = 'http://www.ishuxun.cn/wechat/#/tab/person/sendMsgToUser?receiverObjectId=' + sender.id + '&inboxType=' + inboxType,
         title;
-    var inboxQuery = AV.Status.inboxQuery(sender, inboxType);
-    inboxQuery.select([]);
     if (role == 'buy') {
         url += '&role=sell';
     } else if (role == 'sell') {
@@ -108,7 +106,6 @@ AV.Cloud.afterSave('_Status', function (req) {
     }
     if (usedBook) {
         url += '&usedBookObjectId=' + usedBook.id;
-        inboxQuery.equalTo('usedBook', usedBook);
         usedBook.fetch().always(function () {
             sendWechatMsgTo(status.get('to'));
         })
@@ -122,8 +119,6 @@ AV.Cloud.afterSave('_Status', function (req) {
      * @returns {AV.Promise}
      */
     function sendWechatMsgTo(receiver) {
-        inboxQuery.equalTo('to', receiver);
-        inboxQuery.find();//清空发送者的未读收件箱
         //生成title
         var bookTitle = usedBook ? usedBook.get('title') : '';
         if (inboxType == 'private') {//发私信
