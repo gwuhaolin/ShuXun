@@ -221,7 +221,6 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
 
     /**
      * 清空我的收件箱
-     * TODO not work
      * @param inboxType 邮件类型
      * @param usedBookObjectId 对应的二手书
      * @param receiverObjectId 消息接受者
@@ -229,7 +228,6 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
     this.cleanMyInbox = function (inboxType, usedBookObjectId, receiverObjectId) {
         var me = AV.User.current();
         var inboxQuery = AV.Status.inboxQuery(me, inboxType);
-        inboxQuery.select();
         usedBookObjectId && inboxQuery.equalTo('usedBook', AV.Object.createWithoutData('UsedBook', usedBookObjectId));
         receiverObjectId && inboxQuery.equalTo('source', AV.Object.createWithoutData('_User', receiverObjectId));
         inboxQuery.find().done(function () {

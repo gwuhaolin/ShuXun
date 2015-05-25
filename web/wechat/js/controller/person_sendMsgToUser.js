@@ -100,10 +100,10 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
                     loadMoreStatus();
                 }
             });
-            //Status$.cleanMyInbox($scope.msg.inboxType, $scope.msg.usedBookObjectId);
         }, 1000);
     });
     $scope.$on('$ionicView.afterLeave', function () {
         clearInterval(autoTimer);
+        Status$.cleanMyInbox($scope.msg.inboxType, $scope.msg.usedBookObjectId, receiverObjectId);
     });
 });
