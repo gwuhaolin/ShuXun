@@ -24,7 +24,7 @@ exports.OAuthClient = new exports.Config.OAuthClient(exports.Config.AppID, expor
 exports.getJsConfig = function (url) {
     var rePromise = new AV.Promise(null);
     //如果发布了就关闭微信调试
-    var isDebug = process.env['NODE_ENV'] == 'production';
+    var isDebug = process.env['NODE_ENV'] != 'production';
     exports.APIClient.getJsConfig({
         debug: isDebug,
         url: url,
