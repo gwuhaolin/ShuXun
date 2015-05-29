@@ -106,7 +106,8 @@ exports.spiderAndSaveLatestBooks = function () {
         }
     }).fail(function (err) {
         rePromise.reject(err);
-    })
+    });
+    return rePromise;
 };
 
 /**
@@ -196,7 +197,7 @@ exports.spiderBusinessInfo = function (doubanId) {
                         var one = {};
                         var first = $(this).children().first();
                         one.url = $(first).attr('href');
-                        one.url = url.parse(one.url,true).query['url'];
+                        one.url = url.parse(one.url, true).query['url'];
                         one.name = $(first).text().trim().replace(/网|商城/, '');
                         one.price = parseFloat($(first).next().text().trim());
                         re.push(one);

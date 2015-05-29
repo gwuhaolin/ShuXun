@@ -961,6 +961,19 @@ exports.checkCode13 = function (isbn12) {
     return check;
 };
 
+/**
+ * 校验一个ISBN是否合法
+ * @param isbn13
+ * @returns {boolean}
+ */
+exports.isbn13IsLegal = function (isbn13) {
+    if (isbn13 && isbn13.length == 13) {
+        return exports.checkCode13(isbn13.substr(0, 12)) == isbn13.charAt(12);
+    } else {
+        return false;
+    }
+};
+
 exports.genISBN13ByPublisher = function (publisherCode) {
     /**
      * 生成指定长度的0组成的字符串

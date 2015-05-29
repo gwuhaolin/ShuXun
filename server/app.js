@@ -5,7 +5,6 @@
 "use strict";
 var express = require('express');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var WechatMsg = require('./wechat/wechatMsg.js');
 var cloud = require('./cloud/cloud.js');
 
