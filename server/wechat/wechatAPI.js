@@ -3,7 +3,7 @@
  *
  */
 "use strict";
-
+var AV = require('leanengine');
 exports.Config = {
     AppID: 'wx2940a8d3ddcad5e9',
     Secret: '109504a5c4cac98f12c024d724fd589f',
@@ -24,10 +24,7 @@ exports.OAuthClient = new exports.Config.OAuthClient(exports.Config.AppID, expor
 exports.getJsConfig = function (url) {
     var rePromise = new AV.Promise(null);
     //如果发布了就关闭微信调试
-    var isDebug = true;
-    if (__production) {
-        isDebug = false;
-    }
+    var isDebug = process.env['NODE_ENV'] == 'production';
     exports.APIClient.getJsConfig({
         debug: isDebug,
         url: url,

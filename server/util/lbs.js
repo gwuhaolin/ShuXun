@@ -3,12 +3,12 @@
  * LBS服务
  */
 "use strict";
-
+var AV = require('leanengine');
+var SuperAgent = require('superagent');
 //百度地图
 var BaiDu = {
     AppID: 'D9748868fb527b49a546fa88932b8cd9'
 };
-var SuperAgent = require('superagent');
 
 /**
  * 更新用户的地理位置

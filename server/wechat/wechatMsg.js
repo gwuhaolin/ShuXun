@@ -3,9 +3,10 @@
  *
  */
 "use strict";
+var AV = require('leanengine');
 var Wechat = require('wechat');
-var WechatAPI = require('cloud/wechat/wechatAPI.js');
-var LBS = require('cloud/util/lbs.js');
+var WechatAPI = require('./wechatAPI.js');
+var LBS = require('../util/lbs.js');
 var SuperAgent = require('superagent');
 var config = {
     token: WechatAPI.Config.Token,

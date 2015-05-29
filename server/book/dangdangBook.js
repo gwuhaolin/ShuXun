@@ -3,6 +3,7 @@
  * 去当当网抓取图书信息
  */
 "use strict";
+var AV = require('leanengine');
 var SuperAgent = require('superagent-charset');
 var Cheerio = require('cheerio');
 

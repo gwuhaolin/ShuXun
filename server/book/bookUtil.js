@@ -942,7 +942,7 @@ exports.Publisher = {
  * @param isbn12
  * @return String 返回校验码
  */
-function checkCode13(isbn12) {
+exports.checkCode13 = function (isbn12) {
     var s = 0;
     for (var i = 0; i < 12; i++) {
         var num = parseInt(isbn12.charAt(i));
@@ -959,7 +959,7 @@ function checkCode13(isbn12) {
         check = '0';
     }
     return check;
-}
+};
 
 exports.genISBN13ByPublisher = function (publisherCode) {
     /**
@@ -975,7 +975,7 @@ exports.genISBN13ByPublisher = function (publisherCode) {
         return re;
     }
 
-    var start = "9787";//978图书 7中国
+    var start = '9787';//978图书 7中国
     start += publisherCode;
     var blankLength = 12 - start.length;
     var max = Math.pow(10, blankLength);
@@ -983,7 +983,7 @@ exports.genISBN13ByPublisher = function (publisherCode) {
     for (var i = 0; i < max; i++) {
         var strI = String(i);
         var one = start + gen0(blankLength - strI.length) + strI;
-        one += checkCode13(one);
+        one += exports.checkCode13(one);
         re.push(one);
     }
     return re;

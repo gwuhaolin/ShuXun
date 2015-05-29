@@ -3,11 +3,12 @@
  * AVOS 运代码
  */
 "use strict";
-var WechatAPI = require('cloud/wechat/wechatAPI.js');
-var LBS = require('cloud/util/lbs.js');
-var Info = require('cloud/util/info.js');
-var DoubanBook = require('cloud/book/doubanBook.js');
-var BookInfo = require('cloud/book/bookInfo.js');
+var AV = require('leanengine');
+var WechatAPI = require('../wechat/wechatAPI.js');
+var LBS = require('../util/lbs.js');
+var Info = require('../util/info.js');
+var DoubanBook = require('../book/doubanBook.js');
+var BookInfo = require('../book/bookInfo.js');
 
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表

@@ -3,6 +3,7 @@
  *
  */
 "use strict";
+var AV = require('leanengine');
 var SuperAgent = require('superagent');
 var Cheerio = require('cheerio');
 

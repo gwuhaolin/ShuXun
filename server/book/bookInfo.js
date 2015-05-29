@@ -3,9 +3,10 @@
  *
  */
 "use strict";
-var DangDangBook = require('cloud/book/dangdangBook.js');
-var JDBook = require('cloud/book/jdBook.js');
-var DoubanBook = require('cloud/book/doubanBook.js');
+var AV = require('leanengine');
+var DangDangBook = require('./dangdangBook.js');
+var JDBook = require('./jdBook.js');
+var DoubanBook = require('./doubanBook.js');
 
 exports.AVOS = {
     _Class: AV.Object.extend('BookInfo'),

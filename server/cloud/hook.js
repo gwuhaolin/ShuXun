@@ -3,9 +3,10 @@
  *
  */
 "use strict";
-var LBS = require('cloud/util/lbs.js');
-var WeChatAPI = require('cloud/wechat/wechatAPI.js');
-var BookInfo = require('cloud/book/bookInfo.js');
+var AV = require('leanengine');
+var LBS = require('../util/lbs.js');
+var WeChatAPI = require('../wechat/wechatAPI.js');
+var BookInfo = require('../book/bookInfo.js');
 
 AV.Cloud.afterSave('UsedBook', function (req) {
     var user = req.user;

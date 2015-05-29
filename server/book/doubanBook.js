@@ -3,10 +3,11 @@
  *
  */
 "use strict";
+var AV = require('leanengine');
 var url = require('url');
 var SuperAgent = require('superagent');
 var Cheerio = require('cheerio');
-var BookInfo = require('cloud/book/bookInfo.js');
+var BookInfo = require('./bookInfo.js');
 var DoubanAPIKey = '03cddf77fa33367f0b699e67ee99a37d';
 
 exports.spiderAndSaveLatestBooks = function () {

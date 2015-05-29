@@ -3,9 +3,10 @@
  * 数据维修
  */
 "use strict";
+var AV = require('leanengine');
 var _ = require('underscore');
-var BookInfo = require('cloud/book/bookInfo.js');
-var DoubanBook = require('cloud/book/doubanBook.js');
+var BookInfo = require('./../book/bookInfo.js');
+var DoubanBook = require('./../book/doubanBook.js');
 
 /**
  * 对应UsedBook表里的没有Info属性的区抓取图书信息填上该属性
