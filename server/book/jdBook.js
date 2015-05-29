@@ -17,75 +17,72 @@ exports.spiderBookByISBN = function (isbn) {
         }).end(function (err, res) {
             if (err) {
                 rePromise.reject(err);
-            } else {
-                var $ = Cheerio.load(res.text);
-                var bookUrl = $('#plist').find('a[href^="http://item.jd.com/"]').first().attr('href');
-                if (bookUrl) {
-                    var jdId = bookUrl.split('/')[3].split('.')[0];
-                    SuperAgent.get(bookUrl)
-                        .charset('gbk')
-                        .end(function (err, res) {
-                            if (err) {
-                                rePromise.reject(err);
-                            } else {
-                                var jsonBook = {
-                                    isbn13: isbn,
-                                    author: []
-                                };
-                                $ = Cheerio.load(res.text);
-                                //获取标题
-                                jsonBook.title = $('#name').children('h1').first().text().trim();
-                                //获取作者
-                                $('#p-author').children('a').each(function () {
-                                    jsonBook.author.push($(this).text());
-                                });
-                                //获得图片
-                                jsonBook.image = $('#product-intro').find('img[width="350"][height="350"]').first().attr('src');
-                                //获得出版信息
-                                $('#parameter2').children('li').each(function () {
-                                    var text = $(this).text();
-                                    if (text.indexOf('出版社') >= 0) {
-                                        jsonBook.publisher = text.split('：')[1].trim();
-                                    } else if (text.indexOf('ISBN') >= 0) {
-                                        if (text.split('：')[1] != isbn) {
-                                            rePromise.reject('抓取到的图书ISBN编码不符合');
-                                        }
-                                    } else if (text.indexOf('出版时间') >= 0) {
-                                        jsonBook.pubdate = text.split('：')[1];
-                                    } else if (text.indexOf('页数') >= 0) {
-                                        jsonBook.pages = text.split('：')[1];
-                                    } else if (text.indexOf('包装') >= 0) {
-                                        jsonBook.binding = text.split('：')[1];
-                                    }
-                                });
-                                //获得定价
-                                jsonBook.price = $('#page_maprice').text().trim();
-                                //获取简介 TODO error
-                                SuperAgent.get('http://d.3.cn/desc/' + jdId)
-                                    .charset('gbk')
-                                    .end(function (err, res) {
-                                        try {
-                                            $ = Cheerio.load(res.body);
-                                            $('.item-mt h3').each(function () {
-                                                var text = $(this).text();
-                                                console.log(text);
-                                                if (text == '内容简介') {
-                                                    jsonBook.summary = $(this).parent().next().children('.book-detail-content').first().text();
-                                                } else if (text == '作者简介') {
-                                                    jsonBook.author_intro = $(this).parent().next().children('.book-detail-content').first().text();
-                                                } else if (text == '目录') {
-                                                    jsonBook.catalog = $(this).parent().next().children('.book-detail-content').first().text();
-                                                }
-                                            });
-                                        } finally {
-                                            rePromise.resolve(jsonBook);
-                                        }
-                                    });
+                return;
+            }
+            var $ = Cheerio.load(res.text);
+            var bookUrl = $('#plist').find('a[href^="http://item.jd.com/"]').first().attr('href');
+            if (bookUrl) {
+                var jdId = bookUrl.split('/')[3].split('.')[0];
+                SuperAgent.get(bookUrl)
+                    .charset('gbk')
+                    .end(function (err, res) {
+                        if (err) {
+                            rePromise.reject(err);
+                            return;
+                        }
+                        var jsonBook = {
+                            isbn13: isbn,
+                            author: []
+                        };
+                        $ = Cheerio.load(res.text);
+                        //获取标题
+                        jsonBook.title = $('#name').children('h1').first().text().trim();
+                        //获取作者
+                        $('#p-author').children('a').each(function () {
+                            jsonBook.author.push($(this).text());
+                        });
+                        //获得图片
+                        jsonBook.image = $('#product-intro').find('img[width="350"][height="350"]').first().attr('src');
+                        //获得出版信息
+                        $('#parameter2').children('li').each(function () {
+                            var text = $(this).text();
+                            if (text.indexOf('出版社') >= 0) {
+                                jsonBook.publisher = text.split('：')[1].trim();
+                            } else if (text.indexOf('出版时间') >= 0) {
+                                jsonBook.pubdate = text.split('：')[1];
+                            } else if (text.indexOf('页数') >= 0) {
+                                jsonBook.pages = text.split('：')[1];
+                            } else if (text.indexOf('包装') >= 0) {
+                                jsonBook.binding = text.split('：')[1];
                             }
-                        })
-                } else {
-                    rePromise.reject('没有找到图书');
-                }
+                        });
+                        //获得定价
+                        jsonBook.price = $('#page_maprice').text().trim();
+                        rePromise.resolve(jsonBook);
+                        //获取简介 TODO error
+                        //SuperAgent.get('http://d.3.cn/desc/' + jdId)
+                        //    .charset('gbk')
+                        //    .end(function (err, res) {
+                        //        try {
+                        //            $ = Cheerio.load(res.body);
+                        //            $('.item-mt h3').each(function () {
+                        //                var text = $(this).text();
+                        //                console.log(text);
+                        //                if (text == '内容简介') {
+                        //                    jsonBook.summary = $(this).parent().next().children('.book-detail-content').first().text();
+                        //                } else if (text == '作者简介') {
+                        //                    jsonBook.author_intro = $(this).parent().next().children('.book-detail-content').first().text();
+                        //                } else if (text == '目录') {
+                        //                    jsonBook.catalog = $(this).parent().next().children('.book-detail-content').first().text();
+                        //                }
+                        //            });
+                        //        } finally {
+                        //            rePromise.resolve(jsonBook);
+                        //        }
+                        //    });
+                    })
+            } else {
+                rePromise.reject('没有找到图书');
             }
         });
     return rePromise;

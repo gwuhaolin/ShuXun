@@ -90,7 +90,7 @@ var APP = angular.module('APP', ['ionic'], null)
                  * 参数:doubanBookId 豆瓣图书id
                  * 参数:图书的名称
                  */
-                url: '/book/oneUsedBook?doubanBookId&bookTitle',
+                url: '/book/bookReview?doubanBookId&bookTitle',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/bookReview.html'
@@ -227,7 +227,7 @@ var APP = angular.module('APP', ['ionic'], null)
 APP.run(function ($rootScope, $state, User$, WeChatJS$) {
     WeChatJS$.config();//马上调用配置微信
     User$.loginWithUnionId(readCookie('unionId'));
-    $rootScope.$on('$stateChangeStart', function (event,nextState) {
+    $rootScope.$on('$stateChangeStart', function (event, nextState) {
         var stateName = nextState['name'];
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录
             if (!User$.getCurrentAvosUser()) {

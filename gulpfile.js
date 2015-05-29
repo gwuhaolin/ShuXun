@@ -15,7 +15,6 @@ var clean = require('gulp-clean');
 
 function CDN(cdn) {
     var re = {
-        'Wechat-js': 'http://res.wx.qq.com/open/js/jweixin-1.0.0.js',
         'jQuery-js': 'http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
         'Avos-js': 'http://7xj22a.com1.z0.glb.clouddn.com/avos/av-mini.js',
         'Semantic-js': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.js',

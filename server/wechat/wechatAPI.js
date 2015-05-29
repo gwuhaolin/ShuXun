@@ -3,6 +3,7 @@
  *
  */
 "use strict";
+var fs = require('fs');
 var AV = require('leanengine');
 exports.Config = {
     AppID: 'wx2940a8d3ddcad5e9',
@@ -10,7 +11,8 @@ exports.Config = {
     Token: 'wonderful',
     EncodingAESKey: 'qiYrBOvI9Z6mhRUZ1LrztiHquQg9NAgQ4arSkgd1aH3',
     APIClient: require('wechat-api'),
-    OAuthClient: require('wechat-oauth')
+    OAuthClient: require('wechat-oauth'),
+    JsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode']
 };
 exports.APIClient = new exports.Config.APIClient(exports.Config.AppID, exports.Config.Secret);
 exports.OAuthClient = new exports.Config.OAuthClient(exports.Config.AppID, exports.Config.Secret);
@@ -29,7 +31,7 @@ exports.getJsConfig = function (url) {
         debug: isDebug,
         url: url,
         //需要使用的借口列表
-        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode']
+        jsApiList: exports.Config.JsApiList
     }, function (err, data) {
         if (err) {
             rePromise.reject(err);
