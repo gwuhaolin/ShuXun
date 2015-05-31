@@ -1,5 +1,5 @@
 <!--个人主页-->
-<ion-view ng-controller="person_sendMsgToUser" view-title="回复{{jsonUser.nickName}}">
+<ion-view ng-controller="person_sendMsgToUser" view-title="回复{{user.attributes.nickName}}">
     <style>
         .message {
             display: block;
@@ -16,16 +16,16 @@
     </ion-nav-buttons>
     <ion-content>
         <!-- 对方用户信息-->
-        <user-info ng-if="jsonUser" json-user-info="jsonUser"></user-info>
+        <user-info ng-if="user" user="user"></user-info>
         <!-- 二手书信息-->
-        <one-used-book ng-if="jsonUsedBook" json-used-book="jsonUsedBook"></one-used-book>
+        <one-used-book ng-if="usedBook" used-book="usedBook"></one-used-book>
         <!-- 聊天记录-->
         <ion-item style="margin: 0;padding: 0;border-right: none;border-left: none">
-            <ol ng-if="jsonStatusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
-                <li ng-repeat="jsonStatus in jsonStatusList"
+            <ol ng-if="statusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
+                <li ng-repeat="status in statusList"
                     class="message"
-                    ng-style="{float:jsonStatus.source.id==jsonUser.objectId ? 'left':'right',backgroundColor:jsonStatus.source.id==jsonUser.objectId ? '#30bf4c':'#e6e5eb'}">
-                    {{jsonStatus.message}}
+                    ng-style="{float:status.attributes.source.id==user.id ? 'left':'right',backgroundColor:status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}">
+                    {{status.attributes.message}}
                 </li>
             </ol>
         </ion-item>

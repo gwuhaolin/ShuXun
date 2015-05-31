@@ -18,46 +18,46 @@
             </ion-item>
         </div>
         <!-- 新书速递-->
-        <div ng-if="LatestBook.jsonBooks.length>0">
+        <div ng-if="LatestBook.books.length>0">
             <ion-item class="item-divider item-button-right">新书速递
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_bookList({cmd:'new'})">更多
                 </button>
             </ion-item>
-            <douban-book-one-line json-books-info="LatestBook.jsonBooks"></douban-book-one-line>
+            <douban-book-one-line books="LatestBook.books"></douban-book-one-line>
         </div>
         <!-- 附近用户上传的旧书-->
-        <div ng-if="BookRecommend$.NearUsedBook.jsonBooks.length>0">
+        <div ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
             <ion-item class="item-divider item-button-right">附近卖书
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_usedBookList({cmd:'nearUsed'})">更多
                 </button>
             </ion-item>
-            <used-book-one-line json-books-info="BookRecommend$.NearUsedBook.jsonBooks"></used-book-one-line>
+            <used-book-one-line book-infos="BookRecommend$.NearUsedBook.usedBooks"></used-book-one-line>
         </div>
         <!-- 用户附近的用户-->
-        <div ng-if="BookRecommend$.NearUser.jsonUsers.length>0">
+        <div ng-if="BookRecommend$.NearUser.users.length>0">
             <ion-item class="item-divider item-button-right">附近同学
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.userList({cmd:'near'})">更多
                 </button>
             </ion-item>
             <ion-item style="padding: 0;text-align: center">
-                <img ng-repeat="one in BookRecommend$.NearUser.jsonUsers"
-                     ng-if="one.avatarUrl"
-                     ng-src="{{User$.changeWechatAvatarSize(one.avatarUrl,64)}}"
-                     ui-sref="tab.userHome({ownerId:one.objectId})"
+                <img ng-repeat="one in BookRecommend$.NearUser.users"
+                     ng-if="one.attributes.avatarUrl"
+                     ng-src="{{one.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:one.id})"
                      style="width: 40px;height: 40px;border-radius: 50%;overflow: hidden;margin: 5px">
             </ion-item>
         </div>
         <!-- 附近用户发布的求书-->
-        <div ng-if="BookRecommend$.NearNeedBook.jsonBooks.length>0">
+        <div ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <ion-item class="item-divider item-button-right">附近求书
                 <button class="button button-small button-clear button-balanced" style="top: 0"
                         ui-sref="tab.book_usedBookList({cmd:'nearNeed'})">更多
                 </button>
             </ion-item>
-            <used-book-one-line json-books-info="BookRecommend$.NearNeedBook.jsonBooks"></used-book-one-line>
+            <used-book-one-line book-infos="BookRecommend$.NearNeedBook.needBooks"></used-book-one-line>
         </div>
         <!-- 根据专业推荐的书-->
         <div ng-if="BookRecommend$.MajorBook.books.length>0">
@@ -66,7 +66,7 @@
                         ui-sref="tab.book_bookList({cmd:'major'})">更多
                 </button>
             </ion-item>
-            <douban-book-one-line json-books-info="BookRecommend$.MajorBook.books"></douban-book-one-line>
+            <douban-book-one-line books="BookRecommend$.MajorBook.books"></douban-book-one-line>
         </div>
     </ion-content>
 

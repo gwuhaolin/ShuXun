@@ -12,11 +12,11 @@ var DoubanBook = require('./../book/doubanBook.js');
  * 对应UsedBook表里的没有Info属性的区抓取图书信息填上该属性
  */
 exports.fillUsedBookInfoWhereInfoIsNull = function () {
-    var query = new AV.Query('UsedBook');
+    var query = new AV.Query(Model.UsedBook);
     query.doesNotExist('info');
     query.count().done(function (sumNum) {
         for (var i = 0; i < sumNum; i += 100) {
-            query = new AV.Query('UsedBook');
+            query = new AV.Query(Model.UsedBook);
             query.doesNotExist('info');
             query.skip(i);
             query.limit(100);
@@ -39,11 +39,11 @@ exports.fillUsedBookInfoWhereInfoIsNull = function () {
  * 对于BookInfo表里每一本书都去重新计算它的UsedBooks属性
  */
 exports.updateBookInfoUsedBooksRelation = function () {
-    var query = new AV.Query('BookInfo');
+    var query = new AV.Query(Model.BookInfo);
     query.count().done(function (sumNum) {
         console.log(sumNum);
         for (var i = 0; i < sumNum; i += 100) {
-            query = new AV.Query('BookInfo');
+            query = new AV.Query(Model.BookInfo);
             query.skip(i);
             query.limit(100);
             query.find().done(function (avosBookInfoList) {
@@ -58,7 +58,7 @@ exports.updateBookInfoUsedBooksRelation = function () {
 
     function computerBookInfoUsedBook(avosBookInfo) {
         var isbn13 = avosBookInfo.get('isbn13');
-        var query = new AV.Query('UsedBook');
+        var query = new AV.Query(Model.UsedBook);
         query.equalTo('isbn13', isbn13);
         query.find().done(function (avosUsedBookList) {
             avosBookInfo.relation('usedBooks').add(avosUsedBookList);
@@ -77,11 +77,11 @@ exports.updateBookInfoUsedBooksRelation = function () {
  * 对于doubanId为空的书的信息,重新去豆瓣抓取一次
  */
 exports.updateNoDoubanIdBookInfoFromDouban = function () {
-    var query = new AV.Query('BookInfo');
+    var query = new AV.Query(Model.BookInfo);
     query.doesNotExist('doubanId');
     query.count().done(function (sumNum) {
         for (var i = 0; i < sumNum; i += 100) {
-            query = new AV.Query('BookInfo');
+            query = new AV.Query(Model.BookInfo);
             query.doesNotExist('doubanId');
             query.skip(i);
             query.limit(100);

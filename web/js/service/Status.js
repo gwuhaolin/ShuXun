@@ -4,9 +4,8 @@
  */
 "use strict";
 
-APP.service('Status$', function ($rootScope, UsedBook$) {
+APP.service('Status$', function ($rootScope) {
     var that = this;
-    var AttrName = ['inboxType', 'message', 'source', 'to', 'usedBook'];
 
     /**
      * 加载我未读的消息的数量,并且显示在Tab上
@@ -35,19 +34,14 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
 
     this.NewUsedBookStatus = {
         unreadCount: 0,
-        avosStatusList: [],
+        statusList: [],
         load: function () {
             var query = AV.Status.inboxQuery(AV.User.current(), 'newUsedBook');
             query.include("usedBook");
             query.include("source");
             query.limit(that.NewUsedBookStatus.unreadCount);
             query.find().done(function (statuses) {
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.jsonUserInfo = avosUserToJson(one.get('source'));
-                    one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
-                    that.NewUsedBookStatus.avosStatusList.push(one);
-                }
+                that.NewUsedBookStatus.statusList = statuses;
                 that.NewUsedBookStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -57,19 +51,14 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
 
     this.NewNeedBookStatus = {
         unreadCount: 0,
-        avosStatusList: [],
+        statusList: [],
         load: function () {
             var query = AV.Status.inboxQuery(AV.User.current(), 'newNeedBook');
             query.include("usedBook");
             query.include("source");
             query.limit(that.NewNeedBookStatus.unreadCount);
             query.find().done(function (statuses) {
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.jsonUserInfo = avosUserToJson(one.get('source'));
-                    one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
-                    that.NewNeedBookStatus.avosStatusList.push(one);
-                }
+                that.NewNeedBookStatus.statusList = statuses;
                 that.NewNeedBookStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -79,19 +68,14 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
 
     this.PrivateStatus = {
         unreadCount: 0,
-        avosStatusList: [],
+        statusList: [],
         load: function () {
             var query = AV.Status.inboxQuery(AV.User.current(), 'private');
             query.include("usedBook");
             query.include("source");
             query.limit(that.PrivateStatus.unreadCount);
             query.find().done(function (statuses) {
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.jsonUserInfo = avosUserToJson(one.get('source'));
-                    one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
-                    that.PrivateStatus.avosStatusList.push(one);
-                }
+                that.PrivateStatus.statusList = statuses;
                 that.PrivateStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -101,34 +85,19 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
 
     this.ReviewUsedBookStatus = {
         unreadCount: 0,
-        avosStatusList: [],
+        statusList: [],
         load: function () {
             var query = AV.Status.inboxQuery(AV.User.current(), 'reviewUsedBook');
             query.include("usedBook");
             query.include("source");
             query.limit(that.ReviewUsedBookStatus.unreadCount);
             query.find().done(function (statuses) {
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.jsonUserInfo = avosUserToJson(one.get('source'));
-                    one.jsonUsedBook = UsedBook$.avosUsedBookToJson(one.get('usedBook'));
-                    that.ReviewUsedBookStatus.avosStatusList.push(one);
-                }
+                that.ReviewUsedBookStatus.statusList = statuses;
                 that.ReviewUsedBookStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
-    };
-
-    this.avosStatusToJson = function (avosStatus) {
-        var re = {};
-        for (var i = 0; i < AttrName.length; i++) {
-            re[AttrName[i]] = avosStatus.get(AttrName[i]);
-        }
-        re.updatedAt = avosStatus.get('updatedAt');
-        re.objectId = avosStatus.id;
-        return re;
     };
 
     /**
@@ -157,11 +126,11 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
      */
     this.reviewUsedBook = function (receiverObjectId, usedBookObjectId, msg, role) {
         var rePromise = new AV.Promise(null);
-        var query = new AV.Query('UsedBook');
+        var query = new AV.Query(Model.UsedBook);
         query.select('owner');
         query.get(usedBookObjectId).done(function (avosUsedBook) {
             var bookOwner = avosUsedBook.get('owner');
-            query = new AV.Query(AV.User);
+            query = new AV.Query(Model.User);
             query.equalTo('objectId', bookOwner.id);
             var status = new AV.Status(null, msg);
             status.query = query;
@@ -186,10 +155,11 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
      * @returns {*|{}|AV.Promise}
      */
     this.getStatusList_reviewBook = function (usedBookId) {
-        var query = new AV.Query('_Status');
+        var query = new AV.Query(Model.Status);
         var usedBook = AV.Object.createWithoutData('UsedBook', usedBookId);
         query.equalTo('inboxType', 'reviewUsedBook');
         query.equalTo('usedBook', usedBook);
+        query.include('source', 'to');
         return query.find();
     };
 
@@ -202,10 +172,10 @@ APP.service('Status$', function ($rootScope, UsedBook$) {
         if (avosUserId) {
             var me = AV.User.current();
             var he = AV.Object.createWithoutData('_User', avosUserId);
-            var query1 = new AV.Query('_Status');
+            var query1 = new AV.Query(Model.Status);
             query1.equalTo('source', me);
             query1.equalTo('to', he);
-            var query2 = new AV.Query('_Status');
+            var query2 = new AV.Query(Model.Status);
             query2.equalTo('source', he);
             query2.equalTo('to', me);
             if (avosUsedBookId) {

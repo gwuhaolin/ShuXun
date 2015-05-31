@@ -5,19 +5,19 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
-            <user-info json-user-info="jsonOwnerInfo" hide-used-book="true"></user-info>
+            <user-info user="owner" hide-used-book="true"></user-info>
             <!-- 上传的二手书列表-->
             <ion-item class="item-divider item-button-right">主人上传的二手书列表</ion-item>
-            <one-used-book ng-if="jsonUsedBookList.length>0" ng-repeat="oneJsonUsedBook in jsonUsedBookList"
-                           json-used-book="oneJsonUsedBook"></one-used-book>
-            <ion-item ng-if="jsonUsedBookList.length==0" ui-sref="tab.book_recommend">
+            <one-used-book ng-if="usedBooks.length>0" ng-repeat="usedBook in usedBooks"
+                           used-book="usedBook"></one-used-book>
+            <ion-item ng-if="usedBooks.length==0" ui-sref="tab.book_recommend">
                 主人还没旧书要卖,再去逛逛
             </ion-item>
             <!-- 发布的求书列表-->
             <ion-item class="item-divider item-button-right">主人发布的求书列表</ion-item>
-            <one-need-book ng-if="jsonNeedBookList.length>0" ng-repeat="oneJsonNeedBook in jsonNeedBookList"
-                           json-need-book="oneJsonNeedBook"></one-need-book>
-            <ion-item ng-if="jsonNeedBookList.length==0" ui-sref="tab.book_recommend">
+            <one-need-book ng-if="needBooks.length>0" ng-repeat="needBook in needBooks"
+                           need-book="needBook"></one-need-book>
+            <ion-item ng-if="needBooks.length==0" ui-sref="tab.book_recommend">
                 主人还没发布过求书,再去逛逛
             </ion-item>
         </ion-list>

@@ -18,6 +18,25 @@ var LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,
 var RandomStart = (new Date().getDay()) * Math.floor(Math.random() * 10);//随机产生一个开始数,每次打开看到的专业推荐都不一样
 
 /**
+ * 把一个数组push到一个数组后面,会直接改变原数组
+ * @param array
+ */
+Array.prototype.pushArray = function (array) {
+    for (var i = 0; i < array.length; i++) {
+        this.push(array[i]);
+    }
+};
+/**
+ * 把一个数组unshift到一个数组后面,会直接改变原数组
+ * @param array
+ */
+Array.prototype.unshiftArray = function (array) {
+    for (var i = 0; i < array.length; i++) {
+        this.unshift(array[i]);
+    }
+};
+
+/**
  * 自定义的jsonp调用
  * @param url 目标url
  * @param callback
@@ -64,35 +83,4 @@ function readCookie(name) {
 }
 function eraseCookie(name) {
     createCookie(name, "", -1);
-}
-
-var UserAttrNames = ['openId', 'nickName', 'avatarUrl', 'sex', 'school', 'major', 'startSchoolYear', 'wechatAlert'];
-/**
- * 把AVOS User 转换为 json格式的UserInfo
- */
-function avosUserToJson(avosUser) {
-    if (avosUser == null) {
-        return null;
-    }
-    var json = {};
-    for (var i = 0; i < UserAttrNames.length; i++) {
-        var attrName = UserAttrNames[i];
-        json[attrName] = avosUser.get(attrName);
-    }
-    json.objectId = avosUser.id;
-    json.location = avosUser.get('location');
-    return json;
-}
-/**
- * 把 json格式的UserInfo 转换为 AVOS User
- */
-function jsonToAvosUser(jsonUser) {
-    var user = new AV.User();
-    for (var i = 0; i < UserAttrNames.length; i++) {
-        var attrName = UserAttrNames[i];
-        if (jsonUser[attrName]) {
-            user.set(attrName, jsonUser[attrName]);
-        }
-    }
-    return user;
 }

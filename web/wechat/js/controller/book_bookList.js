@@ -16,7 +16,7 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.loadMore = BookRecommend$.TagBook.loadMore;
         $scope.hasMore = BookRecommend$.TagBook.hasMore;
     } else if (cmd == 'need') {
-        $scope.books = BookRecommend$.NearNeedBook.books;
+        $scope.books = BookRecommend$.NearNeedBook.needBooks;
         $scope.loadMore = BookRecommend$.NearNeedBook.loadMore;
         $scope.hasMore = BookRecommend$.NearNeedBook.hasMore;
     } else if (cmd == 'major') {
@@ -26,7 +26,7 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.hasMore = BookRecommend$.MajorBook.hasMore;
         BookRecommend$.MajorBook.loadFromBookInfo();
     } else if (cmd == 'new') {
-        $scope.books = BookInfo$.LatestBook.jsonBooks;
+        $scope.books = BookInfo$.LatestBook.books;
         $scope.loadMore = BookInfo$.LatestBook.loadMore;
         $scope.title = '新书速递';
         $scope.hasMore = BookInfo$.LatestBook.hasMore;

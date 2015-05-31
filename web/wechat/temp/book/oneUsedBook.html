@@ -1,52 +1,52 @@
 <!--一本二手书信息-->
-<ion-view ng-controller="book_oneUsedBook" view-title="二手 {{jsonUsedBook.title}}">
+<ion-view ng-controller="book_oneUsedBook" view-title="二手 {{usedBook.attributes.title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
     <ion-content>
         <!-- 图书基本信息-->
         <div class="list card">
-            <ion-item ng-if="jsonUsedBook.image" style="text-align: center">
-                <img ng-src="{{jsonUsedBook.image}}" style="height: 180px"
-                     ng-click="WeChatJS$.previewOneImage(jsonUsedBook.image)">
+            <ion-item ng-if="usedBook.attributes.image" style="text-align: center">
+                <img ng-src="{{usedBook.attributes.image}}" style="height: 180px"
+                     ng-click="WeChatJS$.previewOneImage(usedBook.attributes.image)">
             </ion-item>
-            <ion-item ui-sref="tab.book_oneBook({isbn13:jsonUsedBook.isbn13})">
-                <h3>书名:{{jsonUsedBook.title}}</h3>
+            <ion-item ui-sref="tab.book_oneBook({isbn13:usedBook.attributes.isbn13})">
+                <h3>书名:{{usedBook.attributes.title}}</h3>
 
-                <p>要价:{{jsonUsedBook.price}}</p>
+                <p>要价:{{usedBook.attributes.price}}</p>
 
-                <p>上传时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
+                <p>上传时间:{{usedBook.updatedAt | date:'mediumDate' }}</p>
 
-                <p ng-if="jsonUsedBook.des" style="white-space: pre-wrap">主人描述:{{jsonUsedBook.des}}</p>
+                <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">主人描述:{{usedBook.attributes.des}}</p>
             </ion-item>
         </div>
         <!-- 主人信息-->
         <div class="list card">
             <ion-item class="item-divider item-button-right">旧书主人信息
                 <a class="button button-clear button-balanced" style="top: 0"
-                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:ownerInfo.objectId,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
+                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
                 </a>
             </ion-item>
-            <user-info json-user-info="ownerInfo" used-book-object-id="jsonUsedBook.objectId"></user-info>
+            <user-info user="usedBook.attributes.owner" used-book-object-id="usedBook.id"></user-info>
         </div>
         <!-- 用户评论-->
         <div class="list card">
             <ion-item class="item-divider item-button-right">大家都说
                 <a class="button button-clear button-balanced" style="top: 0"
-                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:ownerInfo.objectId,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">发表评论
+                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">发表评论
                 </a>
             </ion-item>
-            <ion-item ng-if="jsonStatusList.length==0">还没有同学评论,快来抢沙发~</ion-item>
-            <ion-item class="item-avatar" ng-repeat="jsonStatus in jsonStatusList">
-                <img ng-src="{{User$.changeWechatAvatarSize(jsonStatus.source.get('avatarUrl'),64)}}"
-                     ui-sref="tab.userHome({ownerId:jsonStatus.source.id})">
+            <ion-item ng-if="statusList.length==0">还没有同学评论,快来抢沙发~</ion-item>
+            <ion-item class="item-avatar" ng-repeat="status in statusList">
+                <img ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:status.attributes.source.id})">
 
-                <h2 style="white-space: pre-wrap">{{jsonStatus.message}}</h2>
+                <h2 style="white-space: pre-wrap">{{status.message}}</h2>
 
-                <p>{{jsonStatus.updatedAt | date:'mediumDate'}}</p>
+                <p>{{status.updatedAt | date:'mediumDate'}}</p>
                 <img style="width: 40px;height: 40px;position: absolute;top: 16px;right: 16px;border-radius: 50%;"
-                     ui-sref="tab.userHome({ownerId:jsonStatus.to.id})"
-                     ng-src="{{User$.changeWechatAvatarSize(jsonStatus.to.get('avatarUrl'),64)}}">
+                     ui-sref="tab.userHome({ownerId:status.attributes.to.id})"
+                     ng-src="{{status.attributes.to.avatarUrlWithSize(64)}}">
             </ion-item>
         </div>
     </ion-content>

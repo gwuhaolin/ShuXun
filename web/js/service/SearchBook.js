@@ -41,7 +41,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
                 if (that.totalNum > 0) {
                     var booksJSON = json['books'];
                     for (var i = 0; i < booksJSON.length; i++) {
-                        that.books.push(booksJSON[i]);
+                        that.books.push(Model.BookInfo.new(booksJSON[i]));
                     }
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -80,11 +80,8 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
      * 去BookInfo表里全文搜索,把搜索到的结果加载到最前面
      */
     this.loadFromBookInfo = function () {
-        BookInfo$.searchBook(that.keyword).done(function (avosBookInfoList) {
-            for (var i = 0; i < avosBookInfoList.length; i++) {
-                var jsonBook = BookInfo$.avosBookInfoToJson(avosBookInfoList[i]);
-                that.books.unshift(jsonBook);
-            }
+        BookInfo$.searchBook(that.keyword).done(function (bookInfos) {
+            that.books.pushArray(bookInfos);
             $rootScope.$apply();
             $rootScope.$broadcast('scroll.infiniteScrollComplete');
         })

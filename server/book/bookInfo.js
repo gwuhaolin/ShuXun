@@ -12,7 +12,7 @@ exports.AVOS = {
     _Class: AV.Object.extend('BookInfo'),
     AttrName: ['doubanId', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro'],
     makeQuery: function () {
-        return new AV.Query('BookInfo');
+        return new AV.Query(Model.BookInfo);
     },
     makeObject: function (jsonBook) {
         var avosBook = new exports.AVOS._Class();
@@ -32,7 +32,7 @@ exports.AVOS = {
  * @returns {AV.Promise}
  */
 exports.queryBookInfoByISBN = function (isbn13) {
-    var query = new AV.Query('BookInfo');
+    var query = new AV.Query(Model.BookInfo);
     query.equalTo('isbn13', isbn13);
     return query.first();
 };
@@ -47,7 +47,7 @@ exports.queryBookInfoByISBN = function (isbn13) {
  */
 exports.hasISBN13Book = function (isbn13) {
     var rePromise = new AV.Promise(null);
-    var query = new AV.Query('BookInfo');
+    var query = new AV.Query(Model.BookInfo);
     query.equalTo('isbn13', isbn13);
     query.count().done(function (num) {
         if (num > 0) {

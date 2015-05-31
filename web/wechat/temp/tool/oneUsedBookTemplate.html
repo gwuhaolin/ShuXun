@@ -1,12 +1,12 @@
 <!--一本二手书-->
-<ion-item class="item-thumbnail-left" ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:jsonUsedBook.objectId})">
-    <img ng-if="jsonUsedBook.image" ng-src="{{jsonUsedBook.image}}">
+<ion-item class="item-thumbnail-left" ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+    <img ng-if="usedBook.attributes.image" ng-src="{{usedBook.attributes.image}}">
 
-    <h3>要价:{{jsonUsedBook.price}}</h3>
+    <h3>要价:{{usedBook.attributes.price}}</h3>
 
-    <p>时间:{{jsonUsedBook.updatedAt | date:'mediumDate' }}</p>
+    <p>时间:{{usedBook.updatedAt | date:'mediumDate' }}</p>
 
-    <p ng-if="jsonUsedBook.title">书名:{{jsonUsedBook.title}}</p>
+    <p ng-if="usedBook.attributes.title">书名:{{usedBook.attributes.title}}</p>
 
-    <p ng-if="jsonUsedBook.des">描述:{{jsonUsedBook.des}}</p>
+    <p ng-if="usedBook.attributes.des">描述:{{usedBook.attributes.des}}</p>
 </ion-item>

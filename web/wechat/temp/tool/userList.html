@@ -16,8 +16,8 @@
                 {{getMajorFilter() ? getMajorFilter() :'专业'}}
             </a>
         </div>
-        <div class="card" ng-repeat="one in jsonUsers | orderBy:sortWay:true">
-            <user-info json-user-info="one"></user-info>
+        <div class="card" ng-repeat="one in users | orderBy:sortWay:true">
+            <user-info user="one"></user-info>
         </div>
         <ion-infinite-scroll ng-if="hasMore()"
                              on-infinite="loadMore()"

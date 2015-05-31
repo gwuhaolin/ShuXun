@@ -5,28 +5,28 @@
     </ion-nav-buttons>
     <ion-content class="padding">
         <!-- 基本信息-->
-        <user-info json-user-info="userInfo"></user-info>
+        <user-info user="user"></user-info>
         <!-- 填写其他信息-->
         <div class="list list-inset">
             <ion-item class="item-icon-right" ng-click="chooseSchoolModalView.show()">
                 在读学校
-                <span class="item-note" ng-if="userInfo.school">{{userInfo.school}}</span>
+                <span class="item-note" ng-if="user.attributes.school">{{user.attributes.school}}</span>
                 <i class="icon ion-ios-arrow-right balanced"></i>
             </ion-item>
             <ion-item class="item-icon-right" ng-click="chooseMajorModalView.show()">
                 所学专业
-                <span class="item-note" ng-if="userInfo.major">{{userInfo.major}}</span>
+                <span class="item-note" ng-if="user.attributes.major">{{user.attributes.major}}</span>
                 <i class="icon ion-ios-arrow-right balanced"></i>
             </ion-item>
             <label class="item item-input item-select">
                 <span class="input-label">
                     大学入学时间
                 </span>
-                <select ng-model="userInfo.startSchoolYear" ng-change="attrHasChange=true"
+                <select ng-model="user.attributes.startSchoolYear" ng-change="attrHasChange=true"
                         ng-options="one as one for one in startSchoolYearOptions">
                 </select>
             </label>
-            <ion-toggle ng-model="userInfo.wechatAlert"
+            <ion-toggle ng-model="user.attributes.wechatAlert"
                         ng-change="attrHasChange=true;confirmWechatAlert()">消息提醒
             </ion-toggle>
         </div>

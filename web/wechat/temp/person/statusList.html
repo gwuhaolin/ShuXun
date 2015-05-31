@@ -5,54 +5,54 @@
     </ion-nav-buttons>
     <ion-content class="padding">
         <div class="card" ng-if="cmd=='newUsedBook'"
-             ng-repeat="oneAvosStatus in avosStatusList">
-            <one-used-book json-used-book="oneAvosStatus.jsonUsedBook"></one-used-book>
-            <user-info json-user-info="oneAvosStatus.jsonUserInfo"></user-info>
+             ng-repeat="status in statusList">
+            <one-used-book used-book="status.attributes.usedBook"></one-used-book>
+            <user-info user="status.attributes.source"></user-info>
         </div>
 
         <div class="card" ng-if="cmd=='newNeedBook'"
-             ng-repeat="oneAvosStatus in avosStatusList">
-            <one-need-book json-need-book="oneAvosStatus.jsonUsedBook"></one-need-book>
-            <user-info json-user-info="oneAvosStatus.jsonUserInfo"></user-info>
+             ng-repeat="status in statusList">
+            <one-need-book need-book="status.attributes.usedBook"></one-need-book>
+            <user-info user="status.attributes.source"></user-info>
         </div>
 
         <div class="card" ng-if="cmd=='private'"
-             ng-repeat="oneAvosStatus in avosStatusList">
+             ng-repeat="status in statusList">
             <ion-item>
-                <p style="white-space: pre-wrap">{{oneAvosStatus.get('message')}}</p>
+                <p style="white-space: pre-wrap">{{status.attributes.message}}</p>
                 <button style="float:right;"
                         class="button button-clear button-balanced button-small"
-                        ui-sref="tab.person_sendMsgToUser({receiverObjectId:oneAvosStatus.jsonUserInfo.objectId,role:oneAvosStatus.get('role')=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:oneAvosStatus.jsonUsedBook.objectId})">
+                        ui-sref="tab.person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:status.attributes.usedBook.id})">
                     回复私信
                 </button>
             </ion-item>
-            <one-used-book ng-if="oneAvosStatus.jsonUsedBook && oneAvosStatus.jsonUsedBook.role=='sell'"
-                           json-used-book="oneAvosStatus.jsonUsedBook">
+            <one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
+                           used-book="status.attributes.usedBook">
             </one-used-book>
-            <one-need-book ng-if="oneAvosStatus.jsonUsedBook && oneAvosStatus.jsonUsedBook.role=='need'"
-                           json-need-book="oneAvosStatus.jsonUsedBook"></one-need-book>
-            <user-info json-user-info="oneAvosStatus.jsonUserInfo"></user-info>
+            <one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
+                           need-book="status.attributes.usedBook"></one-need-book>
+            <user-info user="status.attributes.source"></user-info>
         </div>
 
         <div class="card" ng-if="cmd=='reviewUsedBook'"
-             ng-repeat="oneAvosStatus in avosStatusList">
+             ng-repeat="status in statusList">
             <ion-item>
-                <p style="white-space: pre-wrap">{{oneAvosStatus.get('message')}}</p>
+                <p style="white-space: pre-wrap">{{status.attributes.message}}</p>
                 <button style="float:right;"
                         class="button button-clear button-balanced button-small"
-                        ui-sref="tab.person_sendMsgToUser({receiverObjectId:oneAvosStatus.jsonUserInfo.objectId,role:oneAvosStatus.get('role')=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:oneAvosStatus.jsonUsedBook.objectId})">
+                        ui-sref="tab.person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:status.attributes.usedBook.id})">
                     回复评论
                 </button>
             </ion-item>
-            <one-used-book ng-if="oneAvosStatus.jsonUsedBook && oneAvosStatus.jsonUsedBook.role=='sell'"
-                           json-used-book="oneAvosStatus.jsonUsedBook">
+            <one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
+                           used-book="status.attributes.usedBook">
             </one-used-book>
-            <one-need-book ng-if="oneAvosStatus.jsonUsedBook && oneAvosStatus.jsonUsedBook.role=='need'"
-                           json-need-book="oneAvosStatus.jsonUsedBook"></one-need-book>
-            <user-info json-user-info="oneAvosStatus.jsonUserInfo"></user-info>
+            <one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
+                           need-book="status.attributes.usedBook"></one-need-book>
+            <user-info user="status.attributes.source"></user-info>
         </div>
 
-        <div class="card" ng-if="avosStatusList.length==0">
+        <div class="card" ng-if="statusList.length==0">
             <ion-item style="text-align: center">没有未读消息</ion-item>
         </div>
     </ion-content>

@@ -32,20 +32,18 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
     };
 
     //加载用户信息
-    AV.Object.createWithoutData('_User', receiverObjectId).fetch().done(function (avosUser) {
-        $scope.jsonUser = avosUserToJson(avosUser);
+    AV.Object.createWithoutData('_User', receiverObjectId).fetch().done(function (user) {
+        $scope.user = user;
         $scope.$apply();
     });
 
     //加载聊天记录
-    $scope.jsonStatusList = [];
+    $scope.statusList = [];
     function loadMoreStatus() {
         var query = Status$.makeQueryStatusList_twoUser(receiverObjectId, $scope.msg.usedBookObjectId);
-        query.skip($scope.jsonStatusList.length);
-        query.find().done(function (avosStatusList) {
-            for (var i = 0; i < avosStatusList.length; i++) {
-                $scope.jsonStatusList.push(Status$.avosStatusToJson(avosStatusList[i]));
-            }
+        query.skip($scope.statusList.length);
+        query.find().done(function (statusList) {
+            $scope.statusList.pushArray(statusList);
             $ionicScrollDelegate.scrollBottom(true);
             $scope.$apply();
         });
@@ -62,8 +60,9 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
 
     //加载二手书信息
     if ($scope.msg.usedBookObjectId) {
-        UsedBook$.getJsonUsedBookByAvosObjectId($scope.msg.usedBookObjectId, function (jsonUsedBook) {
-            $scope.jsonUsedBook = jsonUsedBook;
+        $scope.usedBook = new Model.UsedBook();
+        $scope.usedBook.id = $scope.msg.usedBookObjectId;
+        $scope.usedBook.fetch().done(function () {
             $scope.$apply();
         });
     }
@@ -78,9 +77,9 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
             promise = Status$.reviewUsedBook(receiverObjectId, $scope.msg.usedBookObjectId, $scope.msg.sendMsg, $scope.msg.role);
         }
         promise.done(function () {
-            $scope.jsonStatusList.push({
+            $scope.statusList.push(Model.Status.new({
                 message: $scope.msg.sendMsg
-            });
+            }));
             $ionicScrollDelegate.scrollBottom(true);
         }).fail(function (err) {
             alert('发送失败:' + JSON.stringify(err));
@@ -96,7 +95,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
     $scope.$on('$ionicView.afterEnter', function () {
         autoTimer = setInterval(function () {
             Status$.makeQueryStatusList_twoUser(receiverObjectId, $scope.msg.usedBookObjectId).count().done(function (count) {
-                if (count > $scope.jsonStatusList.length) {
+                if (count > $scope.statusList.length) {
                     loadMoreStatus();
                 }
             });

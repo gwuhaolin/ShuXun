@@ -19,7 +19,7 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
         if ($scope.usedBookInfo.isbn13) {
             loadDoubanBookInfo();
         }
-        $scope.usedBookInfo.owner = User$.getCurrentAvosUser();
+        $scope.usedBookInfo.owner = AV.User.current();
     });
 
     $ionicModal.fromTemplateUrl('template/helpModalView.html', {
@@ -59,13 +59,13 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
     $scope.submitOnClick = function (role) {
         $scope.usedBookInfo.role = role;
         $scope.isLoading = true;
-        var avosUsedBook = UsedBook$.jsonUsedBookToAvos($scope.usedBookInfo);
+        var avosUsedBook = Model.UsedBook.new($scope.usedBookInfo);
         avosUsedBook.save(null).done(function () {
             if (role == 'sell') {
-                UsedBook$.loadMyAvosUsedBookList();
+                UsedBook$.loadMyUsedBookList();
                 $state.go('tab.person_usedBooksList');
             } else if (role == 'need') {
-                UsedBook$.loadMyAvosNeedBookList();
+                UsedBook$.loadMyNeedBookList();
                 $state.go('tab.person_needBooksList');
             }
             $ionicHistory.clearHistory();

@@ -61,7 +61,7 @@ function updateSchoolLocation(avosSchool) {
  */
 AV.Cloud.beforeSave('School', function (req, res) {
     var avosSchool = req.object;
-    var query = new AV.Query('School');
+    var query = new AV.Query(Model.School);
     query.equalTo('name', avosSchool.get('name'));
     query.count().done(function (number) {
         if (number > 0) {

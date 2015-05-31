@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('InfoService$', function ($rootScope, $http, User$) {
+APP.service('InfoService$', function ($rootScope) {
     var that = this;
     /**
      * 所有的专业
@@ -36,8 +36,8 @@ APP.service('InfoService$', function ($rootScope, $http, User$) {
          */
         schools: [],
         loadMore: function () {
-            var avosGeo = User$.getCurrentUserLocation();
-            var query = new AV.Query('School');
+            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+            var query = new AV.Query(Model.School);
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }

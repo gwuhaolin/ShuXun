@@ -1,25 +1,21 @@
 /**
- * Created by wuhaolin on 3/27/15.
- * 自定义指令
+ * Created by wuhaolin on 5/31/15.
+ * 一个用户的信息
  */
-"use strict";
-
-/**
- * 显示用户消息
- */
-
-APP.directive('dUserInfo', function (User$, UsedBook$) {
+APP.directive('userInfo', function (WeChatJS$, User$) {
     function link($scope) {
+        $scope.AV = AV;
+        $scope.WeChatJS$ = WeChatJS$;
         $scope.User$ = User$;
         //加载它的二手书的数量
         function loadHeUsedBookNumber() {
-            if ($scope.jsonUserInfo) {
-                $scope.jsonUserInfo.userUsedBookNumber = 0;
-                var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
+            if ($scope.user) {
+                $scope.user.userUsedBookNumber = 0;
+                var he = AV.Object.createWithoutData('_User', $scope.user.id);
                 var query = he.relation('usedBooks').query();
                 query.equalTo('role', 'sell');
                 query.count().done(function (number) {
-                    $scope.jsonUserInfo.userUsedBookNumber = number;
+                    $scope.user.userUsedBookNumber = number;
                     $scope.$apply();
                 });
             }
@@ -27,13 +23,13 @@ APP.directive('dUserInfo', function (User$, UsedBook$) {
 
         //加载它的求书的数量
         function loadHeNeedBookNumber() {
-            if ($scope.jsonUserInfo) {
-                $scope.jsonUserInfo.userNeedBookNumber = 0;
-                var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
+            if ($scope.user) {
+                $scope.user.userNeedBookNumber = 0;
+                var he = AV.Object.createWithoutData('_User', $scope.user.id);
                 var query = he.relation('usedBooks').query();
                 query.equalTo('role', 'need');
                 query.count().done(function (number) {
-                    $scope.jsonUserInfo.userNeedBookNumber = number;
+                    $scope.user.userNeedBookNumber = number;
                     $scope.$apply();
                 });
             }
@@ -42,41 +38,35 @@ APP.directive('dUserInfo', function (User$, UsedBook$) {
         //判断是否我已经关注ta
         $scope.isMyFollowee = false;
         function loadIsMyFollowee() {
-            if ($scope.jsonUserInfo && AV.User.current()) {
+            if ($scope.user && AV.User.current()) {
                 var query = AV.User.current().followeeQuery();
-                query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId));
+                query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.user.id));
                 query.count().done(function (number) {
-                    $scope.jsonUserInfo.isMyFollowee = (number == 1);
+                    $scope.isMyFollowee = (number == 1);
                     $scope.$apply();
                 })
             }
         }
 
-        //加载我的两本书
-        $scope.heJsonUsedBookList = [];
-        function loadHeTwoUsedBook() {
-            if ($scope.jsonUserInfo) {
-                var he = AV.Object.createWithoutData('_User', $scope.jsonUserInfo.objectId);
-                var query = he.relation('usedBooks').query();
-                query.limit(2);
-                query.find().done(function (avosUsedBookList) {
-                    $scope.heJsonUsedBookList = [];
-                    for (var i = 0; i < avosUsedBookList.length; i++) {
-                        $scope.heJsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBookList[i]));
-                    }
-                    $scope.$apply();
-                });
-            }
-        }
+        /**
+         * 判断是否本人是我自己
+         * @returns {boolean}
+         */
+        $scope.isMe = function () {
+            return $scope.user.id == AV.User.current().id;
+        };
 
         $scope.$watch(function () {
-            return $scope.jsonUserInfo;
+            if ($scope.user) {
+                return $scope.user.attributes;
+            } else {
+                return null;
+            }
         }, function () {
             loadIsMyFollowee();
             if ($scope.hideUsedBook == null || $scope.hideUsedBook == false) {
                 loadHeUsedBookNumber();
                 loadHeNeedBookNumber();
-                !$scope.hideUsedBook && loadHeTwoUsedBook();
             }
         });
         $scope.$on('FollowSomeone', function () {
@@ -84,14 +74,14 @@ APP.directive('dUserInfo', function (User$, UsedBook$) {
         });
         $scope.$on('UnfollowSomeone', function () {
             loadIsMyFollowee();
-        });
+        })
     }
 
     return {
         restrict: 'E',
         scope: {
             //用户的AVOS objectID
-            jsonUserInfo: '=',
+            user: '=',
             //是否隐藏二手书的数量
             hideUsedBook: '=?',
             //当给用户发送私信时,如果要显示当前二手书就传入

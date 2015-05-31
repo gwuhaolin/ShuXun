@@ -1,7 +1,7 @@
 <ion-item style="text-align: center;padding: 0;">
-    <div ng-repeat="jsonBook in jsonBooksInfo.slice(0,showNumber)" ui-sref="tab.book_oneBook({isbn13:jsonBook.isbn13})"
+    <div ng-repeat="book in books.slice(0,showNumber)" ui-sref="tab.book_oneBook({isbn13:book.attributes.isbn13})"
          style="display: inline-block;padding: 5px;width: 80px;height: 120px">
-        <img ng-if="jsonBook.image" ng-src="{{jsonBook.image}}" style="width: 70px;height: 100px">
-        <h5 ng-if="jsonBook.title" class="title">{{jsonBook.title}}</h5>
+        <img ng-if="book.attributes.image" ng-src="{{book.attributes.image}}" style="width: 70px;height: 100px">
+        <h5 ng-if="book.attributes.title" class="title">{{book.attributes.title}}</h5>
     </div>
 </ion-item>

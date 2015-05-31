@@ -13,42 +13,10 @@ APP.service('User$', function ($rootScope, Status$) {
      * @returns {*|AV.Promise}
      */
     this.signUpWithJSONUser = function (jsonUser) {
-        var user = jsonToAvosUser(jsonUser);
+        var user = Model.User.new(jsonUser);
         user.set('username', jsonUser.unionId);
         user.set('password', jsonUser.unionId);
         return user.signUp(null);
-    };
-
-    /**
-     * 获得当前用户的地理位置
-     * 如果没有用户或用户没有位置就返回null
-     */
-    this.getCurrentUserLocation = function () {
-        var user = that.getCurrentAvosUser();
-        if (user) {
-            return user.get('location');
-        }
-        return null;
-    };
-
-    /**
-     * 获得当前AVOS用户,如果当前用户不存在返回null
-     * @returns {*|AV.Object}
-     */
-    this.getCurrentAvosUser = function () {
-        return AV.User.current();
-    };
-
-    /**
-     * 获得当前JSON格式的用户,如果当前用户不存在返回null
-     * @returns {null}
-     */
-    this.getCurrentJsonUser = function () {
-        var avosUser = that.getCurrentAvosUser();
-        if (avosUser) {
-            return avosUserToJson(avosUser);
-        }
-        return null;
     };
 
     /**
@@ -56,7 +24,7 @@ APP.service('User$', function ($rootScope, Status$) {
      * @param userObjectId 用户的AVOS ID
      */
     this.followUser = function (userObjectId) {
-        var me = that.getCurrentAvosUser();
+        var me = AV.User.current();
         if (me) {
             me.follow(userObjectId).done(function () {
                 $rootScope.$broadcast('FollowSomeone');
@@ -73,7 +41,7 @@ APP.service('User$', function ($rootScope, Status$) {
      * @param userObjectId 用户的AVOS ID
      */
     this.unfollowUser = function (userObjectId) {
-        var me = that.getCurrentAvosUser();
+        var me = AV.User.current();
         if (me) {
             me.unfollow(userObjectId).done(function () {
                 $rootScope.$broadcast('UnfollowSomeone');
@@ -86,22 +54,24 @@ APP.service('User$', function ($rootScope, Status$) {
     };
 
     this.Followee = {
-        jsonUserList: [],
+        users: [],
         loadMore: function () {
             var query = AV.User.current().followeeQuery();
             query.include('followee');
-            query.skip(that.Followee.jsonUserList.length);
+            query.skip(that.Followee.users.length);
             query.limit(10);
-            if(that.Followee._majorFilter){
-                var userQuery = new AV.Query('_User');
+            if (that.Followee._majorFilter) {
+                var userQuery = new AV.Query(Model.User);
                 userQuery.equalTo('major', that.Followee._majorFilter);
-                query.matchesQuery('followee',userQuery);
+                query.matchesQuery('followee', userQuery);
             }
             query.find().done(function (followees) {
                 if (followees.length > 0) {
+                    //因为这不是通过Model.User查询的所以要挂上avatarUrlWithSize方法
                     for (var i = 0; i < followees.length; i++) {
-                        that.Followee.jsonUserList.push(avosUserToJson(followees[i]));
+                        followees[i].avatarUrlWithSize = Model.User.prototype.avatarUrlWithSize;
                     }
+                    that.Followee.users.pushArray(followees);
                 } else {
                     that.Followee.hasMoreFlag = false;
                 }
@@ -116,7 +86,7 @@ APP.service('User$', function ($rootScope, Status$) {
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.Followee._majorFilter) {
-                that.Followee.jsonUserList.length = 0;
+                that.Followee.users.length = 0;
                 that.Followee.hasMoreFlag = true;
                 that.Followee._majorFilter = major;
                 that.Followee.loadMore();
@@ -128,22 +98,24 @@ APP.service('User$', function ($rootScope, Status$) {
     };
 
     this.Follower = {
-        jsonUserList: [],
+        users: [],
         loadMore: function () {
             var query = AV.User.current().followerQuery();
             query.include('follower');
-            query.skip(that.Follower.jsonUserList.length);
+            query.skip(that.Follower.users.length);
             query.limit(10);
-            if(that.Follower._majorFilter){
-                var userQuery = new AV.Query('_User');
+            if (that.Follower._majorFilter) {
+                var userQuery = new AV.Query(Model.User);
                 userQuery.equalTo('major', that.Follower._majorFilter);
-                query.matchesQuery('follower',userQuery);
+                query.matchesQuery('follower', userQuery);
             }
             query.find().done(function (followers) {
                 if (followers.length > 0) {
+                    //因为这不是通过Model.User查询的所以要挂上avatarUrlWithSize方法
                     for (var i = 0; i < followers.length; i++) {
-                        that.Follower.jsonUserList.push(avosUserToJson(followers[i]));
+                        followers[i].avatarUrlWithSize = Model.User.prototype.avatarUrlWithSize;
                     }
+                    that.Follower.users.pushArray(followers);
                 } else {
                     that.Follower.hasMoreFlag = false;
                 }
@@ -158,7 +130,7 @@ APP.service('User$', function ($rootScope, Status$) {
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.Follower._majorFilter) {
-                that.Follower.jsonUserList.length = 0;
+                that.Follower.users.length = 0;
                 that.Follower.hasMoreFlag = true;
                 that.Follower._majorFilter = major;
                 that.Follower.loadMore();

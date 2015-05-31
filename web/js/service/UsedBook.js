@@ -6,7 +6,6 @@
 
 APP.service('UsedBook$', function ($rootScope) {
     var that = this;
-    var UsedBookAttrNames = ['owner', 'isbn13', 'price', 'des', 'image', 'title', 'role'];
 
     /**
      * 是否正在加载数据
@@ -40,17 +39,17 @@ APP.service('UsedBook$', function ($rootScope) {
      * 所有我上传的还没有卖出的二手书
      * @type {Array}
      */
-    this.myAvosUsedBookList = [];
+    this.myUsedBookList = [];
     /**
      * 加载所有我上传的二手书
      */
-    this.loadMyAvosUsedBookList = function () {
+    this.loadMyUsedBookList = function () {
         that.isLoading = true;
         var query = AV.User.current().relation('usedBooks').query();
         query.equalTo('role', 'sell');
         query.descending('updatedAt');
         query.find().done(function (avosUsedBooks) {
-            that.myAvosUsedBookList = avosUsedBooks;
+            that.myUsedBookList = avosUsedBooks;
         }).always(function () {
             that.isLoading = false;
             $rootScope.$apply();
@@ -61,17 +60,17 @@ APP.service('UsedBook$', function ($rootScope) {
      * 所有我发布的求书列表
      * @type {Array}
      */
-    this.myAvosNeedBookList = [];
+    this.myNeedBookList = [];
     /**
      * 加载所有我上传的二手书
      */
-    this.loadMyAvosNeedBookList = function () {
+    this.loadMyNeedBookList = function () {
         that.isLoading = true;
         var query = AV.User.current().relation('usedBooks').query();
         query.equalTo('role', 'need');
         query.descending('updatedAt');
         query.find().done(function (avosUsedBooks) {
-            that.myAvosNeedBookList = avosUsedBooks;
+            that.myNeedBookList = avosUsedBooks;
         }).always(function () {
             that.isLoading = false;
             $rootScope.$apply();
@@ -87,54 +86,14 @@ APP.service('UsedBook$', function ($rootScope) {
         if (window.confirm('你确定要删除它吗?将不可恢复')) {
             avosUsedBook.destroy().done(function () {
                 if (role == 'sell') {
-                    that.loadMyAvosUsedBookList();
+                    that.loadMyUsedBookList();
                 } else if (role == 'need') {
-                    that.loadMyAvosNeedBookList();
+                    that.loadMyNeedBookList();
                 }
             }).fail(function (error) {
                 alert(error.message);
             })
         }
-    };
-
-    /**
-     * 把AVOS的UsedBook转换为JSON格式的
-     */
-    this.avosUsedBookToJson = function (avosUsedBook) {
-        if (avosUsedBook == null) {
-            return null;
-        }
-        var json = {};
-        for (var i = 0; i < UsedBookAttrNames.length; i++) {
-            var attrName = UsedBookAttrNames[i];
-            json[attrName] = avosUsedBook.get(attrName);
-        }
-        json.objectId = avosUsedBook.id;
-        json.updatedAt = avosUsedBook.updatedAt;
-        return json;
-    };
-
-    /**
-     * 把JSON格式的UsedBook转换为AVOS格式的
-     */
-    this.jsonUsedBookToAvos = function (jsonUsedBook) {
-        var UsedBook = AV.Object.extend("UsedBook");
-        var usedBook = new UsedBook();
-        for (var i = 0; i < UsedBookAttrNames.length; i++) {
-            var attrName = UsedBookAttrNames[i];
-            usedBook.set(attrName, jsonUsedBook[attrName]);
-        }
-        return usedBook;
-    };
-
-    /**
-     * 用AVOS的 objectID 获得JSON格式的二手书信息
-     */
-    this.getJsonUsedBookByAvosObjectId = function (avosObjectId, callback) {
-        var query = new AV.Query('UsedBook');
-        query.get(avosObjectId).done(function (avosUsedBook) {
-            callback(that.avosUsedBookToJson(avosUsedBook));
-        })
     };
 
     this.ISBN_sell = {
@@ -144,7 +103,7 @@ APP.service('UsedBook$', function ($rootScope) {
          * @returns {*|AV.Promise}
          */
         getUsedBookNumberEqualISBN: function (isbn13) {
-            var query = new AV.Query('UsedBook');
+            var query = new AV.Query(Model.UsedBook);
             query.equalTo('role', 'sell');
             query.equalTo("isbn13", isbn13);
             return query.count();
@@ -158,7 +117,7 @@ APP.service('UsedBook$', function ($rootScope) {
          * 目前已经加载了对应的ISBN号码的二手书列表
          * @type {Array}
          */
-        nowEqualISBNJsonUsedBookList: [],
+        nowEqualISBNUsedBooks: [],
         /**
          * 获得所有对应ISBN的二手书
          * @param isbn13
@@ -167,21 +126,19 @@ APP.service('UsedBook$', function ($rootScope) {
             that.isLoading = true;
             if (isbn13 != that.ISBN_sell.nowISBN13) {//如果是新的ISBN号码就清空以前的
                 that.ISBN_sell.nowISBN13 = isbn13;
-                that.ISBN_sell.nowEqualISBNJsonUsedBookList = [];
+                that.ISBN_sell.nowEqualISBNUsedBooks = [];
                 that.ISBN_sell.hasMoreFlag = true;
             }
-            var query = new AV.Query('UsedBook');
+            var query = new AV.Query(Model.UsedBook);
             query.equalTo("isbn13", that.ISBN_sell.nowISBN13);
             query.equalTo('role', 'sell');
             query.descending("updatedAt");
-            query.skip(that.ISBN_sell.nowEqualISBNJsonUsedBookList.length);
+            query.skip(that.ISBN_sell.nowEqualISBNUsedBooks.length);
             query.limit(5);
             query.include('owner');
-            query.find().done(function (avosUsedBooks) {
-                if (avosUsedBooks.length > 0) {
-                    for (var i = 0; i < avosUsedBooks.length; i++) {
-                        that.ISBN_sell.nowEqualISBNJsonUsedBookList.push(that.avosUsedBookToJson(avosUsedBooks[i]));
-                    }
+            query.find().done(function (usedBooks) {
+                if (usedBooks.length > 0) {
+                    that.ISBN_sell.nowEqualISBNUsedBooks.pushArray(usedBooks);
                 } else {
                     that.ISBN_sell.hasMoreFlag = false;
                 }
@@ -204,7 +161,7 @@ APP.service('UsedBook$', function ($rootScope) {
          * @returns {*|AV.Promise}
          */
         getNeedBookNumberEqualISBN: function (isbn13) {
-            var query = new AV.Query('UsedBook');
+            var query = new AV.Query(Model.UsedBook);
             query.equalTo('role', 'need');
             query.equalTo("isbn13", isbn13);
             return query.count();
@@ -218,7 +175,7 @@ APP.service('UsedBook$', function ($rootScope) {
          * 目前已经加载了对应的ISBN号码的二手书列表
          * @type {Array}
          */
-        nowEqualISBNJsonNeedBookList: [],
+        nowEqualISBNNeedBooks: [],
         /**
          * 获得所有对应ISBN的二手书
          * @param isbn13
@@ -227,21 +184,19 @@ APP.service('UsedBook$', function ($rootScope) {
             that.isLoading = true;
             if (isbn13 != that.ISBN_need.nowISBN13) {//如果是新的ISBN号码就清空以前的
                 that.ISBN_need.nowISBN13 = isbn13;
-                that.ISBN_need.nowEqualISBNJsonNeedBookList = [];
+                that.ISBN_need.nowEqualISBNNeedBooks = [];
                 that.ISBN_need.hasMoreFlag = true;
             }
-            var query = new AV.Query('UsedBook');
+            var query = new AV.Query(Model.UsedBook);
             query.equalTo("isbn13", that.ISBN_need.nowISBN13);
             query.equalTo('role', 'need');
             query.descending("updatedAt");
-            query.skip(that.ISBN_need.nowEqualISBNJsonNeedBookList.length);
+            query.skip(that.ISBN_need.nowEqualISBNNeedBooks.length);
             query.limit(5);
             query.include('owner');
-            query.find().done(function (avosUsedBooks) {
-                if (avosUsedBooks.length > 0) {
-                    for (var i = 0; i < avosUsedBooks.length; i++) {
-                        that.ISBN_need.nowEqualISBNJsonNeedBookList.push(that.avosUsedBookToJson(avosUsedBooks[i]));
-                    }
+            query.find().done(function (usedBooks) {
+                if (usedBooks.length > 0) {
+                    that.ISBN_need.nowEqualISBNNeedBooks.pushArray(usedBooks);
                 } else {
                     that.ISBN_need.hasMoreFlag = false;
                 }

@@ -14,24 +14,24 @@
                         ui-sref="tab.person_uploadOneNeedBook">发布求书
                 </button>
             </ion-item>
-            <ion-item ng-repeat="oneAvosUsedBook in UsedBook$.myAvosNeedBookList" class="item-thumbnail-left">
-                <img ng-if="oneAvosUsedBook.get('image')"
-                     ng-src="{{oneAvosUsedBook.get('image')}}"
-                     ui-sref="tab.book_oneBook({isbn13:oneAvosUsedBook.get('isbn13')})">
+            <ion-item ng-repeat="needBook in UsedBook$.myNeedBookList" class="item-thumbnail-left">
+                <img ng-if="needBook.attributes.image"
+                     ng-src="{{needBook.attributes.image}}"
+                     ui-sref="tab.book_oneBook({isbn13:needBook.attributes.isbn13})">
 
-                <p ng-if="oneAvosUsedBook.get('price')">最高承受价格:{{oneAvosUsedBook.get('price')}}</p>
+                <p ng-if="needBook.attributes.price">最高承受价格:{{needBook.attributes.price}}</p>
 
-                <p ng-if="oneAvosUsedBook.get('title')">书名:{{oneAvosUsedBook.get('title')}}</p>
+                <p ng-if="needBook.attributes.title">书名:{{needBook.attributes.title}}</p>
 
-                <p ng-if="oneAvosUsedBook.get('des')">描述:{{oneAvosUsedBook.get('des')}}</p>
+                <p ng-if="needBook.attributes.des">描述:{{needBook.attributes.des}}</p>
                 <button class="button button-small button-outline button-assertive"
-                        ng-click="UsedBook$.removeUsedBook(oneAvosUsedBook)">已买删除
+                        ng-click="UsedBook$.removeUsedBook(needBook)">已买删除
                 </button>
                 <button class="button button-small button-outline button-balanced"
-                        ui-sref="tab.person_editOneUsedBook({usedBookId:oneAvosUsedBook.id})">修改信息
+                        ui-sref="tab.person_editOneUsedBook({usedBookId:needBook.id})">修改信息
                 </button>
             </ion-item>
-            <ion-item ng-if="UsedBook$.myAvosNeedBookList.length==0">你还没有发布过,点击发布求书</ion-item>
+            <ion-item ng-if="UsedBook$.myNeedBookList.length==0">你还没有发布过,点击发布求书</ion-item>
             <ion-item ui-sref="tab.person_uploadOneNeedBook" style="text-align: center">继续发布求书
             </ion-item>
         </ion-list>

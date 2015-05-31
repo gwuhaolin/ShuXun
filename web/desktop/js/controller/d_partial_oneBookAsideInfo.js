@@ -30,15 +30,6 @@ APP.controller('d_partials_oneBookAsideInfo', function ($scope, BusinessSite$, U
                 clearInterval(timer);
             }
         }
-
-        for (var i = 0; i < UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length; i++) {
-            var one = UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList[i];
-            one.jsonOwner = avosUserToJson(one.owner);
-        }
-        for (i = 0; i < UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length; i++) {
-            one = UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList[i];
-            one.jsonOwner = avosUserToJson(one.owner);
-        }
     }, 500);
 
 });

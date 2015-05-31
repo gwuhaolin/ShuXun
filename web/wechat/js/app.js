@@ -229,7 +229,7 @@ APP.run(function ($rootScope, $state, User$, WeChatJS$) {
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
         var stateName = nextState['name'];
         if (stateName.indexOf('tab.person_') >= 0) {//需要登录
-            if (!User$.getCurrentAvosUser()) {
+            if (!AV.User.current()) {
                 event.preventDefault();//停止当前
                 $state.go('tab.hello');//去验证身份
             }

@@ -245,7 +245,7 @@ var ReplyMaker = {
 function saveLocationToOpenIdUser(userOpenId, lat, lon) {
     lat = parseFloat(lat);
     lon = parseFloat(lon);
-    var query = new AV.Query(AV.User);
+    var query = new AV.Query(Model.User);
     query.equalTo('openId', userOpenId);
     query.first().done(function (avosUser) {
         LBS.updateUserLocation(avosUser,lat,lon);

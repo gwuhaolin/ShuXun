@@ -33,23 +33,23 @@
             <a class="ui circular button">要卖对应旧书的同学</a>
         </div>
         <div class="ui selection list">
-            <div class="item" ng-repeat="one in UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList">
+            <div class="item" ng-repeat="one in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks">
                 <img class="ui avatar image"
-                     ng-src="{{User$.changeWechatAvatarSize(one.owner.get('avatarUrl'),64)}}}}">
+                     ng-src="{{one.attributes.owner.avatarUrlWithSize(64)}}}}">
 
                 <div class="content">
                     <h3 class="header">
-                        <em ng-if="one.price">{{one.price}}<i class="yen icon"></i></em>
-                        <em ng-if="one.des">{{one.des}}</em>
+                        <em ng-if="one.attributes.price">{{one.attributes.price}}<i class="yen icon"></i></em>
+                        <em ng-if="one.attributes.des">{{one.attributes.des}}</em>
                     </h3>
 
                     <em ng-if="one.updatedAt">{{one.updatedAt | date:'mediumDate' }}</em>
 
                 </div>
-                <d-user-info json-user-info="one.jsonOwner" hide-used-book="true"></d-user-info>
+                <!--<d-user-info user="one.attributes.owner" hide-used-book="true"></d-user-info>-->
             </div>
         </div>
-        <div class="ui message" ng-if="UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length==0">还没有对应的二手书
+        <div class="ui message" ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length==0">还没有对应的二手书
         </div>
 
         <!-- 求书列表-->
@@ -57,14 +57,14 @@
             <a class="ui circular button">正需要这本书的同学</a>
         </div>
         <div class="ui selection list">
-            <div class="item" ng-repeat="one in UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList">
+            <div class="item" ng-repeat="one in UsedBook$.ISBN_need.nowEqualISBNNeedBooks">
                 <img class="ui avatar image"
-                     ng-src="{{User$.changeWechatAvatarSize(one.owner.get('avatarUrl'),64)}}}}">
+                     ng-src="{{one.attributes.owner.avatarUrlWithSize(64)}}}}">
 
                 <div class="content">
                     <h3 class="header">
-                        <em ng-if="one.price">{{one.price}}<i class="yen icon"></i></em>
-                        <em ng-if="one.des">{{one.des}}</em>
+                        <em ng-if="one.attributes.price">{{one.attributes.price}}<i class="yen icon"></i></em>
+                        <em ng-if="one.attributes.des">{{one.attributes.des}}</em>
                     </h3>
 
                     <em ng-if="one.updatedAt">{{one.updatedAt | date:'mediumDate' }}</em>
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="ui message" ng-if="UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList.length==0">还没有同学想要它
+        <div class="ui message" ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length==0">还没有同学想要它
         </div>
     </div>
 </div>

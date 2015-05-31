@@ -7,21 +7,17 @@
 APP.controller('userHome', function ($scope, $stateParams, UsedBook$) {
     $scope.UsedBook$ = UsedBook$;
     var ownerId = $stateParams.ownerId;
-    var query = new AV.Query(AV.User);
+    var query = new AV.Query(Model.User);
     $scope.jsonUsedBookList = [];
     $scope.jsonNeedBookList = [];
-    query.get(ownerId).done(function (avosOwner) {
-        $scope.jsonOwnerInfo = avosUserToJson(avosOwner);
-        UsedBook$.loadUsedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
-            for (var i = 0; i < avosUsedBooks.length; i++) {
-                $scope.jsonUsedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
-            }
+    query.get(ownerId).done(function (owner) {
+        $scope.owner = owner;
+        UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
+            $scope.usedBooks = usedBooks;
             $scope.$apply();
         });
-        UsedBook$.loadNeedBookListForOwner(avosOwner).done(function (avosUsedBooks) {
-            for (var i = 0; i < avosUsedBooks.length; i++) {
-                $scope.jsonNeedBookList.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
-            }
+        UsedBook$.loadNeedBookListForOwner(owner).done(function (needBooks) {
+            $scope.needBooks = needBooks;
             $scope.$apply();
         })
     });

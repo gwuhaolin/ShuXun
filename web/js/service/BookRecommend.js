@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook$, BookInfo$) {
+APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
     var that = this;
 
     /**
@@ -41,10 +41,8 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
             if (tag != that.TagBook.nowTag) {
                 that.TagBook.books = [];
                 that.TagBook.nowTag = tag;
-                BookInfo$.searchBook(tag).done(function (avosBookInfoList) {
-                    for (var i = 0; i < avosBookInfoList.length; i++) {
-                        that.TagBook.books.unshift(BookInfo$.avosBookInfoToJson(avosBookInfoList[i]));
-                    }
+                BookInfo$.searchBook(tag).done(function (bookInfos) {
+                    that.TagBook.books.unshiftArray(bookInfos);
                     $rootScope.$apply();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 });
@@ -54,10 +52,10 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
         hasMoreFlag: true,
         loadMore: function () {
             DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, LoadCount, function (json) {
-                var booksJSON = json['books'];
-                if (booksJSON.length > 0) {
-                    for (var i = 0; i < booksJSON.length; i++) {
-                        that.TagBook.books.push(booksJSON[i]);
+                var jsonBooks = json['books'];
+                if (jsonBooks.length > 0) {
+                    for (var i = 0; i < jsonBooks.length; i++) {
+                        that.TagBook.books.push(Model.BookInfo.new(jsonBooks[i]));
                     }
                 } else {
                     that.TagBook.hasMoreTag = false;
@@ -76,7 +74,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
      * @type {{books: Array, loadMore: Function}}
      */
     this.MajorBook = {
-        major: User$.getCurrentJsonUser() ? User$.getCurrentJsonUser().major : '',
+        major: AV.User.current() ? AV.User.current().attributes.major : '',
         books: [],
         hasMoreFlag: true,
         loadMore: function () {
@@ -85,7 +83,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
                 var booksJSON = json['books'];
                 if (booksJSON.length > 0) {
                     for (var i = 0; i < booksJSON.length; i++) {
-                        that.MajorBook.books.push(booksJSON[i]);
+                        that.MajorBook.books.push(Model.BookInfo.new(booksJSON[i]));
                     }
                 } else {
                     that.MajorBook.hasMoreFlag = false;
@@ -98,10 +96,8 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
             return that.MajorBook.hasMoreFlag;
         },
         loadFromBookInfo: function () {
-            BookInfo$.searchBook(that.MajorBook.major).done(function (avosBookInfoList) {
-                for (var i = 0; i < avosBookInfoList.length; i++) {
-                    that.MajorBook.books.unshift(BookInfo$.avosBookInfoToJson(avosBookInfoList[i]));
-                }
+            BookInfo$.searchBook(that.MajorBook.major).done(function (bookInfos) {
+                that.MajorBook.books.unshiftArray(bookInfos);
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
@@ -110,31 +106,29 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
 
     /**
      * 附近同学发布的求书
-     * @type {{books: Array, loadMore: Function}}
+     * @type {{needBooks: Array, loadMore: Function}}
      */
     this.NearNeedBook = {
-        jsonBooks: [],
+        needBooks: [],
         hasMoreFlag: true,
         loadMore: function () {
-            var avosGeo = User$.getCurrentUserLocation();
-            var query = new AV.Query('UsedBook');
+            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+            var query = new AV.Query(Model.UsedBook);
             query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
             query.equalTo('role', 'need');
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }
             if (that.NearNeedBook._majorFilter) {
-                var ownerQuery = new AV.Query('_User');
+                var ownerQuery = new AV.Query(Model.User);
                 ownerQuery.equalTo('major', that.NearNeedBook._majorFilter);
                 query.matchesQuery('owner', ownerQuery);
             }
-            query.skip(that.NearNeedBook.jsonBooks.length + RandomStart);
+            query.skip(that.NearNeedBook.needBooks.length + RandomStart);
             query.limit(LoadCount);
-            query.find().done(function (avosUsedBooks) {
-                if (avosUsedBooks.length > 0) {
-                    for (var i = 0; i < avosUsedBooks.length; i++) {
-                        that.NearNeedBook.jsonBooks.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
-                    }
+            query.find().done(function (needBooks) {
+                if (needBooks.length > 0) {
+                    that.NearNeedBook.needBooks.pushArray(needBooks);
                 } else {
                     that.NearNeedBook.hasMoreFlag = false;
                 }
@@ -148,7 +142,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearNeedBook._majorFilter) {
-                that.NearNeedBook.jsonBooks.length = 0;
+                that.NearNeedBook.needBooks.length = 0;
                 that.NearNeedBook.hasMoreFlag = true;
                 that.NearNeedBook._majorFilter = major;
                 that.NearNeedBook.loadMore();
@@ -161,31 +155,29 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
 
     /**
      * 附近的二手图书
-     * @type {{books: Array, loadMore: Function, hasMore: Function}}
+     * @type {{usedBooks: Array, loadMore: Function, hasMore: Function}}
      */
     this.NearUsedBook = {
-        jsonBooks: [],
+        usedBooks: [],
         hasMoreFlag: true,
         loadMore: function () {
-            var avosGeo = User$.getCurrentUserLocation();
-            var query = new AV.Query('UsedBook');
+            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+            var query = new AV.Query(Model.UsedBook);
             query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
             query.equalTo('role', 'sell');
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }
             if (that.NearUsedBook._majorFilter) {
-                var ownerQuery = new AV.Query('_User');
+                var ownerQuery = new AV.Query(Model.User);
                 ownerQuery.equalTo('major', that.NearUsedBook._majorFilter);
                 query.matchesQuery('owner', ownerQuery);
             }
-            query.skip(that.NearUsedBook.jsonBooks.length);
+            query.skip(that.NearUsedBook.usedBooks.length);
             query.limit(LoadCount);
-            query.find().done(function (avosUsedBooks) {
-                if (avosUsedBooks.length > 0) {
-                    for (var i = 0; i < avosUsedBooks.length; i++) {
-                        that.NearUsedBook.jsonBooks.push(UsedBook$.avosUsedBookToJson(avosUsedBooks[i]));
-                    }
+            query.find().done(function (usedBooks) {
+                if (usedBooks.length > 0) {
+                    that.NearUsedBook.usedBooks.pushArray(usedBooks);
                 } else {
                     that.NearUsedBook.hasMoreFlag = false;
                 }
@@ -199,7 +191,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearUsedBook._majorFilter) {
-                that.NearUsedBook.jsonBooks.length = 0;
+                that.NearUsedBook.usedBooks.length = 0;
                 that.NearUsedBook.hasMoreFlag = true;
                 that.NearUsedBook._majorFilter = major;
                 that.NearUsedBook.loadMore();
@@ -212,14 +204,14 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
 
     /**
      * 我附近的用户
-     * @type {{jsonUsers: Array, loadMore: Function, hasMore: Function}}
+     * @type {{users: Array, loadMore: Function, hasMore: Function}}
      */
     this.NearUser = {
-        jsonUsers: [],
+        users: [],
         hasMoreFlag: true,
         loadMore: function () {
-            var avosGeo = User$.getCurrentUserLocation();
-            var query = new AV.Query(AV.User);
+            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+            var query = new AV.Query(Model.User);
             if (AV.User.current()) {
                 query.notEqualTo('objectId', AV.User.current().id);//不要显示自己
             }
@@ -227,13 +219,11 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
                 query.near("location", avosGeo);
             }
             that.NearUser._majorFilter && query.equalTo('major', that.NearUser._majorFilter);
-            query.skip(that.NearUser.jsonUsers.length);
+            query.skip(that.NearUser.users.length);
             query.limit(Math.floor(document.body.clientWidth / 50));//默认加载满屏幕
-            query.find().done(function (avosUsers) {
-                if (avosUsers.length > 0) {
-                    for (var i = 0; i < avosUsers.length; i++) {
-                        that.NearUser.jsonUsers.push(avosUserToJson(avosUsers[i]));
-                    }
+            query.find().done(function (users) {
+                if (users.length > 0) {
+                    that.NearUser.users.pushArray(users);
                 } else {
                     that.NearUser.hasMoreFlag = false;
                 }
@@ -247,7 +237,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, User$, UsedBook
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearUser._majorFilter) {
-                that.NearUser.jsonUsers.length = 0;
+                that.NearUser.users.length = 0;
                 that.NearUser.hasMoreFlag = true;
                 that.NearUser._majorFilter = major;
                 that.NearUser.loadMore();

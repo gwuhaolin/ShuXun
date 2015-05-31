@@ -12,21 +12,21 @@ APP.controller('userList', function ($scope, $stateParams, UsedBook$, BookRecomm
 
     if (cmd == 'near') {
         $scope.title = '你附近的同学';
-        $scope.jsonUsers = BookRecommend$.NearUser.jsonUsers;
+        $scope.users = BookRecommend$.NearUser.users;
         $scope.loadMore = BookRecommend$.NearUser.loadMore;
         $scope.hasMore = BookRecommend$.NearUser.hasMore;
         $scope.setMajorFilter = BookRecommend$.NearUser.setMajorFilter;
         $scope.getMajorFilter = BookRecommend$.NearUser.getMajorFilter;
     } else if (cmd == 'followee') {//我关注的同学
         $scope.title = '我关注的同学';
-        $scope.jsonUsers = User$.Followee.jsonUserList;
+        $scope.users = User$.Followee.users;
         $scope.loadMore = User$.Followee.loadMore;
         $scope.hasMore = User$.Followee.hasMore;
         $scope.setMajorFilter = User$.Followee.setMajorFilter;
         $scope.getMajorFilter = User$.Followee.getMajorFilter;
     } else if (cmd == 'follower') {//我的粉丝
         $scope.title = '我的粉丝';
-        $scope.jsonUsers = User$.Follower.jsonUserList;
+        $scope.users = User$.Follower.users;
         $scope.loadMore = User$.Follower.loadMore;
         $scope.hasMore = User$.Follower.hasMore;
         $scope.setMajorFilter = User$.Follower.setMajorFilter;

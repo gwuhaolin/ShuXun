@@ -6,18 +6,6 @@
 
 APP.service('BookInfo$', function ($rootScope) {
     var that = this;
-    var AttrName = ['doubanId', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro'];
-
-    this.avosBookInfoToJson = function (avosBookInfo) {
-        var re = {};
-        for (var i = 0; i < AttrName.length; i++) {
-            var attrName = AttrName[i];
-            re[attrName] = avosBookInfo.get(attrName);
-        }
-        re.objectId = avosBookInfo.id;
-        re.updatedAt = avosBookInfo.get('updatedAt');
-        return re;
-    };
 
     /**
      * 获得对应isbn图书的信息
@@ -34,19 +22,17 @@ APP.service('BookInfo$', function ($rootScope) {
      * 新书速递
      */
     this.LatestBook = {
-        jsonBooks: [],
+        books: [],
         hasMoreFlag: true,
         loadMore: function () {
-            var query = new AV.Query('BookInfo');
+            var query = new AV.Query(Model.BookInfo);
             query.select(['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price']);
             query.descending('pubdate');
-            query.skip(that.LatestBook.jsonBooks.length + RandomStart);
+            query.skip(that.LatestBook.books.length + RandomStart);
             query.limit(LoadCount);
-            query.find().done(function (avosBookInfoList) {
-                if (avosBookInfoList.length > 0) {
-                    for (var i = 0; i < avosBookInfoList.length; i++) {
-                        that.LatestBook.jsonBooks.push(that.avosBookInfoToJson(avosBookInfoList[i]));
-                    }
+            query.find().done(function (bookInfos) {
+                if (bookInfos.length > 0) {
+                    that.LatestBook.books.pushArray(bookInfos);
                 } else {
                     that.LatestBook.hasMoreFlag = false;
                 }

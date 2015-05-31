@@ -23,9 +23,9 @@
                 </button>
             </ion-item>
             <!-- 作者-->
-            <ion-item ng-if="book['author'].length>0" class="item-button-right">
-                {{book['author'].toString()}} 著
-                <button class="button button-small button-clear button-balanced" ng-if="book['author_intro']"
+            <ion-item ng-if="book.author.length>0" class="item-button-right">
+                {{book.author.toString()}} 著
+                <button class="button button-small button-clear button-balanced" ng-if="book.author_intro"
                         ng-click="showAuthorIntro()">作者简介
                 </button>
             </ion-item>
@@ -33,14 +33,14 @@
             <ion-item class="item-button-right">
                 <i ng-if="book.price">定价:{{book.price}}</i>
                 <i>&nbsp;</i>
-                <i ng-if="book['publisher']">{{book['publisher']}}/{{book['pubdate']}}</i>
+                <i ng-if="book.publisher">{{book.publisher}}/{{book.pubdate}}</i>
                 <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版</button>
             </ion-item>
             <!-- 豆瓣书评-->
-            <ion-item ng-if="book['rating']"
+            <ion-item ng-if="book.rating"
                       class="item-button-right">
-                <review-star num-stars="{{book['rating']['average']/2}}" score="{{book['rating']['average']}}"
-                             num-raters="{{book['rating']['numRaters']}}"></review-star>
+                <review-star num-stars="{{book.rating.average/2}}" score="{{book.rating.average}}"
+                             num-raters="{{book.rating.numRaters}}"></review-star>
                 <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.book_bookReview({doubanBookId:book.id,bookTitle:book.title})">书评
                 </button>
@@ -66,19 +66,19 @@
                 </button>
             </ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length>0"
-                      ng-repeat="oneJsonUsedBook in UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList"
+            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
+                      ng-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
                       class="item-avatar">
-                <img ng-src="{{User$.changeWechatAvatarSize(oneJsonUsedBook.owner.get('avatarUrl'),64)}}"
-                     ui-sref="tab.userHome({ownerId:oneJsonUsedBook.owner.id})">
+                <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
 
-                <div ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:oneJsonUsedBook.objectId})">
-                    <h3 style="white-space: pre-wrap">{{oneJsonUsedBook.price}}元 {{oneJsonUsedBook.des}}</h3>
+                <div ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+                    <h3 style="white-space: pre-wrap">{{usedBook.attributes.price}}元 {{usedBook.attributes.des}}</h3>
 
-                    <p>上传于:{{oneJsonUsedBook.updatedAt | date:'mediumDate' }} </p>
+                    <p>上传于:{{usedBook.updatedAt | date:'mediumDate' }} </p>
                 </div>
             </ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length>0"
+            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
                       style="padding: 0;text-align: center">
                 <a class="button button-small button-clear button-balanced"
                    ui-sref="tab.book_usedBookList({cmd:'isbnUsed',isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
@@ -94,21 +94,21 @@
                 </button>
             </ion-item>
             <ion-item ng-if="needBookNumber==0" style="text-align: center">还没有同学想要它</ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList.length>0"
-                      ng-repeat="oneJsonUsedBook in UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList"
+            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
+                      ng-repeat="usedBook in UsedBook$.ISBN_need.nowEqualISBNNeedBooks"
                       class="item-avatar">
-                <img ng-src="{{User$.changeWechatAvatarSize(oneJsonUsedBook.owner.get('avatarUrl'),64)}}"
-                     ui-sref="tab.userHome({ownerId:oneJsonUsedBook.owner.id})">
+                <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
 
-                <div ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:oneJsonUsedBook.objectId})">
-                    <p ng-if="oneJsonUsedBook.price">最高承受{{oneJsonUsedBook.price}}元</p>
+                <div ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:usedBook.id})">
+                    <p ng-if="usedBook.attributes.price">最高承受{{usedBook.attributes.price}}元</p>
 
-                    <p ng-if="oneJsonUsedBook.des">{{oneJsonUsedBook.des}}</p>
+                    <p ng-if="usedBook.attributes.des">{{usedBook.attributes.des}}</p>
 
-                    <p>发布于:{{oneJsonUsedBook.updatedAt | date:'mediumDate' }} </p>
+                    <p>发布于:{{usedBook.updatedAt | date:'mediumDate' }} </p>
                 </div>
             </ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList.length>0"
+            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
                       style="padding: 0;text-align: center">
                 <a class="button button-small button-clear button-balanced"
                    ui-sref="tab.book_usedBookList({cmd:'isbnNeed',isbn13:isbn13})">共{{needBookNumber}}位同学想要这本书,查看全部</a>

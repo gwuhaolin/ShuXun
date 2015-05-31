@@ -1,38 +1,38 @@
 <!-- 用户基本信息-->
-<div class="item item-avatar" ng-if="jsonUserInfo">
-    <img ng-src="{{User$.changeWechatAvatarSize(jsonUserInfo.avatarUrl,64)}}">
+<div class="item item-avatar" ng-if="user">
+    <img ng-src="{{user.avatarUrlWithSize(64)}}">
 
-    <h2>{{jsonUserInfo.nickName}}
-        <i class="icon ion-male" style="color: #5eb1ed" ng-if="jsonUserInfo.sex==1"></i>
-        <i class="icon ion-female" style="color: #ff6d9e" ng-if="jsonUserInfo.sex==2"></i>
-        <i>{{jsonUserInfo.startSchoolYear}}级</i>
+    <h2>{{user.attributes.nickName}}
+        <i class="icon ion-male" style="color: #5eb1ed" ng-if="user.attributes.sex==1"></i>
+        <i class="icon ion-female" style="color: #ff6d9e" ng-if="user.attributes.sex==2"></i>
+        <i>{{user.attributes.startSchoolYear}}级</i>
 
     </h2>
 
-    <p style="white-space: pre-wrap">{{jsonUserInfo.major}}/{{jsonUserInfo.school}}</p>
-    <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id"
+    <p style="white-space: pre-wrap">{{user.attributes.major}}/{{user.attributes.school}}</p>
+    <button ng-if="AV.User.current() && !isMe()"
             class="button button-small button-clear button-balanced"
             style="float: right"
-            ui-sref="tab.person_sendMsgToUser({receiverObjectId:jsonUserInfo.objectId,role:'buy',inboxType:'private',usedBookObjectId:usedBookObjectId})">
+            ui-sref="tab.person_sendMsgToUser({receiverObjectId:user.id,role:'buy',inboxType:'private',usedBookObjectId:usedBookObjectId})">
         发私信
     </button>
-    <button ng-if="jsonUserInfo.location" class="button button-small button-clear button-balanced"
+    <button ng-if="user.attributes.location" class="button button-small button-clear button-balanced"
             style="float: right"
-            ng-click="WeChatJS$.openMap(jsonUserInfo.location.latitude,jsonUserInfo.location.longitude)">地图
+            ng-click="WeChatJS$.openMap(user.attributes.location.latitude,user.attributes.location.longitude)">地图
     </button>
-    <button ng-if="User$.getCurrentAvosUser && jsonUserInfo.objectId!=User$.getCurrentAvosUser().id && !jsonUserInfo.isMyFollowee"
+    <button ng-if="AV.User.current() && !isMyFollowee && !isMe()"
             class="button button-small button-clear button-balanced"
             style="float: right"
-            ng-click="User$.followUser(jsonUserInfo.objectId)">关注Ta
+            ng-click="User$.followUser(user.id)">关注Ta
     </button>
-    <button ng-if="jsonUserInfo.isMyFollowee"
+    <button ng-if="isMyFollowee"
             class="button button-small button-clear button-energized"
             style="float: right"
-            ng-click="User$.unfollowUser(jsonUserInfo.objectId)">取消关注
+            ng-click="User$.unfollowUser(user.id)">取消关注
     </button>
 </div>
 <!-- 主人所有旧书链接-->
 <ion-item ng-if="!hideUsedBook" style="padding: 0;text-align: center">
     <a class="button button-small button-clear button-balanced"
-       ui-sref="tab.userHome({ownerId:jsonUserInfo.objectId})">主人有{{jsonUserInfo.userUsedBookNumber}}本旧书要卖,发布了{{jsonUserInfo.userNeedBookNumber}}个求书</a>
+       ui-sref="tab.userHome({ownerId:user.id})">主人有{{user.userUsedBookNumber}}本旧书要卖,发布了{{user.userNeedBookNumber}}个求书</a>
 </ion-item>

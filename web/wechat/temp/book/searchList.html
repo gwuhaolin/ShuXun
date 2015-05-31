@@ -19,17 +19,18 @@
             </ion-item>
 
             <!-- 搜索结果列表-->
-            <ion-item class="item-thumbnail-left" collection-repeat="book in SearchBook$.books"
-                      ui-sref="tab.book_oneBook({isbn13:book.isbn13})">
-                <img ng-src="{{book.image}}">
+            <ion-item class="item-thumbnail-left" collection-repeat="bookInfo in SearchBook$.books"
+                      ui-sref="tab.book_oneBook({isbn13:bookInfo.attributes.isbn13})">
+                <img ng-src="{{bookInfo.attributes.image}}">
 
-                <h2>{{book.title}}</h2>
+                <h2>{{bookInfo.attributes.title}}</h2>
 
-                <p ng-if="book['publisher']">{{book['publisher']}}/{{book['pubdate']}}</p>
+                <p ng-if="bookInfo.attributes.publisher">
+                    {{bookInfo.attributes.publisher}}/{{bookInfo.attributes.pubdate}}</p>
 
-                <p ng-if="book['author']">{{book['author'].toString()}}</p>
+                <p ng-if="bookInfo.attributes.author">{{bookInfo.attributes.author.toString()}}</p>
 
-                <p ng-if="book.price">{{book.price}}</p>
+                <p ng-if="bookInfo.attributes.price">{{bookInfo.attributes.price}}</p>
             </ion-item>
 
         </ion-list>

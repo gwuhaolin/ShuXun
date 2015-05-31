@@ -7,9 +7,9 @@
 APP.controller('person_my', function ($scope, $state, $stateParams, User$, Status$) {
     $scope.Status$ = Status$;
     function load() {
-        $scope.userInfo = User$.getCurrentJsonUser();
+        $scope.user = AV.User.current();
         //加载我上传的二手书的数量
-        var myUsedBookRelation = User$.getCurrentAvosUser().relation('usedBooks');
+        var myUsedBookRelation = AV.User.current().relation('usedBooks');
         var query = myUsedBookRelation.query();
         query.equalTo('role', 'sell');
         query.count().done(function (number) {

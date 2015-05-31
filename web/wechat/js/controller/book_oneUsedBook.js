@@ -9,30 +9,20 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     $scope.WeChatJS$ = WeChatJS$;
     $scope.usedBookObjectId = $stateParams['usedBookAvosObjectId'];
 
-    UsedBook$.getJsonUsedBookByAvosObjectId($scope.usedBookObjectId, function (json) {
-        json.image = json.image ? json.image.replace('mpic', 'lpic') : '';//大图显示
-        $scope.jsonUsedBook = json;
-        $scope.$apply();
-        var avosOwner = $scope.jsonUsedBook.owner;
-        avosOwner.fetch().done(function (avosOwner) {
-            $scope.ownerInfo = avosUserToJson(avosOwner);
+    $scope.usedBook = new Model.UsedBook();
+    $scope.usedBook.id = $scope.usedBookObjectId;
+    $scope.usedBook.fetch().done(function () {
+        //大图显示
+        $scope.usedBook.attributes.image && $scope.usedBook.set('image', $scope.usedBook.attributes.image.replace('mpic', 'lpic'));
+        $scope.usedBook.attributes.owner.fetch().done(function () {
             $scope.$apply();
         });
+        $scope.$apply();
     });
 
     //加载评论数据
-    Status$.getStatusList_reviewBook($scope.usedBookObjectId).done(function (avosStatusList) {
-        $scope.jsonStatusList = [];
-        for (var i = 0; i < avosStatusList.length; i++) {
-            var jsonStatus = Status$.avosStatusToJson(avosStatusList[i]);
-            jsonStatus.source.fetch().done(function () {
-                $scope.$apply();
-            });
-            jsonStatus.to.fetch().done(function () {
-                $scope.$apply();
-            });
-            $scope.jsonStatusList.push(jsonStatus);
-        }
+    Status$.getStatusList_reviewBook($scope.usedBookObjectId).done(function (statusList) {
+        $scope.statusList = statusList;
         $scope.$apply();
     })
 });
