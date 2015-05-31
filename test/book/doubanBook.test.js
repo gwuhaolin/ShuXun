@@ -40,6 +40,7 @@ describe('book/doubanBook.js', function () {
                 assert.equal(jsonBookInfo.isbn13, isbn13, 'ISBN13必须相等');
                 assert(jsonBookInfo.doubanId, '必须有doubanId属性');
                 Util.checkJsonBookInfoIsNice(jsonBookInfo);
+                done();
             }).fail(function (err) {
                 done(err);
             })
@@ -47,15 +48,31 @@ describe('book/doubanBook.js', function () {
     });
 
     describe('#spiderBusinessInfo', function () {
-        _.each(doubanIDs_ok, function (doubanId) {
-            it(doubanId + '是有网购信息的', function (done) {
+        _.each(Util.ISBN_Legal_HasPub, function (isbn13) {
+            it(isbn13 + '是有网购信息的', function (done) {
                 this.timeout(10000);
-                doubanBook.spiderBusinessInfo(doubanId).done(function (infos) {
+                doubanBook.spiderBusinessInfo(isbn13).done(function (infos) {
                     _.each(infos, function (one) {
                         assert(one.url, 'url');
                         assert(one.name, 'name');
                         assert(one.price, 'price');
+                        assert(one.logoUrl, 'logoUrl');
+                        //assert(one.logoUrl.indexOf('http') >= 0, '合法的URL');
                     });
+                    done();
+                }).fail(function (err) {
+                    done(err);
+                })
+            })
+        });
+    });
+
+    describe('#getDoubanIdByISBN13', function () {
+        _.each(Util.ISBN_Legal_HasPub, function (isbn13) {
+            it(isbn13 + '是有豆瓣ID的', function (done) {
+                this.timeout(10000);
+                doubanBook.getDoubanIdByISBN13(isbn13).done(function (doubanId) {
+                    assert(doubanId, 'doubanId');
                     done();
                 }).fail(function (err) {
                     done(err);

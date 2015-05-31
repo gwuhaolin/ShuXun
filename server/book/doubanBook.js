@@ -178,35 +178,86 @@ exports.spiderBookByISBN = function (isbn) {
 };
 
 /**
- * @param doubanId 图书的豆瓣ID
+ * @param isbn13 isbn13
  * @return {AV.Promise}
- * 返回json格式 [{url,name,price}]
+ * 返回json格式 [{url,name,price,logoUrl}]
  */
-exports.spiderBusinessInfo = function (doubanId) {
+exports.spiderBusinessInfo = function (isbn13) {
     var rePromise = new AV.Promise(null);
-    SuperAgent
-        .get('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks')
-        .end(function (err, res) {
-            if (err) {
-                rePromise.reject(err);
-            } else {
-                if (res.ok) {
-                    var $ = Cheerio.load(res.text);
-                    var re = [];
-                    $("ck-part[type='item']").each(function () {
-                        var one = {};
-                        var first = $(this).children().first();
-                        one.url = $(first).attr('href');
-                        one.url = url.parse(one.url, true).query['url'];
-                        one.name = $(first).text().trim().replace(/网|商城/, '');
-                        one.price = parseFloat($(first).next().text().trim());
-                        re.push(one);
-                    });
-                    rePromise.resolve(re);
+    exports.getDoubanIdByISBN13(isbn13).done(function (doubanId) {
+        SuperAgent
+            .get('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks')
+            .end(function (err, res) {
+                if (err) {
+                    rePromise.reject(err);
                 } else {
-                    rePromise.reject(res.text);
+                    if (res.ok) {
+                        var $ = Cheerio.load(res.text);
+                        var re = [];
+                        $("ck-part[type='item']").each(function () {
+                            var one = {};
+                            var first = $(this).children().first();
+                            one.url = $(first).attr('href');
+                            one.url = url.parse(one.url, true).query['url'];
+                            one.name = $(first).text().trim().replace(/网|商城/, '');
+                            one.price = parseFloat($(first).next().text().trim());
+                            one.logoUrl = computeLogoUrlFromName(one.name);
+                            re.push(one);
+                        });
+                        rePromise.resolve(re);
+                    } else {
+                        rePromise.reject(res.text);
+                    }
                 }
-            }
-        });
+            });
+    }).fail(function (err) {
+        rePromise.reject(err);
+    });
+    return rePromise;
+
+    /**
+     * 更具网购网站名称计算出该网站的logo的URL
+     * @param name 网站的名称
+     * @returns {string} logo的URL
+     */
+    function computeLogoUrlFromName(name) {
+        var re = 'http://ishuxun.cn/desktop/img/pathLogo.png';
+        //TODO 收集logo
+        if (name.indexOf('京东') >= 0) {
+            re = '';
+        } else if (name.indexOf('亚马逊') >= 0) {
+            re = '';
+        } else if (name.indexOf('当当') >= 0) {
+            re = '';
+        } else if (name.indexOf('文轩') >= 0) {
+            re = '';
+        } else if (name.indexOf('淘书') >= 0) {
+            re = '';
+        } else if (name.indexOf('中国图书') >= 0) {
+            re = '';
+        } else if (name.indexOf('China-pub') >= 0) {
+            re = '';
+        }
+        return re;
+    }
+};
+
+/**
+ * 获得ISBN13对应图书的豆瓣ID
+ * @param isbn13
+ * @returns {AV.Promise|t.Promise} 返回doubanId
+ */
+exports.getDoubanIdByISBN13 = function (isbn13) {
+    var rePromise = new AV.Promise(null);
+    var query = BookInfo.AVOS.makeQuery();
+    query.equalTo('isbn13', isbn13);
+    query.select('doubanId');
+    query.first().done(function (avosBookInfo) {
+        if (avosBookInfo) {
+            rePromise.resolve(avosBookInfo.get('doubanId'));
+        } else {
+            rePromise.reject('找不到ISBN13对应的豆瓣ID');
+        }
+    });
     return rePromise;
 };

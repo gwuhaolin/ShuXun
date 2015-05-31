@@ -1,14 +1,13 @@
 /**
- * Created by wuhaolin on 3/25/15.
- * APP路由配置
+ * Created by wuhaolin on 5/30/15.
+ * AngularJS配置
  */
-"use strict";
-
 var APP = angular.module('APP', ['ionic'], null)
-
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+        //配置ionic样式
         $ionicConfigProvider.tabs.style('standard');
         $ionicConfigProvider.tabs.position('bottom');
+        //配置路由表
         $stateProvider.state('tab', {
             url: '/tab',
             abstract: true,

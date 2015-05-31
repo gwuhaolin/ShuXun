@@ -19,7 +19,7 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams, $ionicMod
             $scope.isLoading = false;
             $scope.$apply();
             //加载电商联盟信息
-            BusinessSite$.getBusinessInfoByISBN(json.id).done(function (infos) {
+            BusinessSite$.getBusinessInfoByISBN(json.isbn13).done(function (infos) {
                 $scope.businessInfos = infos;
             });
         } else {

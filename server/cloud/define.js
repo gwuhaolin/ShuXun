@@ -132,11 +132,12 @@ AV.Cloud.define('getDoubanBookReview', function (req, res) {
 
 /**
  * 获得图书电商购买信息
- * @param:id 豆瓣图书id
+ * @param:isbn13 isbn13
+ * @return:return 返回[{url,name,price,logoUrl}]
  */
 AV.Cloud.define('getBusinessInfo', function (req, res) {
-    var id = req.params.id;
-    DoubanBook.spiderBusinessInfo(id).done(function (json) {
+    var isbn13 = req.params.isbn13;
+    DoubanBook.spiderBusinessInfo(isbn13).done(function (json) {
         res.success(json);
     }).fail(function (err) {
         res.error(err);

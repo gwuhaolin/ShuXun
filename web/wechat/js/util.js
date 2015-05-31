@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 4/1/15.
- * 全局函数
+ * 自定义全局函数和路由配置
  */
 "use strict";
 //AVOSCloud

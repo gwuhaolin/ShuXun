@@ -3,6 +3,7 @@
  *
  */
 "use strict";
+var _ = require('underscore');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -12,22 +13,10 @@ var es = require("event-stream");
 var htmlreplace = require('gulp-html-replace');
 var htmlmin = require('gulp-htmlmin');
 var clean = require('gulp-clean');
+var CDNLib = require('./server/util/CDN.js');
 
 function CDN(cdn) {
-    var re = {
-        'jQuery-js': 'http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
-        'Avos-js': 'http://7xj22a.com1.z0.glb.clouddn.com/avos/av-mini.js',
-        'Semantic-js': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
-        'Semantic-css': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.css',
-        'Ionic-css': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',
-        'Ionic-js': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/js/ionic.bundle.min.js'
-    };
-    for (var attrName in cdn) {
-        if (cdn.hasOwnProperty(attrName)) {
-            re[attrName] = cdn[attrName];
-        }
-    }
-    return re;
+    return _.extend(CDNLib, cdn);
 }
 
 gulp.task('default', ['clear'], function () {
@@ -63,7 +52,7 @@ gulp.task('wechat_js', function () {
                 module: 'APP'
             })),
         //合并app js
-        gulp.src(['web/wechat/js/my.js', 'web/wechat/js/app.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive.js']))
+        gulp.src(['web/wechat/js/util.js', 'web/wechat/js/app.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive.js']))
         //angular依赖
         .pipe(ngAnnotate())
         .pipe(concat('main.js'))//合并
@@ -75,7 +64,7 @@ gulp.task('wechat_js', function () {
 gulp.task('wechat_index', function () {
     return gulp.src('web/wechat/index.html')
         .pipe(htmlreplace(CDN({
-            'App-js': 'main.js'
+            'Main-js': 'main.js'
         })))
         .pipe(htmlmin({
             collapseWhitespace: true,

@@ -1,0 +1,16 @@
+<!--包含到所有网页的head标签-->
+<!--@param:title 当前网页的title值-->
+<!--@param:keywords SEO用的head标签里的meta的keywords-->
+<!--@param:description SEO用的head标签里的meta的description-->
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="keywords"
+          content="{{keywords}}">
+    <meta name="description"
+          content="{{description}}">
+    <!--依赖的CSS库-->
+    <link href="{{@CDN.Semantic-css}}" rel="stylesheet">
+</head>

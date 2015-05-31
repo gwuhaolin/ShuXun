@@ -7,12 +7,12 @@
 APP.service('BusinessSite$', function () {
     /**
      * 获得对应的ISBN号码的图书在各大电商平台的价格信息
-     * @param doubanId 图书的豆瓣ID
-     * @return {AV.Promise}
+     * @param isbn13 图书的豆瓣ID
+     * @return {AV.Promise} 返回[{url,name,price,logoUrl}]
      */
-    this.getBusinessInfoByISBN = function (doubanId) {
+    this.getBusinessInfoByISBN = function (isbn13) {
         return AV.Cloud.run('getBusinessInfo', {
-            id: doubanId
+            isbn13: isbn13
         }, null);
     }
 });

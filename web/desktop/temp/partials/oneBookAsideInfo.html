@@ -1,0 +1,78 @@
+<!-- 上传旧书&发布求书-->
+<div class="ui grid" ng-controller="d_partials_oneBookAsideInfo">
+    <div class="sixteen wide center aligned column">
+        <div class="ui buttons">
+            <a class="ui button">上传旧书</a>
+
+            <div class="or"></div>
+            <a class="ui positive button">发布求书</a>
+        </div>
+    </div>
+
+    <!-- 对应用户列表-->
+    <div class="sixteen wide column">
+
+        <!-- 网购途径-->
+        <div class="ui horizontal divider">
+            <a class="ui circular button">网购新书比价</a>
+        </div>
+        <div class="ui selection list">
+            <a class="item" ng-repeat="one in businessInfos | orderBy:'price'" ng-href="{{one.url}}" target="_blank">
+                <img class="ui avatar image" ng-src="{{one.logoUrl}}">
+
+                <div class="content">
+                    <h3 class="header">
+                        <em>{{one.price}}</em><i class="yen icon"></i><em>{{one.name}}</em>
+                    </h3>
+                </div>
+            </a>
+        </div>
+
+        <!-- 旧书列表-->
+        <div class="ui horizontal divider">
+            <a class="ui circular button">要卖对应旧书的同学</a>
+        </div>
+        <div class="ui selection list">
+            <div class="item" ng-repeat="one in UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList">
+                <img class="ui avatar image"
+                     ng-src="{{User$.changeWechatAvatarSize(one.owner.get('avatarUrl'),64)}}}}">
+
+                <div class="content">
+                    <h3 class="header">
+                        <em ng-if="one.price">{{one.price}}<i class="yen icon"></i></em>
+                        <em ng-if="one.des">{{one.des}}</em>
+                    </h3>
+
+                    <em ng-if="one.updatedAt">{{one.updatedAt | date:'mediumDate' }}</em>
+
+                </div>
+                <d-user-info json-user-info="one.jsonOwner" hide-used-book="true"></d-user-info>
+            </div>
+        </div>
+        <div class="ui message" ng-if="UsedBook$.ISBN_sell.nowEqualISBNJsonUsedBookList.length==0">还没有对应的二手书
+        </div>
+
+        <!-- 求书列表-->
+        <div class="ui horizontal divider">
+            <a class="ui circular button">正需要这本书的同学</a>
+        </div>
+        <div class="ui selection list">
+            <div class="item" ng-repeat="one in UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList">
+                <img class="ui avatar image"
+                     ng-src="{{User$.changeWechatAvatarSize(one.owner.get('avatarUrl'),64)}}}}">
+
+                <div class="content">
+                    <h3 class="header">
+                        <em ng-if="one.price">{{one.price}}<i class="yen icon"></i></em>
+                        <em ng-if="one.des">{{one.des}}</em>
+                    </h3>
+
+                    <em ng-if="one.updatedAt">{{one.updatedAt | date:'mediumDate' }}</em>
+
+                </div>
+            </div>
+        </div>
+        <div class="ui message" ng-if="UsedBook$.ISBN_need.nowEqualISBNJsonNeedBookList.length==0">还没有同学想要它
+        </div>
+    </div>
+</div>

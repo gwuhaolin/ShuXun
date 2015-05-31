@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" ng-app="APP">
 <head>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta charset="utf-8">
-    <link rel="icon" href="img/favicon.ico"/>
     <title>书循网-最快捷的二手书交易平台</title>
     <!-- build:Semantic-css -->
     <link href="../../bower_components/semantic-ui/dist/semantic.css" rel="stylesheet">
@@ -14,9 +13,9 @@
 <!-- 顶部条-->
 <header class="ui fixed green inverted menu">
     <!-- logo-->
-    <div class="item">
-        <img src="img/shuxunlogo.png" class="ui mini image">
-    </div>
+    <a class="item" href="/">
+        <img src="img/pathLogo.png" class="ui mini image">
+    </a>
     <!-- 搜索框-->
     <div class="item">
         <div class="ui search">
@@ -40,7 +39,7 @@
     </a>
     <!-- 我-->
     <div class="ui dropdown item">
-        <img src="img/shuxunlogo.png" class="ui avatar mini image" style="display: inline">
+        <img src="img/pathLogo.png" class="ui avatar mini image" style="display: inline">
         浩麟
         <i class="dropdown icon"></i>
 
@@ -281,11 +280,14 @@
 </aside>
 
 <!--底部-->
-<footer class="one column row">
-    <div class="center aligned column">
-        <small>©柠檬工作室 2015</small>
+<div class="center aligned sixteen wide column" style="color: #48af5a">
+    <div>
+        <i class="wechat link icon"></i>
+        <i class="qq link icon"></i>
+        <i class="weibo link icon"></i>
     </div>
-</footer>
+    <small>还地球一片绿色</small>
+</div>
 
 <!-- build:jQuery-js -->
 <script src="../../bower_components/jquery/dist/jquery.js"></script>
@@ -296,23 +298,29 @@
 <!-- build:Angular-js -->
 <script src="../../bower_components/angular/angular.js"></script>
 <!-- endbuild -->
-<!-- build:AngularUiRouter-js -->
-<script src="../../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<!-- build:Avos-js -->
+<script src="../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
 <!-- endbuild -->
-<script>
-    //下拉菜单
-    $('.dropdown').dropdown();
-    //分类菜单
-    $('#menu')
-            .sidebar('setting', 'transition', 'overlay')
-            .sidebar('setting', 'dimPage', false)
-            .sidebar('toggle');
-    //图书弹出出版信息
-    $('.oneBook').popup({
-        inline: true
-    });
-    //评分
-    $('.ui.rating').rating();
-</script>
+
+<!-- build:Main-js -->
+<script src="../wechat/js/util.js"></script>
+<script src="js/app.js"></script>
+<!--Service-->
+<script src="../wechat/js/service/BookRecommend.js"></script>
+<script src="../wechat/js/service/BusinessSite.js"></script>
+<script src="../wechat/js/service/DoubanBook.js"></script>
+<script src="../wechat/js/service/InfoService.js"></script>
+<script src="../wechat/js/service/BookInfo.js"></script>
+<script src="../wechat/js/service/SearchBook.js"></script>
+<script src="../wechat/js/service/Status.js"></script>
+<script src="../wechat/js/service/UsedBook.js"></script>
+<script src="../wechat/js/service/User.js"></script>
+<script src="../wechat/js/service/WeChatJS.js"></script>
+<!--Controller-->
+<script src="js/controller/d_partial_NearUser.js"></script>
+<script src="js/controller/d_partial_oneBookAsideInfo.js"></script>
+<!--Directive-->
+<script src="js/directive.js"></script>
+<!-- endbuild -->
 </body>
 </html>
