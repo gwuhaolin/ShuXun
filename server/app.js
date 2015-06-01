@@ -5,20 +5,31 @@
 "use strict";
 var express = require('express');
 var hbs = require('hbs');
-var cookieParser = require('cookie-parser');
 var WechatMsg = require('./wechat/wechatMsg.js');
 var cloud = require('./cloud/cloud.js');
+var desktopRouter = express.Router();
+var bookRouter = require('./router/book.js');
+var personRouter = require('./router/person.js');
 
 var app = express();
 app.use(cloud);//加载定义的云代码
+
+//配置HBS
+app.set('views', '../public/desktop');
+app.set('view engine', 'html');
+app.engine('html', require('hbs').__express);
+//注册hbs片段
+hbs.registerPartials(__dirname + '../web/desktop/hbsPartial');
+
+//配置router
+app.use('/desktop', desktopRouter);
+desktopRouter.use('/book', bookRouter);
+desktopRouter.use('/person', personRouter);
+
+//配置静态资源
 app.use(express.static('./public'));
-app.use(cookieParser());
 
-app.set('view engine', 'hbs');//模板引擎设置为hbs
-hbs.localsAsTemplateData(app);
-hbs.registerPartials(__dirname + '/views/partials');//注册hbs片段
-app.locals.CDN = require('./util/CDN.js');
-
-app.use('/wechat/msg', WechatMsg.MsgHandler);//微信消息服务
+//配置微信
+app.use('/wechat/msg', WechatMsg);//微信消息服务
 
 module.exports = app;

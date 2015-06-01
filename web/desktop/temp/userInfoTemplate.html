@@ -1,0 +1,32 @@
+<!-- 一个同学的信息模板-->
+<div class="ui card">
+    <!-- 这同学的2本书-->
+    <div class="content" ng-if="heUsedBookList.length>=2">
+        <div class="ui two column center aligned grid">
+            <div class="column" ng-repeat="one in heUsedBookList.slice(0,2)">
+                <div class="ui small image">
+                    <img ng-src="{{one.attributes.image}}">
+                </div>
+                <small>{{one.attributes.title}}</small>
+            </div>
+        </div>
+    </div>
+    <!-- 同学的信息-->
+    <a class="extra content">
+        <div class="left floated meta">
+            <em>{{user.attributes.major}}</em><br>
+            <em>{{user.attributes.school}}</em>
+        </div>
+        <div class="right floated author">
+            <strong>{{user.attributes.nickName}}</strong>
+            <img class="ui avatar image" ng-src="{{user.attributes.avatarUrl}}">
+        </div>
+    </a>
+    <!-- 同学的书的信息-->
+    <div class="ui bottom attached tiny basic buttons" ng-if="!hideUsedBook">
+        <button class="ui button">要卖<em>{{userUsedBookNumber}}</em>本旧书</button>
+        <button class="ui button">正需要<em>{{userNeedBookNumber}}</em>本书</button>
+        <button class="ui button" ng-if="!isMyFollowee">关注</button>
+        <button class="ui button" ng-if="isMyFollowee">取消关注</button>
+    </div>
+</div>

@@ -4,6 +4,7 @@
  */
 "use strict";
 var AV = require('leanengine');
+var Model = require('../../web/js/Model.js');
 var _ = require('underscore');
 var BookInfo = require('./../book/bookInfo.js');
 var DoubanBook = require('./../book/doubanBook.js');

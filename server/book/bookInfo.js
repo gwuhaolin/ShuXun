@@ -4,6 +4,7 @@
  */
 "use strict";
 var AV = require('leanengine');
+var Model = require('../../web/js/Model.js');
 var DangDangBook = require('./dangdangBook.js');
 var JDBook = require('./jdBook.js');
 var DoubanBook = require('./doubanBook.js');

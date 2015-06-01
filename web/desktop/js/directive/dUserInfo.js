@@ -8,12 +8,12 @@ APP.directive('dUserInfo', function () {
         //加载它的二手书的数量
         function loadHeUsedBookNumber() {
             if ($scope.user) {
-                $scope.user.userUsedBookNumber = 0;
+                $scope.userUsedBookNumber = 0;
                 var he = AV.Object.createWithoutData('_User', $scope.user.id);
                 var query = he.relation('usedBooks').query();
                 query.equalTo('role', 'sell');
                 query.count().done(function (number) {
-                    $scope.user.userUsedBookNumber = number;
+                    $scope.userUsedBookNumber = number;
                     $scope.$apply();
                 });
             }
@@ -22,12 +22,12 @@ APP.directive('dUserInfo', function () {
         //加载它的求书的数量
         function loadHeNeedBookNumber() {
             if ($scope.user) {
-                $scope.user.userNeedBookNumber = 0;
+                $scope.userNeedBookNumber = 0;
                 var he = AV.Object.createWithoutData('_User', $scope.user.id);
                 var query = he.relation('usedBooks').query();
                 query.equalTo('role', 'need');
                 query.count().done(function (number) {
-                    $scope.user.userNeedBookNumber = number;
+                    $scope.userNeedBookNumber = number;
                     $scope.$apply();
                 });
             }
@@ -92,7 +92,7 @@ APP.directive('dUserInfo', function () {
             //当给用户发送私信时,如果要显示当前二手书就传入
             usedBookObjectId: '=?'
         },
-        templateUrl: 'temp/tool/userInfoTemplate.html',
+        templateUrl: '../temp/userInfoTemplate.html',
         link: link
     }
 });

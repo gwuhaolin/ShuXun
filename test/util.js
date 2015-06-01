@@ -9,7 +9,7 @@ var bookUtil = require('../server/book/bookUtil.js');
  * 合法的ISBN13并且已经出版过的书
  * @type {Array}
  */
-exports.ISBN_Legal_HasPub = ['9787511721051', '9787210036944', '9787300093598', '9787535479914'];
+exports.ISBN_Legal_HasPub = ['9787511721051', '9787210036944', '9787535479914'];
 
 /**
  * 不合法的ISBN13

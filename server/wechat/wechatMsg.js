@@ -4,6 +4,7 @@
  */
 "use strict";
 var AV = require('leanengine');
+var Model = require('../../web/js/Model.js');
 var Wechat = require('wechat');
 var WechatAPI = require('./wechatAPI.js');
 var LBS = require('../util/lbs.js');
@@ -18,7 +19,7 @@ var KeKu = {
 };
 var ProblemKeyword = ['问题', '打不开', '查不到', '空白', '闪退', '不能', '无法', '扫码', 'bug', '联系', '合作'];
 
-exports.MsgHandler = Wechat(config)
+module.exports = Wechat(config)
     .text(function (message, req, res) {//文字
         var context = message['Content'];
         //问题关键字转发到客服
@@ -53,7 +54,7 @@ exports.MsgHandler = Wechat(config)
                 //发送使用说明
                 var guide = ReplyMaker.oneImageAndText(
                     '书循,让你的课本循环利用',
-                    'http://www.ishuxun.cn/wechat/img/GuideImageAndTextBanner.png',
+                    'http://www.ishuxun.cn/img/GuideImageAndTextBanner.png',
                     'http://create.maka.im/k/N3INP6YN',
                     '快来看看书循是如何快捷的帮你找到你想要的最便宜的书吧');
                 res.reply([guide]);
@@ -114,7 +115,7 @@ function searchBookFromDouban(keyword, res) {
                             if (total > 9) {//因为微信最多可以显示10本,当有的书大于9本时为用户提供显示更多
                                 re.push({
                                     title: '还有剩下' + (total - json.count) + '本相关的书,点击查看',
-                                    image: 'http://www.ishuxun.cn/wechat/img/logo-R.png',
+                                    image: 'http://www.ishuxun.cn/img/logo-R.png',
                                     url: 'http://www.ishuxun.cn/wechat/#/tab/book/searchList/' + keyword
                                 });
                             }
@@ -127,6 +128,7 @@ function searchBookFromDouban(keyword, res) {
             });
         return rePromise;
     }
+
     searchBook(keyword).done(function (books) {
         if (books.length > 0) {
             var re = [];
@@ -248,6 +250,6 @@ function saveLocationToOpenIdUser(userOpenId, lat, lon) {
     var query = new AV.Query(Model.User);
     query.equalTo('openId', userOpenId);
     query.first().done(function (avosUser) {
-        LBS.updateUserLocation(avosUser,lat,lon);
+        LBS.updateUserLocation(avosUser, lat, lon);
     })
 }

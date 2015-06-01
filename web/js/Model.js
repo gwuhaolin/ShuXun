@@ -2,11 +2,14 @@
  * Created by wuhaolin on 5/31/15.
  * 数据模型
  */
-
+"use strict";
 /**
  * 所有的模型
  */
 var Model = {};
+if (typeof require != 'undefined') {//Nodejs
+    var AV = require('leanengine');
+}
 
 Model.User = AV.Object.extend('_User', {
     /**
@@ -31,3 +34,7 @@ Model.BookInfo = AV.Object.extend('BookInfo');
 Model.School = AV.Object.extend('School');
 
 Model.UsedBook = AV.Object.extend('UsedBook');
+
+if (typeof module != 'undefined') {//Nodejs
+    module.exports = Model;
+}

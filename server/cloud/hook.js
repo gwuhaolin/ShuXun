@@ -4,18 +4,21 @@
  */
 "use strict";
 var AV = require('leanengine');
+var Model = require('../../web/js/Model.js');
 var LBS = require('../util/lbs.js');
 var WeChatAPI = require('../wechat/wechatAPI.js');
 var BookInfo = require('../book/bookInfo.js');
 
 AV.Cloud.afterSave('UsedBook', function (req) {
-    var user = req.user;
     var usedBook = req.object;
-    //设置二手书的地理位置
-    var location = user.get('location');
-    var point = new AV.GeoPoint(location);
-    usedBook.set('location', point);
-    usedBook.save();
+    var user = usedBook.get('owner');//图书主人
+    user.fetch().done(function () {
+        //设置二手书的地理位置
+        var location = user.get('location');
+        var point = new AV.GeoPoint(location);
+        usedBook.set('location', point);
+        usedBook.save();
+    });
     //设置用户的二手书的relations
     user.relation('usedBooks').add(usedBook);
     user.save();

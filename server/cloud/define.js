@@ -13,8 +13,9 @@ var BookInfo = require('../book/bookInfo.js');
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
  */
-AV.Cloud.define('spiderAndSaveLatestBooks', function () {
+AV.Cloud.define('spiderAndSaveLatestBooks', function (req, res) {
     DoubanBook.spiderAndSaveLatestBooks();
+    res.success();
 });
 
 /**
