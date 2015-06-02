@@ -15,8 +15,8 @@
             <ion-item item-height="55px"
                       item-width="100%"
                       collection-repeat="oneMajor in InfoService$.majors | filter:InfoService$.filter_majorByKeyword"
-                      ng-click="majorOnChoose(oneMajor['name'])">
-                {{oneMajor['name']}}
+                      ng-click="majorOnChoose(oneMajor.name)">
+                {{oneMajor.name}}
             </ion-item>
         </ul>
     </ion-content>

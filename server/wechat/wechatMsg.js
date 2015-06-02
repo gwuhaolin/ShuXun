@@ -12,19 +12,19 @@ var SuperAgent = require('superagent');
 var config = {
     token: WechatAPI.Config.Token,
     appid: WechatAPI.Config.AppID,
-    encodingAESKey: WechatAPI.Config.EncodingAESKey
+    encodingAESKey: WechatAPI.Config.EncodingAESKey,
+    problemKeyword: WechatAPI.Config.ProblemKeyword
 };
 var KeKu = {
     XiongZhun: '001@ishuxun'
 };
-var ProblemKeyword = ['问题', '打不开', '查不到', '空白', '闪退', '不能', '无法', '扫码', 'bug', '联系', '合作'];
 
 module.exports = Wechat(config)
     .text(function (message, req, res) {//文字
         var context = message['Content'];
         //问题关键字转发到客服
-        for (var i = 0; i < ProblemKeyword.length; i++) {
-            if (context.indexOf(ProblemKeyword[i]) >= 0) {
+        for (var i = 0; i < config.problemKeyword.length; i++) {
+            if (context.indexOf(config.problemKeyword[i]) >= 0) {
                 res.transfer2CustomerService(KeKu.XiongZhun);
                 return;
             }

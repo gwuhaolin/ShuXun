@@ -9,28 +9,12 @@ var DangDangBook = require('./dangdangBook.js');
 var JDBook = require('./jdBook.js');
 var DoubanBook = require('./doubanBook.js');
 
-exports.AVOS = {
-    _Class: AV.Object.extend('BookInfo'),
-    AttrName: ['doubanId', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro'],
-    makeQuery: function () {
-        return new AV.Query(Model.BookInfo);
-    },
-    makeObject: function (jsonBook) {
-        var avosBook = new exports.AVOS._Class();
-        if (jsonBook) {
-            for (var i = 0; i < exports.AVOS.AttrName.length; i++) {
-                var attrName = exports.AVOS.AttrName[i];
-                avosBook.set(attrName, jsonBook[attrName]);
-            }
-        }
-        return avosBook;
-    }
-};
+exports.BookInfoAttrName = ['doubanId', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro'];
 
 /**
  * 从BookInfo 表里查询图书信息
  * @param isbn13
- * @returns {AV.Promise}
+ * @returns {AV.Promise} query.first()
  */
 exports.queryBookInfoByISBN = function (isbn13) {
     var query = new AV.Query(Model.BookInfo);
@@ -70,7 +54,7 @@ exports.hasISBN13Book = function (isbn13) {
 
 /**
  * 去抓取图书的信息
- * 先去豆瓣>亚马逊>当当>京东
+ * 先去豆瓣>当当>京东
  * @param isbn13 图书的isbn13
  * @return {AV.Promise} json格式的图书信息
  */
@@ -94,10 +78,12 @@ exports.spiderBookInfo = function (isbn13) {
 
 /**
  * 把抓取到的图书信息保存到BookInfo表
+ * 已经有对应ISBN的不会被保存
  * @param jsonBook
+ * @return {AV.Promise} avosBookInfo.save()
  */
 exports.saveBookInfo = function (jsonBook) {
-    var avosBookInfo = exports.AVOS.makeObject(jsonBook);
+    var avosBookInfo = Model.BookInfo.new(jsonBook);
     return avosBookInfo.save();
 };
 
@@ -105,11 +91,11 @@ exports.saveBookInfo = function (jsonBook) {
  * 更新一个AvosBookInfo的信息
  * @param avosBookInfo 要被更新的对象
  * @param jsonBookInfo 用来更新的信息
- * @return {AV.Promise}
+ * @return {AV.Promise} avosBookInfo.save()
  */
 exports.updateAvosBookInfo = function (avosBookInfo, jsonBookInfo) {
-    for (var i = 0; i < exports.AVOS.AttrName.length; i++) {
-        var attrName = exports.AVOS.AttrName[i];
+    for (var i = 0; i < exports.BookInfoAttrName.length; i++) {
+        var attrName = exports.BookInfoAttrName[i];
         avosBookInfo.set(attrName, jsonBookInfo[attrName]);
     }
     return avosBookInfo.save();
@@ -154,3 +140,39 @@ exports.fillUsedBookInfo = function (avosUsedBook) {
         avosBookInfo.save();
     }
 };
+
+/**
+ * 更具图书pubdate获得最新出版的图书
+ * @param skip
+ * @param limit
+ * @returns {AV.Promise} query.find()
+ */
+exports.getLatestBooks = function (skip, limit) {
+    var query = new AV.Query(Model.BookInfo);
+    query.select(['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price']);
+    query.descending('pubdate');
+    query.skip(skip);
+    query.limit(limit);
+    return query.find();
+};
+
+/**
+ * 获得用户附近的要卖的书
+ * @param skip
+ * @param limit
+ * @param role 是附近的卖书=='sell' 还是求书=='need'
+ * @param user 当前用户 用于获得用户的地理位置
+ * @returns {AV.Promise} query.find()
+ */
+exports.getNearUsedBook = function (skip, limit, role, user) {
+    var query = new AV.Query(Model.UsedBook);
+    query.skip(skip);
+    query.limit(limit);
+    query.equalTo('role', role);
+    if (user) {
+        query.notEqualTo('owner', user);//不要显示自己的上传的
+        query.near("location", user.get('location'));
+    }
+    return query.find();
+};
+

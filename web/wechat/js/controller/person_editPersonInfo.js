@@ -27,6 +27,8 @@ APP.controller('person_editPersonInfo', function ($scope, $state, $ionicHistory,
 
     //点击提交修改时
     $scope.submitOnClick = function () {
+        $scope.user.set('startSchoolYear', $scope.user.attributes.startSchoolYear);
+        $scope.user.set('wechatAlert', $scope.user.attributes.wechatAlert);
         var unionId = readCookie('unionId');
         User$.loginWithUnionId(unionId).done(function () {
             $scope.user.save()
@@ -40,5 +42,5 @@ APP.controller('person_editPersonInfo', function ($scope, $state, $ionicHistory,
                     $ionicHistory.clearHistory();
                 })
         })
-    }
+    };
 });

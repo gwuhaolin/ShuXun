@@ -165,9 +165,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             var query = new AV.Query(Model.UsedBook);
             query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
             query.equalTo('role', 'sell');
-            if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
-                query.near("location", avosGeo);
-            }
+            avosGeo && query.near("location", avosGeo);
             if (that.NearUsedBook._majorFilter) {
                 var ownerQuery = new AV.Query(Model.User);
                 ownerQuery.equalTo('major', that.NearUsedBook._majorFilter);

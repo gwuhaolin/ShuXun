@@ -5,6 +5,7 @@
 "use strict";
 var assert = require('assert');
 var _ = require('underscore');
+var Model = require('../../web/js/Model.js');
 var Util = require('./../util.js');
 var bookUtil = require('../../server/book/bookInfo.js');
 var isbn13s_ok = ['9787511721051', '9787210036944', '9787300093598'];
@@ -74,6 +75,61 @@ describe('book/bookInfo.js', function () {
             });
         });
 
+    });
+
+    describe('#getLatestBooks', function () {
+
+        it('得到最新的图书列表', function (done) {
+            this.timeout(100000);
+            var attrNames = ['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price'];
+            var limit = 1;
+            bookUtil.getLatestBooks(0, limit).done(function (bookInfos) {
+                assert(bookInfos.length == limit, '获得指定数量的信息');
+                _.each(bookInfos, function (bookInfo) {
+                    _.each(attrNames, function (key) {
+                        assert(bookInfo.get(key), '要包含' + key + '属性');
+                    });
+                });
+                done();
+            }).fail(function (err) {
+                done(err);
+            })
+        });
+    });
+
+    describe('#getNearUsedBook', function () {
+        var start = 0;
+        var limit = 1;
+        var user = new Model.User();
+        user.id = '553b9b1ae4b06ee8dfb27780';
+
+        it('获得用户附近的要卖的书', function (done) {
+            var role = 'sell';
+            bookUtil.getNearUsedBook(start, limit, role, user).done(function (usedBooks) {
+                assert.equal(usedBooks.length, limit, '获得指定数量的书');
+                _.each(usedBooks, function (usedBook) {
+                    assert(usedBook instanceof Model.UsedBook);
+                    assert.equal(usedBook.get('role'), role);
+                });
+                done();
+            }).fail(function (err) {
+                done(err);
+            })
+        });
+
+        it('获得用户附近的求书', function (done) {
+            var role = 'need';
+            bookUtil.getNearUsedBook(start, limit, role, user).done(function (usedBooks) {
+                assert.equal(usedBooks.length, limit, '获得指定数量的书');
+                _.each(usedBooks, function (usedBook) {
+                    assert(usedBook instanceof Model.UsedBook);
+                    assert.equal(usedBook.get('role'), role);
+                });
+                done();
+            }).fail(function (err) {
+                done(err);
+            })
+        })
     });
 
 });

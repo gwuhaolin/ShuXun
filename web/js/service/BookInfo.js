@@ -20,6 +20,7 @@ APP.service('BookInfo$', function ($rootScope) {
 
     /**
      * 新书速递
+     * 更具图书pubdate获得最新出版的图书
      */
     this.LatestBook = {
         books: [],

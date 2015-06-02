@@ -41,7 +41,12 @@ APP.service('Status$', function ($rootScope) {
             query.include("source");
             query.limit(that.NewUsedBookStatus.unreadCount);
             query.find().done(function (statuses) {
-                that.NewUsedBookStatus.statusList = statuses;
+                that.NewUsedBookStatus.statusList.length = 0;
+                for (var i = 0; i < statuses.length; i++) {
+                    var one = statuses[i];
+                    one.attributes = one.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                    that.NewUsedBookStatus.statusList.push(one);
+                }
                 that.NewUsedBookStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -58,7 +63,12 @@ APP.service('Status$', function ($rootScope) {
             query.include("source");
             query.limit(that.NewNeedBookStatus.unreadCount);
             query.find().done(function (statuses) {
-                that.NewNeedBookStatus.statusList = statuses;
+                that.NewNeedBookStatus.statusList.length = 0;
+                for (var i = 0; i < statuses.length; i++) {
+                    var one = statuses[i];
+                    one.attributes = one.data;
+                    that.NewNeedBookStatus.statusList.push(one);
+                }
                 that.NewNeedBookStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -75,7 +85,12 @@ APP.service('Status$', function ($rootScope) {
             query.include("source");
             query.limit(that.PrivateStatus.unreadCount);
             query.find().done(function (statuses) {
-                that.PrivateStatus.statusList = statuses;
+                that.PrivateStatus.statusList.length = 0;
+                for (var i = 0; i < statuses.length; i++) {
+                    var one = statuses[i];
+                    one.attributes = one.data;
+                    that.PrivateStatus.statusList.push(one);
+                }
                 that.PrivateStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -92,7 +107,12 @@ APP.service('Status$', function ($rootScope) {
             query.include("source");
             query.limit(that.ReviewUsedBookStatus.unreadCount);
             query.find().done(function (statuses) {
-                that.ReviewUsedBookStatus.statusList = statuses;
+                that.ReviewUsedBookStatus.statusList.length = 0;
+                for (var i = 0; i < statuses.length; i++) {
+                    var one = statuses[i];
+                    one.attributes = one.data;
+                    that.ReviewUsedBookStatus.statusList.push(one);
+                }
                 that.ReviewUsedBookStatus.unreadCount = 0;
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');

@@ -21,6 +21,7 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams, $ionicMod
             //加载电商联盟信息
             BusinessSite$.getBusinessInfoByISBN(json.isbn13).done(function (infos) {
                 $scope.businessInfos = infos;
+                $scope.$apply();
             });
         } else {
             alert('没有找到图书信息,再去搜搜看~');

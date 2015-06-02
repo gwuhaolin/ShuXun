@@ -23,7 +23,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_searchList', {
                 /**
-                 * 参数:keyword 要搜索的关键字
+                 * @param:keyword 要搜索的关键字
                  */
                 url: '/book/searchList/:keyword',
                 views: {
@@ -33,9 +33,13 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_bookList', {
                 /**
-                 * 参数:cmd 当前模式 =tag时显示一类书 =need 显示用户需要的书
-                 * 参数:title 当前View要显示的标题
-                 * 参数:tag 当cmd=tag 时用的表示显示哪一类型的书
+                 * @param:cmd 当前模式 =tag时显示一类书 =need 
+                 * 当cmd=tag 时用的表示显示哪一类型的书
+                 * 当cmd=need 显示大家需要的书
+                 * 当cmd=major 显示一个专业的相关书
+                 * 当cmd=new 显示最新的书
+                 * @param:title 当前View要显示的标题
+                 * @param:tag 当cmd=tag 时用的表示显示哪一类型的书
                  */
                 url: '/book/bookList?cmd&title&tag',
                 views: {
@@ -45,8 +49,8 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_usedBookList', {
                 /**
-                 * 参数:cmd 当前模式 =near时显示你附近的二手书 =isbn时显示所有对应ISBN的二手书
-                 * 参数:isbn13 当cmd=isbn时使用
+                 * @param:cmd 当前模式 =near时显示你附近的二手书 =isbn时显示所有对应ISBN的二手书
+                 * @param:isbn13 当cmd=isbn时使用
                  */
                 url: '/book/usedBookList?cmd&isbn13',
                 views: {
@@ -56,7 +60,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_oneBook', {
                 /**
-                 * 参数:isbn13 一本书的isbn13号码
+                 * @param:isbn13 一本书的isbn13号码
                  */
                 url: '/book/oneBook/:isbn13',
                 views: {
@@ -66,7 +70,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_oneUsedBook', {
                 /**
-                 * 参数:usedBookAvosObjectId 二手书的AVOS ID
+                 * @param:usedBookAvosObjectId 二手书的AVOS ID
                  */
                 url: '/book/oneUsedBook/:usedBookAvosObjectId',
                 views: {
@@ -76,7 +80,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_oneNeedBook', {
                 /**
-                 * 参数:usedBookAvosObjectId 二手书的AVOS ID
+                 * @param:usedBookAvosObjectId 二手书的AVOS ID
                  */
                 url: '/book/oneNeedBook/:usedBookAvosObjectId',
                 views: {
@@ -86,8 +90,8 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_bookReview', {
                 /**
-                 * 参数:doubanBookId 豆瓣图书id
-                 * 参数:图书的名称
+                 * @param:doubanBookId 豆瓣图书id
+                 * @param:图书的名称
                  */
                 url: '/book/bookReview?doubanBookId&bookTitle',
                 views: {
@@ -99,7 +103,7 @@ var APP = angular.module('APP', ['ionic'], null)
             //tab-person
             .state('tab.person_editOneUsedBook', {
                 /**
-                 * 参数:usedBookId 要编辑的二手书的AVOS usedBookId
+                 * @param:usedBookId 要编辑的二手书的AVOS usedBookId
                  */
                 url: '/person/editOneUsedBook/:usedBookId',
                 views: {
@@ -109,7 +113,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.person_uploadOneUsedBook', {
                 /**
-                 * 参数:isbn13 要上传的二手书的isbn13号码
+                 * @param:isbn13 要上传的二手书的isbn13号码
                  */
                 url: '/person/uploadOneUsedBook/:isbn13',
                 views: {
@@ -119,7 +123,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.person_uploadOneNeedBook', {
                 /**
-                 * 参数:isbn13 要上传的二手书的isbn13号码
+                 * @param:isbn13 要上传的二手书的isbn13号码
                  */
                 url: '/person/uploadOneNeedBook/:isbn13',
                 views: {
@@ -143,7 +147,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.person_statusList', {
                 /**
-                 * 参数:cmd 当前模式 =newUsedBook时显上传的二手书 =newNeedBook 显示发布的求书
+                 * @param:cmd 当前模式 =newUsedBook时显上传的二手书 =newNeedBook 显示发布的求书
                  */
                 url: '/person/statusList?cmd',
                 views: {
@@ -167,10 +171,10 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.person_sendMsgToUser', {
                 /**
-                 * 参数:receiverObjectId 接受者的微信openID
-                 * 参数:usedBookObjectId 当前太难的二手书的AVOS ID
-                 * 参数:role 消息发送者扮演的身份是 buy | sell
-                 * 参数:inboxType 是否为发私信
+                 * @param:receiverObjectId 接受者的微信openID
+                 * @param:usedBookObjectId 当前太难的二手书的AVOS ID
+                 * @param:role 消息发送者扮演的身份是 buy | sell
+                 * @param:inboxType 是否为发私信
                  */
                 url: '/person/sendMsgToUser?receiverObjectId&usedBookObjectId&role&inboxType',
                 views: {
@@ -189,8 +193,8 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.signUp', {
                 /**
-                 * 参数:code 用于去微信获取用户消息的凭证
-                 * 参数:state 验证完身份后要去的状态
+                 * @param:code 用于去微信获取用户消息的凭证
+                 * @param:state 验证完身份后要去的状态
                  */
                 url: '/signUp?code&state',
                 views: {
@@ -200,8 +204,8 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.userList', {
                 /**
-                 * 参数:cmd 当前模式 =near时显示你附近的用户
-                 * 参数:title 当前View要显示的标题
+                 * @param:cmd 当前模式 =near时显示你附近的用户
+                 * @param:title 当前View要显示的标题
                  */
                 url: '/userList?cmd&title',
                 views: {
@@ -211,7 +215,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.userHome', {
                 /**
-                 * 参数:ownerId 主人的AVOS ID
+                 * @param:ownerId 主人的AVOS ID
                  */
                 url: '/userHome/:ownerId',
                 views: {

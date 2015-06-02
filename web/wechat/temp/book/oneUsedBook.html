@@ -24,7 +24,7 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">旧书主人信息
                 <a class="button button-clear button-balanced" style="top: 0"
-                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
+                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
                 </a>
             </ion-item>
             <user-info user="usedBook.attributes.owner" used-book-object-id="usedBook.id"></user-info>
@@ -33,7 +33,7 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">大家都说
                 <a class="button button-clear button-balanced" style="top: 0"
-                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">发表评论
+                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">发表评论
                 </a>
             </ion-item>
             <ion-item ng-if="statusList.length==0">还没有同学评论,快来抢沙发~</ion-item>

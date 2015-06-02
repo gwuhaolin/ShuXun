@@ -5,6 +5,7 @@
 "use strict";
 var express = require('express');
 var hbs = require('hbs');
+var AV = require('leanengine');
 var WechatMsg = require('./wechat/wechatMsg.js');
 var cloud = require('./cloud/cloud.js');
 var desktopRouter = express.Router();
@@ -29,7 +30,18 @@ desktopRouter.use('/person', personRouter);
 //配置静态资源
 app.use(express.static('./public'));
 
-//配置微信
-app.use('/wechat/msg', WechatMsg);//微信消息服务
+//配置微信消息服务
+app.use('/wechatMsg', WechatMsg);
+
+////404处理
+//app.use(function (req, res) {
+//    res.status(400);
+//    res.render('tool/error.html');
+//});
+////错误处理
+//app.use(function (err, req, res) {
+//    res.status(500);
+//    res.render('tool/error.html');
+//});
 
 module.exports = app;

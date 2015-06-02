@@ -56,8 +56,8 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
     } else {//使用IP地址定位
         var ip = req.remoteAddress;
         LBS.getLocationByIP(ip).done(function (location) {
-            latitude = parseFloat(location.lat);
-            longitude = parseFloat(location.lng);
+            latitude = parseFloat(location.latitude);
+            longitude = parseFloat(location.longitude);
             updateLocation();
         }).fail(function (err) {
             res.error(err);

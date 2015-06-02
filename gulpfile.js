@@ -29,8 +29,11 @@ function CDN(cdn) {
 
 /////////////////////////////////////// image ////////////////////////////////////////
 gulp.task('image', function () {
-    return gulp.src('web/img/*.*')
+    gulp.src('web/img/*.*')
         .pipe(gulp.dest('public/img'));
+    //复制favicon.ico到根目录
+    gulp.src('web/img/favicon.ico')
+        .pipe(gulp.dest('public/'));
 });
 
 /////////////////////////////////////// wechat ////////////////////////////////////////

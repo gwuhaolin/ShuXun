@@ -12,7 +12,8 @@ exports.Config = {
     EncodingAESKey: 'qiYrBOvI9Z6mhRUZ1LrztiHquQg9NAgQ4arSkgd1aH3',
     APIClient: require('wechat-api'),
     OAuthClient: require('wechat-oauth'),
-    JsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode']
+    JsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode'],
+    ProblemKeyword: ['问题', '打不开', '查不到', '空白', '闪退', '不能', '无法', '扫码', 'bug', '联系', '合作', '乡村图书馆']
 };
 exports.APIClient = new exports.Config.APIClient(exports.Config.AppID, exports.Config.Secret);
 exports.OAuthClient = new exports.Config.OAuthClient(exports.Config.AppID, exports.Config.Secret);

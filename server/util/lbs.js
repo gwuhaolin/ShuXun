@@ -30,8 +30,8 @@ exports.updateUserLocation = function (avosUser, latitude, longitude) {
  * @param ip ip地址
  * 返回经纬度
  *              {
-                    lng: point.x,
-                    lat: point.y
+                    latitude: point.x,
+                    longitude: point.y
                 }
  */
 exports.getLocationByIP = function (ip) {
@@ -51,8 +51,8 @@ exports.getLocationByIP = function (ip) {
                     if (json.status == 0) {
                         var point = json['content']['point'];
                         rePromise.resolve({
-                            lng: point.x,
-                            lat: point.y
+                            latitude: point.x,
+                            longitude: point.y
                         });
                     } else {
                         rePromise.reject(json);

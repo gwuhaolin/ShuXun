@@ -4,6 +4,7 @@
  */
 "use strict";
 var AV = require('leanengine');
+var Model = require('../../web/js/Model.js');
 var url = require('url');
 var SuperAgent = require('superagent');
 var Cheerio = require('cheerio');
@@ -48,14 +49,14 @@ exports.spiderAndSaveLatestBooks = function () {
     function saveOneLatestBookById(doubanBookId, delay) {
         delay = delay ? delay : 0;
         var rePromise = new AV.Promise(null);
-        var query = BookInfo.AVOS.makeQuery();
+        var query = new AV.Query(Model.BookInfo);
         query.equalTo('doubanId', doubanBookId);
         query.count().done(function (number) {
                 if (number == 0) {//还没有这本书
                     setTimeout(function () {
                         SuperAgent.get('https://api.douban.com/v2/book/' + doubanBookId)
                             .query({
-                                fields: BookInfo.AVOS.AttrName.toString(),
+                                fields: BookInfo.BookInfoAttrName.toString(),
                                 apikey: DoubanAPIKey
                             })
                             .end(function (err, res) {
@@ -63,7 +64,7 @@ exports.spiderAndSaveLatestBooks = function () {
                                     rePromise.reject(err);
                                 } else {
                                     if (res.ok) {
-                                        query = BookInfo.AVOS.makeQuery();
+                                        query = new AV.Query(Model.BookInfo);
                                         query.equalTo('isbn13', res.body.isbn13);
                                         query.first().done(function (avosBook) {
                                             if (avosBook) {//已经有这本书了
@@ -71,7 +72,7 @@ exports.spiderAndSaveLatestBooks = function () {
                                                 delete  res.body.id;
                                                 avosBook.save(res.body);
                                             } else {
-                                                avosBook = BookInfo.AVOS.makeObject(res.body);
+                                                avosBook = Model.BookInfo.new(res.body);
                                                 avosBook.set('doubanId', doubanBookId);
                                                 avosBook.save().done(function () {
                                                     rePromise.resolve(avosBook);
@@ -249,7 +250,7 @@ exports.spiderBusinessInfo = function (isbn13) {
  */
 exports.getDoubanIdByISBN13 = function (isbn13) {
     var rePromise = new AV.Promise(null);
-    var query = BookInfo.AVOS.makeQuery();
+    var query = new AV.Query(Model.BookInfo);
     query.equalTo('isbn13', isbn13);
     query.select('doubanId');
     query.first().done(function (avosBookInfo) {

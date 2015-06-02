@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, User$) {
+APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$) {
     $scope.isLoading = false;
     $scope.WeChatJS$ = WeChatJS$;
     $scope.$on('$ionicView.afterEnter', function () {
