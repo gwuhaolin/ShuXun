@@ -2,8 +2,10 @@
  * Created by wuhaolin on 5/29/15.
  */
 var AV = require('leanengine');
+var _ = require('underscore');
 var assert = require('assert');
 var bookUtil = require('../server/book/bookUtil.js');
+var bookInfo = require('../server/book/bookInfo.js');
 
 /**
  * 合法的ISBN13并且已经出版过的书
@@ -28,6 +30,7 @@ exports.ISBN_Illegal_Not13 = ['97875121052', '9210036945', '973599', '9787539429
  * @param jsonBookInfo
  */
 exports.checkJsonBookInfoIsNice = function (jsonBookInfo) {
+    assert(_.keys(jsonBookInfo).length <= bookInfo.BookInfoAttrName.length, '不要有多余的属性,否则会在BookInfo里添加新字段');
     assert(bookUtil.isbn13IsLegal(jsonBookInfo.isbn13), 'isbn13必须合法');
     assert(jsonBookInfo.author.length > 0, '必须要有作者');
     assert(jsonBookInfo.price, '必须要有价格');

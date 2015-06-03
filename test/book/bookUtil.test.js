@@ -10,7 +10,7 @@ var Util = require('./../util.js');
 var bookUtil = require('../../server/book/bookUtil.js');
 
 
-describe('book/bookUtil.js', function () {
+describe('book/bookInfo.js', function () {
 
     describe('#checkCode13', function () {
         it('计算isbn13编码的最后一位校验位', function () {

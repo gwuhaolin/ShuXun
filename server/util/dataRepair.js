@@ -4,6 +4,12 @@
  */
 "use strict";
 var AV = require('leanengine');
+var AVConfig = require('../../config/global.json');
+var APP_ID = process.env['LC_APP_ID'] || AVConfig.applicationId;
+var APP_KEY = process.env['LC_APP_KEY'] || AVConfig.applicationKey;
+var MASTER_KEY = process.env['LC_APP_MASTER_KEY'] || AVConfig.masterKey;
+AV.initialize(APP_ID, APP_KEY, MASTER_KEY);
+AV.Cloud.useMasterKey();
 var Model = require('../../web/js/Model.js');
 var _ = require('underscore');
 var BookInfo = require('./../book/bookInfo.js');
@@ -105,4 +111,38 @@ exports.updateNoDoubanIdBookInfoFromDouban = function () {
         }
     });
 
+};
+
+/**
+ * 对于BookInfo表,有些记录有些属性还为空,需要重新去抓取完善属性,直到所有属性都被填满
+ */
+exports.updateBookInfoWhereTagsAndRatingIsNull = function () {
+    var query = new AV.Query(Model.BookInfo);
+    query.doesNotExist('tags');
+    query.doesNotExist('rating');
+    query.count().done(function (sumNum) {
+        for (var i = 0; i < sumNum; i += 100) {
+            query = new AV.Query(Model.BookInfo);
+            query.doesNotExist('tags');
+            query.doesNotExist('rating');
+            query.skip(i);
+            query.limit(100);
+            query.find().done(function (avosBookInfoList) {
+                _.each(avosBookInfoList, function (avosBookInfo, index) {
+                    setTimeout(function () {
+                        var isbn13 = avosBookInfo.get('isbn13');
+                        BookInfo.spiderBookByISBN(isbn13).done(function (jsonBookInfo) {
+                            BookInfo.updateAvosBookInfo(avosBookInfo, jsonBookInfo).done(function (avosBookInfo) {
+                                console.log(avosBookInfo);
+                            }).fail(function (err) {
+                                console.error(err);
+                            });
+                        }).fail(function (err) {
+                            console.error(err);
+                        });
+                    }, index * 1000 + sumNum);
+                })
+            })
+        }
+    })
 };

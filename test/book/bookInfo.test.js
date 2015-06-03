@@ -7,7 +7,7 @@ var assert = require('assert');
 var _ = require('underscore');
 var Model = require('../../web/js/Model.js');
 var Util = require('./../util.js');
-var bookUtil = require('../../server/book/bookInfo.js');
+var bookInfo = require('../../server/book/bookInfo.js');
 var isbn13s_ok = ['9787511721051', '9787210036944', '9787300093598'];
 var isbn13s_no = ['9787511721052', '9787210036945', '9787300093597'];
 
@@ -21,7 +21,7 @@ describe('book/bookInfo.js', function () {
 
         _.each(isbn13s_ok, function (isbn13) {
             it('必须要查询到这书' + isbn13 + '的信息', function (done) {
-                bookUtil.queryBookInfoByISBN(isbn13).done(function (avosBookInfo) {
+                bookInfo.queryBookInfoByISBN(isbn13).done(function (avosBookInfo) {
                     if (avosBookInfo) {
                         done();
                     } else {
@@ -35,7 +35,7 @@ describe('book/bookInfo.js', function () {
 
         _.each(isbn13s_no, function (isbn13) {
             it('不可能查到书' + isbn13 + '的信息', function (done) {
-                bookUtil.queryBookInfoByISBN(isbn13).done(function (avosBookInfo) {
+                bookInfo.queryBookInfoByISBN(isbn13).done(function (avosBookInfo) {
                     if (avosBookInfo) {
                         done('获得了不应该出现的信息' + isbn13);
                     } else {
@@ -54,7 +54,7 @@ describe('book/bookInfo.js', function () {
 
         _.each(isbn13s_ok, function (isbn13) {
             it(isbn13 + '这书的信息是有的', function (done) {
-                bookUtil.hasISBN13Book(isbn13).done(function (re) {
+                bookInfo.hasISBN13Book(isbn13).done(function (re) {
                     assert.deepEqual(re, {has: true, isbn13: isbn13});
                     done();
                 }).fail(function (err) {
@@ -66,7 +66,7 @@ describe('book/bookInfo.js', function () {
 
         _.each(isbn13s_no, function (isbn13) {
             it(isbn13 + '这书的信息是不可能有的', function (done) {
-                bookUtil.hasISBN13Book(isbn13).done(function (re) {
+                bookInfo.hasISBN13Book(isbn13).done(function (re) {
                     assert.deepEqual(re, {has: false, isbn13: isbn13});
                     done();
                 }).fail(function (err) {
@@ -83,7 +83,7 @@ describe('book/bookInfo.js', function () {
             this.timeout(100000);
             var attrNames = ['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price'];
             var limit = 1;
-            bookUtil.getLatestBooks(0, limit).done(function (bookInfos) {
+            bookInfo.getLatestBooks(0, limit).done(function (bookInfos) {
                 assert(bookInfos.length == limit, '获得指定数量的信息');
                 _.each(bookInfos, function (bookInfo) {
                     _.each(attrNames, function (key) {
@@ -105,7 +105,7 @@ describe('book/bookInfo.js', function () {
 
         it('获得用户附近的要卖的书', function (done) {
             var role = 'sell';
-            bookUtil.getNearUsedBook(start, limit, role, user).done(function (usedBooks) {
+            bookInfo.getNearUsedBook(start, limit, role, user).done(function (usedBooks) {
                 assert.equal(usedBooks.length, limit, '获得指定数量的书');
                 _.each(usedBooks, function (usedBook) {
                     assert(usedBook instanceof Model.UsedBook);
@@ -119,7 +119,7 @@ describe('book/bookInfo.js', function () {
 
         it('获得用户附近的求书', function (done) {
             var role = 'need';
-            bookUtil.getNearUsedBook(start, limit, role, user).done(function (usedBooks) {
+            bookInfo.getNearUsedBook(start, limit, role, user).done(function (usedBooks) {
                 assert.equal(usedBooks.length, limit, '获得指定数量的书');
                 _.each(usedBooks, function (usedBook) {
                     assert(usedBook instanceof Model.UsedBook);
@@ -131,5 +131,27 @@ describe('book/bookInfo.js', function () {
             })
         })
     });
+
+    describe('#fillUsedBookInfo', function () {
+
+        it('填充UsedBook对象的bookInfo信息', function (done) {
+            bookInfo.getNearUsedBook(0, 1, 'sell').done(function (usedBooks) {
+                _.each(usedBooks, function (one) {
+                    bookInfo.fillUsedBookInfo(one).done(function (usedBook) {
+                        var bookInfo = usedBook.get('info');
+                        assert(bookInfo, '填充后的usedBook必须要有info属性');
+                        assert.equal(usedBook.get('isbn13'), bookInfo.get('isbn13'), 'ISBN要相等');
+                        var query = bookInfo.relation('usedBooks').query();
+                        query.equalTo('objectId', usedBook.id).done(function (reUsedBook) {
+                            assert.deepEqual(reUsedBook.attributes, usedBook.attributes, '在bookInfo的usedBooks relation里要有对应的UsedBook');
+                            done();
+                        })
+                    }).fail(function (err) {
+                        done(err);
+                    })
+                })
+            })
+        })
+    })
 
 });

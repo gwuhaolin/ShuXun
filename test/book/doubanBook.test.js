@@ -57,7 +57,6 @@ describe('book/doubanBook.js', function () {
                         assert(one.name, 'name');
                         assert(one.price, 'price');
                         assert(one.logoUrl, 'logoUrl');
-                        //assert(one.logoUrl.indexOf('http') >= 0, '合法的URL');
                     });
                     done();
                 }).fail(function (err) {

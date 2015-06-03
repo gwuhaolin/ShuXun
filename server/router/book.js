@@ -3,27 +3,27 @@
  */
 var express = require('express');
 var AV = require('leanengine');
-var routerUtil = require('./routerUtil.js');
-var bookInfo = require('../book/bookInfo.js');
+var RouterUtil = require('./routerUtil.js');
+var BookInfo = require('../book/bookInfo.js');
 var router = express.Router();
 //可以通过req.AV.user获得当前用户的所有属性
-router.use(AV.Cloud.CookieSession({secret: 'iShuXun', maxAge: 3600 * 24 * 30, fetchUser: true}));
+router.use(AV.Cloud.CookieSession({secret: 'ishuxun', maxAge: 3600 * 24 * 30, fetchUser: true}));
 
 /**
  * 图书推荐
  */
 router.get('/recommend.html', function (req, res, next) {
-    var re = routerUtil.genDataWithDefaultMeta();
+    var re = RouterUtil.genDataWithDefaultMeta();
     var user = req.AV.user;
 
     AV.Promise.when(
-        bookInfo.getLatestBooks(0, 8),
-        bookInfo.getNearUsedBook(0, 8, 'sell', user),
-        bookInfo.getNearUsedBook(0, 8, 'need', user)
+        BookInfo.getLatestBooks(0, 8),
+        BookInfo.getNearUsedBook(0, 8, 'sell', user),
+        BookInfo.getNearUsedBook(0, 8, 'need', user)
     ).then(function (bookInfos, usedBooks, needBooks) {
-            re.latestBooks = routerUtil.avosArrayToJsonArray(bookInfos);
-            re.usedBooks = routerUtil.avosArrayToJsonArray(usedBooks);
-            re.needBooks = routerUtil.avosArrayToJsonArray(needBooks);
+            re.latestBooks = RouterUtil.avosArrayToJsonArray(bookInfos);
+            re.usedBooks = RouterUtil.avosArrayToJsonArray(usedBooks);
+            re.needBooks = RouterUtil.avosArrayToJsonArray(needBooks);
             res.render('book/recommend.html', re);
         }, function (err) {
             next(err);
@@ -43,6 +43,41 @@ router.get('/recommend.html', function (req, res, next) {
  */
 router.get('/bookList.html', function (req, res) {
     res.render('book/recommend.html');
+});
+
+/**
+ * 一本图书的信息
+ * @param:isbn13 图书的ISBN13
+ */
+router.get('/oneBook.html', function (req, res, next) {
+    var isbn13 = req.query.isbn13;
+    var re = RouterUtil.genDataWithDefaultMeta();
+    BookInfo.queryBookInfoByISBN(isbn13).done(function (bookInfo) {
+        if (bookInfo) {
+            render(bookInfo);
+        } else {
+            BookInfo.spiderBookInfo(isbn13).done(function (jsonBookInfo) {
+                BookInfo.saveBookInfo(jsonBookInfo).done(function (bookInfo) {
+                    render(bookInfo);
+                }).fail(function (err) {
+                    next(err);
+                })
+            }).fail(function (err) {
+                next(err);
+            });
+        }
+    }).fail(function (err) {
+        next(err);
+    });
+
+    function render(bookInfo) {
+        bookInfo.genBigImage();
+        if (bookInfo.attributes.rating) {
+            bookInfo.attributes.rating.average = Math.floor(bookInfo.attributes.rating.average);
+        }
+        re.bookInfo = bookInfo;
+        res.render('book/oneBook.html', re);
+    }
 });
 
 

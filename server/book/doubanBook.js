@@ -159,18 +159,21 @@ exports.spiderDoubanBookReview = function (doubanBookId, start) {
 };
 
 /**
- * 获得对应isbn的图书的信息
+ * 获得对应isbn的图书的所有字段的信息
  * @param isbn
  * @returns {AV.Promise} json格式图书信息
  */
 exports.spiderBookByISBN = function (isbn) {
     var rePromise = new AV.Promise(null);
     SuperAgent.get('https://api.douban.com/v2/book/isbn/' + isbn)
+        .query({
+            fields: BookInfo.BookInfoAttrName.toString() + ',id'
+        })
         .end(function (err, res) {
             if (err) {
                 rePromise.reject(err);
             } else {
-                res.body['doubanId'] = res.body.id;
+                res.body.doubanId = res.body.id;
                 delete  res.body.id;
                 rePromise.resolve(res.body);
             }
@@ -225,19 +228,12 @@ exports.spiderBusinessInfo = function (isbn13) {
         var re = 'http://ishuxun.cn/desktop/img/pathLogo.png';
         //TODO 收集logo
         if (name.indexOf('京东') >= 0) {
-            re = '';
         } else if (name.indexOf('亚马逊') >= 0) {
-            re = '';
         } else if (name.indexOf('当当') >= 0) {
-            re = '';
         } else if (name.indexOf('文轩') >= 0) {
-            re = '';
         } else if (name.indexOf('淘书') >= 0) {
-            re = '';
         } else if (name.indexOf('中国图书') >= 0) {
-            re = '';
         } else if (name.indexOf('China-pub') >= 0) {
-            re = '';
         }
         return re;
     }

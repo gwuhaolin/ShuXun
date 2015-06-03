@@ -9,7 +9,7 @@ var DangDangBook = require('./dangdangBook.js');
 var JDBook = require('./jdBook.js');
 var DoubanBook = require('./doubanBook.js');
 
-exports.BookInfoAttrName = ['doubanId', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro'];
+exports.BookInfoAttrName = ['doubanId', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro', 'tags', 'rating'];
 
 /**
  * 从BookInfo 表里查询图书信息
@@ -103,9 +103,11 @@ exports.updateAvosBookInfo = function (avosBookInfo, jsonBookInfo) {
 
 /**
  * 填充UsedBook对象的bookInfo信息
+ * 把usedBook.info属性设置为抓取到的BookInfo
+ * 在对应的BookInfo.usedBooks属性里添加usedBook
  * 如果BookInfo表里已经有对应ISBN的图书信息就直接对接,否则先去抓取,抓取到后再去保存,再对接
  * @param avosUsedBook 要填充的UsedBook对象
- * @returns {AV.Promise} 如果填充填充返回UsedBook对象,否则返回错误原因
+ * @returns {AV.Promise} 如果填充成功返回包含BookInfo属性的UsedBook对象,否则返回错误原因
  */
 exports.fillUsedBookInfo = function (avosUsedBook) {
     var rePromise = new AV.Promise(null);
@@ -127,18 +129,20 @@ exports.fillUsedBookInfo = function (avosUsedBook) {
     }).fail(function (err) {
         rePromise.reject(err);
     });
-    return rePromise;
 
     function setUsedBookInfo(avosBookInfo) {
         avosUsedBook.set('info', avosBookInfo);
-        avosUsedBook.save().done(function (avosUsedBook) {
+        var usedBookPromise = avosUsedBook.save();
+        avosBookInfo.relation('usedBooks').add(avosUsedBook);
+        var bookInfoPromise = avosBookInfo.save();
+        AV.Promise.when(usedBookPromise, bookInfoPromise).done(function () {
             rePromise.resolve(avosUsedBook);
         }).fail(function (err) {
             rePromise.reject(err);
-        });
-        avosBookInfo.relation('usedBooks').add(avosUsedBook);
-        avosBookInfo.save();
+        })
     }
+
+    return rePromise;
 };
 
 /**
@@ -161,7 +165,7 @@ exports.getLatestBooks = function (skip, limit) {
  * @param skip
  * @param limit
  * @param role 是附近的卖书=='sell' 还是求书=='need'
- * @param user 当前用户 用于获得用户的地理位置
+ * @param user? 当前用户 用于获得用户的地理位置
  * @returns {AV.Promise} query.find()
  */
 exports.getNearUsedBook = function (skip, limit, role, user) {
