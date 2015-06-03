@@ -144,20 +144,6 @@ APP.service('User$', function ($rootScope, Status$) {
     };
 
     /**
-     * 替换微信默认的头像的大小
-     * @param avatarUrl 头像的url
-     * @param size 替换后获得的大小 有0、46、64、96、132数值可选，0代表640*640正方形头像
-     * @returns {string} 替换后头像的url
-     */
-    this.changeWechatAvatarSize = function (avatarUrl, size) {
-        if (avatarUrl) {
-            return avatarUrl.substring(0, avatarUrl.length - 1) + size;
-        } else {
-            return null;
-        }
-    };
-
-    /**
      * 使用微信写在cookie里的unionId登入,
      * 登陆成功后回加载未读消息数量
      * @param unionId 微信ID

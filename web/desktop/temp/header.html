@@ -1,7 +1,7 @@
 <!-- 顶部条-->
 <header class="ui fixed green inverted menu" ng-controller="d_topBar">
     <!-- logo-->
-    <a class="item" href="bookRecommend.html">
+    <a class="item" ng-href="../book/recommend.html">
         <img src="../../img/pathLogo.png" class="ui mini image">
     </a>
 
@@ -20,13 +20,13 @@
         </a>
         <!-- 我-->
         <span class="ui dropdown item">
-            <img ng-src="{{me.avatarUrlWithSize(64)}}" class="ui avatar mini image" style="display: inline">
+            <img ng-src="{{me.avatarUrlWithSize(46)}}" class="ui avatar mini image" style="display: inline">
             {{me.attributes.nickName}}
             <i class="dropdown icon"></i>
 
             <span class="menu">
-                <a class="item">
-                    <i class="female icon"></i>退出
+                <a class="item" ng-click="logOut()">
+                    <i class="sign out icon"></i>退出
                 </a>
             </span>
         </span>
@@ -48,7 +48,8 @@
         <span class="ui action fluid input" id="topSearchInputCon" style="width: 300px">
             <input type="text" placeholder="搜索图书" ng-model="SearchBook$.keyword"
                    ng-change="SearchBook$.searchInputOnChange()">
-            <a class="ui inverted button" ng-click="SearchBook$.searchBtnOnClick()" href="searchList.html">搜索</a>
+            <a class="ui inverted button" ng-click="SearchBook$.searchBtnOnClick()"
+               ng-href="../book/searchList.html">搜索</a>
         </span>
         <!-- 搜索结果-->
         <span class="ui flowing fluid popup">
@@ -56,7 +57,7 @@
                 <span class="item" ng-repeat="bookInfo in SearchBook$.books">
                     <img class="ui avatar image" ng-src="{{bookInfo.attributes.image}}">
 
-                    <a class="content" href="oneBook.html">
+                    <a class="content" ng-href="../book/oneBook.html?isbn13={{bookInfo.attributes.isbn13}}">
                         <p class="header">{{bookInfo.attributes.title}}</p>
 
                         <p class="sub header">

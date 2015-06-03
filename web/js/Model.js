@@ -29,7 +29,23 @@ Model.User = AV.Object.extend('_User', {
 
 Model.Status = AV.Object.extend('_Status');
 
-Model.BookInfo = AV.Object.extend('BookInfo');
+Model.BookInfo = AV.Object.extend('BookInfo', {
+    initialize: function () {
+        this.on('change:image', this.genBigImage, this);
+        this.attributes.image && this.genBigImage();
+    },
+    /**
+     * 对于豆瓣图书信息的获得我的封面的更大图片的URL
+     * 会生成bigImage属性挂载在this.attributes.bigImage上,
+     * 如果不是豆瓣的就直接赋值为原来的
+     */
+    genBigImage: function () {
+        this.attributes.bigImage = this.get('image');
+        if (this.attributes.bigImage.indexOf('.douban.com/') > 0) {//是来自豆瓣的图片
+            this.attributes.bigImage = this.attributes.bigImage.replace('mpic', 'lpic');
+        }
+    }
+});
 
 Model.School = AV.Object.extend('School');
 

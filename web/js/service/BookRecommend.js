@@ -26,7 +26,6 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             return [];
         }
     };
-    this['BookTag'].load();
 
     /**
      * 分类浏览
@@ -245,5 +244,4 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             return that.NearUser._majorFilter;
         }
     };
-    this.NearUser.loadMore();
 });

@@ -11,6 +11,12 @@ APP.controller('d_topBar', function ($scope, SearchBook$, Status$) {
     $scope.unreadCountSum = function () {
         return Status$.NewUsedBookStatus.unreadCount + Status$.NewNeedBookStatus.unreadCount
             + Status$.PrivateStatus.unreadCount + Status$.ReviewUsedBookStatus.unreadCount;
+    };
+
+    $scope.logOut = function () {
+        AV.User.logOut();
+        eraseCookie('unionId');
+        window.location.reload();
     }
 
 });

@@ -1,10 +1,94 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html lang="zh-CN" ng-app="APP">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta charset="utf-8">
+    <title>{{meta.title}}</title>
+    <meta name="keywords" content="{{meta.keywords}}">
+    <meta name="description" content="{{meta.description}}">
+    <!-- build:Semantic-css -->
+    <link href="../../../bower_components/semantic-ui/dist/semantic.css" rel="stylesheet">
+    <!-- endbuild -->
 </head>
-<body>
+<body class="ui horizontally padded grid" style="padding-top: 75px">
+
+<ng-include src="'../temp/header.html'" d-include-replace></ng-include>
+
+<!-- 主内容区-->
+<main class="ui sixteen wide column">
+    <div class="ui grid" ng-controller="d_book_searchList">
+
+        <!-- 搜索框-->
+        <div class="sixteen wide center aligned column">
+            <div class="ui massive icon input">
+                <input type="text" placeholder="搜索图书" ng-model="SearchBook$.keyword"
+                       ng-change="SearchBook$.searchInputOnChange()">
+                <i class="search icon" ng-click="SearchBook$.searchBtnOnClick()"></i>
+            </div>
+        </div>
+
+        <div class="ui horizontal divider" ng-if="SearchBook$.books.length>0">
+            <a class="ui circular button">搜索结果</a>
+        </div>
+        <div class="ui equal height grid">
+            <!-- 图书列表-->
+            <div class="five column row">
+                <d-one-book class="column" ng-repeat="bookInfo in SearchBook$.books" book-info="bookInfo"></d-one-book>
+            </div>
+        </div>
+
+        <!-- 加载更多-->
+        <div class="sixteen wide column">
+            <div class="ui large centered inline text loader" id="loadMoreInfiniteScroll" ng-if="SearchBook$.hasMore()">
+                加载更多
+            </div>
+        </div>
+
+
+    </div>
+
+</main>
+
+<ng-include src="'../temp/footer.html'" d-include-replace></ng-include>
+
+<!-- build:jQuery-js -->
+<script src="../../../bower_components/jquery/dist/jquery.js"></script>
+<!-- endbuild -->
+<!-- build:Semantic-js -->
+<script src="../../../bower_components/semantic-ui/dist/semantic.js"></script>
+<!-- endbuild -->
+<!-- build:Angular-js -->
+<script src="../../../bower_components/angular/angular.js"></script>
+<!-- endbuild -->
+<!-- build:Avos-js -->
+<script src="../../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
+<!-- endbuild -->
+
+<!-- build:Main-js -->
+<script src="../../js/util.js"></script>
+<script src="../../js/Model.js"></script>
+<script src="../js/app.js"></script>
+<!--Service-->
+<script src="../../js/service/BookRecommend.js"></script>
+<script src="../../js/service/BusinessSite.js"></script>
+<script src="../../js/service/DoubanBook.js"></script>
+<script src="../../js/service/InfoService.js"></script>
+<script src="../../js/service/BookInfo.js"></script>
+<script src="../../js/service/SearchBook.js"></script>
+<script src="../../js/service/Status.js"></script>
+<script src="../../js/service/UsedBook.js"></script>
+<script src="../../js/service/User.js"></script>
+<script src="../../js/service/WeChatJS.js"></script>
+<!--Controller-->
+<script src="../js/controller/d_partial_NearUser.js"></script>
+<script src="../js/controller/d_partial_oneBookAsideInfo.js"></script>
+<script src="../js/controller/d_topBar.js"></script>
+<script src="../js/controller/d_book_searchList.js"></script>
+<!--Directive-->
+<script src="../js/directive/dUserInfo.js"></script>
+<script src="../js/directive/dIncludeReplace.js"></script>
+<script src="../js/directive/dOneBook.js"></script>
+<!-- endbuild -->
 
 </body>
 </html>

@@ -21,7 +21,7 @@
         <!-- 书名-->
         <div class="sixteen wide column">
             <h2 class="ui header">
-                梦中的欢快葬礼和十二个异乡故事
+                {{bookInfo.attributes.title}}
             </h2>
         </div>
 
@@ -30,7 +30,7 @@
 
             <!-- 封面照片-->
             <div class="column">
-                <img class="ui image" src="../../img/book.jpg">
+                <img class="ui image" src="{{bookInfo.attributes.bigImage}}">
             </div>
 
             <!-- 出版信息-->
@@ -40,43 +40,43 @@
                         <div class="content">
                             <h5 class="header">作者</h5>
 
-                            <div class="description">[哥伦比亚] 加西亚·马尔克斯</div>
+                            <div class="description">{{bookInfo.attributes.author.toString()}}</div>
                         </div>
                     </div>
                     <div class="item">
                         <h5 class="header">出版社</h5>
 
-                        <div class="description">南海出版公司</div>
+                        <div class="description">{{bookInfo.attributes.publisher}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">译者</h5>
 
-                        <div class="description">罗秀</div>
+                        <div class="description">{{bookInfo.attributes.translator}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">出版时间</h5>
 
-                        <div class="description">2015-5-1</div>
+                        <div class="description">{{bookInfo.attributes.pubdate}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">页数</h5>
 
-                        <div class="description">212</div>
+                        <div class="description">{{bookInfo.attributes.page}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">定价</h5>
 
-                        <div class="description">35.00</div>
+                        <div class="description">{{bookInfo.attributes.price}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">装帧</h5>
 
-                        <div class="description">精装</div>
+                        <div class="description">{{bookInfo.attributes.binding}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">ISBN</h5>
 
-                        <div class="description">9787544275552</div>
+                        <div class="description">{{bookInfo.attributes.isbn13}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">豆瓣书评</h5>
@@ -141,7 +141,7 @@
 
 <!-- 辅助内容区-->
 <aside class="ui four wide computer only column">
-    <ng-include src="'../temps/oneBookAsideInfo.html'" d-include-replace></ng-include>
+    <ng-include src="'../temp/oneBookAsideInfo.html'" d-include-replace></ng-include>
 </aside>
 
 <ng-include src="'../temp/footer.html'" d-include-replace></ng-include>

@@ -1,0 +1,55 @@
+<!-- 一本书的信息-->
+<div class="ui card hasPubInfoPopupBook">
+    <!-- 图书封面图片-->
+    <a class="image" ng-href="oneUsedBook.html?usedBookObjectId={{usedBook.id}}">
+        <img ng-src="{{usedBook.attributes.info.attributes.bigImage}}">
+    </a>
+
+    <div class="content">
+        <!-- 名称-->
+        <h1 class="header">{{usedBook.attributes.info.attributes.title}}</h1>
+        <!-- 出版消息-->
+        <div class="meta">
+            <i class="yen icon"></i><em>{{usedBook.attributes.price}}</em>
+            <em>{{usedBook.attributes.info.attributes.publisher}}/{{usedBook.attributes.info.attributes.pubdate}}</em>
+        </div>
+        <!-- 主人描述-->
+        <div class="description">
+            {{usedBook.attributes.des}}
+        </div>
+    </div>
+</div>
+
+<!-- 图书出版信息-->
+<div class="ui popup">
+    <div class="ui list">
+        <div class="item">
+            <div class="header">作者</div>
+            {{usedBook.attributes.info.attributes.author.toString()}}
+        </div>
+        <div class="item">
+            <div class="header">出版社</div>
+            {{usedBook.attributes.info.attributes.publisher}}
+        </div>
+        <div class="item">
+            <div class="header">出版日期</div>
+            {{usedBook.attributes.info.attributes.pubdate}}
+        </div>
+        <div class="item">
+            <div class="header">页数</div>
+            {{usedBook.attributes.info.attributes.page}}
+        </div>
+        <div class="item">
+            <div class="header">定价</div>
+            {{usedBook.attributes.info.attributes.price}}
+        </div>
+        <div class="item">
+            <div class="header">装帧</div>
+            {{usedBook.attributes.info.attributes.binding}}
+        </div>
+        <div class="item">
+            <div class="header">ISBN</div>
+            {{usedBook.attributes.info.attributes.isbn13}}
+        </div>
+    </div>
+</div>

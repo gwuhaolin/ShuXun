@@ -51,8 +51,8 @@ exports.getLocationByIP = function (ip) {
                     if (json.status == 0) {
                         var point = json['content']['point'];
                         rePromise.resolve({
-                            latitude: point.x,
-                            longitude: point.y
+                            latitude: point.y,
+                            longitude: point.x
                         });
                     } else {
                         rePromise.reject(json);

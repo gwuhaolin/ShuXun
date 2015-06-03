@@ -42,7 +42,7 @@ router.get('/recommend.html', function (req, res, next) {
  * @param:tag 当cmd=tag 时用的表示显示哪一类型的书
  */
 router.get('/bookList.html', function (req, res) {
-
+    res.render('book/recommend.html');
 });
 
 

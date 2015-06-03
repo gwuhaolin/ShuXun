@@ -16,7 +16,7 @@ var app = express();
 app.use(cloud);//加载定义的云代码
 
 //配置HBS
-app.set('views', '../public/desktop');
+app.set('views', './public/desktop');
 app.set('view engine', 'html');
 app.engine('html', require('hbs').__express);
 //注册hbs片段

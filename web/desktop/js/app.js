@@ -4,6 +4,9 @@
  */
 
 var APP = angular.module('APP', [], null);
+APP.run(function (User$) {
+    User$.loginWithUnionId(readCookie('unionId'));
+});
 
 /**
  * Semantic-UI配置
@@ -30,5 +33,15 @@ function configSemantic() {
     $('#menu').sidebar('setting', 'transition', 'overlay')
         .sidebar('setting', 'dimPage', false)
         .sidebar('toggle');
+    //加载更多
+    $('#loadMoreInfiniteScroll').visibility({
+        once: false,
+        observeChanges: true,
+        onBottomVisible: function () {
+            var injector = angular.element(document).injector();
+            var SearchBook$ = injector.get('SearchBook$');
+            SearchBook$.loadMore();
+        }
+    });
 }
-configSemantic();
+setInterval(configSemantic, 1000);

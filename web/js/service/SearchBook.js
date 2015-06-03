@@ -81,7 +81,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
      */
     this.loadFromBookInfo = function () {
         BookInfo$.searchBook(that.keyword).done(function (bookInfos) {
-            that.books.pushArray(bookInfos);
+            that.books.unshiftArray(bookInfos);
             $rootScope.$apply();
             $rootScope.$broadcast('scroll.infiniteScrollComplete');
         })

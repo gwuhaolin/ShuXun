@@ -3,8 +3,9 @@
  * 显示用户消息
  */
 "use strict";
-APP.directive('dUserInfo', function () {
+APP.directive('dUserInfo', function (User$) {
     function link($scope) {
+        $scope.User$ = User$;
         //加载它的二手书的数量
         function loadHeUsedBookNumber() {
             if ($scope.user) {
@@ -40,7 +41,7 @@ APP.directive('dUserInfo', function () {
                 var query = AV.User.current().followeeQuery();
                 query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.user.id));
                 query.count().done(function (number) {
-                    $scope.user.isMyFollowee = (number == 1);
+                    $scope.isMyFollowee = (number == 1);
                     $scope.$apply();
                 })
             }
