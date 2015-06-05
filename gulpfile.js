@@ -94,7 +94,7 @@ gulp.task('desktop_js', function () {
     return es.concat(
         gulp.src(
             //把模板变成js
-            ['web/desktop/temp/*.html'])
+            ['web/desktop/temp/*.html', 'web/desktop/hbsPartial/*.html'])
             .pipe(htmlmin({
                 collapseWhitespace: true,
                 removeComments: true,

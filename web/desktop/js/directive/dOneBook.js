@@ -9,6 +9,6 @@ APP.directive('dOneBook', function () {
         scope: {
             bookInfo: '='
         },
-        templateUrl: '../temp/oneBookTemplate.html'
+        templateUrl: '../hbsPartial/oneBook.html'
     }
 });

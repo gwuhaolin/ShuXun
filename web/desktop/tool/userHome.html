@@ -1,10 +1,121 @@
+<!--一个用户的主页-->
+<!--hbs:owner 主人信息AVOS User-->
+<!--hbs:usedBooks 主人的要卖的书-->
+<!--hbs:needBooks 主人的需要的书-->
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html lang="zh-CN" ng-app="APP">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta charset="utf-8">
+    <title>{{meta.title}}</title>
+    <meta name="keywords" content="{{meta.keywords}}">
+    <meta name="description" content="{{meta.description}}">
+    <!-- build:Semantic-css -->
+    <link href="../../../bower_components/semantic-ui/dist/semantic.css" rel="stylesheet">
+    <!-- endbuild -->
 </head>
-<body>
+<body class="ui horizontally padded grid" style="padding-top: 75px">
+
+<ng-include src="'../temp/header.html'" d-include-replace></ng-include>
+
+<!-- 主内容区-->
+<main class="ui sixteen wide column">
+    <div class="ui grid">
+
+        <!-- 主人信息-->
+        <div class="sixteen wide center aligned column">
+            <div class="ui big horizontal divided list">
+                <div class="item">
+                    <img class="ui avatar image" src="{{owner.attributes.avatarUrl}}">
+
+                    <div class="content">
+                        <a class="header">{{owner.attributes.nickName}}</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="content">
+                        <a class="header">{{owner.attributes.major}}</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="content">
+                        <a class="header">{{owner.attributes.school}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui horizontal divider">
+            <a class="ui circular button">主人正需要的书</a>
+        </div>
+        <div class="ui equal height grid">
+            <!-- 图书列表-->
+            <div class="five column row">
+                {{#each usedBooks}}
+                <div class="column">
+                    {{> oneUsedBook this }}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="ui horizontal divider">
+            <a class="ui circular button">主人要卖的书</a>
+        </div>
+        <div class="ui equal height grid">
+            <!-- 图书列表-->
+            <div class="five column row">
+                {{#each needBooks}}
+                <div class="column">
+                    {{> oneUsedBook this }}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<ng-include src="'../temp/footer.html'" d-include-replace></ng-include>
+
+<!-- build:jQuery-js -->
+<script src="../../../bower_components/jquery/dist/jquery.js"></script>
+<!-- endbuild -->
+<!-- build:Semantic-js -->
+<script src="../../../bower_components/semantic-ui/dist/semantic.js"></script>
+<!-- endbuild -->
+<!-- build:Angular-js -->
+<script src="../../../bower_components/angular/angular.js"></script>
+<!-- endbuild -->
+<!-- build:Avos-js -->
+<script src="../../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
+<!-- endbuild -->
+
+<!-- build:Main-js -->
+<script src="../../js/util.js"></script>
+<script src="../../js/Model.js"></script>
+<script src="../js/app.js"></script>
+<!--Service-->
+<script src="../../js/service/BookRecommend.js"></script>
+<script src="../../js/service/BusinessSite.js"></script>
+<script src="../../js/service/DoubanBook.js"></script>
+<script src="../../js/service/InfoService.js"></script>
+<script src="../../js/service/BookInfo.js"></script>
+<script src="../../js/service/SearchBook.js"></script>
+<script src="../../js/service/Status.js"></script>
+<script src="../../js/service/UsedBook.js"></script>
+<script src="../../js/service/User.js"></script>
+<script src="../../js/service/WeChatJS.js"></script>
+<!--Controller-->
+<script src="../js/controller/d_partial_NearUser.js"></script>
+<script src="../js/controller/d_topBar.js"></script>
+<script src="../js/controller/d_book_searchList.js"></script>
+<!--Directive-->
+<script src="../js/directive/dUserInfo.js"></script>
+<script src="../js/directive/dIncludeReplace.js"></script>
+<script src="../js/directive/dOneBook.js"></script>
+<!-- endbuild -->
 
 </body>
 </html>

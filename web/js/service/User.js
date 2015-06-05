@@ -163,4 +163,56 @@ APP.service('User$', function ($rootScope, Status$) {
         }
         return rePromise;
     };
+
+    /**
+     * 用户Web OAuth后
+     * 获取Openid
+     * @param code
+     * 返回 已经关注了用户的微信提供的所有信息
+     */
+    this.getOAuthUserInfo = function (code) {
+        var rePromise = new AV.Promise(null);
+        if (code) {
+            AV.Cloud.run('getWechatOAuthUserInfo', {
+                code: code
+            }, null).done(function (wechatInfo) {
+                var re = {
+                    openId: wechatInfo['openid'],
+                    unionId: wechatInfo['unionid'],
+                    nickName: wechatInfo['nickname'],
+                    sex: wechatInfo['sex'],
+                    avatarUrl: wechatInfo['headimgurl']
+                };
+                createCookie('unionId', re.unionId, 365);
+                rePromise.resolve(re);
+            }).fail(function (err) {
+                rePromise.reject(err);
+            });
+        } else {
+            rePromise.reject('不合法的code');
+        }
+        return rePromise;
+    };
+
+    /**
+     * 更新我的个人信息,会先登入后再更新调用时不要再登入了
+     * @param jsonUser json格式的个人信息
+     */
+    this.updateMyInfoWithJson = function (jsonUser) {
+        var rePromise = new AV.Promise(null);
+        var unionId = readCookie('unionId');
+        that.loginWithUnionId(unionId).done(function (me) {
+            for (var attrName in jsonUser) {
+                me.set(attrName, jsonUser[attrName]);
+            }
+            me.save().done(function () {
+                rePromise.resolve(me);
+            }).fail(function (err) {
+                rePromise.reject(err);
+            })
+        }).fail(function (err) {
+            rePromise.reject(err);
+        });
+        return rePromise;
+    }
 });

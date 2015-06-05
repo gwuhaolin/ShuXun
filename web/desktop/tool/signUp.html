@@ -1,10 +1,158 @@
+<!--一个用户的主页-->
+<!--hbs:owner 主人信息AVOS User-->
+<!--hbs:usedBooks 主人的要卖的书-->
+<!--hbs:needBooks 主人的需要的书-->
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html lang="zh-CN" ng-app="APP">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta charset="utf-8">
+    <title>{{meta.title}}</title>
+    <meta name="keywords" content="{{meta.keywords}}">
+    <meta name="description" content="{{meta.description}}">
+    <!-- build:Semantic-css -->
+    <link href="../../../bower_components/semantic-ui/dist/semantic.css" rel="stylesheet">
+    <!-- endbuild -->
 </head>
-<body>
+<body class="ui horizontally padded grid" style="padding-top: 75px">
+
+<ng-include src="'../temp/header.html'" d-include-replace></ng-include>
+
+<!-- 主内容区-->
+<main class="ui sixteen wide column" ng-controller="d_tool_signUp">
+    <div class="ui center aligned grid">
+
+        <!-- 主人信息-->
+        <div class="sixteen wide center aligned column">
+            <div class="ui center aligned icon header">
+                <img class="ui circular image" ng-src="{{userInfo.avatarUrl}}">
+                <em>{{userInfo.nickName}}</em>
+                <em>
+                    <i class="icon blue man" ng-if="userInfo.sex==1"></i>
+                    <i class="icon red woman" ng-if="userInfo.sex==2"></i>
+                </em>
+            </div>
+        </div>
+
+        <div class="twelve wide column">
+
+            <!-- Steps-->
+            <div class="ui fluid large steps">
+                <div ng-class="{active:step=='subscribe',step:true}">
+                    <i class="wechat icon"></i>
+
+                    <div class="content">
+                        <div class="title">微信关注</div>
+                        <div class="description">使用微信关注书循微信号</div>
+                    </div>
+                </div>
+                <div ng-class="{active:step=='info',step:true}">
+                    <i class="payment icon"></i>
+
+                    <div class="content">
+                        <div class="title">填写信息</div>
+                        <div class="description">这些信息有助于你找到书</div>
+                    </div>
+                </div>
+                <div ng-class="{active:step=='ok',step:true}">
+                    <i class="heart icon"></i>
+
+                    <div class="content">
+                        <div class="title">登入成功</div>
+                        <div class="description">现在开始你的寻书之旅</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 关注书循-->
+            <div class="ui center aligned segment" ng-if="step=='subscribe'">
+                <button class="ui big green button" ng-click="step='info'">关注好了</button>
+                <img class="ui image" src="../../img/QRCode.png">
+                <h5>使用微信扫描二维码或加书循微信号<strong>ishuxun</strong></h5>
+            </div>
+
+            <div class="ui segment" ng-if="step=='info'">
+                <div class="ui form">
+                    <div class="three fields">
+                        <div class="field">
+                            <label>在读学校</label>
+                            <select class="ui search dropdown" ng-model="userInfo.school">
+                                <option ng-repeat="one in schools" value="{{one}}">{{one}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>所学专业</label>
+                            <select class="ui search dropdown" ng-model="userInfo.major">
+                                <option ng-repeat="one in majors" value="{{one}}">{{one}}</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>入学时间</label>
+                            <select class="ui selection dropdown" ng-model="userInfo.startSchoolYear">
+                                <option ng-repeat="one in startSchoolYearOptions" value="{{one}}">{{one}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button class="ui green big button" ng-click="submitOnClick()">加入书循</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui segment" ng-if="step=='ok'">
+                <a class="huge ui button">
+                    开始寻书
+                </a>
+                <a class="huge ui button">
+                    个人主页
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<ng-include src="'../temp/footer.html'" d-include-replace></ng-include>
+
+<!-- build:jQuery-js -->
+<script src="../../../bower_components/jquery/dist/jquery.js"></script>
+<!-- endbuild -->
+<!-- build:Semantic-js -->
+<script src="../../../bower_components/semantic-ui/dist/semantic.js"></script>
+<!-- endbuild -->
+<!-- build:Angular-js -->
+<script src="../../../bower_components/angular/angular.js"></script>
+<!-- endbuild -->
+<!-- build:Avos-js -->
+<script src="../../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
+<!-- endbuild -->
+
+<!-- build:Main-js -->
+<script src="../../js/util.js"></script>
+<script src="../../js/Model.js"></script>
+<script src="../js/app.js"></script>
+<!--Service-->
+<script src="../../js/service/BookRecommend.js"></script>
+<script src="../../js/service/BusinessSite.js"></script>
+<script src="../../js/service/DoubanBook.js"></script>
+<script src="../../js/service/InfoService.js"></script>
+<script src="../../js/service/BookInfo.js"></script>
+<script src="../../js/service/SearchBook.js"></script>
+<script src="../../js/service/Status.js"></script>
+<script src="../../js/service/UsedBook.js"></script>
+<script src="../../js/service/User.js"></script>
+<script src="../../js/service/WeChatJS.js"></script>
+<!--Controller-->
+<script src="../js/controller/d_partial_NearUser.js"></script>
+<script src="../js/controller/d_topBar.js"></script>
+<script src="../js/controller/d_book_searchList.js"></script>
+<script src="../js/controller/d_tool_signUp.js"></script>
+<!--Directive-->
+<script src="../js/directive/dUserInfo.js"></script>
+<script src="../js/directive/dIncludeReplace.js"></script>
+<script src="../js/directive/dOneBook.js"></script>
+<!-- endbuild -->
 
 </body>
 </html>

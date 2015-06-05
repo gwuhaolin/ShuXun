@@ -98,32 +98,6 @@ APP.service('WeChatJS$', function ($rootScope) {
     };
 
     /**
-     * 用户Web OAuth后
-     * 获取Openid
-     * @param code
-     * @param onSuccess
-     * @param onError
-     * 返回 已经关注了用户的微信提供的所有信息
-     */
-    this.getOAuthUserInfo = function (code, onSuccess, onError) {
-        AV.Cloud.run('getWechatOAuthUserInfo', {
-            code: code
-        }, null).done(function (wechatInfo) {
-            var re = {
-                openId: wechatInfo['openid'],
-                unionId: wechatInfo['unionid'],
-                nickName: wechatInfo['nickname'],
-                sex: wechatInfo['sex'],
-                avatarUrl: wechatInfo['headimgurl']
-            };
-            createCookie('unionId', re.unionId, 365);
-            onSuccess(re);
-        }).fail(function (err) {
-            onError && onError(err);
-        });
-    };
-
-    /**
      * 调用微信接口显示地图
      * @param latitude
      * @param longitude

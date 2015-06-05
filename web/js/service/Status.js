@@ -142,7 +142,7 @@ APP.service('Status$', function ($rootScope) {
      * @param usedBookObjectId 二手书的AVOS id
      * @param msg 评论内容
      * @param role 我当前扮演的角色是卖家(=sell)还是买家(=buy)
-     * @returns {AV.Promise}
+     * @returns {AV.Promise} AVOS Status
      */
     this.reviewUsedBook = function (receiverObjectId, usedBookObjectId, msg, role) {
         var rePromise = new AV.Promise(null);
@@ -159,6 +159,7 @@ APP.service('Status$', function ($rootScope) {
             status.set('role', role);
             status.set('usedBook', avosUsedBook);
             status.send().done(function (status) {
+                status.attributes = status.data;
                 rePromise.resolve(status);
             }).fail(function (err) {
                 rePromise.reject(err);

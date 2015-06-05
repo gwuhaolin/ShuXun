@@ -41,7 +41,7 @@
                 <img ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}"
                      ui-sref="tab.userHome({ownerId:status.attributes.source.id})">
 
-                <h2 style="white-space: pre-wrap">{{status.message}}</h2>
+                <h2 style="white-space: pre-wrap">{{status.attributes.message}}</h2>
 
                 <p>{{status.updatedAt | date:'mediumDate'}}</p>
                 <img style="width: 40px;height: 40px;position: absolute;top: 16px;right: 16px;border-radius: 50%;"

@@ -21,7 +21,7 @@
         <div ng-if="LatestBook.books.length>0">
             <ion-item class="item-divider item-button-right">新书速递
                 <button class="button button-small button-clear button-balanced" style="top: 0"
-                        ui-sref="tab.book_bookList({cmd:'new'})">更多
+                        ui-sref="tab.book_bookList({cmd:'latest'})">更多
                 </button>
             </ion-item>
             <douban-book-one-line books="LatestBook.books"></douban-book-one-line>

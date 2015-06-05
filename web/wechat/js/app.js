@@ -35,9 +35,8 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:cmd 当前模式 =tag时显示一类书 =need 
                  * 当cmd=tag 时用的表示显示哪一类型的书
-                 * 当cmd=need 显示大家需要的书
                  * 当cmd=major 显示一个专业的相关书
-                 * 当cmd=new 显示最新的书
+                 * 当cmd=latest 显示最新的书
                  * @param:title 当前View要显示的标题
                  * @param:tag 当cmd=tag 时用的表示显示哪一类型的书
                  */

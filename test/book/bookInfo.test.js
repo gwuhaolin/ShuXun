@@ -81,7 +81,7 @@ describe('book/bookInfo.js', function () {
 
         it('得到最新的图书列表', function (done) {
             this.timeout(100000);
-            var attrNames = ['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price'];
+            var attrNames = bookInfo.BookInfoAttrName;
             var limit = 1;
             bookInfo.getLatestBooks(0, limit).done(function (bookInfos) {
                 assert(bookInfos.length == limit, '获得指定数量的信息');

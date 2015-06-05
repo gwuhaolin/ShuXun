@@ -15,17 +15,13 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.books = BookRecommend$.TagBook.books;
         $scope.loadMore = BookRecommend$.TagBook.loadMore;
         $scope.hasMore = BookRecommend$.TagBook.hasMore;
-    } else if (cmd == 'need') {
-        $scope.books = BookRecommend$.NearNeedBook.needBooks;
-        $scope.loadMore = BookRecommend$.NearNeedBook.loadMore;
-        $scope.hasMore = BookRecommend$.NearNeedBook.hasMore;
     } else if (cmd == 'major') {
         $scope.books = BookRecommend$.MajorBook.books;
         $scope.loadMore = BookRecommend$.MajorBook.loadMore;
         $scope.title = BookRecommend$.MajorBook.major;
         $scope.hasMore = BookRecommend$.MajorBook.hasMore;
         BookRecommend$.MajorBook.loadFromBookInfo();
-    } else if (cmd == 'new') {
+    } else if (cmd == 'latest') {
         $scope.books = BookInfo$.LatestBook.books;
         $scope.loadMore = BookInfo$.LatestBook.loadMore;
         $scope.title = '新书速递';

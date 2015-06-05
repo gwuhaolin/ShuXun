@@ -3,6 +3,7 @@
  *
  */
 "use strict";
+var _ = require('underscore');
 var AV = require('leanengine');
 var Model = require('../../web/js/Model.js');
 var url = require('url');
@@ -167,7 +168,7 @@ exports.spiderBookByISBN = function (isbn) {
     var rePromise = new AV.Promise(null);
     SuperAgent.get('https://api.douban.com/v2/book/isbn/' + isbn)
         .query({
-            fields: BookInfo.BookInfoAttrName.toString() + ',id'
+            fields: BookInfo.BookInfoAttrName_douban
         })
         .end(function (err, res) {
             if (err) {
@@ -226,14 +227,20 @@ exports.spiderBusinessInfo = function (isbn13) {
      */
     function computeLogoUrlFromName(name) {
         var re = 'http://ishuxun.cn/desktop/img/pathLogo.png';
-        //TODO 收集logo
         if (name.indexOf('京东') >= 0) {
+            re = 'http://ishuxun.cn/desktop/img/business/jd.png';
         } else if (name.indexOf('亚马逊') >= 0) {
+            re = 'http://ishuxun.cn/desktop/img/business/jd.png';
         } else if (name.indexOf('当当') >= 0) {
+            re = 'http://ishuxun.cn/desktop/img/business/dangdang.png';
         } else if (name.indexOf('文轩') >= 0) {
+            re = 'http://ishuxun.cn/desktop/img/business/wenxuan.png';
         } else if (name.indexOf('淘书') >= 0) {
+            re = 'http://ishuxun.cn/desktop/img/business/taoshu.png';
         } else if (name.indexOf('中国图书') >= 0) {
+            re = 'http://ishuxun.cn/desktop/img/business/bookschina.png';
         } else if (name.indexOf('China-pub') >= 0) {
+            re = 'http://ishuxun.cn/desktop/img/business/chinapub.png';
         }
         return re;
     }
@@ -256,5 +263,42 @@ exports.getDoubanIdByISBN13 = function (isbn13) {
             rePromise.reject('找不到ISBN13对应的豆瓣ID');
         }
     });
+    return rePromise;
+};
+
+/**
+ * 调用豆瓣API搜索图书
+ * @param keywords 查询关键字
+ * @param tag 查询的tag
+ * keywords和tag必传其一,不需要其中一个参数时传入null
+ * @param start 取结果的offset 默认为0
+ * @param count 取结果的条数 默认为20，最大为100
+ * @param fields {Array} 选择需要的指定字段,如果为空就获取BookInfo表里的字段
+ * @returns {AV.Promise|t.Promise} {
+      "start": 0,
+      "count": 10,
+      "total": 30,
+      "books" : [Book, ]
+    }
+ */
+exports.searchBooks = function (keywords, tag, start, count, fields) {
+    if (!fields) {
+        fields = BookInfo.BookInfoAttrName_douban;
+    }
+    var rePromise = new AV.Promise(null);
+    SuperAgent.get('https://api.douban.com/v2/book/search')
+        .query({
+            q: keywords,
+            tag: tag,
+            start: start,
+            count: count,
+            fields: fields.toString()
+        }).end(function (err, res) {
+            if (err) {
+                rePromise.reject(err);
+            } else {
+                rePromise.resolve(res.body);
+            }
+        });
     return rePromise;
 };

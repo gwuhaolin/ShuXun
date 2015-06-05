@@ -20,7 +20,7 @@ APP.directive('dOneUsedBook', function () {
         scope: {
             usedBook: '='
         },
-        templateUrl: '../temp/oneUsedBookTemplate.html',
+        templateUrl: '../hbsPartial/oneUsedBook.html',
         link: link
     }
 });

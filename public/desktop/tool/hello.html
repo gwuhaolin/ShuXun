@@ -1,1 +1,7 @@
-<!DOCTYPE html><html><head lang="en"><meta charset="UTF-8"><title></title></head><body></body></html>
+<!DOCTYPE html><html lang="zh-CN" ng-app="APP"><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta charset="utf-8"><title>{{meta.title}}</title><meta name="keywords" content="{{meta.keywords}}"><meta name="description" content="{{meta.description}}"><link rel="stylesheet" href="http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.css"></head><body class="ui horizontally padded grid" style="padding-top: 75px"><ng-include src="'../temp/header.html'" d-include-replace></ng-include><main class="ui sixteen wide column"><div class="ui grid"><div class="ui horizontal divider"><a class="ui circular button">使用微信登入书循</a></div><div class="sixteen wide center aligned column" id="WechatLoginQRCodeCon"></div></div></main><ng-include src="'../temp/footer.html'" d-include-replace></ng-include><script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script><script src="http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.js"></script><script src="http://cdn.bootcss.com/angular.js/1.4.0-rc.1/angular.min.js"></script><script src="http://7xj22a.com1.z0.glb.clouddn.com/avos/av-mini.js"></script><script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script><script src="../main.js"></script><script>//生成微信二维码
+    new WxLogin({
+        id: 'WechatLoginQRCodeCon',
+        appid: WECHAT.AppID,
+        scope: 'snsapi_login',
+        redirect_uri: encodeURI('http://www.ishuxun.cn/desktop/tool/signUp.html')
+    });</script></body></html>

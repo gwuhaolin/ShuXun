@@ -1,48 +1,56 @@
 /**
  * Created by wuhaolin on 6/1/15.
  */
+var _ = require('underscore');
 var express = require('express');
 var AV = require('leanengine');
+var Model = require('../../web/js/Model.js');
 var RouterUtil = require('./routerUtil.js');
 var BookInfo = require('../book/bookInfo.js');
+var DoubanBook = require('../book/doubanBook.js');
 var router = express.Router();
 //可以通过req.AV.user获得当前用户的所有属性
 router.use(AV.Cloud.CookieSession({secret: 'ishuxun', maxAge: 3600 * 24 * 30, fetchUser: true}));
 
 /**
- * 图书推荐
- */
-router.get('/recommend.html', function (req, res, next) {
-    var re = RouterUtil.genDataWithDefaultMeta();
-    var user = req.AV.user;
-
-    AV.Promise.when(
-        BookInfo.getLatestBooks(0, 8),
-        BookInfo.getNearUsedBook(0, 8, 'sell', user),
-        BookInfo.getNearUsedBook(0, 8, 'need', user)
-    ).then(function (bookInfos, usedBooks, needBooks) {
-            re.latestBooks = RouterUtil.avosArrayToJsonArray(bookInfos);
-            re.usedBooks = RouterUtil.avosArrayToJsonArray(usedBooks);
-            re.needBooks = RouterUtil.avosArrayToJsonArray(needBooks);
-            res.render('book/recommend.html', re);
-        }, function (err) {
-            next(err);
-        });
-
-});
-
-/**
  * 图书列表
- * @param:cmd 当前模式 =tag时显示一类书 =need
+ * @param:skip 跳过前skip条,默认=0
+ * @param:cmd 当前模式
  * 当cmd=tag 时用的表示显示哪一类型的书
- * 当cmd=need 显示大家需要的书
- * 当cmd=major 显示一个专业的相关书
- * 当cmd=new 显示最新的书
- * @param:title 当前View要显示的标题
+ * 当cmd=latest 显示最新的书
  * @param:tag 当cmd=tag 时用的表示显示哪一类型的书
  */
-router.get('/bookList.html', function (req, res) {
-    res.render('book/recommend.html');
+router.get('/bookList.html', function (req, res, next) {
+    var skip = req.query.skip || 0;
+    var cmd = req.query.cmd;
+    var limit = 20;//默认加载20条
+    if (cmd == 'tag') {
+        var tag = req.query.tag;
+        DoubanBook.searchBooks(null, tag, skip, limit, null).done(function (doubanJson) {
+            var bookInfos = [];
+            _.each(doubanJson.books, function (oneJsonBook) {
+                bookInfos.push(Model.BookInfo.new(oneJsonBook));
+            });
+            render(bookInfos, tag, doubanJson.total);
+        }).fail(function (err) {
+            next(err);
+        });
+    } else if (cmd == 'latest') {
+        BookInfo.getLatestBooks(skip, limit).done(function (bookInfos) {
+            render(bookInfos, '新书速递', 100);
+        }).fail(function (err) {
+            next(err);
+        });
+    }
+
+    function render(bookInfos, title, total) {
+        var re = RouterUtil.genDataWithDefaultMeta();
+        re.bookInfos = bookInfos;
+        re.title = title;
+        re.skip = skip;
+        re.total = total;
+        res.render('book/bookList.html', re);
+    }
 });
 
 /**
@@ -51,7 +59,6 @@ router.get('/bookList.html', function (req, res) {
  */
 router.get('/oneBook.html', function (req, res, next) {
     var isbn13 = req.query.isbn13;
-    var re = RouterUtil.genDataWithDefaultMeta();
     BookInfo.queryBookInfoByISBN(isbn13).done(function (bookInfo) {
         if (bookInfo) {
             render(bookInfo);
@@ -71,6 +78,7 @@ router.get('/oneBook.html', function (req, res, next) {
     });
 
     function render(bookInfo) {
+        var re = RouterUtil.genDataWithDefaultMeta();
         bookInfo.genBigImage();
         if (bookInfo.attributes.rating) {
             bookInfo.attributes.rating.average = Math.floor(bookInfo.attributes.rating.average);
@@ -80,5 +88,26 @@ router.get('/oneBook.html', function (req, res, next) {
     }
 });
 
+/**
+ * 一本二手书的信息
+ * @param:usedBookObjectId 二手书的AVOS id
+ */
+router.get('/oneUsedBook.html', function (req, res, next) {
+    var usedBookId = req.query.usedBookObjectId;
+    var query = new AV.Query(Model.UsedBook);
+    query.include('info');
+    query.get(usedBookId).done(function (usedBook) {
+        render(usedBook);
+    }).fail(function (err) {
+        next(err);
+    });
+
+    function render(usedBook) {
+        var re = RouterUtil.genDataWithDefaultMeta();
+        re.usedBook = usedBook;
+        usedBook.get('info').genBigImage();
+        res.render('book/oneUsedBook.html', re);
+    }
+});
 
 module.exports = router;

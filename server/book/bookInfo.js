@@ -10,6 +10,8 @@ var JDBook = require('./jdBook.js');
 var DoubanBook = require('./doubanBook.js');
 
 exports.BookInfoAttrName = ['doubanId', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro', 'tags', 'rating'];
+exports.BookInfoAttrName_douban = ['id', 'isbn13', 'title', 'image', 'author', 'translator', 'publisher', 'pubdate', 'price', 'pages', 'summary', 'binding', 'catalog', 'author_intro', 'tags', 'rating'];
+
 
 /**
  * 从BookInfo 表里查询图书信息
@@ -146,14 +148,13 @@ exports.fillUsedBookInfo = function (avosUsedBook) {
 };
 
 /**
- * 更具图书pubdate获得最新出版的图书
+ * 根据图书pubdate获得最新出版的图书
  * @param skip
  * @param limit
  * @returns {AV.Promise} query.find()
  */
 exports.getLatestBooks = function (skip, limit) {
     var query = new AV.Query(Model.BookInfo);
-    query.select(['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price']);
     query.descending('pubdate');
     query.skip(skip);
     query.limit(limit);

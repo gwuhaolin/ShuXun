@@ -1,3 +1,8 @@
+<!--一本二手书的信息-->
+<!--@param:usedBookObjectId 二手书的AVOS id-->
+<!--@param:role 二手书的角色是sell || need-->
+<!--hbs:usedBook AvosUsedBook-->
+
 <!DOCTYPE html>
 <html lang="zh-CN" ng-app="APP">
 <head>
@@ -21,7 +26,7 @@
         <!-- 书名-->
         <div class="sixteen wide column">
             <h2 class="ui header">
-                梦中的欢快葬礼和十二个异乡故事
+                {{usedBook.attributes.title}}
             </h2>
         </div>
 
@@ -30,7 +35,7 @@
 
             <!-- 封面照片-->
             <div class="column">
-                <img class="ui image" src="../../img/book.jpg">
+                <img class="ui image" src="{{usedBook.attributes.info.attributes.bigImage}}">
             </div>
 
             <!-- 出版信息-->
@@ -40,51 +45,54 @@
                         <div class="content">
                             <h5 class="header">作者</h5>
 
-                            <div class="description">[哥伦比亚] 加西亚·马尔克斯</div>
+                            <div class="description">{{usedBook.attributes.info.attributes.author}}</div>
                         </div>
                     </div>
                     <div class="item">
                         <h5 class="header">出版社</h5>
 
-                        <div class="description">南海出版公司</div>
+                        <div class="description">{{usedBook.attributes.info.attributes.publisher}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">译者</h5>
 
-                        <div class="description">罗秀</div>
+                        <div class="description">{{usedBook.attributes.info.attributes.translator}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">出版时间</h5>
 
-                        <div class="description">2015-5-1</div>
+                        <div class="description">{{usedBook.attributes.info.attributes.pubdate}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">页数</h5>
 
-                        <div class="description">212</div>
+                        <div class="description">{{usedBook.attributes.info.attributes.page}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">定价</h5>
 
-                        <div class="description">35.00</div>
+                        <div class="description">{{usedBook.attributes.info.attributes.price}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">装帧</h5>
 
-                        <div class="description">精装</div>
+                        <div class="description">{{usedBook.attributes.info.attributes.binding}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">ISBN</h5>
 
-                        <div class="description">9787544275552</div>
+                        <div class="description">{{usedBook.attributes.info.attributes.isbn13}}</div>
                     </div>
                     <div class="item">
                         <h5 class="header">豆瓣书评</h5>
 
                         <div class="description">
-                            <a>8.7分 12人参与</a>
+                            <a><em>{{bookInfo.attributes.info.attributes.rating.average}}</em>分
+                                <em>{{bookInfo.attributes.info.attributes.rating.numRaters}}</em>人参与</a>
 
-                            <div class="ui star rating" data-rating="3" data-max-rating="5"></div>
+                            <div class="ui star rating"
+                                 data-rating="{{bookInfo.attributes.info.attributes.rating.average}}"
+                                 data-max-rating="10"></div>
 
                         </div>
                     </div>
@@ -101,7 +109,7 @@
                         <h5 class="header">要价</h5>
 
                         <p class="sub header">
-                            12<i class="icon yen"></i>
+                            {{usedBook.attributes.price}}<i class="icon yen"></i>
                         </p>
                     </div>
                 </div>
@@ -110,7 +118,7 @@
                         <h5 class="header">上传时间</h5>
 
                         <p class="sub header">
-                            2015-05-05
+                            {{usedBook.updatedAt}}
                         </p>
                     </div>
                 </div>
@@ -119,7 +127,7 @@
                         <h5 class="header">主人描述</h5>
 
                         <p class="sub header">
-                            很好很好很好很好
+                            {{usedBook.attributes.des}}
                         </p>
                     </div>
                 </div>
@@ -127,120 +135,15 @@
         </div>
 
         <!-- 评论列表-->
-        <div class="ui sixteen wide column">
-
-            <div class="ui comments">
-                <h3 class="ui dividing header">大家都说</h3>
-
-                <div class="comment">
-                    <a class="avatar">
-                        <img src="../../img/QRCode.png">
-                    </a>
-
-                    <div class="content">
-                        <a class="author">Matt</a>
-
-                        <div class="metadata">
-                            <span class="date">Today at 5:42PM</span>
-                        </div>
-                        <div class="text">
-                            How artistic!
-                        </div>
-                    </div>
-                </div>
-
-                <div class="comment">
-                    <a class="avatar">
-                        <img src="../../img/QRCode.png">
-                    </a>
-
-                    <div class="content">
-                        <a class="author">Matt</a>
-
-                        <div class="metadata">
-                            <span class="date">Today at 5:42PM</span>
-                        </div>
-                        <div class="text">
-                            How artistic!
-                        </div>
-                    </div>
-                </div>
-
-                <form class="ui reply form">
-                    <div class="field">
-                        <label>
-                            <textarea></textarea>
-                        </label>
-                    </div>
-                    <div class="ui blue labeled submit icon button">
-                        <i class="icon edit"></i>发表评论
-                    </div>
-                </form>
-            </div>
-        </div>
-
+        <d-used-book-comments class="ui sixteen wide column"
+                              used-book-object-id="'{{usedBook.id}}'"
+                              owner-object-id="'{{usedBook.attributes.owner.id}}'"></d-used-book-comments>
     </div>
 </main>
 
 <!-- 辅助内容区-->
 <aside class="ui four wide computer only column">
-    <div class="ui grid">
-        <div class="sixteen wide column">
-
-            <!-- 主人信息-->
-            <div class="ui list">
-                <div class="item">主人信息</div>
-                <div class="item">
-                    <img class="ui avatar image" src="../../img/QRCode.png">
-
-                    <div class="content">
-                        <h3 class="header">Tom</h3>
-                        <i class="icon blue man"></i>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="content">
-                        <h3 class="header">学校</h3>
-                        华中师范大学
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="content">
-                        <div class="header">专业</div>
-                        计算机科学与技术
-                    </div>
-                </div>
-            </div>
-
-            <div class="ui divider"></div>
-
-            <!-- 主人其它旧书-->
-            <div class="ui selection list">
-                <div class="item">主人其它要卖旧书</div>
-
-                <!-- 一本旧书-->
-                <a class="item">
-                    <img class="ui small image" src="../../img/QRCode.png">
-
-                    <div class="content">
-                        <h3 class="header">梦中的欢快</h3>
-                        很好很好很好很好呵
-                    </div>
-                </a>
-
-                <!-- 一本旧书-->
-                <a class="item">
-                    <img class="ui small image" src="../../img/QRCode.png">
-
-                    <div class="content">
-                        <h3 class="header">梦中的欢快</h3>
-                        很好很好很好很好呵
-                    </div>
-                </a>
-            </div>
-
-        </div>
-    </div>
+    <d-one-used-book-aside-info class="ui grid" used-book-object-id="'{{usedBook.id}}'"></d-one-used-book-aside-info>
 </aside>
 
 <ng-include src="'../temp/footer.html'" d-include-replace></ng-include>
@@ -279,6 +182,8 @@
 <!--Directive-->
 <script src="../js/directive/dUserInfo.js"></script>
 <script src="../js/directive/dIncludeReplace.js"></script>
+<script src="../js/directive/dUsedBookComments.js"></script>
+<script src="../js/directive/dOneUsedBookAsideInfo.js"></script>
 <!-- endbuild -->
 </body>
 </html>

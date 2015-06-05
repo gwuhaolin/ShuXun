@@ -7,6 +7,7 @@ var AV = require('leanengine');
 var Model = require('../../web/js/Model.js');
 var Wechat = require('wechat');
 var WechatAPI = require('./wechatAPI.js');
+var DoubanBook = require('../book/doubanBook.js');
 var LBS = require('../util/lbs.js');
 var SuperAgent = require('superagent');
 var config = {
@@ -87,45 +88,32 @@ function searchBookFromDouban(keyword, res) {
      */
     function searchBook(keyword) {
         var rePromise = new AV.Promise(null);
-        SuperAgent.get('https://api.douban.com/v2/book/search')
-            .query({
-                q: keyword,
-                count: 10,
-                fields: 'image,title,isbn13'
-            })
-            .end(function (err, res) {
-                if (err) {
-                    rePromise.reject(err);
-                } else {
-                    if (res.ok) {
-                        var re = [];
-                        var json = res.body;
-                        var total = json['total'];
-                        if (total > 0) {//找到了对于的书
-                            var books = json.books;
-                            for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
-                                var title = books[i].title;
-                                var bookUrl = 'http://www.ishuxun.cn/wechat/#/tab/book/oneBook/' + books[i].isbn13;
-                                re.push({
-                                    title: title,
-                                    image: books[i].image,
-                                    url: bookUrl
-                                });
-                            }
-                            if (total > 9) {//因为微信最多可以显示10本,当有的书大于9本时为用户提供显示更多
-                                re.push({
-                                    title: '还有剩下' + (total - json.count) + '本相关的书,点击查看',
-                                    image: 'http://www.ishuxun.cn/img/logo-R.png',
-                                    url: 'http://www.ishuxun.cn/wechat/#/tab/book/searchList/' + keyword
-                                });
-                            }
-                        }
-                        rePromise.resolve(re);
-                    } else {
-                        rePromise.reject(res.text);
-                    }
+        DoubanBook.searchBooks(keyword, null, 0, 10, null).done(function (json) {
+            var re = [];
+            var total = json['total'];
+            if (total > 0) {//找到了对于的书
+                var books = json.books;
+                for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
+                    var title = books[i].title;
+                    var bookUrl = 'http://www.ishuxun.cn/wechat/#/tab/book/oneBook/' + books[i].isbn13;
+                    re.push({
+                        title: title,
+                        image: books[i].image,
+                        url: bookUrl
+                    });
                 }
-            });
+                if (total > 9) {//因为微信最多可以显示10本,当有的书大于9本时为用户提供显示更多
+                    re.push({
+                        title: '还有剩下' + (total - json.count) + '本相关的书,点击查看',
+                        image: 'http://www.ishuxun.cn/img/logo-R.png',
+                        url: 'http://www.ishuxun.cn/wechat/#/tab/book/searchList/' + keyword
+                    });
+                }
+            }
+            rePromise.resolve(re);
+        }).fail(function (err) {
+            rePromise.reject(err);
+        });
         return rePromise;
     }
 
