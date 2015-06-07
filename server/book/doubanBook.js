@@ -226,21 +226,21 @@ exports.spiderBusinessInfo = function (isbn13) {
      * @returns {string} logo的URL
      */
     function computeLogoUrlFromName(name) {
-        var re = 'http://ishuxun.cn/desktop/img/pathLogo.png';
+        var re = '/img/pathLogo.png';
         if (name.indexOf('京东') >= 0) {
-            re = 'http://ishuxun.cn/desktop/img/business/jd.png';
+            re = '/img/logo-jd.png';
         } else if (name.indexOf('亚马逊') >= 0) {
-            re = 'http://ishuxun.cn/desktop/img/business/jd.png';
+            re = '/img/logo-jd.png';
         } else if (name.indexOf('当当') >= 0) {
-            re = 'http://ishuxun.cn/desktop/img/business/dangdang.png';
+            re = '/img/logo-dangdang.png';
         } else if (name.indexOf('文轩') >= 0) {
-            re = 'http://ishuxun.cn/desktop/img/business/wenxuan.png';
+            re = '/img/logo-wenxuan.png';
         } else if (name.indexOf('淘书') >= 0) {
-            re = 'http://ishuxun.cn/desktop/img/business/taoshu.png';
+            re = '/img/logo-taoshu.png';
         } else if (name.indexOf('中国图书') >= 0) {
-            re = 'http://ishuxun.cn/desktop/img/business/bookschina.png';
+            re = '/img/logo-bookschina.png';
         } else if (name.indexOf('China-pub') >= 0) {
-            re = 'http://ishuxun.cn/desktop/img/business/chinapub.png';
+            re = '/img/logo-chinapub.png';
         }
         return re;
     }

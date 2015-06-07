@@ -49,7 +49,8 @@ APP.service('UsedBook$', function ($rootScope) {
         query.equalTo('role', 'sell');
         query.descending('updatedAt');
         query.find().done(function (avosUsedBooks) {
-            that.myUsedBookList = avosUsedBooks;
+            that.myUsedBookList.length = 0;
+            that.myUsedBookList.pushArray(avosUsedBooks);
         }).always(function () {
             that.isLoading = false;
             $rootScope.$apply();
@@ -70,7 +71,8 @@ APP.service('UsedBook$', function ($rootScope) {
         query.equalTo('role', 'need');
         query.descending('updatedAt');
         query.find().done(function (avosUsedBooks) {
-            that.myNeedBookList = avosUsedBooks;
+            that.myNeedBookList.length = 0;
+            that.myNeedBookList.pushArray(avosUsedBooks);
         }).always(function () {
             that.isLoading = false;
             $rootScope.$apply();
@@ -78,6 +80,7 @@ APP.service('UsedBook$', function ($rootScope) {
     };
 
     /**
+     * TODO 报错
      * 删除一本没有卖出的二手书
      * @param avosUsedBook
      */

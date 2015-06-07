@@ -5,7 +5,9 @@
 
 APP.directive('dOneUsedBook', function () {
 
-    function link($scope) {
+    function link($scope, UsedBook$) {
+        $scope.AV = AV;
+        $scope.UsedBook$ = UsedBook$;
         //检测bookInfo属性是否fetch,如果没有就fetch,因为需要用到这个属性
         var bookInfo = $scope.usedBook.attributes.info;
         if ($scope.usedBook.attributes.info && !bookInfo.attributes.isbn13) {

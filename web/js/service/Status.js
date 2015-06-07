@@ -8,6 +8,15 @@ APP.service('Status$', function ($rootScope) {
     var that = this;
 
     /**
+     * 我的未读消息总数
+     * @returns {number}
+     */
+    this.unreadCountSum = function () {
+        return that.NewUsedBookStatus.unreadCount + that.NewNeedBookStatus.unreadCount
+            + that.PrivateStatus.unreadCount + that.ReviewUsedBookStatus.unreadCount;
+    };
+
+    /**
      * 加载我未读的消息的数量,并且显示在Tab上
      */
     this.loadUnreadStatusesCount = function () {

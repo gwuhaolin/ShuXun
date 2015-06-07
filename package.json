@@ -24,7 +24,7 @@
     "cheerio": "^0.19.0",
     "express": "^4.12.4",
     "hbs": "^3.0.1",
-    "leanengine": "^0.1.2",
+    "leanengine": "^0.1.4",
     "superagent": "^1.2.0",
     "superagent-charset": "^0.0.1",
     "underscore": "^1.8.3",

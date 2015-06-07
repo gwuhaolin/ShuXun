@@ -18,6 +18,12 @@
             {{usedBook.attributes.des}}
         </div>
     </div>
+    <!-- 如果是当前用户的书,就显示管理按钮-->
+    <div class="ui bottom attached tiny basic buttons"
+         ng-if="AV.User.current() && AV.User.current().id==usedBook.attributes.owner.id">
+        <button class="ui button" ng-click="UsedBook$.removeUsedBook(usedBook)">删除</button>
+        <button class="ui button">编辑</button>
+    </div>
 </div>
 
 <!-- 图书出版信息-->

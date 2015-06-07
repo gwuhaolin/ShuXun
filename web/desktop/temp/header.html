@@ -14,10 +14,28 @@
             <i class="mail icon"></i>发布求书
         </a>
         <!-- 消息-->
-        <a class="item" href="../person/statusList.html">
+        <span class="ui dropdown item" ng-if="Status$.unreadCountSum()>0">
             <i class="mail icon"></i>
-            <span class="ui red circular mini label" ng-if="unreadCountSum()>0">{{unreadCountSum()}}</span>
-        </a>
+            <span class="ui red circular mini label">{{Status$.unreadCountSum()}}</span>
+            <span class="menu">
+                <a class="item" ng-if="Status$.NewUsedBookStatus.unreadCount>0" ng-href="../person/statusList.html">
+                    你关注的同学新上传了旧书
+                    <span class="ui red circular mini label">{{Status$.NewUsedBookStatus.unreadCount}}</span>
+                </a>
+                <a class="item" ng-if="Status$.NewNeedBookStatus.unreadCount>0" ng-href="../person/statusList.html">
+                    你关注的同学新发布了求书
+                    <span class="ui red circular mini label">{{Status$.NewNeedBookStatus.unreadCount}}</span>
+                </a>
+                <a class="item" ng-if="Status$.PrivateStatus.unreadCount>0" ng-href="../person/statusList.html">
+                    有同学给你发私信
+                    <span class="ui red circular mini label">{{Status$.PrivateStatus.unreadCount}}</span>
+                </a>
+                <a class="item" ng-if="Status$.ReviewUsedBookStatus.unreadCount>0" ng-href="../person/statusList.html">
+                    有同学评价你的书
+                    <span class="ui red circular mini label">{{Status$.ReviewUsedBookStatus.unreadCount}}</span>
+                </a>
+            </span>
+        </span>
         <!-- 我-->
         <span class="ui dropdown item">
             <img ng-src="{{me.avatarUrlWithSize(46)}}" class="ui avatar mini image" style="display: inline">
