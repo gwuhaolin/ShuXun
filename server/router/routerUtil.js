@@ -6,13 +6,17 @@ var lbs = require('../util/lbs.js');
 
 /**
  * 生成一个自带默认meta属性的json
+ * @param seoString 当前页面的SEO关键字
  */
-exports.genDataWithDefaultMeta = function () {
+exports.genDataWithDefaultMeta = function (seoString) {
+    if (!seoString) {
+        seoString = '';
+    }
     return {
         meta: {
-            title: '书循网-最快捷的二手书交易平台',
-            keywords: '书循,书循网,微信,ishuxun,ishuxun.cn,二手书,二手教材,大学教材,二手书交易,旧书,课本,图书,网上书店,网上图书商城,新书,微信买书,微信交易平台',
-            description: 'ishuxun书循,一款包含所有书本的信息的大学生书本交易网,轻松买书,迅速比价,自由淘书。让图书交易更简洁。提供最全的新书、二手书各种书本信息'
+            title: seoString + '|书循网-最快捷的二手书交易平台',
+            keywords: seoString + '|书循,书循网,微信,ishuxun,ishuxun.cn,二手书,二手教材,大学教材,二手书交易,旧书,课本,图书,网上书店,网上图书商城,新书,微信买书,微信交易平台',
+            description: seoString + '|ishuxun书循,一款包含所有书本的信息的大学生书本交易网,轻松买书,迅速比价,自由淘书。让图书交易更简洁。提供最全的新书、二手书各种书本信息'
         }
     };
 };

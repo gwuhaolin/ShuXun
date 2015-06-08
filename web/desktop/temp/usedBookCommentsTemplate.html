@@ -28,9 +28,10 @@
                 <textarea ng-model="msg.text" placeholder="对主人说点什么~"></textarea>
             </label>
         </div>
-        <div class="ui blue labeled submit icon button" ng-disabled="AV.User.current()" ng-click="submitReview()">
+        <button class="ui blue labeled submit icon button" ng-disabled="!AV.User.current() || !msg.text"
+                ng-click="submitReview()">
             <i class="icon edit"></i>发表评论
-        </div>
+        </button>
         <div class="ui blue labeled icon button" ng-if="!AV.User.current()">
             <i class="icon user"></i>先登入
         </div>

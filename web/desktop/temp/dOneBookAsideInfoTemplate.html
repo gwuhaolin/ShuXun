@@ -32,7 +32,8 @@
         <a class="ui circular button">要卖对应旧书的同学</a>
     </div>
     <div class="ui selection list">
-        <div class="item" ng-repeat="one in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks">
+        <div class="item" ng-repeat="one in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
+             onclick="goWechat('使用书循微信端联系主人')">
             <img class="ui avatar image"
                  ng-src="{{one.attributes.owner.avatarUrlWithSize(64)}}">
 

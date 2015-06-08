@@ -59,7 +59,11 @@ router.get('/bookList.html', function (req, res, next) {
     }
 
     function render(bookInfos, title, total) {
-        var re = RouterUtil.genDataWithDefaultMeta();
+        var seoString = '';
+        _.each(bookInfos, function (bookInfo) {
+            seoString += bookInfo.attributes.title + bookInfo.attributes.author.toString();
+        });
+        var re = RouterUtil.genDataWithDefaultMeta(seoString);
         re.bookInfos = bookInfos;
         re.title = title;
         re.skip = skip;
@@ -93,7 +97,8 @@ router.get('/oneBook.html', function (req, res, next) {
     });
 
     function render(bookInfo) {
-        var re = RouterUtil.genDataWithDefaultMeta();
+        var seoString = bookInfo.attributes.title + bookInfo.attributes.author.toString();
+        var re = RouterUtil.genDataWithDefaultMeta(seoString);
         bookInfo.genBigImage();
         if (bookInfo.attributes.rating) {
             bookInfo.attributes.rating.average = Math.floor(bookInfo.attributes.rating.average);
@@ -118,7 +123,8 @@ router.get('/oneUsedBook.html', function (req, res, next) {
     });
 
     function render(usedBook) {
-        var re = RouterUtil.genDataWithDefaultMeta();
+        var seoString = usedBook.attributes.title + usedBook.attributes.author.toString() + usedBook.attributes.des;
+        var re = RouterUtil.genDataWithDefaultMeta(seoString);
         re.usedBook = usedBook;
         usedBook.get('info').genBigImage();
         res.render('book/oneUsedBook.html', re);
