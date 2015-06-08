@@ -13,7 +13,7 @@
                         ui-sref="tab.person_uploadOneUsedBook">上传旧书
                 </button>
             </ion-item>
-            <ion-item ng-repeat="usedBook in UsedBook$.myUsedBookList" class="item-thumbnail-left">
+            <ion-item collection-repeat="usedBook in UsedBook$.myUsedBookList" class="item-thumbnail-left">
                 <img ng-if="usedBook.attributes.image"
                      ng-src="{{usedBook.attributes.image}}"
                      ui-sref="tab.book_oneBook({isbn13:usedBook.attributes.isbn13})">
@@ -31,8 +31,6 @@
                 </button>
             </ion-item>
             <ion-item ng-if="UsedBook$.myUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>
-            <ion-item ui-sref="tab.person_uploadOneUsedBook" style="text-align: center">继续上传旧书
-            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>

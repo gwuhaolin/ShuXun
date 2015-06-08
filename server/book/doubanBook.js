@@ -55,38 +55,26 @@ exports.spiderAndSaveLatestBooks = function () {
         query.count().done(function (number) {
                 if (number == 0) {//还没有这本书
                     setTimeout(function () {
-                        SuperAgent.get('https://api.douban.com/v2/book/' + doubanBookId)
-                            .query({
-                                fields: BookInfo.BookInfoAttrName.toString(),
-                                apikey: DoubanAPIKey
-                            })
-                            .end(function (err, res) {
-                                if (err) {
-                                    rePromise.reject(err);
+                        exports.spiderBookByDoubanId(doubanBookId).done(function (jsonBook) {
+                            BookInfo.queryBookInfoByISBN(jsonBook.isbn13).done(function (bookInfo) {
+                                if (bookInfo) {
+                                    _.each(jsonBook, function (key) {
+                                        bookInfo.set(key, jsonBook[key]);
+                                    })
                                 } else {
-                                    if (res.ok) {
-                                        query = new AV.Query(Model.BookInfo);
-                                        query.equalTo('isbn13', res.body.isbn13);
-                                        query.first().done(function (avosBook) {
-                                            if (avosBook) {//已经有这本书了
-                                                res.body.doubanId = res.body.id;
-                                                delete  res.body.id;
-                                                avosBook.save(res.body);
-                                            } else {
-                                                avosBook = Model.BookInfo.new(res.body);
-                                                avosBook.set('doubanId', doubanBookId);
-                                                avosBook.save().done(function () {
-                                                    rePromise.resolve(avosBook);
-                                                }).fail(function (err) {
-                                                    rePromise.reject(err);
-                                                });
-                                            }
-                                        });
-                                    } else {
-                                        rePromise.reject(res.text);
-                                    }
+                                    bookInfo = new Model.BookInfo.new(jsonBook);
                                 }
+                                bookInfo.save().done(function () {
+                                    rePromise.resolve(bookInfo);
+                                }).fail(function (err) {
+                                    rePromise.reject(err);
+                                })
+                            }).fail(function (err) {
+                                rePromise.reject(err);
                             });
+                        }).fail(function (err) {
+                            rePromise.reject(err);
+                        });
                     }, delay);
                 } else {//这本书已经存在
                     rePromise.resolve('这本书已经存在');
@@ -162,13 +150,38 @@ exports.spiderDoubanBookReview = function (doubanBookId, start) {
 /**
  * 获得对应isbn的图书的所有字段的信息
  * @param isbn
- * @returns {AV.Promise} json格式图书信息
+ * @returns {AV.Promise} 返回兼容BookInfo表的json格式图书信息
  */
 exports.spiderBookByISBN = function (isbn) {
     var rePromise = new AV.Promise(null);
     SuperAgent.get('https://api.douban.com/v2/book/isbn/' + isbn)
         .query({
-            fields: BookInfo.BookInfoAttrName_douban
+            fields: BookInfo.BookInfoAttrName_douban.toString(),
+            client_id: DoubanAPIKey
+        })
+        .end(function (err, res) {
+            if (err) {
+                rePromise.reject(err);
+            } else {
+                res.body.doubanId = res.body.id;
+                delete  res.body.id;
+                rePromise.resolve(res.body);
+            }
+        });
+    return rePromise;
+};
+
+/**
+ * 获得对应doubanId的图书的所有字段的信息
+ * @param doubanId 图书的豆瓣id
+ * @returns {AV.Promise|t.Promise} 返回兼容BookInfo表的json格式图书信息
+ */
+exports.spiderBookByDoubanId = function (doubanId) {
+    var rePromise = new AV.Promise(null);
+    SuperAgent.get('https://api.douban.com/v2/book/' + doubanId)
+        .query({
+            fields: BookInfo.BookInfoAttrName_douban.toString(),
+            client_id: DoubanAPIKey
         })
         .end(function (err, res) {
             if (err) {
@@ -189,7 +202,7 @@ exports.spiderBookByISBN = function (isbn) {
  */
 exports.spiderBusinessInfo = function (isbn13) {
     var rePromise = new AV.Promise(null);
-    exports.getDoubanIdByISBN13(isbn13).done(function (doubanId) {
+    exports.spiderDoubanIdByISBN13(isbn13).done(function (doubanId) {
         SuperAgent
             .get('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks')
             .end(function (err, res) {
@@ -230,7 +243,7 @@ exports.spiderBusinessInfo = function (isbn13) {
         if (name.indexOf('京东') >= 0) {
             re = '/img/logo-jd.png';
         } else if (name.indexOf('亚马逊') >= 0) {
-            re = '/img/logo-jd.png';
+            re = '/img/logo-amazon.png';
         } else if (name.indexOf('当当') >= 0) {
             re = '/img/logo-dangdang.png';
         } else if (name.indexOf('文轩') >= 0) {
@@ -251,7 +264,7 @@ exports.spiderBusinessInfo = function (isbn13) {
  * @param isbn13
  * @returns {AV.Promise|t.Promise} 返回doubanId
  */
-exports.getDoubanIdByISBN13 = function (isbn13) {
+exports.spiderDoubanIdByISBN13 = function (isbn13) {
     var rePromise = new AV.Promise(null);
     var query = new AV.Query(Model.BookInfo);
     query.equalTo('isbn13', isbn13);
@@ -268,7 +281,7 @@ exports.getDoubanIdByISBN13 = function (isbn13) {
 
 /**
  * 调用豆瓣API搜索图书
- * @param keywords 查询关键字
+ * @param keyword 查询关键字
  * @param tag 查询的tag
  * keywords和tag必传其一,不需要其中一个参数时传入null
  * @param start 取结果的offset 默认为0
@@ -281,18 +294,19 @@ exports.getDoubanIdByISBN13 = function (isbn13) {
       "books" : [Book, ]
     }
  */
-exports.searchBooks = function (keywords, tag, start, count, fields) {
+exports.searchBooks = function (keyword, tag, start, count, fields) {
     if (!fields) {
         fields = BookInfo.BookInfoAttrName_douban;
     }
     var rePromise = new AV.Promise(null);
     SuperAgent.get('https://api.douban.com/v2/book/search')
         .query({
-            q: keywords,
+            q: keyword,
             tag: tag,
             start: start,
             count: count,
-            fields: fields.toString()
+            fields: fields.toString(),
+            client_id: DoubanAPIKey
         }).end(function (err, res) {
             if (err) {
                 rePromise.reject(err);

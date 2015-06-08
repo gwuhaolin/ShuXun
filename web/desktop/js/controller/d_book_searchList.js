@@ -4,4 +4,9 @@
  */
 APP.controller('d_book_searchList', function ($scope, SearchBook$) {
     $scope.SearchBook$ = SearchBook$;
+    var keyword = getQueryParameterByName('keyword');
+    if (keyword) {
+        SearchBook$.keyword = keyword;
+        SearchBook$.searchBtnOnClick();
+    }
 });

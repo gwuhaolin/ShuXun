@@ -67,7 +67,7 @@
             <input type="text" placeholder="搜索图书" ng-model="SearchBook$.keyword"
                    ng-change="SearchBook$.searchInputOnChange()">
             <a class="ui inverted button" ng-click="SearchBook$.searchBtnOnClick()"
-               ng-href="../book/searchList.html">搜索</a>
+               ng-href="../book/searchList.html?keyword={{SearchBook$.keyword}}">搜索</a>
         </span>
         <!-- 搜索结果-->
         <span class="ui flowing fluid popup">

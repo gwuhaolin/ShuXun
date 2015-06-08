@@ -84,4 +84,10 @@ APP.service('InfoService$', function ($rootScope) {
         }
     }
 
+    /**
+     * 对上传的书的常用描述语
+     * @type {string[]}
+     */
+    this.commonUsedBookDesWords = ['正版', '新书', '送笔记', '可议价', '不议价', '配光盘', '妹子白送'];
+
 });

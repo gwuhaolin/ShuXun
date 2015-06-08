@@ -5,6 +5,7 @@
 "use strict";
 var express = require('express');
 var hbs = require('hbs');
+require('./util/hbsHelper.js');
 var AV = require('leanengine');
 var WechatMsg = require('./wechat/wechatMsg.js');
 var cloud = require('./cloud/cloud.js');

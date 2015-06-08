@@ -16,7 +16,7 @@ var BookInfo = require('./../book/bookInfo.js');
 var DoubanBook = require('./../book/doubanBook.js');
 
 /**
- * 对应UsedBook表里的没有Info属性的区抓取图书信息填上该属性
+ * 对与UsedBook表里的没有Info属性的去抓取图书信息填上该属性
  */
 exports.fillUsedBookInfoWhereInfoIsNull = function () {
     var query = new AV.Query(Model.UsedBook);
@@ -33,7 +33,7 @@ exports.fillUsedBookInfoWhereInfoIsNull = function () {
                         BookInfo.fillUsedBookInfo(avosUsedBook).done(function (avosUsedBook) {
                             console.log(avosUsedBook);
                         }).fail(function (err) {
-                            console.log(err);
+                            console.error(err);
                         });
                     }, 1000 * index + sumNum);
                 });
@@ -43,7 +43,7 @@ exports.fillUsedBookInfoWhereInfoIsNull = function () {
 };
 
 /**
- * 对于BookInfo表里每一本书都去重新计算它的UsedBooks属性
+ * 对于BookInfo表里每一本书都去重新计算它的usedBooks属性
  */
 exports.updateBookInfoUsedBooksRelation = function () {
     var query = new AV.Query(Model.BookInfo);
@@ -67,6 +67,7 @@ exports.updateBookInfoUsedBooksRelation = function () {
         var isbn13 = avosBookInfo.get('isbn13');
         var query = new AV.Query(Model.UsedBook);
         query.equalTo('isbn13', isbn13);
+        query.select('isbn13');
         query.find().done(function (avosUsedBookList) {
             avosBookInfo.relation('usedBooks').add(avosUsedBookList);
             if (avosUsedBookList.length > 0) {
@@ -81,7 +82,7 @@ exports.updateBookInfoUsedBooksRelation = function () {
 };
 
 /**
- * 对于doubanId为空的书的信息,重新去豆瓣抓取一次
+ * 对于doubanId为空的书的信息(也就是不是从豆瓣获取的图书信息),重新去豆瓣抓取一次
  */
 exports.updateNoDoubanIdBookInfoFromDouban = function () {
     var query = new AV.Query(Model.BookInfo);
@@ -114,7 +115,7 @@ exports.updateNoDoubanIdBookInfoFromDouban = function () {
 };
 
 /**
- * 对于BookInfo表,有些记录有些属性还为空,需要重新去抓取完善属性,直到所有属性都被填满
+ * 对于BookInfo表,tags和rating还为空,需要重新去抓取完善属性
  */
 exports.updateBookInfoWhereTagsAndRatingIsNull = function () {
     var query = new AV.Query(Model.BookInfo);
@@ -131,7 +132,7 @@ exports.updateBookInfoWhereTagsAndRatingIsNull = function () {
                 _.each(avosBookInfoList, function (avosBookInfo, index) {
                     setTimeout(function () {
                         var isbn13 = avosBookInfo.get('isbn13');
-                        BookInfo.spiderBookByISBN(isbn13).done(function (jsonBookInfo) {
+                        BookInfo.spiderBookInfo(isbn13).done(function (jsonBookInfo) {
                             BookInfo.updateAvosBookInfo(avosBookInfo, jsonBookInfo).done(function (avosBookInfo) {
                                 console.log(avosBookInfo);
                             }).fail(function (err) {

@@ -1,7 +1,19 @@
 /**
  * Created by wuhaolin on 5/30/15.
- * Semantic-UI和AngularJS配置
+ * 全局函数 Semantic-UI和AngularJS配置
  */
+
+/**
+ * 从URL Query里获得参数
+ * @param name 参数名称
+ * @returns {string}
+ */
+function getQueryParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
 var APP = angular.module('APP', [], null);
 APP.run(function (User$) {

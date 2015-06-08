@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$) {
+APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, InfoService$) {
     $scope.isLoading = false;
     $scope.WeChatJS$ = WeChatJS$;
     $scope.$on('$ionicView.afterEnter', function () {
@@ -78,6 +78,6 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
     };
 
     //常用描述语
-    $scope.commonWords = ['正版', '新书', '送笔记', '可议价', '不议价', '配光盘', '妹子白送'];
+    $scope.commonWords = InfoService$.commonUsedBookDesWords;
 
 });

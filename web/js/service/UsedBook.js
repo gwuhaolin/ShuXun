@@ -80,7 +80,6 @@ APP.service('UsedBook$', function ($rootScope) {
     };
 
     /**
-     * TODO 报错
      * 删除一本没有卖出的二手书
      * @param avosUsedBook
      */

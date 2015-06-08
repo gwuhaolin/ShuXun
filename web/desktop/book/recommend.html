@@ -19,7 +19,7 @@
     <div class="ui grid">
 
         <div class="ui horizontal divider" ng-if="BookInfo$.LatestBook.books.length>0">
-            <a class="ui circular button" ng-href="bookList.html?cmd=latest">新书速递</a>
+            <a class="ui circular blue button" ng-href="bookList.html?cmd=latest">新书速递</a>
         </div>
         <div class="ui equal height grid">
             <!-- 图书列表-->
@@ -30,31 +30,33 @@
         </div>
 
         <div class="ui horizontal divider" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
-            <a class="ui circular button" ng-href="usedBookList.html?cmd=nearSell">附近卖书</a>
+            <a class="ui circular green button" ng-href="usedBookList.html?cmd=nearUsed">附近卖书</a>
         </div>
         <div class="ui equal height grid" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
             <!-- 图书列表-->
             <div class="four column row">
                 <d-one-used-book class="column"
                                  ng-repeat="usedBook in BookRecommend$.NearUsedBook.usedBooks.slice(0,8)"
+                                 ng-if="usedBook.attributes.info"
                                  used-book="usedBook"></d-one-used-book>
             </div>
         </div>
 
         <div class="ui horizontal divider" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
-            <a class="ui circular button" ng-href="usedBookList.html?cmd=nearNeed">附近求书</a>
+            <a class="ui circular orange button" ng-href="usedBookList.html?cmd=nearNeed">附近求书</a>
         </div>
         <div class="ui equal height grid" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <!-- 图书列表-->
             <div class="four column row">
-                <d-one-used-book class="column"
+                <d-one-need-book class="column"
                                  ng-repeat="needBook in BookRecommend$.NearNeedBook.needBooks.slice(0,8)"
-                                 used-book="needBook"></d-one-used-book>
+                                 ng-if="needBook.attributes.info"
+                                 need-book="needBook"></d-one-need-book>
             </div>
         </div>
 
         <div class="ui horizontal divider" ng-if="BookRecommend$.MajorBook.books.length>0">
-            <a class="ui circular button" ng-href="bookList.html?cmd=tag&tag={{BookRecommend$.MajorBook.major}}">{{BookRecommend$.MajorBook.major}}</a>
+            <a class="ui circular blue button" ng-href="bookList.html?cmd=tag&tag={{BookRecommend$.MajorBook.major}}">{{BookRecommend$.MajorBook.major}}</a>
         </div>
         <div class="ui equal height grid" ng-if="BookRecommend$.MajorBook.books.length>0">
             <!-- 图书列表-->
@@ -115,6 +117,7 @@
 <script src="../js/directive/dIncludeReplace.js"></script>
 <script src="../js/directive/dOneBook.js"></script>
 <script src="../js/directive/dOneUsedBook.js"></script>
+<script src="../js/directive/dOneNeedBook.js"></script>
 <!-- endbuild -->
 
 </body>

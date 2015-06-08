@@ -18,7 +18,10 @@ router.use(AV.Cloud.CookieSession({secret: 'ishuxun', maxAge: 3600 * 24 * 30, fe
  * @param:cmd 当前模式
  * 当cmd=tag 时用的表示显示哪一类型的书
  * 当cmd=latest 显示最新的书
+ * 当cmd=nearUsed 显示附近的要卖的旧书
+ * 当cmd=nearNeed 显示附近的发布的求书
  * @param:tag 当cmd=tag 时用的表示显示哪一类型的书
+ * @param:sortWay 按照什么方式排序 价格=price 距离=location major=专业
  */
 router.get('/bookList.html', function (req, res, next) {
     var skip = req.query.skip || 0;
@@ -38,6 +41,18 @@ router.get('/bookList.html', function (req, res, next) {
     } else if (cmd == 'latest') {
         BookInfo.getLatestBooks(skip, limit).done(function (bookInfos) {
             render(bookInfos, '新书速递', 100);
+        }).fail(function (err) {
+            next(err);
+        });
+    } else if (cmd == 'nearUsed') {
+        BookInfo.getNearUsedBook(skip, limit, 'sell', req.user).done(function (bookInfos) {
+            render(bookInfos, '附近同学要卖的旧书', 100);
+        }).fail(function (err) {
+            next(err);
+        });
+    } else if (cmd == 'nearNeed') {
+        BookInfo.getNearUsedBook(skip, limit, 'need', req.user).done(function (bookInfos) {
+            render(bookInfos, '附近同学发布的求书', 100);
         }).fail(function (err) {
             next(err);
         });

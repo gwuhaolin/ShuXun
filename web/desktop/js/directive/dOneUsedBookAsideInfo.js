@@ -18,10 +18,12 @@ APP.directive('dOneUsedBookAsideInfo', function () {
                 for (var i = 0; i < usedBooks.length; i++) {
                     var one = usedBooks[i];
                     var role = one.get('role');
-                    if (role == 'sell') {
-                        $scope.sellUsedBooks.push(one);
-                    } else if (role == 'need') {
-                        $scope.needUsedBooks.push(one);
+                    if (one.id != $scope.usedBookObjectId) {
+                        if (role == 'sell') {
+                            $scope.sellUsedBooks.push(one);
+                        } else if (role == 'need') {
+                            $scope.needUsedBooks.push(one);
+                        }
                     }
                 }
                 $scope.$apply();

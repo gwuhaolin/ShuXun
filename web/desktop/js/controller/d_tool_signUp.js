@@ -7,9 +7,8 @@ APP.controller('d_tool_signUp', function ($scope, $location, User$, Status$, Inf
     $scope.majors = InfoService$.majors;
     InfoService$.School.loadMore();
     $scope.schools = InfoService$.School.schools;
+    var wechatAOuthCode = $location.search().code;
     $scope.step = 'subscribe';
-
-    var wechatAOuthCode = $location.search('code');
     User$.getOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
         $scope.userInfo = userInfo;
         User$.loginWithUnionId(userInfo.unionId).done(function () {//已经注册过

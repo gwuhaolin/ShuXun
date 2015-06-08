@@ -83,6 +83,7 @@
 
                         <div class="description">{{usedBook.attributes.info.attributes.isbn13}}</div>
                     </div>
+                    {{#if bookInfo.attributes.info.attributes.rating}}
                     <div class="item">
                         <h5 class="header">豆瓣书评</h5>
 
@@ -96,6 +97,7 @@
 
                         </div>
                     </div>
+                    {{/if}}
                 </div>
             </div>
 
@@ -118,7 +120,7 @@
                         <h5 class="header">上传时间</h5>
 
                         <p class="sub header">
-                            {{usedBook.updatedAt}}
+                            {{dateFormat usedBook.updatedAt}}
                         </p>
                     </div>
                 </div>

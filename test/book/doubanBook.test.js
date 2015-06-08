@@ -48,6 +48,20 @@ describe('book/doubanBook.js', function () {
         });
     });
 
+    describe('#spiderBookByDoubanId', function () {
+        var doubanId = doubanIDs_ok[0];
+        it(doubanId + '的信息是有的', function (done) {
+            this.timeout(10000);
+            doubanBook.spiderBookByDoubanId(doubanId).done(function (jsonBookInfo) {
+                assert.equal(jsonBookInfo.doubanId, doubanId, 'doubanId必须相等');
+                Util.checkJsonBookInfoIsNice(jsonBookInfo);
+                done();
+            }).fail(function (err) {
+                done(err);
+            })
+        });
+    });
+
     describe('#spiderBusinessInfo', function () {
         _.each(Util.ISBN_Legal_HasPub, function (isbn13) {
             it(isbn13 + '是有网购信息的', function (done) {
@@ -67,11 +81,11 @@ describe('book/doubanBook.js', function () {
         });
     });
 
-    describe('#getDoubanIdByISBN13', function () {
+    describe('#spiderDoubanIdByISBN13', function () {
         _.each(Util.ISBN_Legal_HasPub, function (isbn13) {
             it(isbn13 + '是有豆瓣ID的', function (done) {
                 this.timeout(10000);
-                doubanBook.getDoubanIdByISBN13(isbn13).done(function (doubanId) {
+                doubanBook.spiderDoubanIdByISBN13(isbn13).done(function (doubanId) {
                     assert(doubanId, 'doubanId');
                     done();
                 }).fail(function (err) {
@@ -94,7 +108,7 @@ describe('book/doubanBook.js', function () {
 
     describe('#searchBooks', function () {
         var count = 1;
-        var keywords = '小王子';
+        var keyword = '小王子';
         var tag = '计算机科学';
         var start = 0;
 
@@ -113,7 +127,7 @@ describe('book/doubanBook.js', function () {
         }
 
         it('按照关键字搜索', function (done) {
-            doubanBook.searchBooks(keywords, null, start, count, null).done(function (json) {
+            doubanBook.searchBooks(keyword, null, start, count, null).done(function (json) {
                 checkDoubanSearchResult(json);
                 done();
             }).fail(function (err) {
@@ -131,7 +145,7 @@ describe('book/doubanBook.js', function () {
         });
 
         it('start参数为null, 默认为0', function (done) {
-            doubanBook.searchBooks(keywords, null, null, count, null).done(function (json) {
+            doubanBook.searchBooks(keyword, null, null, count, null).done(function (json) {
                 checkDoubanSearchResult(json);
                 assert(json.start == 0, '.start == start');
                 assert(json.count == count, '.count == count');
@@ -154,7 +168,7 @@ describe('book/doubanBook.js', function () {
 
         it('设置fields参数', function (done) {
             var fields = ['isbn13'];
-            doubanBook.searchBooks(keywords, null, null, count, fields).done(function (json) {
+            doubanBook.searchBooks(keyword, null, null, count, fields).done(function (json) {
                 checkDoubanSearchResult(json);
                 _.each(json.books, function (one) {
                     assert.equal(_.keys(one).length, fields.length, '只返回选定的字段' + _.keys(one));
@@ -169,7 +183,7 @@ describe('book/doubanBook.js', function () {
         });
 
         it('fields参数为空,就获取BookInfo表里的字段', function (done) {
-            doubanBook.searchBooks(keywords, null, null, count, null).done(function (json) {
+            doubanBook.searchBooks(keyword, null, null, count, null).done(function (json) {
                 checkDoubanSearchResult(json);
                 _.each(json.books, function (one) {
                     assert.equal(_.keys(one).length, BookInfo.BookInfoAttrName_douban.length, '只返回选定的字段' + _.keys(one));

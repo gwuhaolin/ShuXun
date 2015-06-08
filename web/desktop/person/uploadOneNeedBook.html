@@ -16,93 +16,89 @@
 <ng-include src="'../temp/header.html'" d-include-replace></ng-include>
 
 <!-- 主内容区-->
-<main class="ui sixteen wide column" ng-controller="d_tool_signUp">
+<main class="ui sixteen wide column" ng-controller="d_person_uploadOneUsedBook" ng-init="role='sell'">
     <div class="ui center aligned grid">
 
-        <!-- 主人信息-->
-        <div class="sixteen wide center aligned column">
-            <div class="ui center aligned icon header">
-                <img class="ui circular image" ng-src="{{userInfo.avatarUrl}}">
-                <em>{{userInfo.nickName}}</em>
-                <em>
-                    <i class="icon blue man" ng-if="userInfo.sex==1"></i>
-                    <i class="icon red woman" ng-if="userInfo.sex==2"></i>
-                </em>
-            </div>
+        <!-- 图书信息 TODO 居中显示-->
+        <div class="row" ng-if="bookInfo">
+            <d-one-book class="column" book-info="bookInfo"></d-one-book>
         </div>
 
         <div class="twelve wide column">
 
             <!-- Steps-->
             <div class="ui fluid large steps">
-                <div ng-class="{active:step=='subscribe',step:true}">
-                    <i class="wechat icon"></i>
+                <div class="step" ng-class="{active:step=='search'}">
+                    <i class="search icon"></i>
 
                     <div class="content">
-                        <div class="title">微信关注</div>
-                        <div class="description">使用微信关注书循微信号</div>
+                        <div class="title">寻找图书</div>
+                        <div class="description">先找到你要上传的那本书</div>
                     </div>
                 </div>
-                <div ng-class="{active:step=='info',step:true}">
+                <div class="step" ng-class="{active:step=='info'}">
                     <i class="payment icon"></i>
 
                     <div class="content">
                         <div class="title">填写信息</div>
-                        <div class="description">这些信息有助于你找到书</div>
+                        <div class="description">这些信息有助于别人更了解它</div>
                     </div>
                 </div>
-                <div ng-class="{active:step=='ok',step:true}">
+                <div class="step" ng-class="{active:step=='ok'}">
                     <i class="heart icon"></i>
 
                     <div class="content">
-                        <div class="title">登入成功</div>
-                        <div class="description">现在开始你的寻书之旅</div>
+                        <div class="title">上传成功</div>
+                        <div class="description">等待同学来找你买书</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 关注书循-->
-            <div class="ui center aligned segment" ng-if="step=='subscribe'">
-                <button class="ui big green button" ng-click="step='info'">关注好了</button>
-                <img class="ui image" src="../../img/QRCode.png">
-                <h5>使用微信扫描二维码或加书循微信号<strong>ishuxun</strong></h5>
+            <!-- 定位图书-->
+            <div class="ui center aligned segment" ng-if="step=='search'">
+                <a class="ui big green button" href="../book/searchList.html">开始寻找</a>
             </div>
 
             <div class="ui segment" ng-if="step=='info'">
                 <div class="ui form">
-                    <div class="three fields">
+                    <div class="two fields">
                         <div class="field">
-                            <label>在读学校</label>
-                            <select class="ui search dropdown" ng-model="userInfo.school">
-                                <option ng-repeat="one in schools" value="{{one}}">{{one}}</option>
-                            </select>
+                            <label>要价</label>
+                            <input type="number" ng-model="usedBookInfo.price" placeholder="输入要价(数字,人民币元)">
                         </div>
                         <div class="field">
-                            <label>所学专业</label>
-                            <select class="ui search dropdown" ng-model="userInfo.major">
-                                <option ng-repeat="one in majors" value="{{one}}">{{one}}</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <label>入学时间</label>
-                            <select class="ui selection dropdown" ng-model="userInfo.startSchoolYear">
-                                <option ng-repeat="one in startSchoolYearOptions" value="{{one}}">{{one}}</option>
-                            </select>
+                            <label>描述</label>
+                            <input class="hasPubInfoPopupBook" type="text" ng-model="usedBookInfo.des"
+                                   placeholder="对这本书你还有什么想说的吗?">
+
+                            <div class="ui popup">
+                                <div class="ui top attached label">常用描述内容</div>
+                                <div class="ui green button" style="margin: 3px"
+                                     ng-repeat="word in InfoService$.commonUsedBookDesWords"
+                                     ng-click="usedBookInfo.des=word">{{word}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="field">
-                        <button class="ui green big button" ng-click="submitOnClick()">加入书循</button>
+                        <button class="ui green big button" ng-click="submitOnClick()">提交</button>
                     </div>
                 </div>
             </div>
 
             <div class="ui segment" ng-if="step=='ok'">
-                <a class="huge ui button">
-                    开始寻书
-                </a>
-                <a class="huge ui button">
-                    个人主页
-                </a>
+                <h1 class="ui center aligned icon header">
+                    <i class="green smile icon"></i>
+
+                    <span class="content">
+                        <a class="huge ui button" href="../book/searchList.html">
+                            继续上传
+                        </a>
+                        <a class="huge ui button" href="../tool/userHome.html?userObjectId={{AV.User.current().id}}">
+                            个人主页
+                        </a>
+                    </span>
+                </h1>
             </div>
 
         </div>
@@ -145,6 +141,7 @@
 <script src="../js/controller/d_topBar.js"></script>
 <script src="../js/controller/d_book_searchList.js"></script>
 <script src="../js/controller/d_tool_signUp.js"></script>
+<script src="../js/controller/d_person_uploadOneUsedBook.js"></script>
 <!--Directive-->
 <script src="../js/directive/dUserInfo.js"></script>
 <script src="../js/directive/dIncludeReplace.js"></script>

@@ -117,10 +117,6 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
                     }
                 } else {
                     that.BookReview.hasMoreFlag = false;
-                    if (that.BookReview.reviewList.length == 0) {//没有书评时提醒
-                        alert('还没有对应的书评~');
-                        history.back();
-                    }
                 }
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');

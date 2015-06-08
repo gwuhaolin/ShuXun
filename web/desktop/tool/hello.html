@@ -16,7 +16,7 @@
 
 <!-- 主内容区-->
 <main class="ui sixteen wide column">
-    <div class="ui grid">
+    <div class="ui grid" ng-controller="d_tool_hello">
 
         <div class="ui horizontal divider">
             <a class="ui circular button">使用微信登入书循</a>
@@ -64,6 +64,7 @@
 <script src="../js/controller/d_partial_NearUser.js"></script>
 <script src="../js/controller/d_topBar.js"></script>
 <script src="../js/controller/d_book_searchList.js"></script>
+<script src="../js/controller/d_tool_hello.js"></script>
 <!--Directive-->
 <script src="../js/directive/dUserInfo.js"></script>
 <script src="../js/directive/dIncludeReplace.js"></script>
@@ -76,7 +77,7 @@
         id: 'WechatLoginQRCodeCon',
         appid: WECHAT.AppID,
         scope: 'snsapi_login',
-        redirect_uri: encodeURI('http://www.ishuxun.cn/desktop/tool/signUp.html')
+        redirect_uri: encodeURI('http://www.ishuxun.cn/desktop/tool/signUp.html#')
     });
 </script>
 </body>

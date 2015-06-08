@@ -14,7 +14,7 @@
                         ui-sref="tab.person_uploadOneNeedBook">发布求书
                 </button>
             </ion-item>
-            <ion-item ng-repeat="needBook in UsedBook$.myNeedBookList" class="item-thumbnail-left">
+            <ion-item collection-repeat="needBook in UsedBook$.myNeedBookList" class="item-thumbnail-left">
                 <img ng-if="needBook.attributes.image"
                      ng-src="{{needBook.attributes.image}}"
                      ui-sref="tab.book_oneBook({isbn13:needBook.attributes.isbn13})">
@@ -32,8 +32,6 @@
                 </button>
             </ion-item>
             <ion-item ng-if="UsedBook$.myNeedBookList.length==0">你还没有发布过,点击发布求书</ion-item>
-            <ion-item ui-sref="tab.person_uploadOneNeedBook" style="text-align: center">继续发布求书
-            </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>

@@ -1,14 +1,11 @@
 /**
- * Created by wuhaolin on 5/20/15.
- * 一个用户的主页
+ * Created by wuhaolin on 6/8/15.
  */
-"use strict";
-
-APP.controller('userHome', function ($scope, $stateParams, UsedBook$) {
+APP.controller('d_tool_userHome', function ($scope, UsedBook$) {
+    var userObjectId = getQueryParameterByName('userObjectId');
     $scope.UsedBook$ = UsedBook$;
-    var ownerId = $stateParams.ownerId;
     var query = new AV.Query(Model.User);
-    query.get(ownerId).done(function (owner) {
+    query.get(userObjectId).done(function (owner) {
         $scope.owner = owner;
         UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
             $scope.usedBooks = usedBooks;

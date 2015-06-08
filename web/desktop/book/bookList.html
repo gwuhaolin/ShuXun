@@ -23,6 +23,20 @@
 <main class="ui sixteen wide column">
     <div class="ui grid">
 
+        <div class="ui horizontal divider">
+            <a class="ui circular button">{{title}}</a>
+        </div>
+        <div class="ui equal height grid">
+            <!-- 图书列表-->
+            <div class="five column row">
+                {{#each bookInfos}}
+                <div class="column">
+                    {{> oneBook bookInfo=this}}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
         <div class="sixteen wide column">
             <!-- 分页-->
             <div class="ui pagination left floated menu">
@@ -44,20 +58,6 @@
                 <div class="ui green basic button">价格</div>
                 <div class="ui green basic button">距离</div>
                 <div class="ui green basic button">专业</div>
-            </div>
-        </div>
-
-        <div class="ui horizontal divider">
-            <a class="ui circular button">{{title}}</a>
-        </div>
-        <div class="ui equal height grid">
-            <!-- 图书列表-->
-            <div class="five column row">
-                {{#each bookInfos}}
-                <div class="column">
-                    {{> oneBook this}}
-                </div>
-                {{/each}}
             </div>
         </div>
 

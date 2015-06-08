@@ -20,42 +20,34 @@
 
 <!-- 主内容区-->
 <main class="ui sixteen wide column">
-    <div class="ui grid">
+    <div class="ui center aligned grid" ng-controller="d_tool_userHome">
 
         <!-- 主人信息-->
-        <div class="sixteen wide center aligned column">
+        <div class="sixteen wide column">
             <div class="ui big horizontal divided list">
                 <div class="item">
-                    <img class="ui avatar image" src="{{owner.attributes.avatarUrl}}">
+                    <img class="ui avatar image" ng-src="{{owner.attributes.avatarUrl}}">
 
                     <div class="content">
-                        <a class="header">{{owner.attributes.nickName}}</a>
+                        <h1 class="header">
+                            {{owner.attributes.nickName}}
+                            <em>
+                                <i class="ui icon blue man" ng-if="owner.attributes.sex==1"></i>
+                                <i class="ui icon red woman" ng-if="owner.attributes.sex==2"></i>
+                            </em>
+                        </h1>
                     </div>
                 </div>
                 <div class="item">
                     <div class="content">
-                        <a class="header">{{owner.attributes.major}}</a>
+                        <h1 class="header">{{owner.attributes.major}}</h1>
                     </div>
                 </div>
                 <div class="item">
                     <div class="content">
-                        <a class="header">{{owner.attributes.school}}</a>
+                        <h1 class="header">{{owner.attributes.school}}</h1>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="ui horizontal divider">
-            <a class="ui circular button">主人正需要的书</a>
-        </div>
-        <div class="ui equal height grid">
-            <!-- 图书列表-->
-            <div class="five column row">
-                {{#each usedBooks}}
-                <div class="column">
-                    {{> oneUsedBook this }}
-                </div>
-                {{/each}}
             </div>
         </div>
 
@@ -65,11 +57,19 @@
         <div class="ui equal height grid">
             <!-- 图书列表-->
             <div class="five column row">
-                {{#each needBooks}}
-                <div class="column">
-                    {{> oneUsedBook this }}
-                </div>
-                {{/each}}
+                <d-one-used-book class="column" ng-repeat="usedBook in usedBooks"
+                                 used-book="usedBook"></d-one-used-book>
+            </div>
+        </div>
+
+        <div class="ui horizontal divider">
+            <a class="ui circular button">主人正需要的书</a>
+        </div>
+        <div class="ui equal height grid">
+            <!-- 图书列表-->
+            <div class="five column row">
+                <d-one-need-book class="column" ng-repeat="needBook in needBooks"
+                                 need-book="needBook"></d-one-need-book>
             </div>
         </div>
 

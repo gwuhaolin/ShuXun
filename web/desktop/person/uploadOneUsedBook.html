@@ -16,19 +16,19 @@
 <ng-include src="'../temp/header.html'" d-include-replace></ng-include>
 
 <!-- 主内容区-->
-<main class="ui sixteen wide column" ng-controller="d_person_uploadOneUsedBook">
+<main class="ui sixteen wide column" ng-controller="d_person_uploadOneUsedBook" ng-init="role='sell'">
     <div class="ui center aligned grid">
 
-        <!-- 主人信息-->
-        <div class="row">
-            <d-one-book class="column" book-info=""></d-one-book>
+        <!-- 图书信息 TODO 居中显示-->
+        <div class="row" ng-if="bookInfo">
+            <d-one-book class="column" book-info="bookInfo"></d-one-book>
         </div>
 
         <div class="twelve wide column">
 
             <!-- Steps-->
             <div class="ui fluid large steps">
-                <div ng-class="{active:step=='subscribe',step:true}">
+                <div class="step" ng-class="{active:step=='search'}">
                     <i class="search icon"></i>
 
                     <div class="content">
@@ -36,7 +36,7 @@
                         <div class="description">先找到你要上传的那本书</div>
                     </div>
                 </div>
-                <div ng-class="{active:step=='info',step:true}">
+                <div class="step" ng-class="{active:step=='info'}">
                     <i class="payment icon"></i>
 
                     <div class="content">
@@ -44,7 +44,7 @@
                         <div class="description">这些信息有助于别人更了解它</div>
                     </div>
                 </div>
-                <div ng-class="{active:step=='ok',step:true}">
+                <div class="step" ng-class="{active:step=='ok'}">
                     <i class="heart icon"></i>
 
                     <div class="content">
@@ -63,12 +63,21 @@
                 <div class="ui form">
                     <div class="two fields">
                         <div class="field">
-                            <label>在读学校</label>
+                            <label>要价</label>
                             <input type="number" ng-model="usedBookInfo.price" placeholder="输入要价(数字,人民币元)">
                         </div>
                         <div class="field">
-                            <label>所学专业</label>
-                            <input type="text" ng-model="usedBookInfo.des" placeholder="对这本书你还有什么想说的吗?">
+                            <label>描述</label>
+                            <input class="hasPubInfoPopupBook" type="text" ng-model="usedBookInfo.des"
+                                   placeholder="对这本书你还有什么想说的吗?">
+
+                            <div class="ui popup">
+                                <div class="ui top attached label">常用描述内容</div>
+                                <div class="ui green button" style="margin: 3px"
+                                     ng-repeat="word in InfoService$.commonUsedBookDesWords"
+                                     ng-click="usedBookInfo.des=word">{{word}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="field">
@@ -78,12 +87,18 @@
             </div>
 
             <div class="ui segment" ng-if="step=='ok'">
-                <a class="huge ui button" href="../book/searchList.html">
-                    继续上传
-                </a>
-                <a class="huge ui button">
-                    个人主页
-                </a>
+                <h1 class="ui center aligned icon header">
+                    <i class="green smile icon"></i>
+
+                    <span class="content">
+                        <a class="huge ui button" href="../book/searchList.html">
+                            继续上传
+                        </a>
+                        <a class="huge ui button" href="../tool/userHome.html?userObjectId={{AV.User.current().id}}">
+                            个人主页
+                        </a>
+                    </span>
+                </h1>
             </div>
 
         </div>
