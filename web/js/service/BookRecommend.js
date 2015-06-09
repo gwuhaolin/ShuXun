@@ -104,6 +104,30 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
     };
 
     /**
+     * 最新更新的,不是我自己上传的,按照距离我距离排序的,
+     * @param role UserBook role属性,是sell(要卖的) 还是 need(求书)
+     * @param majorFilter 附加的专业显示,只显示和我同一个专业的同学上传的书,==null时无限制
+     * @returns {AV.Query}
+     * @private
+     */
+    function _buildUsedBookQuery(role, majorFilter) {
+        var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+        var query = new AV.Query(Model.UsedBook);
+        query.descending("updatedAt");
+        query.equalTo('role', role);
+        query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
+        if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
+            query.near("location", avosGeo);
+        }
+        if (majorFilter) {
+            var ownerQuery = new AV.Query(Model.User);
+            ownerQuery.equalTo('major', majorFilter);
+            query.matchesQuery('owner', ownerQuery);
+        }
+        return query;
+    }
+
+    /**
      * 附近同学发布的求书
      * @type {{needBooks: Array, loadMore: Function}}
      */
@@ -111,18 +135,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         needBooks: [],
         hasMoreFlag: true,
         loadMore: function () {
-            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
-            var query = new AV.Query(Model.UsedBook);
-            query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
-            query.equalTo('role', 'need');
-            if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
-                query.near("location", avosGeo);
-            }
-            if (that.NearNeedBook._majorFilter) {
-                var ownerQuery = new AV.Query(Model.User);
-                ownerQuery.equalTo('major', that.NearNeedBook._majorFilter);
-                query.matchesQuery('owner', ownerQuery);
-            }
+            var query = _buildUsedBookQuery('need', that.NearNeedBook._majorFilter);
             query.skip(that.NearNeedBook.needBooks.length + RandomStart);
             query.limit(LoadCount);
             query.find().done(function (needBooks) {
@@ -149,6 +162,18 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         },
         getMajorFilter: function () {
             return that.NearNeedBook._majorFilter;
+        },
+        /**
+         * 把主人同一个专业的同学上传的书插入到最开头
+         */
+        unshiftMajorBook: function () {
+            var me = AV.User.current();
+            var major = me ? me.get('major') : null;
+            _buildUsedBookQuery('need', major).find().done(function (needBooks) {
+                that.NearNeedBook.needBooks.unshiftArray(needBooks);
+                $rootScope.$apply();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
         }
     };
 
@@ -160,27 +185,18 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         usedBooks: [],
         hasMoreFlag: true,
         loadMore: function () {
-            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
-            var query = new AV.Query(Model.UsedBook);
-            query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
-            query.equalTo('role', 'sell');
-            avosGeo && query.near("location", avosGeo);
-            if (that.NearUsedBook._majorFilter) {
-                var ownerQuery = new AV.Query(Model.User);
-                ownerQuery.equalTo('major', that.NearUsedBook._majorFilter);
-                query.matchesQuery('owner', ownerQuery);
-            }
-            query.skip(that.NearUsedBook.usedBooks.length);
+            var query = _buildUsedBookQuery('sell', that.NearUsedBook._majorFilter);
+            query.skip(that.NearUsedBook.usedBooks.length + RandomStart);
             query.limit(LoadCount);
-            query.find().done(function (usedBooks) {
-                if (usedBooks.length > 0) {
-                    that.NearUsedBook.usedBooks.pushArray(usedBooks);
+            query.find().done(function (needBooks) {
+                if (needBooks.length > 0) {
+                    that.NearUsedBook.usedBooks.pushArray(needBooks);
                 } else {
                     that.NearUsedBook.hasMoreFlag = false;
                 }
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
-            })
+            });
         },
         hasMore: function () {
             return that.NearUsedBook.hasMoreFlag;
@@ -196,6 +212,18 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         },
         getMajorFilter: function () {
             return that.NearUsedBook._majorFilter;
+        },
+        /**
+         * 把主人同一个专业的同学上传的书插入到最开头
+         */
+        unshiftMajorBook: function () {
+            var me = AV.User.current();
+            var major = me ? me.get('major') : null;
+            _buildUsedBookQuery('sell', major).find().done(function (needBooks) {
+                that.NearUsedBook.usedBooks.unshiftArray(needBooks);
+                $rootScope.$apply();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
         }
     };
 
@@ -206,16 +234,24 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
     this.NearUser = {
         users: [],
         hasMoreFlag: true,
-        loadMore: function () {
-            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+        /**
+         * 最新更新的,不是我自己,按照距离我距离排序的,
+         * @param majorFilter 附加的专业显示,只显示和我同一个专业的同学上传的书,==null时无限制
+         * @private
+         */
+        _buildQuery: function (majorFilter) {
             var query = new AV.Query(Model.User);
+            query.descending("updatedAt");
             if (AV.User.current()) {
                 query.notEqualTo('objectId', AV.User.current().id);//不要显示自己
             }
-            if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
-                query.near("location", avosGeo);
-            }
-            that.NearUser._majorFilter && query.equalTo('major', that.NearUser._majorFilter);
+            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+            avosGeo && query.near("location", avosGeo);
+            majorFilter && query.equalTo('major', majorFilter);
+            return query;
+        },
+        loadMore: function () {
+            var query = that.NearUser._buildQuery(that.NearUser._majorFilter);
             query.skip(that.NearUser.users.length);
             query.limit(Math.floor(document.body.clientWidth / 50));//默认加载满屏幕
             query.find().done(function (users) {
@@ -242,6 +278,17 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         },
         getMajorFilter: function () {
             return that.NearUser._majorFilter;
+        },
+        /**
+         * 把主人同一个专业的同学插入到最开头
+         */
+        unshiftMajorUser: function () {
+            var me = AV.User.current();
+            var major = me ? me.get('major') : null;
+            var query = that.NearUser._buildQuery(major);
+            query.find().done(function (users) {
+                that.NearUser.users.unshiftArray(users);
+            });
         }
     };
 });

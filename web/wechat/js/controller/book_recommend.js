@@ -7,9 +7,12 @@
 APP.controller('book_recommend', function ($scope, $ionicModal, BookRecommend$, User$, BookInfo$) {
     $scope.User$ = User$;
     $scope.BookRecommend$ = BookRecommend$;
+    $scope.LatestBook = BookInfo$.LatestBook;
+    BookRecommend$.NearUsedBook.unshiftMajorBook();
+    BookRecommend$.NearNeedBook.unshiftMajorBook();
+    BookRecommend$.NearUser.unshiftMajorUser();
     BookRecommend$.NearUser.loadMore();
     BookRecommend$.BookTag.load();
-    $scope.LatestBook = BookInfo$.LatestBook;
     $scope.LatestBook.loadMore();
     BookRecommend$.MajorBook.loadMore();
     BookRecommend$.NearUsedBook.loadMore();
