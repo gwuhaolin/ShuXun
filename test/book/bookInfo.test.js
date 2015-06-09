@@ -142,8 +142,9 @@ describe('book/bookInfo.js', function () {
                         assert(bookInfo, '填充后的usedBook必须要有info属性');
                         assert.equal(usedBook.get('isbn13'), bookInfo.get('isbn13'), 'ISBN要相等');
                         var query = bookInfo.relation('usedBooks').query();
-                        query.equalTo('objectId', usedBook.id).done(function (reUsedBook) {
-                            assert.deepEqual(reUsedBook.attributes, usedBook.attributes, '在bookInfo的usedBooks relation里要有对应的UsedBook');
+                        query.equalTo('objectId', usedBook.id);
+                        query.find().done(function (reUsedBook) {
+                            assert(reUsedBook, '在bookInfo的usedBooks relation里要有对应的UsedBook');
                             done();
                         })
                     }).fail(function (err) {

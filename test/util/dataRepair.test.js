@@ -3,7 +3,7 @@
  */
 var DataRepair = require('../../server/util/dataRepair.js');
 
-describe('util/dataRepair.js', function () {
+describe.skip('util/dataRepair.js', function () {
 
     describe('#fillUsedBookInfoWhereInfoIsNull', function () {
         it('对与UsedBook表里的没有Info属性的去抓取图书信息填上该属性', function (done) {
@@ -26,7 +26,7 @@ describe('util/dataRepair.js', function () {
         });
     });
 
-    describe.only('#updateBookInfoWhereTagsAndRatingIsNull', function () {
+    describe('#updateBookInfoWhereTagsAndRatingIsNull', function () {
         it('对于BookInfo表,tags和rating还为空,需要重新去抓取完善属性', function (done) {
             this.timeout(10000000);
             DataRepair.updateBookInfoWhereTagsAndRatingIsNull();
