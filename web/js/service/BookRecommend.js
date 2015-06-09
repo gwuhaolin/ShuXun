@@ -111,16 +111,15 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
      * @private
      */
     function _buildUsedBookQuery(role, majorFilter) {
-        var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
         var query = new AV.Query(Model.UsedBook);
         query.descending("updatedAt");
-        query.equalTo('role', role);
-        query.notEqualTo('owner', AV.User.current());//不要显示自己的上传的
-        if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
-            query.near("location", avosGeo);
-        }
+        role && query.equalTo('role', role);
+        var me = AV.User.current();
+        var avosGeo = me ? me.get('location') : null;
+        avosGeo && query.near("location", avosGeo);
         if (majorFilter) {
             var ownerQuery = new AV.Query(Model.User);
+            me && ownerQuery.notEqualTo('objectId', me.id);//不要显示自己的上传的
             ownerQuery.equalTo('major', majorFilter);
             query.matchesQuery('owner', ownerQuery);
         }
@@ -170,7 +169,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             var me = AV.User.current();
             var major = me ? me.get('major') : null;
             _buildUsedBookQuery('need', major).find().done(function (needBooks) {
-                that.NearNeedBook.needBooks.unshiftArray(needBooks);
+                that.NearNeedBook.needBooks.unshiftArray(AV._.shuffle(needBooks));
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
@@ -220,7 +219,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             var me = AV.User.current();
             var major = me ? me.get('major') : null;
             _buildUsedBookQuery('sell', major).find().done(function (needBooks) {
-                that.NearUsedBook.usedBooks.unshiftArray(needBooks);
+                that.NearUsedBook.usedBooks.unshiftArray(AV._.shuffle(needBooks));
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
@@ -242,10 +241,9 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         _buildQuery: function (majorFilter) {
             var query = new AV.Query(Model.User);
             query.descending("updatedAt");
-            if (AV.User.current()) {
-                query.notEqualTo('objectId', AV.User.current().id);//不要显示自己
-            }
-            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+            var me = AV.User.current();
+            me && query.notEqualTo('objectId', me.id);//不要显示自己
+            var avosGeo = me ? me.get('location') : null;
             avosGeo && query.near("location", avosGeo);
             majorFilter && query.equalTo('major', majorFilter);
             return query;
@@ -287,7 +285,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             var major = me ? me.get('major') : null;
             var query = that.NearUser._buildQuery(major);
             query.find().done(function (users) {
-                that.NearUser.users.unshiftArray(users);
+                that.NearUser.users.unshiftArray(AV._.shuffle(users));
             });
         }
     };

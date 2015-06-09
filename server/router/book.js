@@ -97,7 +97,7 @@ router.get('/oneBook.html', function (req, res, next) {
     });
 
     function render(bookInfo) {
-        var seoString = bookInfo.attributes.title + bookInfo.attributes.author.toString();
+        var seoString = bookInfo.attributes.title + bookInfo.attributes.author;
         var re = RouterUtil.genDataWithDefaultMeta(seoString);
         bookInfo.genBigImage();
         if (bookInfo.attributes.rating) {
@@ -123,7 +123,7 @@ router.get('/oneUsedBook.html', function (req, res, next) {
     });
 
     function render(usedBook) {
-        var seoString = usedBook.attributes.title + usedBook.attributes.author.toString() + usedBook.attributes.des;
+        var seoString = usedBook.attributes.title + usedBook.attributes.author + usedBook.attributes.des;
         var re = RouterUtil.genDataWithDefaultMeta(seoString);
         re.usedBook = usedBook;
         usedBook.get('info').genBigImage();

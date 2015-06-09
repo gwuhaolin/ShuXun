@@ -32,7 +32,7 @@
     </button>
 </div>
 <!-- 主人所有旧书链接-->
-<ion-item ng-if="!hideUsedBook" style="padding: 0;text-align: center">
+<ion-item class="item-divider" ng-if="!hideUsedBook" style="padding: 0;text-align: center">
     <a class="button button-small button-clear button-balanced"
        ui-sref="tab.userHome({ownerId:user.id})">主人有{{user.userUsedBookNumber}}本旧书要卖,发布了{{user.userNeedBookNumber}}个求书</a>
 </ion-item>
