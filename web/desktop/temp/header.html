@@ -8,10 +8,10 @@
     <!-- 已经登入了-->
     <span ng-if="me">
         <a class="item" href="../person/uploadOneUsedBook.html">
-            <i class="home icon"></i>上传旧书
+            <i class="upload icon"></i>上传旧书
         </a>
         <a class="item" href="../person/uploadOneNeedBook.html">
-            <i class="mail icon"></i>发布求书
+            <i class="announcement icon"></i>发布求书
         </a>
         <!-- 消息-->
         <span class="ui dropdown item" ng-if="Status$.unreadCountSum()>0">
@@ -48,6 +48,9 @@
                 </a>
             </span>
         </span>
+        <a class="item" ng-href="../tool/userHome.html?userObjectId={{me.id}}">
+            <i class="user icon"></i>我的书架
+        </a>
     </span>
 
     <!-- 还没有登入的用户-->

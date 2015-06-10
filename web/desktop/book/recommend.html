@@ -1,3 +1,4 @@
+<!--图书推荐:angular-->
 <!DOCTYPE html>
 <html lang="zh-CN" ng-app="APP">
 <head>
@@ -21,7 +22,7 @@
         <div class="ui horizontal divider" ng-if="BookInfo$.LatestBook.books.length>0">
             <a class="ui circular blue button" ng-href="bookList.html?cmd=latest">新书速递</a>
         </div>
-        <div class="ui equal height grid">
+        <div class="ui grid">
             <!-- 图书列表-->
             <div class="four column row">
                 <d-one-book class="column" ng-repeat="bookInfo in BookInfo$.LatestBook.books.slice(0,8)"
@@ -32,7 +33,7 @@
         <div class="ui horizontal divider" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
             <a class="ui circular green button" ng-href="usedBookList.html?cmd=nearUsed">附近卖书</a>
         </div>
-        <div class="ui equal height grid" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
+        <div class="ui grid" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
             <!-- 图书列表-->
             <div class="four column row">
                 <d-one-used-book class="column"
@@ -45,7 +46,7 @@
         <div class="ui horizontal divider" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <a class="ui circular orange button" ng-href="usedBookList.html?cmd=nearNeed">附近求书</a>
         </div>
-        <div class="ui equal height grid" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
+        <div class="ui grid" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <!-- 图书列表-->
             <div class="four column row">
                 <d-one-need-book class="column"
@@ -58,7 +59,7 @@
         <div class="ui horizontal divider" ng-if="BookRecommend$.MajorBook.books.length>0">
             <a class="ui circular blue button" ng-href="bookList.html?cmd=tag&tag={{BookRecommend$.MajorBook.major}}">{{BookRecommend$.MajorBook.major}}</a>
         </div>
-        <div class="ui equal height grid" ng-if="BookRecommend$.MajorBook.books.length>0">
+        <div class="ui grid" ng-if="BookRecommend$.MajorBook.books.length>0">
             <!-- 图书列表-->
             <div class="four column row">
                 <d-one-book class="column" ng-repeat="bookInfo in BookRecommend$.MajorBook.books.slice(0,8)"

@@ -41,19 +41,5 @@ function configSemantic() {
     });
     //星星
     $('.ui.rating').rating();
-    //分类菜单
-    $('#menu').sidebar('setting', 'transition', 'overlay')
-        .sidebar('setting', 'dimPage', false)
-        .sidebar('toggle');
-    //加载更多
-    $('#loadMoreInfiniteScroll').visibility({
-        once: false,
-        observeChanges: true,
-        onBottomVisible: function () {
-            var injector = angular.element(document).injector();
-            var SearchBook$ = injector.get('SearchBook$');
-            SearchBook$.loadMore();
-        }
-    });
 }
 setInterval(configSemantic, 1000);

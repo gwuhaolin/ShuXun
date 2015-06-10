@@ -7,7 +7,8 @@
 APP.controller('person_editPersonInfo', function ($scope, $state, $ionicHistory, InfoService$, User$, IonicModalView$) {
     //是否对属性进行了修改
     $scope.attrHasChange = false;
-    var jsonMe = AV.User.current().attributes;
+    $scope.me = AV.User.current();
+    var jsonMe = $scope.me.attributes;
     $scope.userInfo = {
         school: jsonMe.school,
         major: jsonMe.major,

@@ -21,14 +21,14 @@
             扫描二维码或关注微信号<strong>ishuxun</strong>开始在微信里使用书循
         </div>
     </div>
+    <script>
+        /**
+         * @param:msg 要提示给用户看的信息
+         * 把用户导航到微信端
+         */
+        function goWechat(msg) {
+            msg && $('#GoWechatMsg').text(msg);
+            $('#GoWechat').modal('show');
+        }
+    </script>
 </div>
-<script>
-    /**
-     * @param:msg 要提示给用户看的信息
-     * 把用户导航到微信端
-     */
-    function goWechat(msg) {
-        msg && $('#GoWechatMsg').text(msg);
-        $('#GoWechat').modal('show');
-    }
-</script>

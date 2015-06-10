@@ -1,8 +1,9 @@
-<!--图书列表-->
+<!--图书列表:hbs-->
 <!--hbs:bookInfos 图书信息列表-->
 <!--hbs:title 说明标题-->
 <!--hbs:skip 跳过了多少条-->
 <!--hbs:total 一共有多少-->
+<!--TODO 分页 排序-->
 <!DOCTYPE html>
 <html lang="zh-CN" ng-app="APP">
 <head>
@@ -26,7 +27,7 @@
         <div class="ui horizontal divider">
             <a class="ui circular button">{{title}}</a>
         </div>
-        <div class="ui equal height grid">
+        <div class="ui grid">
             <!-- 图书列表-->
             <div class="five column row">
                 {{#each bookInfos}}
