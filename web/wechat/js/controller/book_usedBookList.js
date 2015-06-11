@@ -40,4 +40,6 @@ APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, B
     IonicModalView$.registerChooseMajorModalView($scope, function (major) {
         $scope.setMajorFilter && $scope.setMajorFilter(major);
     });
+    var majorFilter = $stateParams['majorFilter'];
+    majorFilter && $scope.setMajorFilter && $scope.setMajorFilter(majorFilter);
 });

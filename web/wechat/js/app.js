@@ -33,7 +33,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.book_bookList', {
                 /**
-                 * @param:cmd 当前模式 =tag时显示一类书 =need 
+                 * @param:cmd 当前模式 =tag时显示一类书 =need
                  * 当cmd=tag 时用的表示显示哪一类型的书
                  * 当cmd=major 显示一个专业的相关书
                  * 当cmd=latest 显示最新的书
@@ -50,8 +50,9 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:cmd 当前模式 =near时显示你附近的二手书 =isbn时显示所有对应ISBN的二手书
                  * @param:isbn13 当cmd=isbn时使用
+                 * @param:majorFilter 专业筛选
                  */
-                url: '/book/usedBookList?cmd&isbn13',
+                url: '/book/usedBookList?cmd&isbn13&majorFilter',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/usedBookList.html'
@@ -205,8 +206,9 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:cmd 当前模式 =near时显示你附近的用户
                  * @param:title 当前View要显示的标题
+                 * @param:majorFilter 专业筛选限制
                  */
-                url: '/userList?cmd&title',
+                url: '/userList?cmd&title&majorFilter',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/tool/userList.html'

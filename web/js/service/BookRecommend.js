@@ -153,6 +153,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearNeedBook._majorFilter) {
+                RandomStart = 0;
                 that.NearNeedBook.needBooks.length = 0;
                 that.NearNeedBook.hasMoreFlag = true;
                 that.NearNeedBook._majorFilter = major;
@@ -203,6 +204,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearUsedBook._majorFilter) {
+                RandomStart = 0;
                 that.NearUsedBook.usedBooks.length = 0;
                 that.NearUsedBook.hasMoreFlag = true;
                 that.NearUsedBook._majorFilter = major;

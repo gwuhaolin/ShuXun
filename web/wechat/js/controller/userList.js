@@ -37,4 +37,6 @@ APP.controller('userList', function ($scope, $stateParams, UsedBook$, BookRecomm
     IonicModalView$.registerChooseMajorModalView($scope, function (major) {
         $scope.setMajorFilter(major);
     });
+    var majorFilter = $stateParams['majorFilter'];
+    majorFilter && $scope.setMajorFilter(majorFilter);
 });

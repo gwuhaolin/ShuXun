@@ -1,8 +1,4 @@
 <!--图书列表:hbs-->
-<!--hbs:bookInfos 图书信息列表-->
-<!--hbs:title 说明标题-->
-<!--hbs:skip 跳过了多少条-->
-<!--hbs:total 一共有多少-->
 <!--TODO 分页 排序-->
 <!DOCTYPE html>
 <html lang="zh-CN" ng-app="APP">
@@ -21,7 +17,7 @@
 <ng-include src="'../temp/header.html'" d-include-replace></ng-include>
 
 <!-- 主内容区-->
-<main class="ui sixteen wide column">
+<main class="ui sixteen wide column" ng-controller="d_book_bookList">
     <div class="ui grid">
 
         <div class="ui horizontal divider">
@@ -30,20 +26,15 @@
         <div class="ui grid">
             <!-- 图书列表-->
             <div class="five column row">
-                {{#each bookInfos}}
-                <div class="column">
-                    {{> oneBook bookInfo=this}}
-                </div>
-                {{/each}}
+                <d-one-book class="column" ng-repeat="bookInfo in books" book-info="bookInfo"></d-one-book>
             </div>
         </div>
 
-        <div class="sixteen wide column">
-            <!-- 排序-->
-            <div class="ui right floated buttons">
-                <a class="ui green basic button" href="bookList.html?cmd={{cmd}}&skip={{nowSkip}}&sort=price">价格</a>
-                <a class="ui green basic button" href="bookList.html?cmd={{cmd}}&wskip={{nowSkip}}&sort=location">距离</a>
-                <a class="ui green basic button">专业</a>
+        <!-- 加载更多-->
+        <div class="ui center aligned grid">
+            <div class="ui green big button"
+                 ng-if="hasMore()"
+                 ng-click="loadMore()">加载更多
             </div>
         </div>
 
@@ -85,6 +76,7 @@
 <script src="../js/controller/d_partial_NearUser.js"></script>
 <script src="../js/controller/d_topBar.js"></script>
 <script src="../js/controller/d_book_searchList.js"></script>
+<script src="../js/controller/d_book_bookList.js"></script>
 <!--Directive-->
 <script src="../js/directive/dUserInfo.js"></script>
 <script src="../js/directive/dIncludeReplace.js"></script>

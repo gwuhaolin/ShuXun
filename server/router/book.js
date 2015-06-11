@@ -26,7 +26,6 @@ router.use(AV.Cloud.CookieSession({secret: 'ishuxun', maxAge: 3600 * 24 * 30, fe
 router.get('/bookList.html', function (req, res, next) {
     var skip = req.query.skip || 0;
     var cmd = req.query.cmd;
-    var sort = req.query.sort;
     var limit = 20;//默认加载20条
     if (cmd == 'tag') {
         var tag = req.query.tag;
