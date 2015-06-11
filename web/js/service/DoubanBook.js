@@ -53,12 +53,13 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
      * @param keyword 查询关键字 keyword和tag必传其一
      * @param start 取结果的offset 默认为0
      * @param count 取结果的条数 默认为20，最大为100
-     * @param callback [json]
+     * @return {AV.Promise} 返回豆瓣图书json
      */
-    this.searchBooks = function (keyword, start, count, callback) {
+    this.searchBooks = function (keyword, start, count) {
+        var rePromise = new AV.Promise(null);
         var url = baseUri + '/search';
         if (keyword && keyword.length < 1) {
-            return [];
+            rePromise.resolve([]);
         }
         url += '?q=' + keyword;
         if (start) {
@@ -69,8 +70,11 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
         }
         url += '&fields=isbn13,title,image,author,publisher,pubdate,price';
         jsonp(url, function (json) {
-            callback(json);
+            rePromise.resolve(json);
+        }, function (err) {
+            rePromise.reject(err);
         });
+        return rePromise;
     };
 
     /**

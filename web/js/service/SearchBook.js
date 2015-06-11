@@ -35,19 +35,22 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
      * 加载更多到books
      */
     this.loadMore = function () {
+        that.isLoading = true;
         if (that.keyword.length > 0) {
-            DoubanBook$.searchBooks(that.keyword, that.books.length, 10, function (json) {
+            DoubanBook$.searchBooks(that.keyword, that.books.length, 10).done(function (json) {
                 that.totalNum = json['total'];
                 if (that.totalNum > 0) {
                     var booksJSON = json['books'];
                     for (var i = 0; i < booksJSON.length; i++) {
                         that.books.push(Model.BookInfo.new(booksJSON[i]));
                     }
-                    $rootScope.$apply();
-                    $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 } else {
                     alert('没有找到你想要的图书');
                 }
+            }).always(function () {
+                that.isLoading = false;
+                $rootScope.$apply();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
     };
@@ -80,9 +83,11 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
      * 去BookInfo表里全文搜索,把搜索到的结果加载到最前面
      */
     this.loadFromBookInfo = function () {
+        that.isLoading = true;
         BookInfo$.searchBook(that.keyword).done(function (bookInfos) {
             that.books.unshiftArray(bookInfos);
             that.totalNum += bookInfos.length;
+            that.isLoading = false;
             $rootScope.$apply();
             $rootScope.$broadcast('scroll.infiniteScrollComplete');
         })

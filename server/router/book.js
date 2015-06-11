@@ -26,6 +26,7 @@ router.use(AV.Cloud.CookieSession({secret: 'ishuxun', maxAge: 3600 * 24 * 30, fe
 router.get('/bookList.html', function (req, res, next) {
     var skip = req.query.skip || 0;
     var cmd = req.query.cmd;
+    var sort = req.query.sort;
     var limit = 20;//默认加载20条
     if (cmd == 'tag') {
         var tag = req.query.tag;
@@ -66,8 +67,20 @@ router.get('/bookList.html', function (req, res, next) {
         var re = RouterUtil.genDataWithDefaultMeta(seoString);
         re.bookInfos = bookInfos;
         re.title = title;
-        re.skip = skip;
-        re.total = total;
+        re.cmd = cmd;
+        //用于分页显示
+        re.page = {
+            nowSkip: skip,
+            preSkip: skip - limit,
+            nextSkip: skip + limit,
+            skipList: []
+        };
+        if (re.page.preSkip < 0) {
+            re.page.preSkip = 0;
+        }
+        for (var i = 0; i < total; i += limit) {
+            re.page.skipList.push(i);
+        }
         res.render('book/bookList.html', re);
     }
 });

@@ -39,26 +39,11 @@
         </div>
 
         <div class="sixteen wide column">
-            <!-- 分页-->
-            <div class="ui pagination left floated menu">
-                <a class="item">
-                    <i class="left arrow icon"></i>
-                </a>
-                <a class="active item">1</a>
-                <a class="item">2</a>
-                <a class="item">3</a>
-                <a class="item">4</a>
-                <a class="item">5</a>
-                <a class="item">6</a>
-                <a class="item">
-                    <i class="icon right arrow"></i>
-                </a>
-            </div>
             <!-- 排序-->
             <div class="ui right floated buttons">
-                <div class="ui green basic button">价格</div>
-                <div class="ui green basic button">距离</div>
-                <div class="ui green basic button">专业</div>
+                <a class="ui green basic button" href="bookList.html?cmd={{cmd}}&skip={{nowSkip}}&sort=price">价格</a>
+                <a class="ui green basic button" href="bookList.html?cmd={{cmd}}&wskip={{nowSkip}}&sort=location">距离</a>
+                <a class="ui green basic button">专业</a>
             </div>
         </div>
 

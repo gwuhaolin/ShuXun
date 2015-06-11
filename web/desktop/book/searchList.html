@@ -1,5 +1,4 @@
 <!--图书搜索:angular-->
-<!--TODO 不会loadMore-->
 <!DOCTYPE html>
 <html lang="zh-CN" ng-app="APP">
 <head>
@@ -40,9 +39,10 @@
         </div>
 
         <!-- 加载更多-->
-        <div class="sixteen wide column">
-            <div class="ui active large centered inline text loader" id="loadMoreInfiniteScroll"
-                 ng-if="SearchBook$.hasMore()">
+        <div class="ui center aligned grid">
+            <div class="ui green big button" ng-class="{loading:SearchBook$.isLoading}"
+                 ng-if="SearchBook$.hasMore()"
+                 ng-click="SearchBook$.loadMore()">加载更多
             </div>
         </div>
 
@@ -89,17 +89,5 @@
 <script src="../js/directive/dIncludeReplace.js"></script>
 <script src="../js/directive/dOneBook.js"></script>
 <!-- endbuild -->
-<script>
-    $(document).ready(function () {
-        //加载更多
-        $('#loadMoreInfiniteScroll').visibility({
-            onBottomVisible: function () {
-                var injector = angular.element(document).injector();
-                var SearchBook$ = injector.get('SearchBook$');
-                SearchBook$.loadMore();
-            }
-        });
-    });
-</script>
 </body>
 </html>
