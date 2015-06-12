@@ -148,6 +148,23 @@ exports.spiderDoubanBookReview = function (doubanBookId, start) {
 };
 
 /**
+ * 简化豆瓣直接返回的json
+ * 1.把id属性改名为doubanId
+ * 2.把tags属性里的每一条属性{"count":8039,"name":"余华","title":"余华"} 中的title属性删除掉
+ * @param doubanJson
+ */
+function simplifyDoubanBookJson(doubanJson) {
+    doubanJson.doubanId = doubanJson.id;
+    delete doubanJson.id;
+    if (doubanJson.tags) {
+        _.each(doubanJson.tags, function (one) {
+            delete one.title;
+        })
+    }
+    return doubanJson;
+}
+
+/**
  * 获得对应isbn的图书的所有字段的信息
  * @param isbn
  * @returns {AV.Promise} 返回兼容BookInfo表的json格式图书信息
@@ -163,9 +180,7 @@ exports.spiderBookByISBN = function (isbn) {
             if (err) {
                 rePromise.reject(err);
             } else {
-                res.body.doubanId = res.body.id;
-                delete  res.body.id;
-                rePromise.resolve(res.body);
+                rePromise.resolve(simplifyDoubanBookJson(res.body));
             }
         });
     return rePromise;
@@ -187,9 +202,7 @@ exports.spiderBookByDoubanId = function (doubanId) {
             if (err) {
                 rePromise.reject(err);
             } else {
-                res.body.doubanId = res.body.id;
-                delete  res.body.id;
-                rePromise.resolve(res.body);
+                rePromise.resolve(simplifyDoubanBookJson(res.body));
             }
         });
     return rePromise;
@@ -311,7 +324,11 @@ exports.searchBooks = function (keyword, tag, start, count, fields) {
             if (err) {
                 rePromise.reject(err);
             } else {
-                rePromise.resolve(res.body);
+                if (res.ok) {
+                    rePromise.resolve(res.body);
+                } else {
+                    rePromise.reject(res.body);
+                }
             }
         });
     return rePromise;

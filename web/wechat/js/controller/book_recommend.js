@@ -22,13 +22,12 @@ APP.controller('book_recommend', function ($scope, $state, $stateParams, $ionicM
             BookRecommend$.NearNeedBook.unshiftMajorBook();
             BookRecommend$.NearUser.unshiftMajorUser();
         }
-        BookRecommend$.NearUser.loadMore();
-        BookRecommend$.BookTag.load();
-        $scope.LatestBook.loadMore();
-        BookRecommend$.NearUsedBook.loadMore();
-        BookRecommend$.NearNeedBook.loadMore();
     }
-
+    BookRecommend$.NearUser.loadMore();
+    BookRecommend$.BookTag.load();
+    $scope.LatestBook.loadMore();
+    BookRecommend$.NearUsedBook.loadMore();
+    BookRecommend$.NearNeedBook.loadMore();
     $ionicModal.fromTemplateUrl('template/bookTags.html', {
         scope: $scope
     }).then(function (modal) {

@@ -35,7 +35,7 @@
         </div>
 
         <div class="card" ng-if="cmd=='reviewUsedBook'"
-             ng-repeat="status in statusList">
+             collection-repeat="status in statusList">
             <ion-item>
                 <p style="white-space: pre-wrap">{{status.attributes.message}}</p>
                 <button style="float:right;"

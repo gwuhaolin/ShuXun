@@ -4,7 +4,7 @@
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
     <ion-content>
-        <ion-item ng-repeat="one in BookReview.reviewList" class="item-avatar">
+        <ion-item collection-repeat="one in BookReview.reviewList" class="item-avatar">
             <img ng-src="{{one.avatarUrl}}">
 
             <h3>{{one.title}}</h3>

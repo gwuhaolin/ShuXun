@@ -17,7 +17,7 @@
                 取消专业限制
             </a>
         </div>
-        <div class="card" ng-repeat="one in users | orderBy:sortWay:true">
+        <div class="card" collection-repeat="one in users | orderBy:sortWay:true">
             <user-info user="one"></user-info>
         </div>
         <ion-infinite-scroll ng-if="hasMore()"
