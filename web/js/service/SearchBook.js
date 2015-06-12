@@ -85,7 +85,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
     this.loadFromBookInfo = function () {
         that.isLoading = true;
         BookInfo$.searchBook(that.keyword).done(function (bookInfos) {
-            that.books.unshiftArray(bookInfos);
+            that.books.unshiftUniqueArray(bookInfos);
             that.totalNum += bookInfos.length;
             that.isLoading = false;
             $rootScope.$apply();

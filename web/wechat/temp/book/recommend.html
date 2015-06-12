@@ -1,4 +1,4 @@
-<ion-view ng-controller="book_recommend" view-title="书循">
+<ion-view ng-controller="book_recommend" view-title="{{major ? major : '书循'}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
@@ -60,14 +60,22 @@
             <used-book-one-line book-infos="BookRecommend$.NearNeedBook.needBooks"></used-book-one-line>
         </div>
         <!-- 根据专业推荐的书-->
-        <div ng-if="BookRecommend$.MajorBook.books.length>0">
-            <ion-item class="item-divider item-button-right">{{BookRecommend$.MajorBook.major}}
+        <div ng-if="BookRecommend$.TagBook.books.length>0">
+            <ion-item class="item-divider item-button-right">{{major}}专业推荐读物
                 <button class="button button-small button-clear button-balanced" style="top: 0"
-                        ui-sref="tab.book_bookList({cmd:'major'})">更多
+                        ui-sref="tab.book_bookList({cmd:'tag',tag:major})">更多
                 </button>
             </ion-item>
-            <douban-book-one-line books="BookRecommend$.MajorBook.books"></douban-book-one-line>
+            <douban-book-one-line books="BookRecommend$.TagBook.books"></douban-book-one-line>
         </div>
+
+        <ion-item class="item-icon-right" ng-click="chooseMajorModalView.show()">
+            去其他专业看看<i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
+
+        <ion-item class="item-icon-right" ng-if="major" ui-sref="tab.book_recommend({major:null})">
+            看所有专业的书<i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
     </ion-content>
 
     <!-- 图书所有分类-->

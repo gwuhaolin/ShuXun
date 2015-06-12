@@ -15,7 +15,10 @@ var APP = angular.module('APP', ['ionic'], null)
         })
             //tab-book
             .state('tab.book_recommend', {
-                url: '/book/recommend',
+                /**
+                 * @param:major 所有模块专门显示这个专业的书
+                 */
+                url: '/book/recommend?major',
                 views: {
                     'tab-book': {
                         templateUrl: 'temp/book/recommend.html'

@@ -39,7 +39,11 @@ APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, B
     //按照专业筛选
     IonicModalView$.registerChooseMajorModalView($scope, function (major) {
         $scope.setMajorFilter && $scope.setMajorFilter(major);
+        $scope.title += '-' + major;
     });
     var majorFilter = $stateParams['majorFilter'];
-    majorFilter && $scope.setMajorFilter && $scope.setMajorFilter(majorFilter);
+    if (majorFilter && $scope.setMajorFilter) {
+        $scope.setMajorFilter(majorFilter);
+        $scope.title += '-' + $scope.getMajorFilter();
+    }
 });

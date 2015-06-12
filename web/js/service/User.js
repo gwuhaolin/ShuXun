@@ -73,7 +73,7 @@ APP.service('User$', function ($rootScope, Status$) {
                     for (var i = 0; i < followees.length; i++) {
                         followees[i].avatarUrlWithSize = Model.User.prototype.avatarUrlWithSize;
                     }
-                    that.Followee.users.pushArray(followees);
+                    that.Followee.users.pushUniqueArray(followees);
                 } else {
                     that.Followee.hasMoreFlag = false;
                 }
@@ -117,7 +117,7 @@ APP.service('User$', function ($rootScope, Status$) {
                     for (var i = 0; i < followers.length; i++) {
                         followers[i].avatarUrlWithSize = Model.User.prototype.avatarUrlWithSize;
                     }
-                    that.Follower.users.pushArray(followers);
+                    that.Follower.users.pushUniqueArray(followers);
                 } else {
                     that.Follower.hasMoreFlag = false;
                 }

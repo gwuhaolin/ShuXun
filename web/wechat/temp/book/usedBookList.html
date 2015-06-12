@@ -9,7 +9,7 @@
                ng-class="{'button-balanced':sortWay=='attributes.price'}">图书价格</a>
             <a class="button button-small " ng-click="sortWay='attributes.location'"
                ng-class="{'button-balanced':sortWay=='attributes.location'}">离你距离</a>
-            <a class="button button-small" ng-class="{'button-balanced':getMajorFilter()}"
+            <a class="button button-small" ng-if="setMajorFilter" ng-class="{'button-balanced':getMajorFilter()}"
                ng-click="chooseMajorModalView.show()">
                 {{getMajorFilter() ? getMajorFilter() :'主人专业'}}
             </a>

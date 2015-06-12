@@ -50,7 +50,7 @@ APP.service('UsedBook$', function ($rootScope) {
         query.descending('updatedAt');
         query.find().done(function (avosUsedBooks) {
             that.myUsedBookList.length = 0;
-            that.myUsedBookList.pushArray(avosUsedBooks);
+            that.myUsedBookList.pushUniqueArray(avosUsedBooks);
         }).always(function () {
             that.isLoading = false;
             $rootScope.$apply();
@@ -72,7 +72,7 @@ APP.service('UsedBook$', function ($rootScope) {
         query.descending('updatedAt');
         query.find().done(function (avosUsedBooks) {
             that.myNeedBookList.length = 0;
-            that.myNeedBookList.pushArray(avosUsedBooks);
+            that.myNeedBookList.pushUniqueArray(avosUsedBooks);
         }).always(function () {
             that.isLoading = false;
             $rootScope.$apply();
@@ -140,7 +140,7 @@ APP.service('UsedBook$', function ($rootScope) {
             query.include('owner');
             query.find().done(function (usedBooks) {
                 if (usedBooks.length > 0) {
-                    that.ISBN_sell.nowEqualISBNUsedBooks.pushArray(usedBooks);
+                    that.ISBN_sell.nowEqualISBNUsedBooks.pushUniqueArray(usedBooks);
                 } else {
                     that.ISBN_sell.hasMoreFlag = false;
                 }
@@ -198,7 +198,7 @@ APP.service('UsedBook$', function ($rootScope) {
             query.include('owner');
             query.find().done(function (usedBooks) {
                 if (usedBooks.length > 0) {
-                    that.ISBN_need.nowEqualISBNNeedBooks.pushArray(usedBooks);
+                    that.ISBN_need.nowEqualISBNNeedBooks.pushUniqueArray(usedBooks);
                 } else {
                     that.ISBN_need.hasMoreFlag = false;
                 }

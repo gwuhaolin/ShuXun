@@ -15,12 +15,6 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.books = BookRecommend$.TagBook.books;
         $scope.loadMore = BookRecommend$.TagBook.loadMore;
         $scope.hasMore = BookRecommend$.TagBook.hasMore;
-    } else if (cmd == 'major') {
-        $scope.books = BookRecommend$.MajorBook.books;
-        $scope.loadMore = BookRecommend$.MajorBook.loadMore;
-        $scope.title = BookRecommend$.MajorBook.major;
-        $scope.hasMore = BookRecommend$.MajorBook.hasMore;
-        BookRecommend$.MajorBook.loadFromBookInfo();
     } else if (cmd == 'latest') {
         $scope.books = BookInfo$.LatestBook.books;
         $scope.loadMore = BookInfo$.LatestBook.loadMore;

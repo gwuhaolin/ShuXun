@@ -19,21 +19,41 @@ var RandomStart = (new Date().getDay()) * Math.floor(Math.random() * 10);//随�
 
 /**
  * 把一个数组push到一个数组后面,会直接改变原数组
+ * 对于AV.Object数组不会把相同的元素加入进去
  * @param array
  */
-Array.prototype.pushArray = function (array) {
-    for (var i = 0; i < array.length; i++) {
-        this.push(array[i]);
-    }
+Array.prototype.pushUniqueArray = function (array) {
+    var that = this;
+    AV._.each(array, function (newOne) {
+        if (newOne instanceof AV.Object) {
+            if (AV._.find(that, function (existOne) {
+                    return existOne.id == newOne.id;
+                }) === undefined) {
+                that.push(newOne);
+            }
+        } else {
+            that.push(newOne);
+        }
+    });
 };
 /**
  * 把一个数组unshift到一个数组后面,会直接改变原数组
+ * 对于AV.Object数组不会把相同的元素加入进去
  * @param array
  */
-Array.prototype.unshiftArray = function (array) {
-    for (var i = 0; i < array.length; i++) {
-        this.unshift(array[i]);
-    }
+Array.prototype.unshiftUniqueArray = function (array) {
+    var that = this;
+    AV._.each(array, function (newOne) {
+        if (newOne instanceof AV.Object) {
+            if (AV._.find(that, function (existOne) {
+                    return existOne.id == newOne.id;
+                }) === undefined) {
+                that.unshift(newOne);
+            }
+        } else {
+            that.unshift(newOne);
+        }
+    });
 };
 
 /**

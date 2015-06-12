@@ -19,13 +19,13 @@
 <main class="ui twelve wide column" ng-controller="d_book_recommend">
     <div class="ui grid">
 
-        <div class="ui horizontal divider" ng-if="BookInfo$.LatestBook.books.length>0">
+        <div class="ui horizontal divider" ng-if="LatestBook.books.length>0">
             <a class="ui circular blue button" ng-href="bookList.html?cmd=latest">新书速递</a>
         </div>
         <div class="ui grid">
             <!-- 图书列表-->
             <div class="four column row">
-                <d-one-book class="column" ng-repeat="bookInfo in BookInfo$.LatestBook.books.slice(0,8)"
+                <d-one-book class="column" ng-repeat="bookInfo in LatestBook.books.slice(0,8)"
                             book-info="bookInfo"></d-one-book>
             </div>
         </div>
@@ -56,13 +56,13 @@
             </div>
         </div>
 
-        <div class="ui horizontal divider" ng-if="BookRecommend$.MajorBook.books.length>0">
-            <a class="ui circular blue button" ng-href="bookList.html?cmd=tag&tag={{BookRecommend$.MajorBook.major}}">{{BookRecommend$.MajorBook.major}}</a>
+        <div class="ui horizontal divider" ng-if="BookRecommend$.TagBook.books.length>0">
+            <a class="ui circular blue button" ng-href="bookList.html?cmd=tag&tag={{major}}">{{major}}</a>
         </div>
-        <div class="ui grid" ng-if="BookRecommend$.MajorBook.books.length>0">
+        <div class="ui grid" ng-if="BookRecommend$.TagBook.books.length>0">
             <!-- 图书列表-->
             <div class="four column row">
-                <d-one-book class="column" ng-repeat="bookInfo in BookRecommend$.MajorBook.books.slice(0,8)"
+                <d-one-book class="column" ng-repeat="bookInfo in BookRecommend$.TagBook.books.slice(0,8)"
                             book-info="bookInfo"></d-one-book>
             </div>
         </div>

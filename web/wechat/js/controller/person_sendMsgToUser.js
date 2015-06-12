@@ -43,7 +43,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
         var query = Status$.makeQueryStatusList_twoUser(receiverObjectId, $scope.msg.usedBookObjectId);
         query.skip($scope.statusList.length);
         query.find().done(function (statusList) {
-            $scope.statusList.pushArray(statusList);
+            $scope.statusList.pushUniqueArray(statusList);
             $ionicScrollDelegate.scrollBottom(true);
             $scope.$apply();
         });

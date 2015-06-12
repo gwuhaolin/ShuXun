@@ -33,7 +33,7 @@ APP.service('BookInfo$', function ($rootScope) {
             query.limit(LoadCount);
             query.find().done(function (bookInfos) {
                 if (bookInfos.length > 0) {
-                    that.LatestBook.books.pushArray(bookInfos);
+                    that.LatestBook.books.pushUniqueArray(bookInfos);
                 } else {
                     that.LatestBook.hasMoreFlag = false;
                 }
