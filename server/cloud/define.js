@@ -9,12 +9,24 @@ var LBS = require('../util/lbs.js');
 var Info = require('../util/info.js');
 var DoubanBook = require('../book/doubanBook.js');
 var BookInfo = require('../book/bookInfo.js');
+var DataRepair = require('../util/dataRepair.js');
 
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
  */
 AV.Cloud.define('spiderAndSaveLatestBooks', function (req, res) {
     DoubanBook.spiderAndSaveLatestBooks();
+    res.success();
+});
+
+/**
+ * 数据修复
+ */
+AV.Cloud.define('repairData', function (req, res) {
+    DataRepair.fillUsedBookInfoWhereInfoIsNull();
+    DataRepair.updateBookInfoUsedBooksRelation();
+    DataRepair.updateBookInfoWhereTagsAndRatingIsNull();
+    DataRepair.updateNoDoubanIdBookInfoFromDouban();
     res.success();
 });
 

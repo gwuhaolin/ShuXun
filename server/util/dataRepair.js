@@ -31,7 +31,7 @@ exports.fillUsedBookInfoWhereInfoIsNull = function () {
                 _.each(avosUsedBookList, function (avosUsedBook, index) {
                     setTimeout(function () {
                         BookInfo.fillUsedBookInfo(avosUsedBook).done(function (avosUsedBook) {
-                            console.log(avosUsedBook);
+                            //console.log(avosUsedBook);
                         }).fail(function (err) {
                             console.error(err);
                         });
@@ -72,7 +72,7 @@ exports.updateBookInfoUsedBooksRelation = function () {
             avosBookInfo.relation('usedBooks').add(avosUsedBookList);
             if (avosUsedBookList.length > 0) {
                 avosBookInfo.save().done(function (avosBookInfo) {
-                    console.log(avosBookInfo);
+                    //console.log(avosBookInfo);
                 }).fail(function (err) {
                     console.error(err);
                 });
@@ -99,7 +99,7 @@ exports.updateNoDoubanIdBookInfoFromDouban = function () {
                         var isbn13 = avosBookInfo.get('isbn13');
                         DoubanBook.spiderBookByISBN(isbn13).done(function (jsonBookInfo) {
                             BookInfo.updateAvosBookInfo(avosBookInfo, jsonBookInfo).done(function (avosBookInfo) {
-                                console.log(avosBookInfo);
+                                //console.log(avosBookInfo);
                             }).fail(function (err) {
                                 console.error(err);
                             });
@@ -134,7 +134,7 @@ exports.updateBookInfoWhereTagsAndRatingIsNull = function () {
                         var isbn13 = avosBookInfo.get('isbn13');
                         BookInfo.spiderBookInfo(isbn13).done(function (jsonBookInfo) {
                             BookInfo.updateAvosBookInfo(avosBookInfo, jsonBookInfo).done(function (avosBookInfo) {
-                                console.log(avosBookInfo);
+                                //console.log(avosBookInfo);
                             }).fail(function (err) {
                                 console.error(err);
                             });
