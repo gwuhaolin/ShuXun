@@ -1,6 +1,8 @@
 /**
  * Created by wuhaolin on 6/7/15.
  */
+var Util = require('../util.js');
+Util.initAVOS();
 var DataRepair = require('../../server/util/dataRepair.js');
 
 describe.skip('util/dataRepair.js', function () {

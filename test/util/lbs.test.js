@@ -2,7 +2,6 @@
  * Created by wuhaolin on 6/1/15.
  */
 var assert = require('assert');
-var _ = require('underscore');
 var lbs = require('../../server/util/lbs.js');
 
 describe('util/lbs.js', function () {

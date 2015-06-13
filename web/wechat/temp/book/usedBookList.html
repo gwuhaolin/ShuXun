@@ -1,6 +1,6 @@
 <ion-view ng-controller="book_usedBookList" view-title="{{title}}">
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+        <button class="button button-clear button-balanced" ui-sref="tab.book_recommend">书循</button>
     </ion-nav-buttons>
     <ion-content>
         <!-- 排序方式-->
@@ -14,7 +14,7 @@
                 {{getMajorFilter() ? getMajorFilter() :'主人专业'}}
             </a>
             <a class="button button-small button-energized" ng-click="setMajorFilter()" ng-if="getMajorFilter()">
-                取消专业限制
+                取消限制
             </a>
         </div>
         <ion-list>

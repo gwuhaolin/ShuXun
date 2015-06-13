@@ -16,13 +16,16 @@ APP.controller('book_recommend', function ($scope, $state, $stateParams, $ionicM
             BookRecommend$.NearNeedBook.setMajorFilter($scope.major);
             BookRecommend$.NearUser.setMajorFilter($scope.major);
             BookRecommend$.TagBook.setTag($scope.major);
-            BookRecommend$.TagBook.loadMore();
         } else {
             BookRecommend$.NearUsedBook.unshiftMajorBook();
             BookRecommend$.NearNeedBook.unshiftMajorBook();
             BookRecommend$.NearUser.unshiftMajorUser();
+            var me = AV.User.current();
+            me && BookRecommend$.TagBook.setTag(me.get('major'));
         }
+        BookRecommend$.TagBook.loadMore();
     }
+
     BookRecommend$.NearUser.loadMore();
     BookRecommend$.BookTag.load();
     $scope.LatestBook.loadMore();

@@ -22,6 +22,10 @@ AV.Cloud.afterSave('UsedBook', function (req) {
     //设置用户的二手书的relations
     user.relation('usedBooks').add(usedBook);
     user.save();
+    //对接图书信息
+    BookInfo.fillUsedBookInfo(usedBook).fail(function (err) {
+        console.error(err);
+    });
     //给用户的粉丝发送状态
     var status = new AV.Status(null, usedBook.get('des'));
     status.set('usedBook', usedBook);
@@ -31,8 +35,6 @@ AV.Cloud.afterSave('UsedBook', function (req) {
         status.inboxType = 'newNeedBook';
     }
     AV.Status.sendStatusToFollowers(status, null);
-    //对接图书信息
-    BookInfo.fillUsedBookInfo(usedBook);
 });
 AV.Cloud.beforeDelete('UsedBook', function (req, res) {
     //把当前usedBook从主人的relations的usedBooks属性中移除
