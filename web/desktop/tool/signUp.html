@@ -25,7 +25,6 @@
         <!-- 主人信息-->
         <div class="sixteen wide center aligned column">
             <div class="ui center aligned icon header">
-                <!-- TODO 居中显示-->
                 <img class="ui circular image" ng-src="{{userInfo.avatarUrl}}">
                 <em>{{userInfo.nickName}}</em>
                 <em>
@@ -68,7 +67,7 @@
             <!-- 关注书循-->
             <div class="ui center aligned segment" ng-if="step=='subscribe'">
                 <button class="ui big green button" ng-click="step='info'">关注好了</button>
-                <img class="ui image" src="../../img/QRCode.png">
+                <img class="ui centered image" src="../../img/QRCode.png">
                 <h5>使用微信扫描二维码或加书循微信号<strong>ishuxun</strong></h5>
             </div>
 

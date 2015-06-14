@@ -153,9 +153,9 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             var query = _buildUsedBookQuery('sell', that.NearUsedBook._majorFilter);
             query.skip(that.NearUsedBook.usedBooks.length + RandomStart);
             query.limit(LoadCount);
-            query.find().done(function (needBooks) {
-                if (needBooks.length > 0) {
-                    that.NearUsedBook.usedBooks.pushUniqueArray(needBooks);
+            query.find().done(function (usedBooks) {
+                if (usedBooks.length > 0) {
+                    that.NearUsedBook.usedBooks.pushUniqueArray(usedBooks);
                 } else {
                     that.NearUsedBook.hasMoreFlag = false;
                 }
