@@ -16,7 +16,7 @@ var clean = require('gulp-clean');
 function CDN(cdn) {
     var CDNLib = {
         'jQuery-js': 'http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
-        'Avos-js': 'http://7xj22a.com1.z0.glb.clouddn.com/avos/av-mini.js',
+        'Avos-js': 'https://cdn1.lncld.net/static/js/av-core-mini-0.5.4.js',
         'Semantic-js': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
         'Semantic-css': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.css',
         'Ionic-css': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',
