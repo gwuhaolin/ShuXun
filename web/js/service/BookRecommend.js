@@ -20,8 +20,8 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             });
         },
         getTagAttrNames: function () {
-            if (that['BookTag']['tag']) {
-                return Object.keys(that['BookTag']['tag']);
+            if (that.BookTag.tag) {
+                return Object.keys(that.BookTag.tag);
             }
             return [];
         }
