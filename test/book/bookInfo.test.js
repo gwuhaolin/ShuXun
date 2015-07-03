@@ -81,13 +81,13 @@ describe('book/bookInfo.js', function () {
 
         it('得到最新的图书列表', function (done) {
             this.timeout(100000);
-            var attrNames = bookInfo.BookInfoAttrName;
+            var attrNames = ['doubanId', 'isbn13', 'title'];
             var limit = 1;
             bookInfo.getLatestBooks(0, limit).done(function (bookInfos) {
                 assert(bookInfos.length == limit, '获得指定数量的信息');
                 _.each(bookInfos, function (bookInfo) {
                     _.each(attrNames, function (key) {
-                        assert(bookInfo.get(key), '要包含' + key + '属性');
+                        assert(bookInfo.get(key), bookInfo.get('isbn13') + '要包含' + key + '属性');
                     });
                 });
                 done();

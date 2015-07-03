@@ -11,7 +11,7 @@ var InitiativeRecommend = require('../../server/util/initiativeRecommend.js');
 
 var major = '计算机科学与技术';
 
-describe.skip('util/initiativeRecommend.js', function () {
+describe('util/initiativeRecommend.js', function () {
 
     describe('#getAllUserCountEqualMajor', function () {
         it('获得所有对应专业的用户的数量', function (done) {
@@ -129,7 +129,7 @@ describe.skip('util/initiativeRecommend.js', function () {
         });
     });
 
-    describe.only('调用initiativeRecommendToOneUser给所有用户发模板消息推送', function () {
+    describe.skip('调用initiativeRecommendToOneUser给所有用户发模板消息推送', function () {
         it('', function (done) {
             this.timeout(10000000);
             var query = new AV.Query(Model.User);

@@ -2,13 +2,14 @@
   "name": "ShuXun",
   "version": "1.9.0",
   "description": "书循－最便捷的大学生二手书交易平台",
-  "main": "server.js",
+  "homepage": "http://ishuxun.cn",
   "author": "WuHaolin",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:gwuhaolin/ShuXun.git"
   },
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "mocha --recursive test/"
