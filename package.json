@@ -1,10 +1,14 @@
 {
-  "name": "HelloAngular",
-  "version": "1.0.0",
-  "description": "test angular",
-  "main": "index.js",
+  "name": "ShuXun",
+  "version": "1.9.0",
+  "description": "书循－最便捷的大学生二手书交易平台",
+  "main": "server.js",
   "author": "WuHaolin",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:gwuhaolin/ShuXun.git"
+  },
   "scripts": {
     "start": "node server.js",
     "test": "mocha --recursive test/"
@@ -18,7 +22,8 @@
     "gulp-html-replace": "^1.4.5",
     "gulp-htmlmin": "^1.1.1",
     "gulp-ng-annotate": "^0.5.2",
-    "gulp-uglify": "^1.2.0"
+    "gulp-uglify": "^1.2.0",
+    "mocha": "^2.2.5"
   },
   "dependencies": {
     "cheerio": "^0.19.0",
