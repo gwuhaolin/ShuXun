@@ -41,6 +41,11 @@ function configSemantic() {
         on: 'click',
         position: 'bottom left'
     });
+    $('.commonUsedBookDesWordsInput').popup({
+        inline: true,
+        on: 'click',
+        position: 'top left'
+    });
     //星星
     $('.ui.rating').rating();
 }

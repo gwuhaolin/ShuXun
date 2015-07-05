@@ -8,14 +8,11 @@
     <small>还地球一片绿色</small>
 </div>
 
-<div class="ui modal" id="GoWechat">
-    <i class="close icon"></i>
+<div class="ui small modal" id="GoWechat">
 
     <div class="header" id="GoWechatMsg">书循微信端</div>
-    <div class="content">
-        <div class="ui centered image">
-            <img src="../../img/QRCode.png">
-        </div>
+    <div class="image content">
+        <img class="ui centered medium image" src="../../img/QRCode.png">
     </div>
     <script>
         /**
@@ -24,7 +21,9 @@
          */
         function goWechat(msg) {
             msg && $('#GoWechatMsg').text(msg);
-            $('#GoWechat').modal('show');
+            $('#GoWechat').modal({
+                blurring: true
+            }).modal('show');
         }
     </script>
 </div>

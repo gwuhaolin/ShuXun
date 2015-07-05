@@ -19,8 +19,7 @@
 <main class="ui sixteen wide column" ng-controller="d_person_uploadOneUsedBook" ng-init="role='sell'">
     <div class="ui center aligned grid">
 
-        <!-- 图书信息 TODO 居中显示-->
-        <div class="ui centered row" ng-if="bookInfo">
+        <div class="ui centered four column row" ng-if="bookInfo">
             <d-one-book class="column" book-info="bookInfo"></d-one-book>
         </div>
 
@@ -68,14 +67,14 @@
                         </div>
                         <div class="field">
                             <label>描述</label>
-                            <input class="hasPubInfoPopupBook" type="text" ng-model="usedBookInfo.des"
+                            <input class="commonUsedBookDesWordsInput" type="text" ng-model="usedBookInfo.des"
                                    placeholder="对这本书你还有什么想说的吗?">
 
                             <div class="ui popup">
                                 <div class="ui top attached label">常用描述内容</div>
                                 <div class="ui green button" style="margin: 3px"
                                      ng-repeat="word in InfoService$.commonUsedBookDesWords"
-                                     ng-click="usedBookInfo.des=word">{{word}}
+                                     ng-click="usedBookInfo.des=usedBookInfo.des+' '+word">{{word}}
                                 </div>
                             </div>
                         </div>
