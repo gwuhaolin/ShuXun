@@ -26,10 +26,6 @@ APP.run(function (User$) {
 function configSemantic() {
     //下拉菜单
     $('.ui.dropdown').dropdown();
-    //图书搜索框
-    $('.ui.search').search({
-        type: 'category'
-    });
     //图书popup出版信息
     $('.hasPubInfoPopupBook').popup({
         inline: true
@@ -37,7 +33,13 @@ function configSemantic() {
     //配置顶部搜索框
     $('#topSearchInputCon').popup({
         inline: true,
-        on: 'click'
+        on: 'click',
+        position: 'bottom right'
+    });
+    $('#bookCategoryBtn').popup({
+        inline: true,
+        on: 'click',
+        position: 'bottom left'
     });
     //星星
     $('.ui.rating').rating();

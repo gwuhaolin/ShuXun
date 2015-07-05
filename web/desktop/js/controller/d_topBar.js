@@ -1,7 +1,9 @@
 /**
  * Created by wuhaolin on 5/31/15.
  */
-APP.controller('d_topBar', function ($scope, SearchBook$, Status$) {
+APP.controller('d_topBar', function ($scope, SearchBook$, Status$, BookRecommend$) {
+    $scope.BookRecommend$ = BookRecommend$;
+    BookRecommend$.BookTag.load();
     $scope.Status$ = Status$;
     $scope.SearchBook$ = SearchBook$;
     //监听着UserLoginSuccess事件，如果再其它地方用户登录成功了就广播该事件，然后header就会刷新

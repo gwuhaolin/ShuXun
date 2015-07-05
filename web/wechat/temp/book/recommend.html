@@ -95,8 +95,8 @@
                             <button class="button button-small button-outline button-balanced" style="margin: 5px"
                                     ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
                                     ng-click="bookTagsModalView.hide()"
-                                    ng-repeat="tag in BookRecommend$.BookTag.tag.bigTag">
-                                {{tag}}
+                                    ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]">
+                                {{littleTag}}
                             </button>
                         </ion-item>
                     </div>
