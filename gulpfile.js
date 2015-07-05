@@ -15,14 +15,13 @@ var htmlmin = require('gulp-htmlmin');
 var clean = require('gulp-clean');
 function CDN(cdn) {
     var CDNLib = {
-        'jQuery-js': 'http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
-        'Avos-js': 'https://cdn1.lncld.net/static/js/av-core-mini-0.5.4.js',
-        'Semantic-js': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
-        'Semantic-css': 'http://7xj22a.com1.z0.glb.clouddn.com/semantic/semantic.min.css',
-        'Ionic-css': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',
-        'Ionic-js': 'http://cdn.bootcss.com/ionic/1.0.0-rc.5/js/ionic.bundle.min.js',
-        'Angular-js': 'http://cdn.bootcss.com/angular.js/1.4.0-rc.1/angular.min.js',
-        'AngularUiRouter-js': 'http://cdn.bootcss.com/angular-ui-router/0.2.15/angular-ui-router.min.js'
+        'jQuery-js': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
+        'Ionic-css': '//cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',
+        'Ionic-js': '//cdn.bootcss.com/ionic/1.0.0-rc.5/js/ionic.bundle.min.js',
+        'Angular-js': '//cdn.bootcss.com/angular.js/1.4.1/angular.min.js',
+        'Avos-js': 'https://cdn1.lncld.net/static/js/av-core-mini-0.5.5.js',
+        'Semantic-js': 'http://7xiv48.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
+        'Semantic-css': 'http://7xiv48.com1.z0.glb.clouddn.com/semantic/semantic.min.css'
     };
     return _.extend(CDNLib, cdn);
 }

@@ -192,14 +192,13 @@ APP.service('User$', function ($rootScope, Status$) {
      * 用户网页里OAuth后获取用户信息
      * @param code
      * @return {AV.Promise} 如果用户已经关注就返回和User表兼容的JSON格式的用户信息
-     * 返回 已经关注了用户的微信提供的所有信息
      */
     this.getDesktopOAuthUserInfo = function (code) {
         var rePromise = new AV.Promise(null);
         if (code) {
             AV.Cloud.run('getDesktopOAuthUserInfo', {
                 code: code
-            }, null).done(function (jsonUser) {
+            }).done(function (jsonUser) {
                 createCookie('unionId', jsonUser.username, 365);
                 rePromise.resolve(jsonUser);
             }).fail(function (err) {

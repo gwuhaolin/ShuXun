@@ -17,8 +17,8 @@
     "tests"
   ],
   "dependencies": {
-    "semantic-ui": "~1.12.3",
-    "avoscloud-sdk": ">0.5.1",
-    "ionic": ">1.0.0-rc.5"
+    "semantic-ui": ">=2.0.0",
+    "avoscloud-sdk": ">=0.5.5",
+    "ionic": ">=1.0.1"
   }
 }
