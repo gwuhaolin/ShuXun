@@ -94,7 +94,7 @@ APP.service('WeChatJS$', function ($rootScope) {
      */
     this.getOAuthURL = function () {
         var redirectUrl = location.href.split('#')[0] + '#/tab/signUp';
-        return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_base&state=#wechat_redirect';
+        return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID_WeChat + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_base&state=#wechat_redirect';
     };
 
     /**

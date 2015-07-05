@@ -56,7 +56,7 @@ AV.Cloud.define('getJsonBookByISBN13', function (req, res) {
  * 如果有latitude和longitude参数就用这两个参数更新,否则调用根据IP地址获得地理位置更新
  * @param:latitude 纬度
  * @param:longitude 经度
- * 如果更新成功就返回success,否则返回error
+ * 如果更新成功就返回更新后的json格式的user,否则返回error
  */
 AV.Cloud.define('updateMyLocation', function (req, res) {
     var latitude;
@@ -76,8 +76,8 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
         })
     }
     function updateLocation() {
-        LBS.updateUserLocation(req.user, latitude, longitude).done(function () {
-            res.success();
+        LBS.updateUserLocation(req.user, latitude, longitude).done(function (user) {
+            res.success(user);
         }).fail(function (err) {
             res.error(err);
         })
@@ -105,7 +105,20 @@ AV.Cloud.define('getWechatJsConfig', function (req, res) {
  */
 AV.Cloud.define('getWechatOAuthUserInfo', function (req, res) {
     var code = req.params.code;
-    WechatAPI.getOAuthUserInfo(code).done(function (userInfo) {
+    WechatAPI.getOAuthUserInfo_WeChat(code).done(function (userInfo) {
+        res.success(userInfo);
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
+
+/**
+ * 网页版获取用户信息 OAuth step 2
+ * @param:code 微信获取信息的凭证
+ */
+AV.Cloud.define('getDesktopOAuthUserInfo', function (req, res) {
+    var code = req.params.code;
+    WechatAPI.getOAuthUserInfo_Desktop(code).done(function (userInfo) {
         res.success(userInfo);
     }).fail(function (err) {
         res.error(err);

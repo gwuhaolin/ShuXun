@@ -43,7 +43,6 @@
 <!-- build:Avos-js -->
 <script src="../../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
 <!-- endbuild -->
-<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 
 <!-- build:Main-js -->
 <script src="../../js/util.js"></script>
@@ -71,13 +70,14 @@
 <script src="../js/directive/dOneBook.js"></script>
 <!-- endbuild -->
 
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 <script>
     //生成微信二维码
     new WxLogin({
         id: 'WechatLoginQRCodeCon',
-        appid: WECHAT.AppID,
+        appid: WECHAT.AppID_Desktop,
         scope: 'snsapi_login',
-        redirect_uri: encodeURI('http://www.ishuxun.cn/desktop/tool/signUp.html#')
+        redirect_uri: encodeURI('http://localhost:63342/ShuXun/web/desktop/tool/signUp.html')
     });
 </script>
 </body>

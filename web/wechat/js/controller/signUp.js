@@ -10,10 +10,10 @@ APP.controller('signUp', function ($scope, $timeout, $state, $stateParams, $ioni
     //调用微信接口获取用户信息
     var wechatAOuthCode = $stateParams['code'];
     var nextState = 'tab.person_my';
-    User$.getOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
+    User$.getWeChatOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
         $scope.isLoading = false;
         $scope.userInfo = userInfo;
-        User$.loginWithUnionId(userInfo.unionId).done(function () {//已经注册过
+        User$.loginWithUnionId(userInfo.username).done(function () {//已经注册过
             Status$.loadUnreadStatusesCount();//加载未读消息数量
             $state.go(nextState);
             $ionicHistory.clearHistory();

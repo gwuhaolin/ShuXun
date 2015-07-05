@@ -25,6 +25,15 @@ exports.ISBN_Illegal_13 = ['9787511721052', '9787210036945', '9787300093599', '9
 exports.ISBN_Illegal_Not13 = ['97875121052', '9210036945', '973599', '978753942971811', '97875frf39982695', '9787$&8的535479915'];
 
 /**
+ * 吴浩麟的用户信息
+ * @type {{}}
+ */
+exports.WuHaolin = {
+    openId: 'ojIHWspkCcUdlXwMGo-sgl9gYEpo',
+    unionId: 'o1ttQs_73OIWL0-qYisv4YHbGZ6w'
+};
+
+/**
  * 检测活动的图书信息是否是OK的
  * 如果不和发会抛出异常
  * @param jsonBookInfo
@@ -49,4 +58,6 @@ exports.initAVOS = function () {
     var MASTER_KEY = process.env['LC_APP_MASTER_KEY'] || '6bc7zdxg90xi909pwtikora9uq2o2zvq402m2gfmb4w7tej2';
     AV.initialize(APP_ID, APP_KEY, MASTER_KEY);
     AV.Cloud.useMasterKey();
+    AV.setProduction(false);
+    //AV.User.logIn(exports.WuHaolin.unionId, exports.WuHaolin.unionId);
 };

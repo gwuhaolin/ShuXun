@@ -5,13 +5,14 @@
 "use strict";
 //AVOSCloud
 AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08zxttpt7upqxwgt6oy47lzb3f8c4juf34otfm");
-if (window.location.host.indexOf('ishuxun.cn') < 0) {//如果网址不是ishuxun.cn就调用部署环境的元函数
+if (window.location.host.indexOf('ishuxun.cn') < 0) {//如果网址不是ishuxun.cn就调用部署环境的云函数
     AV.setProduction(false);
 }
 
 //微信公共平台
 var WECHAT = {
-    AppID: 'wx2940a8d3ddcad5e9'
+    AppID_WeChat: 'wx2940a8d3ddcad5e9',
+    AppID_Desktop: 'wxfd9e8438cef56f19'
 };
 
 var LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,默认加载慢屏幕

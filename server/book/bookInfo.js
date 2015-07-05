@@ -59,6 +59,7 @@ exports.hasISBN13Book = function (isbn13) {
  * 先去豆瓣>当当>京东
  * @param isbn13 图书的isbn13
  * @return {AV.Promise} json格式的图书信息
+ * 如果所有途径都抓去不到这个isbn13图书的信息就抛出最后的抓取异常
  */
 exports.spiderBookInfo = function (isbn13) {
     var rePromise = new AV.Promise(null);

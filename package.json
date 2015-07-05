@@ -11,6 +11,7 @@
   },
   "main": "server.js",
   "scripts": {
+    "build": "gulp",
     "start": "node server.js",
     "test": "mocha --recursive test/"
   },

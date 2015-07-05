@@ -23,14 +23,36 @@
     <div class="ui center aligned grid">
 
         <!-- 主人信息-->
-        <div class="sixteen wide center aligned column">
-            <div class="ui center aligned icon header">
-                <img class="ui circular image" ng-src="{{userInfo.avatarUrl}}">
-                <em>{{userInfo.nickName}}</em>
-                <em>
-                    <i class="icon blue man" ng-if="userInfo.sex==1"></i>
-                    <i class="icon red woman" ng-if="userInfo.sex==2"></i>
-                </em>
+        <div class="sixteen wide column" ng-if="userInfo">
+            <div class="ui big horizontal divided list">
+                <div class="item">
+                    <img class="ui avatar image" ng-src="{{userInfo.avatarUrl}}">
+
+                    <div class="content">
+                        <h1 class="header">
+                            {{userInfo.nickName}}
+                            <em>
+                                <i class="ui icon blue man" ng-if="userInfo.sex==1"></i>
+                                <i class="ui icon red woman" ng-if="userInfo.sex==2"></i>
+                            </em>
+                        </h1>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="content">
+                        <h1 class="header">{{userInfo.major}}</h1>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="content">
+                        <h1 class="header">{{userInfo.startSchoolYear}}级</h1>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="content">
+                        <h1 class="header">{{userInfo.school}}</h1>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -38,7 +60,7 @@
 
             <!-- Steps-->
             <div class="ui fluid large steps">
-                <div ng-class="{active:step=='subscribe',step:true}">
+                <div class="step" ng-class="{active:step=='subscribe'}">
                     <i class="wechat icon"></i>
 
                     <div class="content">
@@ -46,7 +68,7 @@
                         <div class="description">使用微信关注书循微信号</div>
                     </div>
                 </div>
-                <div ng-class="{active:step=='info',step:true}">
+                <div class="step" ng-class="{active:step=='info'}">
                     <i class="payment icon"></i>
 
                     <div class="content">
@@ -54,7 +76,7 @@
                         <div class="description">这些信息有助于你找到书</div>
                     </div>
                 </div>
-                <div ng-class="{active:step=='ok',step:true}">
+                <div class="step" ng-class="{active:step=='ok'}">
                     <i class="heart icon"></i>
 
                     <div class="content">
@@ -100,10 +122,10 @@
             </div>
 
             <div class="ui segment" ng-if="step=='ok'">
-                <a class="huge ui button">
+                <a class="huge ui green button" href="../book/searchList.html">
                     开始寻书
                 </a>
-                <a class="huge ui button">
+                <a class="huge ui green button" href="userHome.html?userObjectId={{userObjectId}}">
                     个人主页
                 </a>
             </div>

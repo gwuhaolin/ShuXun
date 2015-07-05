@@ -4,29 +4,24 @@
  */
 "use strict";
 var AV = require('leanengine');
+var AppConfig = require('../../config/config.js');
 var Model = require('../../web/js/Model.js');
 var Wechat = require('wechat');
-var WechatAPI = require('./wechatAPI.js');
 var DoubanBook = require('../book/doubanBook.js');
 var LBS = require('../util/lbs.js');
-var SuperAgent = require('superagent');
 var config = {
-    token: WechatAPI.Config.Token,
-    appid: WechatAPI.Config.AppID,
-    encodingAESKey: WechatAPI.Config.EncodingAESKey,
-    problemKeyword: WechatAPI.Config.ProblemKeyword
-};
-var KeKu = {
-    XiongZhun: '001@ishuxun'
+    token: AppConfig.WeChat.Token,
+    appid: AppConfig.WeChat.AppID_WeChat,
+    encodingAESKey: AppConfig.WeChat.EncodingAESKey
 };
 
 module.exports = Wechat(config)
     .text(function (message, req, res) {//文字
         var context = message['Content'];
         //问题关键字转发到客服
-        for (var i = 0; i < config.problemKeyword.length; i++) {
-            if (context.indexOf(config.problemKeyword[i]) >= 0) {
-                res.transfer2CustomerService(KeKu.XiongZhun);
+        for (var i = 0; i < AppConfig.WeChat.KeFu.ProblemKeyword.length; i++) {
+            if (context.indexOf(AppConfig.WeChat.KeFu.ProblemKeyword[i]) >= 0) {
+                res.transfer2CustomerService(AppConfig.WeChat.KeFu.XiongZhun);
                 return;
             }
         }
@@ -35,13 +30,13 @@ module.exports = Wechat(config)
         var recognition = message['Recognition'];
         searchBookFromDouban(recognition, res);
     }).image(function (message, req, res) {//图片
-        res.transfer2CustomerService(KeKu.XiongZhun);
+        res.transfer2CustomerService(AppConfig.WeChat.KeFu.XiongZhun);
     }).video(function (message, req, res) {//视频
-        res.transfer2CustomerService(KeKu.XiongZhun);
+        res.transfer2CustomerService(AppConfig.WeChat.KeFu.XiongZhun);
     }).location(function (message, req, res) {//地理位置
         res.reply('');
     }).link(function (message, req, res) {//链接
-        res.transfer2CustomerService(KeKu.XiongZhun);
+        res.transfer2CustomerService(AppConfig.WeChat.KeFu.XiongZhun);
     }).event(function (message, req, res) {//事件
         switch (message['Event']) {
             case 'LOCATION'://上报地理位置事件

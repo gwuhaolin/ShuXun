@@ -4,19 +4,14 @@
  */
 "use strict";
 var fs = require('fs');
+var AppConfig = require('../../config/config.js');
+var WeChatAPIClient = require('wechat-api');
+var WeChatOAuthClient = require('wechat-oauth');
 var AV = require('leanengine');
-exports.Config = {
-    AppID: 'wx2940a8d3ddcad5e9',
-    Secret: '109504a5c4cac98f12c024d724fd589f',
-    Token: 'wonderful',
-    EncodingAESKey: 'qiYrBOvI9Z6mhRUZ1LrztiHquQg9NAgQ4arSkgd1aH3',
-    APIClient: require('wechat-api'),
-    OAuthClient: require('wechat-oauth'),
-    JsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'chooseImage', 'previewImage', 'uploadImage', 'openLocation', 'getLocation', 'scanQRCode'],
-    ProblemKeyword: ['问题', '打不开', '查不到', '空白', '闪退', '不能', '无法', '扫码', 'bug', '联系', '合作', '乡村图书馆']
-};
-exports.APIClient = new exports.Config.APIClient(exports.Config.AppID, exports.Config.Secret);
-exports.OAuthClient = new exports.Config.OAuthClient(exports.Config.AppID, exports.Config.Secret);
+var User = require('../user/user.js');
+var APIClient = new WeChatAPIClient(AppConfig.WeChat.AppID_WeChat, AppConfig.WeChat.Secret_WeChat);
+var OAuthClient_WeChat = new WeChatOAuthClient(AppConfig.WeChat.AppID_WeChat, AppConfig.WeChat.Secret_WeChat);
+var OAuthClient_Desktop = new WeChatOAuthClient(AppConfig.WeChat.AppID_Desktop, AppConfig.WeChat.Secret_Desktop);
 
 /**
  * 使用wechat js接口前必须获得这个
@@ -28,11 +23,11 @@ exports.getJsConfig = function (url) {
     var rePromise = new AV.Promise(null);
     //如果发布了就关闭微信调试
     var isDebug = process.env['NODE_ENV'] != 'production';
-    exports.APIClient.getJsConfig({
+    APIClient.getJsConfig({
         debug: isDebug,
         url: url,
         //需要使用的借口列表
-        jsApiList: exports.Config.JsApiList
+        jsApiList: AppConfig.WeChat.JsApiList
     }, function (err, data) {
         if (err) {
             rePromise.reject(err);
@@ -44,24 +39,63 @@ exports.getJsConfig = function (url) {
 };
 
 /**
- * 用户Web OAuth后
- * 获取Openid
- * @param code
- * @returns {AV.Promise}
+ * WeChat OAuth 获取用户信息
+ * 用户在微信里OAuth后传递code参数给我后
+ * 调用OAuthClient_WeChat.getAccessToken方法获取用户的openId
+ * 根据openId调用APIClient.getUser获取用户的json格式的信息
+ * @param code 微信服务器url回调里的code参数
+ * @returns {AV.Promise} json格式的用户信息，只能获得已经关注你了的用户的信息。
+ * 如果用户没有关注将会返回错误
  */
-exports.getOAuthUserInfo = function (code) {
+exports.getOAuthUserInfo_WeChat = function (code) {
     var rePromise = new AV.Promise(null);
-    exports.OAuthClient.getAccessToken(code, function (err, result) {
+    OAuthClient_WeChat.getAccessToken(code, function (err, result) {
         if (err) {
             rePromise.reject(err);
         } else {
-            exports.APIClient.getUser(result.data.openid, function (err, userInfo) {
+            APIClient.getUser(result.data['openid'], function (err, userInfo) {
                 if (err) {
                     rePromise.reject(err);
                 } else {
-                    rePromise.resolve(userInfo);
+                    var re = {
+                        openId: userInfo['openid'],
+                        username: userInfo['unionid'],
+                        nickName: userInfo['nickname'],
+                        sex: userInfo['sex'],
+                        avatarUrl: userInfo['headimgurl']
+                    };
+                    rePromise.resolve(re);
                 }
             })
+        }
+    });
+    return rePromise;
+};
+
+/**
+ * Web OAuth 获取用户信息
+ * 用户Web里OAuth后传递code参数给我后
+ * 调用OAuthClient_Desktop.getAccessToken方法获取用户的unionId
+ * 再判断User表里有对应的unionId的用户吗？如果没有就返回error
+ * 如果有就返回json格式的用户的信息
+ * @param code 微信服务器url回调里的code参数
+ * @returns {AV.Promise} json格式的用户信息，只能获得已经关注你了的用户的信息。
+ * 如果用户没有关注将会返回错误
+ */
+exports.getOAuthUserInfo_Desktop = function (code) {
+    var rePromise = new AV.Promise(null);
+    OAuthClient_Desktop.getAccessToken(code, function (err, result) {
+        if (err) {
+            rePromise.reject(err);
+        } else {
+            var unionId = result.data['unionid'];
+            User.getUserByUnionID(unionId).done(function (user) {
+                if (user) {
+                    rePromise.resolve(user.attributes);
+                } else {
+                    rePromise.reject('该用户还没有关注微信号');
+                }
+            });
         }
     });
     return rePromise;
@@ -99,7 +133,7 @@ exports.sendTemplateMsg = function (title, senderName, msg, url, receiverOpenId)
         }
     };
     var rePromise = new AV.Promise(null);
-    exports.APIClient.sendTemplate(receiverOpenId, TemplateId, url, Color_Title, data, function (err, result) {
+    APIClient.sendTemplate(receiverOpenId, TemplateId, url, Color_Title, data, function (err, result) {
         if (err) {
             rePromise.reject(err);
         } else {

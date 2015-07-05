@@ -145,7 +145,7 @@ APP.service('User$', function ($rootScope, Status$) {
 
     /**
      * 使用微信写在cookie里的unionId登入,
-     * 登陆成功后回加载未读消息数量
+     * 登陆成功后会 1.广播事件UserLoginSuccess 2.加载未读消息数量
      * @param unionId 微信ID
      * @returns {*|AV.Promise}
      */
@@ -153,6 +153,7 @@ APP.service('User$', function ($rootScope, Status$) {
         var rePromise = new AV.Promise(null);
         if (unionId) {
             AV.User.logIn(unionId, unionId).done(function (me) {
+                $rootScope.$broadcast('UserLoginSuccess');
                 rePromise.resolve(me);
                 Status$.loadUnreadStatusesCount();//加载未读消息数量
             }).fail(function (err) {
@@ -165,26 +166,42 @@ APP.service('User$', function ($rootScope, Status$) {
     };
 
     /**
-     * 用户Web OAuth后
-     * 获取Openid
+     * 用户在微信里OAuth后获取用户信息
      * @param code
-     * 返回 已经关注了用户的微信提供的所有信息
+     * @return {AV.Promise} 如果用户已经关注就返回和User表兼容的JSON格式的用户信息
+     * 对于没有关注的用户返回error
      */
-    this.getOAuthUserInfo = function (code) {
+    this.getWeChatOAuthUserInfo = function (code) {
         var rePromise = new AV.Promise(null);
         if (code) {
             AV.Cloud.run('getWechatOAuthUserInfo', {
                 code: code
-            }, null).done(function (wechatInfo) {
-                var re = {
-                    openId: wechatInfo['openid'],
-                    unionId: wechatInfo['unionid'],
-                    nickName: wechatInfo['nickname'],
-                    sex: wechatInfo['sex'],
-                    avatarUrl: wechatInfo['headimgurl']
-                };
-                createCookie('unionId', re.unionId, 365);
-                rePromise.resolve(re);
+            }, null).done(function (jsonUser) {
+                createCookie('unionId', jsonUser.username, 365);
+                rePromise.resolve(jsonUser);
+            }).fail(function (err) {
+                rePromise.reject(err);
+            });
+        } else {
+            rePromise.reject('不合法的code');
+        }
+        return rePromise;
+    };
+
+    /**
+     * 用户网页里OAuth后获取用户信息
+     * @param code
+     * @return {AV.Promise} 如果用户已经关注就返回和User表兼容的JSON格式的用户信息
+     * 返回 已经关注了用户的微信提供的所有信息
+     */
+    this.getDesktopOAuthUserInfo = function (code) {
+        var rePromise = new AV.Promise(null);
+        if (code) {
+            AV.Cloud.run('getDesktopOAuthUserInfo', {
+                code: code
+            }, null).done(function (jsonUser) {
+                createCookie('unionId', jsonUser.username, 365);
+                rePromise.resolve(jsonUser);
             }).fail(function (err) {
                 rePromise.reject(err);
             });
@@ -196,7 +213,7 @@ APP.service('User$', function ($rootScope, Status$) {
 
     /**
      * 更新我的个人信息,会先登入后再更新调用时不要再登入了
-     * @param jsonUser json格式的个人信息
+     * @param jsonUser 符合User表的json格式的个人信息
      */
     this.updateMyInfoWithJson = function (jsonUser) {
         var rePromise = new AV.Promise(null);

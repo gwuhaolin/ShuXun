@@ -15,6 +15,7 @@ var BaiDu = {
  * @param avosUser AVOS User对象
  * @param latitude 纬度
  * @param longitude 经度
+ * @return {AV.Promise} avosUser.save()
  */
 exports.updateUserLocation = function (avosUser, latitude, longitude) {
     if (avosUser && latitude && longitude) {
