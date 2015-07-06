@@ -15,11 +15,6 @@ function getQueryParameterByName(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-var APP = angular.module('APP', [], null);
-APP.run(function (User$) {
-    User$.loginWithUnionId(readCookie('unionId'));
-});
-
 /**
  * Semantic-UI配置
  */
@@ -50,3 +45,9 @@ function configSemantic() {
     $('.ui.rating').rating();
 }
 setInterval(configSemantic, 1000);
+
+
+var APP = angular.module('APP', [], null);
+APP.run(function (User$) {
+    User$.loginWithUnionId(readCookie('unionId'));
+});

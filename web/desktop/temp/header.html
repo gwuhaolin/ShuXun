@@ -2,11 +2,11 @@
 <header class="ui stackable fixed green inverted menu" ng-controller="d_topBar">
     <!-- logo-->
     <a class="item" ng-href="../book/recommend.html">
-        <img src="../../img/pathLogo.png" class="ui mini image">
+        <img src="../../img/pathLogo.png" style="width: 28px;height: 28px">
     </a>
 
-    <!-- 图书分类触发按钮-->
-    <a class="browse item" id="bookCategoryBtn" ng-if="BookRecommend$.BookTag.tag">
+    <!-- 图书分类触发按钮 TODO 不显示分类菜单-->
+    <a class="item" id="bookCategoryBtn" ng-if="BookRecommend$.BookTag.tag">
         图书分类 <i class="dropdown icon"></i>
     </a>
     <!--图书分类内容-->
