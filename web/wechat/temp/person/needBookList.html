@@ -19,9 +19,9 @@
                      ng-src="{{needBook.attributes.image}}"
                      ui-sref="tab.book_oneBook({isbn13:needBook.attributes.isbn13})">
 
-                <p ng-if="needBook.attributes.price">最高承受价格:{{needBook.attributes.price}}</p>
+                <h3 ng-if="needBook.attributes.title">{{needBook.attributes.title}}</h3>
 
-                <p ng-if="needBook.attributes.title">书名:{{needBook.attributes.title}}</p>
+                <p ng-if="needBook.attributes.price">最高承受价格:{{needBook.attributes.price}}</p>
 
                 <p ng-if="needBook.attributes.des">描述:{{needBook.attributes.des}}</p>
                 <button class="button button-small button-outline button-assertive"
