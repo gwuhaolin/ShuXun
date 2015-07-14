@@ -43,16 +43,18 @@ APP.service('InfoService$', function ($rootScope) {
             }
             if (that.School.searchSchoolKeyword.length > 0) {
                 query.startsWith("name", that.School.searchSchoolKeyword);
-            } else {
-                query.skip(that.School.schools.length);
-                query.limit(10);
             }
+            query.skip(that.School.schools.length);
+            query.limit(10);
             query.find().done(function (avosSchools) {
                 if (avosSchools.length > 0) {
                     for (var i = 0; i < avosSchools.length; i++) {
                         that.School.schools.push(avosSchools[i].get('name'));
                     }
+                } else {
+                    that.School.hasMoreFlag = false;
                 }
+            }).always(function () {
                 $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
@@ -63,12 +65,16 @@ APP.service('InfoService$', function ($rootScope) {
          */
         searchSchoolKeyword: '',
         /**
-         * 搜索专业时的过滤器
+         * 搜索学校时的过滤器
          * @param schoolName 当前学校
          * @returns {boolean} 是否合格
          */
         filter_schoolByKeyword: function (schoolName) {
             return schoolName.indexOf(that['School']['searchSchoolKeyword']) >= 0;
+        },
+        hasMoreFlag: true,
+        hasMore: function () {
+            return that.School.hasMoreFlag;
         }
     };
 

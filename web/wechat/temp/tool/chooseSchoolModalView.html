@@ -1,13 +1,11 @@
 <!-- 选择学校-->
 <ion-modal-view>
     <ion-header-bar class="item-input-inset">
-        <button class="button button-clear button-balanced"
-                ng-click="InfoService$.School.loadMore()">搜索
-        </button>
         <!-- 关键字输入框-->
         <label class="item-input-wrapper">
             <i class="icon ion-ios-search placeholder-icon balanced"></i>
-            <input type="search" placeholder="输入名称搜索" ng-model="InfoService$.School.searchSchoolKeyword">
+            <input type="search" placeholder="输入名称搜索" ng-model="InfoService$.School.searchSchoolKeyword"
+                   ng-change="InfoService$.School.schools.length=0;InfoService$.School.loadMore()">
         </label>
         <button class="button button-clear button-balanced"
                 ng-click="chooseSchoolModalView.hide()">返回
@@ -22,7 +20,8 @@
                 {{school}}
             </ion-item>
         </ul>
-        <ion-infinite-scroll on-infinite="InfoService$.School.loadMore()"
+        <ion-infinite-scroll ng-if="InfoService$.School.hasMore()"
+                on-infinite="InfoService$.School.loadMore()"
                              distance="1%">
         </ion-infinite-scroll>
     </ion-content>
