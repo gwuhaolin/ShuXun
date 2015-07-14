@@ -9,6 +9,10 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
     var cmd = $stateParams['cmd'];
     if (cmd == 'tag') {
         var tag = $stateParams['tag'];
+        var me = AV.User.current();
+        if(!tag && me){
+            tag = me.get('major');
+        }
         BookRecommend$.TagBook.setTag(tag);
         BookRecommend$.TagBook.loadMore();
         $scope.title = tag;
