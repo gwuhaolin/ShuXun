@@ -11,8 +11,8 @@
 
             <p style="white-space: pre-wrap">{{one.context}}</p>
         </ion-item>
-        <ion-item ng-if="BookReview.reviewList.length==0" style="text-align: center">
-            还没有对应的书评
+        <ion-item ng-if="BookReview.reviewList.length==0" style="text-align: center" ng-click="goBack()">
+            <button class="button button-clear button-balanced">还没有书评,回去看看</button>
         </ion-item>
         <ion-infinite-scroll ng-if="BookReview.hasMore()"
                              on-infinite="BookReview.loadMore()"
