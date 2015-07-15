@@ -6,28 +6,47 @@
 
 APP.service('InfoService$', function ($rootScope) {
     var that = this;
-    /**
-     * 所有的专业
-     * @type {Array}
-     */
-    this.majors = [];
-    //加载所有专业信息
-    AV.Cloud.run('getAllMajor', null, null).done(function (majors) {
-        that.majors = majors;
-    });
-    /**
-     * 搜索专业时的关键字
-     * @type {string}
-     */
-    this.searchMajorKeyword = '';
-    /**
-     * 搜索专业时的过滤器
-     * @param major 当前专业信息
-     * @returns {boolean} 是否合格
-     */
-    this.filter_majorByKeyword = function (major) {
-        return major['name'].indexOf(that.searchMajorKeyword) > -1;
+
+    this.Major = {
+        /**
+         * 所有的加载了的专业
+         */
+        majors: [],
+        /**
+         * 搜索专业时的关键字
+         * @type {string}
+         */
+        searchMajorKeyword: '',
+        loadMore: function () {
+            var query = new AV.Query(Model.Major);
+            if (that.Major.searchMajorKeyword.length > 0) {
+                query.startsWith("name", that.Major.searchMajorKeyword);
+            }
+            query.skip(that.Major.majors.length);
+            query.limit(10);
+            query.find().done(function (avosMajors) {
+                if (avosMajors.length > 0) {
+                    that.Major.majors.pushUniqueArray(avosMajors);
+                } else {
+                    that.Major.hasMoreFlag = false;
+                }
+            }).always(function () {
+                $rootScope.$apply();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        hasMoreFlag: true,
+        hasMore: function () {
+            return that.Major.hasMoreFlag;
+        }
     };
+    $rootScope.$watch(function () {
+        return that.Major.searchMajorKeyword;
+    }, function () {
+        that.Major.majors.length = 0;
+        that.Major.loadMore();
+    });
+    that.Major.loadMore();
 
     this.School = {
         /**
@@ -36,8 +55,8 @@ APP.service('InfoService$', function ($rootScope) {
          */
         schools: [],
         loadMore: function () {
-            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
             var query = new AV.Query(Model.School);
+            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }
@@ -48,9 +67,7 @@ APP.service('InfoService$', function ($rootScope) {
             query.limit(10);
             query.find().done(function (avosSchools) {
                 if (avosSchools.length > 0) {
-                    for (var i = 0; i < avosSchools.length; i++) {
-                        that.School.schools.push(avosSchools[i].get('name'));
-                    }
+                    that.School.schools.pushUniqueArray(avosSchools);
                 } else {
                     that.School.hasMoreFlag = false;
                 }
@@ -64,19 +81,18 @@ APP.service('InfoService$', function ($rootScope) {
          * @type {string}
          */
         searchSchoolKeyword: '',
-        /**
-         * 搜索学校时的过滤器
-         * @param schoolName 当前学校
-         * @returns {boolean} 是否合格
-         */
-        filter_schoolByKeyword: function (schoolName) {
-            return schoolName.indexOf(that['School']['searchSchoolKeyword']) >= 0;
-        },
         hasMoreFlag: true,
         hasMore: function () {
             return that.School.hasMoreFlag;
         }
     };
+    $rootScope.$watch(function () {
+        return that.School.searchSchoolKeyword;
+    }, function () {
+        that.School.schools.length = 0;
+        that.School.loadMore();
+    });
+    that.School.loadMore();
 
     /**
      * 开始上大学时间所有选项 ,6年前到今年

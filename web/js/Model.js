@@ -49,6 +49,8 @@ Model.BookInfo = AV.Object.extend('BookInfo', {
 
 Model.School = AV.Object.extend('School');
 
+Model.Major = AV.Object.extend('Major');
+
 Model.UsedBook = AV.Object.extend('UsedBook');
 
 if (typeof module != 'undefined') {//Nodejs

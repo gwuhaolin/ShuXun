@@ -128,13 +128,6 @@ AV.Cloud.define('getDesktopOAuthUserInfo', function (req, res) {
 ////////////////////// Info /////////////////////////
 
 /**
- * 用户注册时获得所有专业
- */
-AV.Cloud.define('getAllMajor', function (req, res) {
-    res.success(Info.Majors);
-});
-
-/**
  * 获得图书分类信息
  */
 AV.Cloud.define('getAllBookTags', function (req, res) {

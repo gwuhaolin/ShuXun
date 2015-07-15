@@ -4,7 +4,7 @@
         <!-- 关键字输入框-->
         <label class="item-input-wrapper">
             <i class="icon ion-ios-search placeholder-icon balanced"></i>
-            <input type="search" placeholder="输入专业名称搜索" ng-model="InfoService$.searchMajorKeyword">
+            <input type="search" placeholder="输入专业名称搜索" ng-model="InfoService$.Major.searchMajorKeyword">
         </label>
         <button class="button button-clear button-balanced"
                 ng-click="chooseMajorModalView.hide()">返回
@@ -14,9 +14,9 @@
         <ul class="list">
             <ion-item item-height="55px"
                       item-width="100%"
-                      collection-repeat="oneMajor in InfoService$.majors | filter:InfoService$.filter_majorByKeyword"
-                      ng-click="majorOnChoose(oneMajor.name)">
-                {{oneMajor.name}}
+                      collection-repeat="major in InfoService$.Major.majors"
+                      ng-click="majorOnChoose(major.attributes.name)">
+                {{major.attributes.name}}
             </ion-item>
         </ul>
     </ion-content>
