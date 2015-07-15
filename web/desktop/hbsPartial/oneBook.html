@@ -3,6 +3,9 @@
 <div class="ui blue card hasPubInfoPopupBook">
     <!-- 图书封面图片-->
     <a class="image" ng-href="../book/oneBook.html?isbn13={{bookInfo.attributes.isbn13}}">
+        <a class="ui green right corner label" ng-if="bookInfo.usedBooksCount">
+            <i class="icon">{{bookInfo.usedBooksCount}}</i>
+        </a>
         <img ng-src="{{bookInfo.attributes.bigImage}}">
     </a>
 
