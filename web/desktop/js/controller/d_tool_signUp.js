@@ -4,15 +4,7 @@
  */
 APP.controller('d_tool_signUp', function ($scope, $location, User$, Status$, InfoService$) {
     $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
-    $scope.majors = InfoService$.majors;//InfoService$自动加载所有majors TODO 不能正确到显示专业
-    var timer = setInterval(function () {//加载所有到学校 TODO 不能显示所有学校
-        if (InfoService$.School.hasMore()) {
-            InfoService$.School.loadMore();
-        } else {
-            clearInterval(timer);
-        }
-    }, 100);
-    $scope.schools = InfoService$.School.schools;
+    $scope.InfoService$ = InfoService$;
     var authCode = getQueryParameterByName('code');
     $scope.step = 'subscribe';
     User$.getDesktopOAuthUserInfo(authCode).done(function (userInfo) {

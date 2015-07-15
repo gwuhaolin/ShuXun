@@ -99,20 +99,26 @@
                     <div class="three fields">
                         <div class="field">
                             <label>在读学校</label>
-                            <select class="ui search dropdown" ng-model="userInfo.school">
-                                <option ng-repeat="one in schools" value="{{one}}">{{one}}</option>
+                            <select class="ui search dropdown" ng-model="userInfo.school"
+                                    ng-change="InfoService$.School.searchSchoolKeyword=userInfo.school">
+                                <option ng-repeat="school in InfoService$.School.schools"
+                                        value="{{school.attributes.name}}">{{school.attributes.name}}
+                                </option>
                             </select>
                         </div>
                         <div class="field">
                             <label>所学专业</label>
                             <select class="ui search dropdown" ng-model="userInfo.major">
-                                <option ng-repeat="one in majors" value="{{one}}">{{one}}</option>
+                                <option ng-repeat="major in InfoService$.Major.majors"
+                                        value="{{major.attributes.name}}">{{major.attributes.name}}
+                                </option>
                             </select>
                         </div>
                         <div class="field">
                             <label>入学时间</label>
                             <select class="ui selection dropdown" ng-model="userInfo.startSchoolYear">
-                                <option ng-repeat="one in startSchoolYearOptions" value="{{one}}">{{one}}</option>
+                                <option ng-repeat="one in InfoService$.startSchoolYearOptions" value="{{one}}">{{one}}
+                                </option>
                             </select>
                         </div>
                     </div>

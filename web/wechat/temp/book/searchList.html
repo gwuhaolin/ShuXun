@@ -31,6 +31,7 @@
                 <p ng-if="bookInfo.attributes.author">{{bookInfo.attributes.author.toString()}}</p>
 
                 <p ng-if="bookInfo.attributes.price">{{bookInfo.attributes.price}}</p>
+                <span class="badge badge-balanced" ng-if="bookInfo.usedBooksCount">{{bookInfo.usedBooksCount}}</span>
             </ion-item>
 
         </ion-list>
