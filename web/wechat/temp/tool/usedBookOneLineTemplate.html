@@ -1,8 +1,8 @@
 <ion-item style="text-align: center;padding: 0;">
     <div ng-repeat="bookInfo in bookInfos.slice(0,LoadCount)"
          ui-sref="tab.book_oneBook({isbn13:bookInfo.attributes.isbn13})"
-         style="display: inline-block;padding: 5px;width: 80px;">
-        <p style="font-size: xx-small">{{bookInfo.attributes.des}}&nbsp;</p>
+         style="display: inline-block;padding: 5px;width: 80px;height: 102px">
+        <p style="font-size: xx-small;margin: 0">{{bookInfo.attributes.des}}&nbsp;</p>
         <img ng-if="bookInfo.attributes.image" ng-src="{{bookInfo.attributes.image}}"
              style="width: 70px;height: 100px">
         <h5 class="title">{{bookInfo.attributes.title}}</h5>
