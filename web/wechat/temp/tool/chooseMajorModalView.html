@@ -19,5 +19,9 @@
                 {{major.attributes.name}}
             </ion-item>
         </ul>
+        <ion-infinite-scroll ng-if="InfoService$.Major.hasMore()"
+                             on-infinite="InfoService$.Major.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-modal-view>

@@ -8,10 +8,7 @@ APP.directive('usedBookOneLine', function () {
             //三本图书的信息
             bookInfos: '='
         },
-        templateUrl: 'temp/tool/usedBookOneLineTemplate.html',
-        link: function (scope) {
-            scope.showNumber = Math.floor(document.body.clientWidth / 80);
-        }
+        templateUrl: 'temp/tool/usedBookOneLineTemplate.html'
     }
 });
 
