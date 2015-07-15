@@ -39,6 +39,23 @@ exports.getJsConfig = function (url) {
 };
 
 /**
+ * 把微信返回的json转换为兼容User表的json
+ * @param userInfo 微信返回的json
+ * @returns {{openId: *, username: *, password: *, nickName: *, sex: *, avatarUrl: *}}
+ * @private
+ */
+function _tranWechatUserInfoToAVOS(userInfo) {
+    return {
+        openId: userInfo['openid'],
+        username: userInfo['unionid'],
+        password: userInfo['unionid'],
+        nickName: userInfo['nickname'],
+        sex: userInfo['sex'],
+        avatarUrl: userInfo['headimgurl']
+    }
+}
+
+/**
  * WeChat OAuth 获取用户信息
  * 用户在微信里OAuth后传递code参数给我后
  * 调用OAuthClient_WeChat.getAccessToken方法获取用户的openId
@@ -57,14 +74,7 @@ exports.getOAuthUserInfo_WeChat = function (code) {
                 if (err) {
                     rePromise.reject(err);
                 } else {
-                    var re = {
-                        openId: userInfo['openid'],
-                        username: userInfo['unionid'],
-                        nickName: userInfo['nickname'],
-                        sex: userInfo['sex'],
-                        avatarUrl: userInfo['headimgurl']
-                    };
-                    rePromise.resolve(re);
+                    rePromise.resolve(_tranWechatUserInfoToAVOS(userInfo));
                 }
             })
         }
@@ -88,12 +98,11 @@ exports.getOAuthUserInfo_Desktop = function (code) {
         if (err) {
             rePromise.reject(err);
         } else {
-            var unionId = result.data['unionid'];
-            User.getUserByUnionID(unionId).done(function (user) {
-                if (user) {
-                    rePromise.resolve(user.attributes);
+            OAuthClient_Desktop.getUser(result.data['openid'], function (err, userInfo) {
+                if (err) {
+                    rePromise.reject(err);
                 } else {
-                    rePromise.reject('该用户还没有关注微信号');
+                    rePromise.resolve(_tranWechatUserInfoToAVOS(userInfo));
                 }
             });
         }

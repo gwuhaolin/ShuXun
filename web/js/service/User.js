@@ -13,11 +13,7 @@ APP.service('User$', function ($rootScope, Status$) {
      * @returns {*|AV.Promise}
      */
     this.signUpWithJSONUser = function (jsonUser) {
-        var unionId = jsonUser.unionId;
-        delete jsonUser.unionId;//_User表里没有unionId属性
         var user = Model.User.new(jsonUser);
-        user.set('username', unionId);
-        user.set('password', unionId);
         return user.signUp(null);
     };
 

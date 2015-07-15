@@ -5,7 +5,6 @@ var _ = require('underscore');
 var express = require('express');
 var AV = require('leanengine');
 var Model = require('../../web/js/Model.js');
-var RouterUtil = require('./routerUtil.js');
 var BookInfo = require('../book/bookInfo.js');
 var DoubanBook = require('../book/doubanBook.js');
 var router = express.Router();

@@ -13,13 +13,13 @@ APP.controller('signUp', function ($scope, $timeout, $state, $stateParams, $ioni
     User$.getWeChatOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
         $scope.isLoading = false;
         $scope.userInfo = userInfo;
+        $scope.$apply();
         User$.loginWithUnionId(userInfo.username).done(function () {//已经注册过
             Status$.loadUnreadStatusesCount();//加载未读消息数量
             $state.go(nextState);
             $ionicHistory.clearHistory();
             User$.updateMyInfoWithJson(userInfo);//更新微信信息
         });
-        $scope.$apply();
     }).fail(function () {//用户还没有关注
         alert('要先关注书循微信号哦');
         window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzAwMDQwMjMxNg==&mid=205566574&idx=1&sn=5784b3b5f4d870ca4715c2dd56d8f01e#rd';
