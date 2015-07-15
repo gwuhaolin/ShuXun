@@ -16,8 +16,8 @@ var clean = require('gulp-clean');
 function CDN(cdn) {
     var CDNLib = {
         'jQuery-js': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
-        'Ionic-css': '//cdn.bootcss.com/ionic/1.0.0-rc.5/css/ionic.min.css',//TODO update to 1.0.1
-        'Ionic-js': '//cdn.bootcss.com/ionic/1.0.0-rc.5/js/ionic.bundle.min.js',//TODO update to 1.0.1
+        'Ionic-css': 'http://7xiv48.com1.z0.glb.clouddn.com/ionic/css/ionic.min.css',
+        'Ionic-js': 'http://7xiv48.com1.z0.glb.clouddn.com/ionic/js/ionic.bundle.min.js',
         'Angular-js': '//cdn.bootcss.com/angular.js/1.4.1/angular.min.js',
         'Avos-js': 'https://cdn1.lncld.net/static/js/av-core-mini-0.5.5.js',
         'Semantic-js': 'http://7xiv48.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
