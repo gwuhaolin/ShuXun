@@ -56,7 +56,7 @@ APP.service('InfoService$', function ($rootScope) {
         schools: [],
         loadMore: function () {
             var query = new AV.Query(Model.School);
-            var avosGeo = AV.User.current() ? AV.User.current().get('location') : null;
+            var avosGeo = AV.User.current() ? AV.User.current().get('location') : MyLocationByIP;
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }

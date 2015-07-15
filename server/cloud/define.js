@@ -84,6 +84,26 @@ AV.Cloud.define('updateMyLocation', function (req, res) {
     }
 });
 
+/**
+ * 根据当前请求者的IP地址返回当前请求者的地理位置，返回的json格式为
+ *      {
+            latitude: parseFloat(location.latitude),
+            longitude: parseFloat(location.longitude)
+        }
+ */
+AV.Cloud.define('getMyLocationByIP', function (req, res) {
+    var ip = req.remoteAddress;
+    LBS.getLocationByIP(ip).done(function (location) {
+        var re = {
+            latitude: parseFloat(location.latitude),
+            longitude: parseFloat(location.longitude)
+        };
+        res.success(re);
+    }).fail(function (err) {
+        res.error(err);
+    })
+});
+
 ////////////////////// Wechat /////////////////////////
 
 /**

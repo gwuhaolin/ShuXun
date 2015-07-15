@@ -17,6 +17,11 @@ var WECHAT = {
 
 var LoadCount = Math.floor(document.body.clientWidth / 80);//每次加载条数,默认加载慢屏幕
 var RandomStart = (new Date().getDay()) * Math.floor(Math.random() * 10);//随机产生一个开始数,每次打开看到的专业推荐都不一样
+//根据我的IP地址获得的我的地理位置
+var MyLocationByIP = null;
+AV.Cloud.run('getMyLocationByIP').done(function (location) {
+    MyLocationByIP = location;
+});
 
 /**
  * 把一个数组push到一个数组后面,会直接改变原数组
