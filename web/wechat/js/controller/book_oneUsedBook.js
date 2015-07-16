@@ -24,5 +24,13 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     Status$.getStatusList_reviewBook($scope.usedBookObjectId).done(function (statusList) {
         $scope.statusList = statusList;
         $scope.$apply();
-    })
+    });
+
+    //统计用户行为
+    $scope.$on('$ionicView.afterEnter', function () {
+        var analyticsSugue = leanAnalytics.browseUsedBook($scope.usedBookObjectId);
+        $scope.$on('$ionicView.afterLeave', function () {
+            analyticsSugue.send();
+        });
+    });
 });

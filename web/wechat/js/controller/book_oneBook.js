@@ -73,4 +73,12 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams, $ionicMod
     UsedBook$.ISBN_need.loadMoreNeedBookEqualISBN($scope.isbn13);//先加载5个
 
     $scope.WeChatJS$ = WeChatJS$;
+
+    //统计用户行为
+    $scope.$on('$ionicView.afterEnter', function () {
+        var analyticsSugue = leanAnalytics.browseBookInfo($scope.isbn13);
+        $scope.$on('$ionicView.afterLeave', function () {
+            analyticsSugue.send();
+        });
+    });
 });

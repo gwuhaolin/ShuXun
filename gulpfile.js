@@ -19,6 +19,7 @@ function CDN(cdn) {
         'Ionic-css': 'http://7xiv48.com1.z0.glb.clouddn.com/ionic/css/ionic.min.css',
         'Ionic-js': 'http://7xiv48.com1.z0.glb.clouddn.com/ionic/js/ionic.bundle.min.js',
         'Angular-js': '//cdn.bootcss.com/angular.js/1.4.1/angular.min.js',
+        'LeanAnalytics-js': 'http://7xiv48.com1.z0.glb.clouddn.com/AV.analytics.min.js',
         'Avos-js': 'https://cdn1.lncld.net/static/js/av-core-mini-0.5.5.js',
         'Semantic-js': 'http://7xiv48.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
         'Semantic-css': 'http://7xiv48.com1.z0.glb.clouddn.com/semantic/semantic.min.css'
@@ -79,7 +80,9 @@ gulp.task('wechat', function () {
 /////////////////////////////////////// homepage ////////////////////////////////////////
 gulp.task('home', function () {
     return gulp.src('web/index.html')
-        .pipe(htmlreplace(CDN()))
+        .pipe(htmlreplace(CDN({
+            'Main-js': 'desktop/main.js'
+        })))
         .pipe(htmlmin({
             collapseWhitespace: true,
             removeComments: true,

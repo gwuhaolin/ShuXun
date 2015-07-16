@@ -2,7 +2,7 @@
  * Created by wuhaolin on 5/30/15.
  * 全局函数 Semantic-UI和AngularJS配置
  */
-
+var leanAnalytics = new _LeanAnalytics('Desktop');
 /**
  * 从URL Query里获得参数
  * @param name 参数名称

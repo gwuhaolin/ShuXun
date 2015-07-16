@@ -19,4 +19,12 @@ APP.controller('userHome', function ($scope, $stateParams, UsedBook$) {
             $scope.$apply();
         })
     });
+
+    //统计用户行为
+    $scope.$on('$ionicView.afterEnter', function () {
+        var analyticsSugue = leanAnalytics.browseUser($scope.ownerId);
+        $scope.$on('$ionicView.afterLeave', function () {
+            analyticsSugue.send();
+        });
+    });
 });

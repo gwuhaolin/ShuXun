@@ -10,7 +10,7 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
     if (cmd == 'tag') {
         var tag = $stateParams['tag'];
         var me = AV.User.current();
-        if(!tag && me){
+        if (!tag && me) {
             tag = me.get('major');
         }
         BookRecommend$.TagBook.setTag(tag);
@@ -19,6 +19,14 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.books = BookRecommend$.TagBook.books;
         $scope.loadMore = BookRecommend$.TagBook.loadMore;
         $scope.hasMore = BookRecommend$.TagBook.hasMore;
+
+        //统计用户行为
+        $scope.$on('$ionicView.afterEnter', function () {
+            var analyticsSugue = leanAnalytics.browseTag(tag);
+            $scope.$on('$ionicView.afterLeave', function () {
+                analyticsSugue.send();
+            });
+        });
     } else if (cmd == 'latest') {
         $scope.books = BookInfo$.LatestBook.books;
         $scope.loadMore = BookInfo$.LatestBook.loadMore;

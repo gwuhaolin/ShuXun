@@ -76,6 +76,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
         timer = $timeout(function () {
             that.loadFromBookInfo();
             that.searchBtnOnClick();
+            leanAnalytics.searchBook(that.keyword).send();
         }, 1000);
     };
 

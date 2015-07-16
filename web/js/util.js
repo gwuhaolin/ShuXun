@@ -3,6 +3,8 @@
  * 自定义全局函数和路由配置
  */
 "use strict";
+//应用当前版本号
+var AppVersion = '2.0';
 //AVOSCloud
 AV.initialize("kusn9e3cp5znt5lic9fufqfmsvsibsoaejpah089x6v2n7e0", "nt5l8v4n4m08zxttpt7upqxwgt6oy47lzb3f8c4juf34otfm");
 if (window.location.host.indexOf('ishuxun.cn') < 0) {//如果网址不是ishuxun.cn就调用部署环境的云函数

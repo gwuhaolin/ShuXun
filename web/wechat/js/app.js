@@ -2,6 +2,7 @@
  * Created by wuhaolin on 5/30/15.
  * AngularJS配置
  */
+var leanAnalytics = new _LeanAnalytics('Wechat');
 var APP = angular.module('APP', ['ionic'], null)
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         //配置ionic样式
