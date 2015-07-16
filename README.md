@@ -7,8 +7,8 @@
 - 微信号 ishuxun
 
 ## Features
-- 居于[LeanCloud](http://leancloud.cn) Bass服务搭建后端
-- 微信端使用[ionic](http://ionicframework.com) 框架做移动优先的HTML5网页
+- 基于[LeanCloud](http://leancloud.cn) Bass服务搭建后端
+- 微信端使用[ionic](http://ionicframework.com) 框架开发移动优先的HTML5网页
 
 ## Installation
 ```
