@@ -58,12 +58,6 @@ APP.service('BookInfo$', function ($rootScope) {
         query.queryString(keyword);
         query.find(null).done(function (bookInfos) {
             rePromise.resolve(bookInfos);
-            AV._.each(bookInfos, function (bookInfo) {
-                bookInfo.relation('usedBooks').query().count().done(function (count) {
-                    bookInfo.usedBooksCount = count;
-                    $rootScope.$apply();
-                })
-            })
         }).fail(function (err) {
             rePromise.reject(err);
         });

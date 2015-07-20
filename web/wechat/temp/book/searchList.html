@@ -19,20 +19,8 @@
             </ion-item>
 
             <!-- 搜索结果列表-->
-            <ion-item class="item-thumbnail-left" collection-repeat="bookInfo in SearchBook$.books"
-                      ui-sref="tab.book_oneBook({isbn13:bookInfo.attributes.isbn13})">
-                <img ng-src="{{bookInfo.attributes.image}}">
-
-                <h2>{{bookInfo.attributes.title}}</h2>
-
-                <p ng-if="bookInfo.attributes.publisher">
-                    {{bookInfo.attributes.publisher}}/{{bookInfo.attributes.pubdate}}</p>
-
-                <p ng-if="bookInfo.attributes.author">{{bookInfo.attributes.author.toString()}}</p>
-
-                <p ng-if="bookInfo.attributes.price">{{bookInfo.attributes.price}}</p>
-                <span class="badge badge-balanced" ng-if="bookInfo.usedBooksCount">{{bookInfo.usedBooksCount}}</span>
-            </ion-item>
+            <one-book-info ng-repeat="bookInfo in SearchBook$.books" book-info="bookInfo"
+                           should-show-used-books-count="true"></one-book-info>
 
         </ion-list>
         <ion-infinite-scroll ng-if="SearchBook$.hasMore()"

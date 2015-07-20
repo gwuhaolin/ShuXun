@@ -40,6 +40,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             if (tag != that.TagBook.nowTag) {
                 that.TagBook.books.length = 0;
                 that.TagBook.nowTag = tag;
+                //来自BookInfo表里的tag相关的图书
                 BookInfo$.searchBook(tag).done(function (bookInfos) {
                     that.TagBook.books.unshiftUniqueArray(bookInfos);
                     $rootScope.$apply();
@@ -50,6 +51,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         books: [],
         hasMoreFlag: true,
         loadMore: function () {
+            //来自 豆瓣图书 里的tag相关的图书
             DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, LoadCount, function (json) {
                 var jsonBooks = json['books'];
                 if (jsonBooks.length > 0) {

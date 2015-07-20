@@ -1,0 +1,16 @@
+<!-- 搜索结果列表-->
+<ion-item class="item-thumbnail-left" ui-sref="tab.book_oneBook({isbn13:bookInfo.attributes.isbn13})">
+    <img ng-src="{{bookInfo.attributes.image}}">
+
+    <h2>{{bookInfo.attributes.title}}</h2>
+
+    <p ng-if="bookInfo.attributes.publisher">
+        {{bookInfo.attributes.publisher}}/{{bookInfo.attributes.pubdate}}</p>
+
+    <p ng-if="bookInfo.attributes.author">{{bookInfo.attributes.author.toString()}}</p>
+
+    <p ng-if="bookInfo.attributes.price">{{bookInfo.attributes.price}}</p>
+    <!-- 这本书的二手书的数量-->
+    <span class="badge badge-balanced" ng-if="bookInfo.usedBookNumber>0">{{bookInfo.usedBookNumber}}</span>
+    <span class="badge badge-calm" ng-if="bookInfo.needBookNumber>0">{{bookInfo.needBookNumber}}</span>
+</ion-item>

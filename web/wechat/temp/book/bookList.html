@@ -5,19 +5,9 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
-            <!-- 搜索结果列表-->
-            <ion-item class="item-thumbnail-left" collection-repeat="book in books"
-                      ui-sref="tab.book_oneBook({isbn13:book.attributes.isbn13})">
-                <img ng-src="{{book.attributes.image}}">
-
-                <h2>{{book.attributes.title}}</h2>
-
-                <p ng-if="book.attributes.publisher">{{book.attributes.publisher}}/{{book.attributes.pubdate}}</p>
-
-                <p ng-if="book.attributes.author">{{book.attributes.author.toString()}}</p>
-
-                <p ng-if="book.attributes.price">{{book.attributes.price}}</p>
-            </ion-item>
+            <!-- 结果列表-->
+            <one-book-info ng-repeat="bookInfo in books" book-info="bookInfo"
+                           should-show-used-books-count="true"></one-book-info>
         </ion-list>
         <ion-infinite-scroll ng-if="hasMore()"
                              on-infinite="loadMore()"
