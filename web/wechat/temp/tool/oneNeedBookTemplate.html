@@ -1,12 +1,20 @@
 <!--一本二手书-->
 <ion-item class="item-thumbnail-left" ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:needBook.id})">
-    <img ng-if="needBook.attributes.image" ng-src="{{needBook.attributes.image}}">
+    <img ng-if="needBook.attributes.info.attributes.image" ng-src="{{needBook.attributes.info.attributes.image}}">
 
-    <h3 ng-if="needBook.attributes.title">{{needBook.attributes.title}}</h3>
+    <h3 ng-if="needBook.attributes.info.attributes.title">{{needBook.attributes.info.attributes.title}}</h3>
 
-    <p ng-if="needBook.attributes.price">最高承受价:{{needBook.attributes.price}}</p>
+    <p ng-if="needBook.attributes.price">最高承受价:<strong>{{needBook.attributes.price}}</strong></p>
 
-    <p>时间:{{needBook.updatedAt | date:'mediumDate' }}</p>
+    <p>时间:<strong>{{needBook.updatedAt | date:'mediumDate' }}</strong></p>
 
     <p ng-if="needBook.attributes.des">描述:{{needBook.attributes.des}}</p>
+</ion-item>
+<ion-item ng-if="shouldShowManageBtn" style="text-align: right;padding: 5px">
+    <button class="button button-small button-outline button-assertive"
+            ng-click="UsedBook$.removeUsedBook(needBook)">已买删除
+    </button>
+    <button class="button button-small button-outline button-balanced"
+            ui-sref="tab.person_editOneUsedBook({usedBookId:needBook.id})">修改信息
+    </button>
 </ion-item>

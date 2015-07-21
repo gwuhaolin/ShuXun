@@ -6,18 +6,16 @@
     <ion-content>
         <!-- 图书基本信息-->
         <div class="list card">
-            <ion-item ng-if="usedBook.attributes.image" style="text-align: center">
-                <img ng-src="{{usedBook.attributes.image}}" style="height: 180px"
-                     ng-click="WeChatJS$.previewOneImage(usedBook.attributes.image)">
-            </ion-item>
-            <ion-item ui-sref="tab.book_oneBook({isbn13:usedBook.attributes.isbn13})">
-                <h3>书名:{{usedBook.attributes.title}}</h3>
+            <!-- 图书基本信息-->
+            <one-book-info ng-if="usedBook" book-info="usedBook.attributes.info"
+                           should-show-used-books-count="true"></one-book-info>
+            <!-- 旧书信息-->
+            <ion-item>
+                <p>最高承受价:<strong>{{usedBook.attributes.price}}</strong></p>
 
-                <p>最高承受价:{{usedBook.attributes.price}}</p>
+                <p>发布时间:<strong>{{usedBook.updatedAt | date:'mediumDate' }}</strong></p>
 
-                <p>发布时间:{{usedBook.updatedAt | date:'mediumDate' }}</p>
-
-                <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">附加描述:{{usedBook.attributes.des}}</p>
+                <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">主人描述:{{usedBook.attributes.des}}</p>
             </ion-item>
         </div>
         <!-- 主人信息-->

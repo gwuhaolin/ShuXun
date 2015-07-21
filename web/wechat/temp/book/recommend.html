@@ -13,7 +13,7 @@
             <ion-item style="white-space:normal">
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
                         ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
-                        ng-repeat="tag in BookRecommend$.BookTag.getTagAttrNames()">{{tag}}
+                        ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">{{bigTag}}
                 </button>
             </ion-item>
         </div>
@@ -33,7 +33,7 @@
                         ui-sref="tab.book_usedBookList({cmd:'nearUsed'})">更多
                 </button>
             </ion-item>
-            <used-book-one-line book-infos="BookRecommend$.NearUsedBook.usedBooks"></used-book-one-line>
+            <used-book-one-line used-books="BookRecommend$.NearUsedBook.usedBooks"></used-book-one-line>
         </div>
         <!-- 用户附近的用户-->
         <div ng-if="BookRecommend$.NearUser.users.length>0">
@@ -57,7 +57,7 @@
                         ui-sref="tab.book_usedBookList({cmd:'nearNeed'})">更多
                 </button>
             </ion-item>
-            <used-book-one-line book-infos="BookRecommend$.NearNeedBook.needBooks"></used-book-one-line>
+            <used-book-one-line used-books="BookRecommend$.NearNeedBook.needBooks"></used-book-one-line>
         </div>
         <!-- 根据专业推荐的书-->
         <div ng-if="BookRecommend$.TagBook.books.length>0">

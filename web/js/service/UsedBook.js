@@ -146,8 +146,8 @@ APP.service('UsedBook$', function ($rootScope) {
                 }
             }).always(function () {
                 that.isLoading = false;
-                $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                $rootScope.$apply();
             })
         },
         hasMoreFlag: true,
@@ -204,8 +204,8 @@ APP.service('UsedBook$', function ($rootScope) {
                 }
             }).always(function () {
                 that.isLoading = false;
-                $rootScope.$apply();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                $rootScope.$apply();
             })
         },
         hasMoreFlag: true,

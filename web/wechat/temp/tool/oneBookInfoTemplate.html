@@ -7,9 +7,9 @@
     <p ng-if="bookInfo.attributes.publisher">
         {{bookInfo.attributes.publisher}}/{{bookInfo.attributes.pubdate}}</p>
 
-    <p ng-if="bookInfo.attributes.author">{{bookInfo.attributes.author.toString()}}</p>
+    <p ng-if="bookInfo.attributes.author.length>0">作者:<strong>{{bookInfo.attributes.author.toString()}}</strong></p>
 
-    <p ng-if="bookInfo.attributes.price">{{bookInfo.attributes.price}}</p>
+    <p ng-if="bookInfo.attributes.price">定价:<strong>{{bookInfo.attributes.price}}</strong></p>
     <!-- 这本书的二手书的数量-->
     <span class="badge badge-balanced" ng-if="bookInfo.usedBookNumber>0">{{bookInfo.usedBookNumber}}</span>
     <span class="badge badge-calm" ng-if="bookInfo.needBookNumber>0">{{bookInfo.needBookNumber}}</span>

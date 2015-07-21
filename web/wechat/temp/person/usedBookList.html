@@ -13,22 +13,9 @@
                         ui-sref="tab.person_uploadOneUsedBook">上传旧书
                 </button>
             </ion-item>
-            <ion-item collection-repeat="usedBook in UsedBook$.myUsedBookList" class="item-thumbnail-left">
-                <img ng-if="usedBook.attributes.image"
-                     ng-src="{{usedBook.attributes.image}}"
-                     ui-sref="tab.book_oneBook({isbn13:usedBook.attributes.isbn13})">
-
-                <h3 ng-if="usedBook.attributes.title">{{usedBook.attributes.title}}</h3>
-
-                <p ng-if="usedBook.attributes.price">要价:{{usedBook.attributes.price}}</p>
-
-                <button class="button button-small button-outline button-assertive"
-                        ng-click="UsedBook$.removeUsedBook(usedBook)">已卖删除
-                </button>
-                <button class="button button-small button-outline button-balanced"
-                        ui-sref="tab.person_editOneUsedBook({usedBookId:usedBook.id})">修改信息
-                </button>
-            </ion-item>
+            <!-- TODO ng-repeat 导致卡顿-->
+            <one-used-book ng-repeat="usedBook in UsedBook$.myUsedBookList" used-book="usedBook"
+                           should-show-manage-btn="true"></one-used-book>
             <ion-item ng-if="UsedBook$.myUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>
         </ion-list>
     </ion-content>

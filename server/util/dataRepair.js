@@ -10,12 +10,10 @@ var BookInfo = require('./../book/bookInfo.js');
 var DoubanBook = require('./../book/doubanBook.js');
 
 /**
- * 对与UsedBook表里的没有Info属性的去抓取图书信息填上该属性
+ * 对UsedBook表里的没有Info属性的去抓取图书信息填上该属性
  */
 exports.fillUsedBookInfoWhereInfoIsNull = function () {
     var query = new AV.Query(Model.UsedBook);
-    query.doesNotExist('info');
-    query = new AV.Query(Model.UsedBook);
     query.doesNotExist('info');
     query.limit(1000);
     query.find().done(function (avosUsedBookList) {

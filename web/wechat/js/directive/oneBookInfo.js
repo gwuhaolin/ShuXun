@@ -3,7 +3,7 @@
  */
 APP.directive('oneBookInfo', function (UsedBook$) {
     function link($scope) {
-        if ($scope.shouldShowUsedBooksCount) {
+        if ($scope.shouldShowUsedBooksCount && $scope.bookInfo) {
             var isbn13 = $scope.bookInfo.get('isbn13');
             if (isbn13) {
                 UsedBook$.ISBN_sell.getUsedBookNumberEqualISBN(isbn13).done(function (num) {
