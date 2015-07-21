@@ -22,5 +22,11 @@ APP.controller('book_searchList', function ($scope, $timeout, $state, $statePara
                 alert('不合法的ISBN号');
             }
         });
-    }
+    };
+
+    $scope.$on('$ionicView.afterLeave', function () {
+        //清空列表提高性能 TODO 不会执行
+        SearchBook$.books.length = 0;
+        SearchBook$.keyword = '';
+    });
 });

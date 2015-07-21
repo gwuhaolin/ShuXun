@@ -24,6 +24,8 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.$on('$ionicView.afterEnter', function () {
             var analyticsSugue = leanAnalytics.browseTag(tag);
             $scope.$on('$ionicView.afterLeave', function () {
+                //清空列表提高性能 TODO 不会执行
+                BookRecommend$.TagBook.books.length = 0;
                 analyticsSugue.send();
             });
         });

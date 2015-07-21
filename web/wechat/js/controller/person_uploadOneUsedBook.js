@@ -5,8 +5,10 @@
 "use strict";
 
 APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, InfoService$) {
-    $scope.isLoading = false;
     $scope.WeChatJS$ = WeChatJS$;
+    $scope.InfoService$ = InfoService$;
+
+    $scope.isLoading = false;
     $scope.$on('$ionicView.afterEnter', function () {
         $scope.usedBookInfo = {
             isbn13: $stateParams.isbn13,
@@ -76,8 +78,5 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
             $scope.$apply();
         })
     };
-
-    //常用描述语
-    $scope.commonWords = InfoService$.commonUsedBookDesWords;
 
 });
