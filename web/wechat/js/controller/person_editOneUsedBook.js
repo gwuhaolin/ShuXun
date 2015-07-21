@@ -9,7 +9,7 @@ APP.controller('person_editOneUsedBook', function ($scope, $state, $ionicHistory
     $scope.usedBook = new Model.UsedBook();
     $scope.usedBook.id = usedBookId;
     $scope.usedBook.fetch().done(function () {
-        $scope.$apply();
+        $scope.$digest();
     });
     $scope.valueHasChange = false;
     $scope.submitOnClick = function () {

@@ -14,13 +14,13 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     query.get(usedBookObjectId).done(function (usedBook) {
         $scope.usedBook = usedBook;
     }).always(function () {
-        $scope.$apply();
+        $scope.$digest();
     });
 
     //加载评论数据
     Status$.getStatusList_reviewBook(usedBookObjectId).done(function (statusList) {
         $scope.statusList = statusList;
-        $scope.$apply();
+        $scope.$digest();
     });
 
     //统计用户行为

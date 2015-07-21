@@ -12,7 +12,7 @@ APP.directive('dOneUsedBook', function () {
         var bookInfo = $scope.usedBook.attributes.info;
         if ($scope.usedBook.attributes.info && !bookInfo.attributes.isbn13) {
             bookInfo.fetch().done(function () {
-                $scope.$apply();
+                $scope.$digest();
             })
         }
     }

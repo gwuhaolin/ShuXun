@@ -73,7 +73,7 @@ APP.service('User$', function ($rootScope, Status$) {
                 } else {
                     that.Followee.hasMoreFlag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             });
         },
@@ -117,7 +117,7 @@ APP.service('User$', function ($rootScope, Status$) {
                 } else {
                     that.Follower.hasMoreFlag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             });
         },

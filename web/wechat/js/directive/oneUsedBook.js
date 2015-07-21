@@ -14,7 +14,7 @@ APP.directive('oneUsedBook', function (UsedBook$) {
             query.get(bookInfo.id).done(function (bookInfo) {
                 $scope.usedBook.set('info', bookInfo);
             }).always(function () {
-                $scope.$apply();
+                $scope.$digest();
             });
         }
 

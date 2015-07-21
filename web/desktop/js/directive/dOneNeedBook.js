@@ -12,7 +12,7 @@ APP.directive('dOneNeedBook', function () {
         var bookInfo = $scope.needBook.attributes.info;
         if ($scope.needBook.attributes.info && !bookInfo.attributes.isbn13) {
             bookInfo.fetch().done(function () {
-                $scope.$apply();
+                $scope.$digest();
             })
         }
     }

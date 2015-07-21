@@ -9,7 +9,7 @@ APP.directive('dOneUsedBookAsideInfo', function () {
         query.get($scope.usedBookObjectId).done(function (usedBook) {
             $scope.usedBook = usedBook;
             $scope.owner = usedBook.get('owner');
-            $scope.$apply();
+            $scope.$digest();
             //加载主人的其他的二手书
             var query = usedBook.get('owner').relation("usedBooks").query();
             query.find().done(function (usedBooks) {
@@ -26,7 +26,7 @@ APP.directive('dOneUsedBookAsideInfo', function () {
                         }
                     }
                 }
-                $scope.$apply();
+                $scope.$digest();
             });
         });
     }

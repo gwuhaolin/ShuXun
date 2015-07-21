@@ -17,7 +17,7 @@ APP.directive('usedBookOneLine', function () {
                     query.get(bookInfo.id).done(function (bookInfo) {
                         usedBook.set('info', bookInfo);
                     }).always(function () {
-                        $scope.$apply();
+                        $scope.$digest();
                     });
                 }
             });

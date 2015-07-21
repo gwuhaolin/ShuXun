@@ -49,7 +49,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
                 }
             }).always(function () {
                 that.isLoading = false;
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
@@ -89,7 +89,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
             that.books.unshiftUniqueArray(bookInfos);
             that.totalNum += bookInfos.length;
             that.isLoading = false;
-            $rootScope.$apply();
+            $rootScope.$digest();
             $rootScope.$broadcast('scroll.infiniteScrollComplete');
         })
     }

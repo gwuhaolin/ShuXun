@@ -40,7 +40,7 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
                 $scope.isLoading = false;
                 $scope.usedBookInfo.image = json.image.replace('mpic', 'lpic');//大图显示
                 $scope.usedBookInfo.title = json.title;
-                $scope.$apply();
+                $scope.$digest();
             } else {
                 alert('没有找到图书信息,再去搜搜看~');
                 $state.go('tab.book_searchList');
@@ -75,7 +75,7 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
             alert(error.message);
         }).always(function () {
             $scope.isLoading = false;
-            $scope.$apply();
+            $scope.$digest();
         })
     };
 

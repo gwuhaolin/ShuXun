@@ -8,7 +8,7 @@ APP.directive('dUsedBookComments', function (Status$) {
         //加载评论数据
         Status$.getStatusList_reviewBook($scope.usedBookObjectId).done(function (statusList) {
             $scope.statusList = statusList;
-            $scope.$apply();
+            $scope.$digest();
         });
         $scope.msg = {
             text: ''
@@ -17,7 +17,7 @@ APP.directive('dUsedBookComments', function (Status$) {
             Status$.reviewUsedBook($scope.ownerObjectId, $scope.usedBookObjectId, $scope.msg.text, 'buy').done(function (status) {
                 $scope.statusList.push(status);
                 $scope.msg.text = '';
-                $scope.$apply();
+                $scope.$digest();
             }).fail(function (err) {
                 alert('发布评论失败:' + err.message);
             });

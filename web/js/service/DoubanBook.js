@@ -122,7 +122,7 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
                 } else {
                     that.BookReview.hasMoreFlag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             });
         },

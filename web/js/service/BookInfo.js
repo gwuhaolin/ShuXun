@@ -37,7 +37,7 @@ APP.service('BookInfo$', function ($rootScope) {
                 } else {
                     that.LatestBook.hasMoreFlag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             });
         },

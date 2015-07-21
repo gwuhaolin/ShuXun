@@ -73,7 +73,7 @@ APP.service('WeChatJS$', function ($rootScope) {
             scanType: ["barCode"],// 可以指定扫二维码还是一维码，默认二者都有
             success: function (res) {
                 callback(res.resultStr.split(',')[1]);
-                $rootScope.$apply();
+                $rootScope.$digest();
             }
         })
     };

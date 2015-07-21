@@ -9,12 +9,12 @@ APP.directive('oneBookInfo', function (UsedBook$) {
                 UsedBook$.ISBN_sell.getUsedBookNumberEqualISBN(isbn13).done(function (num) {
                     $scope.bookInfo.usedBookNumber = num;
                 }).always(function () {
-                    $scope.$apply();
+                    $scope.$digest();
                 });
                 UsedBook$.ISBN_need.getNeedBookNumberEqualISBN(isbn13).done(function (num) {
                     $scope.bookInfo.needBookNumber = num;
                 }).always(function () {
-                    $scope.$apply();
+                    $scope.$digest();
                 })
             }
         }

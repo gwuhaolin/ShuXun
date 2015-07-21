@@ -31,7 +31,7 @@ APP.service('InfoService$', function ($rootScope) {
                     that.Major.hasMoreFlag = false;
                 }
             }).always(function () {
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
@@ -72,7 +72,7 @@ APP.service('InfoService$', function ($rootScope) {
                     that.School.hasMoreFlag = false;
                 }
             }).always(function () {
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },

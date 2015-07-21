@@ -13,7 +13,7 @@ APP.controller('signUp', function ($scope, $timeout, $state, $stateParams, $ioni
     User$.getWeChatOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
         $scope.isLoading = false;
         $scope.userInfo = userInfo;
-        $scope.$apply();
+        $scope.$digest();
         User$.loginWithUnionId(userInfo.username).done(function () {//已经注册过
             Status$.loadUnreadStatusesCount();//加载未读消息数量
             $state.go(nextState);
@@ -45,7 +45,7 @@ APP.controller('signUp', function ($scope, $timeout, $state, $stateParams, $ioni
             alert(error.message);
         }).always(function () {
             $scope.isLoading = false;
-            $scope.$apply();
+            $scope.$digest();
         })
     };
 

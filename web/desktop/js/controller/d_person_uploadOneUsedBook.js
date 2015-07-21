@@ -25,7 +25,7 @@ APP.controller('d_person_uploadOneUsedBook', function ($scope, $location, Douban
                 $scope.usedBookInfo.isbn13 = json.isbn13;
                 $scope.usedBookInfo.image = json.image.replace('mpic', 'lpic');//大图显示
                 $scope.usedBookInfo.title = json.title;
-                $scope.$apply();
+                $scope.$digest();
             } else {
                 alert('没有找到图书信息,再去搜搜看~');
             }
@@ -40,7 +40,7 @@ APP.controller('d_person_uploadOneUsedBook', function ($scope, $location, Douban
         }).fail(function (error) {
             alert(error.message);
         }).always(function () {
-            $scope.$apply();
+            $scope.$digest();
         })
     };
 

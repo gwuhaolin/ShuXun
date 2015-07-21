@@ -14,7 +14,7 @@ APP.directive('dOneBookAsideInfo', function (BusinessSite$, UsedBook$, User$, Do
         //加载网购信息[{url,name,price,logoUrl}]
         BusinessSite$.getBusinessInfoByISBN(isbn13).done(function (jsonInfoList) {
             $scope.businessInfos = jsonInfoList;
-            $scope.$apply();
+            $scope.$digest();
         });
 
         //////////// 二手书信息 /////////

@@ -14,26 +14,26 @@ APP.controller('person_my', function ($scope, $state, $stateParams, User$, Statu
         query.equalTo('role', 'sell');
         query.count().done(function (number) {
             $scope.myUsedBookNumber = number;
-            $scope.$apply();
+            $scope.$digest();
         });
         //加载我发布的求书需求的数量
         query = myUsedBookRelation.query();
         query.equalTo('role', 'need');
         query.count().done(function (number) {
             $scope.myNeedBookNumber = number;
-            $scope.$apply();
+            $scope.$digest();
         });
         //加载我关注的同学的数量
         query = AV.User.current().followeeQuery();
         query.count().done(function (followeeNumber) {
             $scope.followeeNumber = followeeNumber;
-            $scope.$apply();
+            $scope.$digest();
         });
         //加载我的粉丝的数量
         query = AV.User.current().followerQuery();
         query.count().done(function (followerNumber) {
             $scope.followerNumber = followerNumber;
-            $scope.$apply();
+            $scope.$digest();
         });
         //加载我的未读消息
         Status$.loadUnreadStatusesCount();

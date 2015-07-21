@@ -17,11 +17,11 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams, $ionicMod
             $scope.book = json;
             $scope.isbn13 = json.isbn13;
             $scope.isLoading = false;
-            $scope.$apply();
+            $scope.$digest();
             //加载电商联盟信息
             BusinessSite$.getBusinessInfoByISBN(json.isbn13).done(function (infos) {
                 $scope.businessInfos = infos;
-                $scope.$apply();
+                $scope.$digest();
             });
         } else {
             alert('没有找到图书信息,再去搜搜看~');

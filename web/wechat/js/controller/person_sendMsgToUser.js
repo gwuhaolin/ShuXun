@@ -34,7 +34,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
     //加载用户信息
     AV.Object.createWithoutData('_User', receiverObjectId).fetch().done(function (user) {
         $scope.user = user;
-        $scope.$apply();
+        $scope.$digest();
     });
 
     //加载聊天记录
@@ -45,7 +45,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
         query.find().done(function (statusList) {
             $scope.statusList.pushUniqueArray(statusList);
             $ionicScrollDelegate.scrollBottom(true);
-            $scope.$apply();
+            $scope.$digest();
         });
     }
 
@@ -63,7 +63,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
         $scope.usedBook = new Model.UsedBook();
         $scope.usedBook.id = $scope.msg.usedBookObjectId;
         $scope.usedBook.fetch().done(function () {
-            $scope.$apply();
+            $scope.$digest();
         });
     }
 
@@ -86,7 +86,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, $
         }).always(function () {
             $scope.isLoading = false;
             $scope.msg.sendMsg = '';
-            $scope.$apply();
+            $scope.$digest();
         });
     };
 

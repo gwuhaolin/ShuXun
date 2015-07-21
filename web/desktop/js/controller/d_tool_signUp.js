@@ -16,13 +16,13 @@ APP.controller('d_tool_signUp', function ($scope, $location, User$, Status$, Inf
         }).fail(function () {//已经关注书循，但是还没有注册过
             $scope.step = 'info';
         }).always(function () {
-            $scope.$apply();
+            $scope.$digest();
         });
     }).fail(function () {//用户还没有关注
         alert('要先关注书循微信号哦');
         $scope.step = 'subscribe';
     }).always(function () {
-        $scope.$apply();
+        $scope.$digest();
     });
 
     $scope.submitOnClick = function () {
@@ -31,7 +31,7 @@ APP.controller('d_tool_signUp', function ($scope, $location, User$, Status$, Inf
         }).fail(function (error) {
             alert(error.message);
         }).always(function () {
-            $scope.$apply();
+            $scope.$digest();
         });
     };
 });

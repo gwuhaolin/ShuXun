@@ -16,7 +16,7 @@ APP.directive('userInfo', function (WeChatJS$, User$) {
                 query.equalTo('role', 'sell');
                 query.count().done(function (number) {
                     $scope.user.userUsedBookNumber = number;
-                    $scope.$apply();
+                    $scope.$digest();
                 });
             }
         }
@@ -30,7 +30,7 @@ APP.directive('userInfo', function (WeChatJS$, User$) {
                 query.equalTo('role', 'need');
                 query.count().done(function (number) {
                     $scope.user.userNeedBookNumber = number;
-                    $scope.$apply();
+                    $scope.$digest();
                 });
             }
         }
@@ -43,7 +43,7 @@ APP.directive('userInfo', function (WeChatJS$, User$) {
                 query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.user.id));
                 query.count().done(function (number) {
                     $scope.isMyFollowee = (number == 1);
-                    $scope.$apply();
+                    $scope.$digest();
                 })
             }
         }

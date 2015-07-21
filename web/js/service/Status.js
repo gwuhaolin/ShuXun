@@ -24,19 +24,19 @@ APP.service('Status$', function ($rootScope) {
         if (user) {
             AV.Status.countUnreadStatuses(user, 'newUsedBook').done(function (result) {
                 that.NewUsedBookStatus.unreadCount = result['unread'];
-                $rootScope.$apply();
+                $rootScope.$digest();
             });
             AV.Status.countUnreadStatuses(user, 'newNeedBook').done(function (result) {
                 that.NewNeedBookStatus.unreadCount = result['unread'];
-                $rootScope.$apply();
+                $rootScope.$digest();
             });
             AV.Status.countUnreadStatuses(user, 'private').done(function (result) {
                 that.PrivateStatus.unreadCount = result['unread'];
-                $rootScope.$apply();
+                $rootScope.$digest();
             });
             AV.Status.countUnreadStatuses(user, 'reviewUsedBook').done(function (result) {
                 that.ReviewUsedBookStatus.unreadCount = result['unread'];
-                $rootScope.$apply();
+                $rootScope.$digest();
             });
         }
     };
@@ -57,7 +57,7 @@ APP.service('Status$', function ($rootScope) {
                     that.NewUsedBookStatus.statusList.push(one);
                 }
                 that.NewUsedBookStatus.unreadCount = 0;
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
@@ -79,7 +79,7 @@ APP.service('Status$', function ($rootScope) {
                     that.NewNeedBookStatus.statusList.push(one);
                 }
                 that.NewNeedBookStatus.unreadCount = 0;
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
@@ -101,7 +101,7 @@ APP.service('Status$', function ($rootScope) {
                     that.PrivateStatus.statusList.push(one);
                 }
                 that.PrivateStatus.unreadCount = 0;
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
@@ -123,7 +123,7 @@ APP.service('Status$', function ($rootScope) {
                     that.ReviewUsedBookStatus.statusList.push(one);
                 }
                 that.ReviewUsedBookStatus.unreadCount = 0;
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }

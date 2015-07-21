@@ -53,7 +53,7 @@ APP.service('UsedBook$', function ($rootScope) {
             that.myUsedBookList.pushUniqueArray(avosUsedBooks);
         }).always(function () {
             that.isLoading = false;
-            $rootScope.$apply();
+            $rootScope.$digest();
         });
     };
 
@@ -75,7 +75,7 @@ APP.service('UsedBook$', function ($rootScope) {
             that.myNeedBookList.pushUniqueArray(avosUsedBooks);
         }).always(function () {
             that.isLoading = false;
-            $rootScope.$apply();
+            $rootScope.$digest();
         });
     };
 
@@ -147,7 +147,7 @@ APP.service('UsedBook$', function ($rootScope) {
             }).always(function () {
                 that.isLoading = false;
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
-                $rootScope.$apply();
+                $rootScope.$digest();
             })
         },
         hasMoreFlag: true,
@@ -205,7 +205,7 @@ APP.service('UsedBook$', function ($rootScope) {
             }).always(function () {
                 that.isLoading = false;
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
-                $rootScope.$apply();
+                $rootScope.$digest();
             })
         },
         hasMoreFlag: true,

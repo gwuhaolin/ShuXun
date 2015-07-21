@@ -15,7 +15,7 @@ APP.directive('dUserInfo', function (User$) {
                 query.equalTo('role', 'sell');
                 query.count().done(function (number) {
                     $scope.userUsedBookNumber = number;
-                    $scope.$apply();
+                    $scope.$digest();
                 });
             }
         }
@@ -29,7 +29,7 @@ APP.directive('dUserInfo', function (User$) {
                 query.equalTo('role', 'need');
                 query.count().done(function (number) {
                     $scope.userNeedBookNumber = number;
-                    $scope.$apply();
+                    $scope.$digest();
                 });
             }
         }
@@ -42,7 +42,7 @@ APP.directive('dUserInfo', function (User$) {
                 query.equalTo('followee', AV.Object.createWithoutData('_User', $scope.user.id));
                 query.count().done(function (number) {
                     $scope.isMyFollowee = (number == 1);
-                    $scope.$apply();
+                    $scope.$digest();
                 })
             }
         }
@@ -56,7 +56,7 @@ APP.directive('dUserInfo', function (User$) {
                 query.limit(2);
                 query.find().done(function (usedBookList) {
                     $scope.heUsedBookList = usedBookList;
-                    $scope.$apply();
+                    $scope.$digest();
                 });
             }
         }

@@ -9,11 +9,11 @@ APP.controller('d_tool_userHome', function ($scope, UsedBook$) {
         $scope.owner = owner;
         UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
             $scope.usedBooks = usedBooks;
-            $scope.$apply();
+            $scope.$digest();
         });
         UsedBook$.loadNeedBookListForOwner(owner).done(function (needBooks) {
             $scope.needBooks = needBooks;
-            $scope.$apply();
+            $scope.$digest();
         })
     });
 });

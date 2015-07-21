@@ -16,7 +16,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         load: function () {
             AV.Cloud.run('getAllBookTags', null, null).done(function (tag) {
                 that.BookTag.tag = tag;
-                $rootScope.$apply();
+                $rootScope.$digest();
             });
         },
         getTagAttrNames: function () {
@@ -43,7 +43,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 //来自BookInfo表里的tag相关的图书
                 BookInfo$.searchBook(tag).done(function (bookInfos) {
                     that.TagBook.books.unshiftUniqueArray(bookInfos);
-                    $rootScope.$apply();
+                    $rootScope.$digest();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
                 });
             }
@@ -61,7 +61,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 } else {
                     that.TagBook.hasMoreTag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
@@ -110,7 +110,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 } else {
                     that.NearNeedBook.hasMoreFlag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
@@ -138,7 +138,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             var major = me ? me.get('major') : null;
             _buildUsedBookQuery('need', major).find().done(function (needBooks) {
                 that.NearNeedBook.needBooks.unshiftUniqueArray(AV._.shuffle(needBooks));
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
@@ -161,7 +161,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 } else {
                     that.NearUsedBook.hasMoreFlag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             });
         },
@@ -189,7 +189,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             var major = me ? me.get('major') : null;
             _buildUsedBookQuery('sell', major).find().done(function (needBooks) {
                 that.NearUsedBook.usedBooks.unshiftUniqueArray(AV._.shuffle(needBooks));
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         }
@@ -227,7 +227,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 } else {
                     that.NearUser.hasMoreFlag = false;
                 }
-                $rootScope.$apply();
+                $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
