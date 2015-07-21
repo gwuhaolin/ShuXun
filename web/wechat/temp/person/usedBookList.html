@@ -13,7 +13,7 @@
                         ui-sref="tab.person_uploadOneUsedBook">上传旧书
                 </button>
             </ion-item>
-            <!-- TODO ng-repeat 导致卡顿-->
+            <!-- TODO ng-repeat is slow-->
             <one-used-book ng-repeat="usedBook in UsedBook$.myUsedBookList" used-book="usedBook"
                            should-show-manage-btn="true"></one-used-book>
             <ion-item ng-if="UsedBook$.myUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>

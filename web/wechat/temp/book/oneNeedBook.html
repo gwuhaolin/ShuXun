@@ -35,7 +35,7 @@
                 </a>
             </ion-item>
             <ion-item ng-if="statusList.length==0">还没有同学评论,快来抢沙发~</ion-item>
-            <ion-item class="item-avatar" ng-repeat="status in statusList">
+            <ion-item class="item-avatar" collection-repeat="status in statusList">
                 <img ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}"
                      ui-sref="tab.userHome({ownerId:status.attributes.source.id})">
 

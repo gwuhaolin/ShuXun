@@ -5,19 +5,19 @@
     </ion-nav-buttons>
     <ion-content class="padding">
         <div class="card" ng-if="cmd=='newUsedBook'"
-             ng-repeat="status in statusList">
+             collection-repeat="status in statusList">
             <one-used-book used-book="status.attributes.usedBook"></one-used-book>
             <user-info user="status.attributes.source"></user-info>
         </div>
 
         <div class="card" ng-if="cmd=='newNeedBook'"
-             ng-repeat="status in statusList">
+             collection-repeat="status in statusList">
             <one-need-book need-book="status.attributes.usedBook"></one-need-book>
             <user-info user="status.attributes.source"></user-info>
         </div>
 
         <div class="card" ng-if="cmd=='private'"
-             ng-repeat="status in statusList">
+             collection-repeat="status in statusList">
             <ion-item>
                 <p style="white-space: pre-wrap">{{status.attributes.message}}</p>
                 <button style="float:right;"

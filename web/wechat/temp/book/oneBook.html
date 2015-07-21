@@ -67,7 +67,7 @@
             </ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
             <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
-                      ng-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
+                      collection-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
                       class="item-avatar">
                 <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
                      ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
@@ -95,7 +95,7 @@
             </ion-item>
             <ion-item ng-if="needBookNumber==0" style="text-align: center">还没有同学想要它</ion-item>
             <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
-                      ng-repeat="usedBook in UsedBook$.ISBN_need.nowEqualISBNNeedBooks"
+                      collection-repeat="usedBook in UsedBook$.ISBN_need.nowEqualISBNNeedBooks"
                       class="item-avatar">
                 <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
                      ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">

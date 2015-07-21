@@ -22,7 +22,7 @@
         <!-- 聊天记录-->
         <ion-item style="margin: 0;padding: 0;border-right: none;border-left: none">
             <ol ng-if="statusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
-                <li ng-repeat="status in statusList"
+                <li collection-repeat="status in statusList"
                     class="message"
                     ng-style="{float:status.attributes.source.id==user.id ? 'left':'right',backgroundColor:status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}">
                     {{status.attributes.message}}
