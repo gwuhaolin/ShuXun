@@ -27,7 +27,7 @@ APP.directive('oneBookInfo', function (UsedBook$) {
             bookInfo: '=',
             shouldShowUsedBooksCount: '='
         },
-        templateUrl: 'temp/tool/oneBookInfoTemplate.html',
+        templateUrl: 'temp/mould/oneBookInfo.html',
         link: link
     }
 });

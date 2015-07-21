@@ -93,7 +93,7 @@ APP.directive('dUserInfo', function (User$) {
             //当给用户发送私信时,如果要显示当前二手书就传入
             usedBookObjectId: '=?'
         },
-        templateUrl: '../temp/userInfoTemplate.html',
+        templateUrl: '../mould/userInfo.html',
         link: link
     }
 });

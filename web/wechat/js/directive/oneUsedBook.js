@@ -31,7 +31,7 @@ APP.directive('oneUsedBook', function (UsedBook$) {
             //是否显示删除，修改按钮
             shouldShowManageBtn: '='
         },
-        templateUrl: 'temp/tool/oneUsedBookTemplate.html',
+        templateUrl: 'temp/mould/oneUsedBook.html',
         link: link
     }
 });

@@ -30,7 +30,7 @@ APP.directive('usedBookOneLine', function () {
             //三本图书的信息
             usedBooks: '='
         },
-        templateUrl: 'temp/tool/usedBookOneLineTemplate.html',
+        templateUrl: 'temp/mould/usedBookOneLine.html',
         link: link
     }
 });

@@ -10,6 +10,6 @@ APP.directive('doubanBookOneLine', function () {
             //三本图书的信息
             books: '='
         },
-        templateUrl: 'temp/tool/doubanBookOneLineTemplate.html'
+        templateUrl: 'temp/mould/doubanBookOneLine.html'
     }
 });
