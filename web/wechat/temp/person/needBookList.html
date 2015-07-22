@@ -14,9 +14,13 @@
                         ui-sref="tab.person_uploadOneNeedBook">发布求书
                 </button>
             </ion-item>
-            <one-need-book ng-repeat="needBook in UsedBook$.myNeedBookList" need-book="needBook"
+            <one-need-book ng-repeat="needBook in UsedBook$.MyNeedBook.needBooks" need-book="needBook"
                            should-show-manage-btn="true"></one-need-book>
-            <ion-item ng-if="UsedBook$.myNeedBookList.length==0">你还没有发布过,点击发布求书</ion-item>
+            <ion-item ng-if="UsedBook$.MyNeedBook.needBooks.length==0">你还没有发布过,点击发布求书</ion-item>
         </ion-list>
+        <ion-infinite-scroll ng-if="UsedBook$.MyNeedBook.hasMore()"
+                             on-infinite="UsedBook$.MyNeedBook.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

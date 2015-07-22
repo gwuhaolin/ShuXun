@@ -4,7 +4,7 @@
         <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
     </ion-nav-buttons>
     <ion-content>
-        <div style="text-align: center;margin: 10px" ng-if="UsedBook$.isLoading">
+        <div style="text-align: center;margin: 10px" ng-if="UsedBook$.MyUsedBook.isLoading">
             <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
         </div>
         <ion-list>
@@ -13,9 +13,13 @@
                         ui-sref="tab.person_uploadOneUsedBook">上传旧书
                 </button>
             </ion-item>
-            <one-used-book ng-repeat="usedBook in UsedBook$.myUsedBookList" used-book="usedBook"
+            <one-used-book ng-repeat="usedBook in UsedBook$.MyUsedBook.usedBooks" used-book="usedBook"
                            should-show-manage-btn="true"></one-used-book>
-            <ion-item ng-if="UsedBook$.myUsedBookList.length==0">你还没有上传过书,点击 上传旧书</ion-item>
+            <ion-item ng-if="UsedBook$.MyUsedBook.usedBooks.length==0">你还没有上传过书,点击 上传旧书</ion-item>
         </ion-list>
+        <ion-infinite-scroll ng-if="UsedBook$.MyUsedBook.hasMore()"
+                             on-infinite="UsedBook$.MyUsedBook.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

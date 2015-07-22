@@ -36,47 +36,65 @@ APP.service('UsedBook$', function ($rootScope) {
     };
 
     /**
-     * 所有我上传的还没有卖出的二手书
-     * @type {Array}
+     * 我上传的二手书
+     * @type {{isLoading: boolean, usedBooks: Array, loadMore: Function, _hasMoreFlag: boolean, hasMore: Function}}
      */
-    this.myUsedBookList = [];
-    /**
-     * 加载所有我上传的二手书
-     */
-    this.loadMyUsedBookList = function () {
-        that.isLoading = true;
-        var query = AV.User.current().relation('usedBooks').query();
-        query.equalTo('role', 'sell');
-        query.descending('updatedAt');
-        query.find().done(function (avosUsedBooks) {
-            that.myUsedBookList.length = 0;
-            that.myUsedBookList.pushUniqueArray(avosUsedBooks);
-        }).always(function () {
-            that.isLoading = false;
-            $rootScope.$digest();
-        });
+    this.MyUsedBook = {
+        isLoading: false,
+        usedBooks: [],
+        loadMore: function () {
+            var query = AV.User.current().relation('usedBooks').query();
+            query.skip(that.MyUsedBook.usedBooks.length);
+            query.limit(LoadCount);
+            query.equalTo('role', 'sell');
+            query.descending('updatedAt');
+            query.find().done(function (usedBookList) {
+                if (usedBookList.length > 0) {
+                    that.MyUsedBook.usedBooks.pushUniqueArray(usedBookList);
+                } else {
+                    that.MyUsedBook._hasMoreFlag = false;
+                }
+            }).always(function () {
+                that.MyUsedBook.isLoading = false;
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                $rootScope.$digest();
+            });
+        },
+        _hasMoreFlag: true,
+        hasMore: function () {
+            return that.MyUsedBook._hasMoreFlag;
+        }
     };
 
     /**
-     * 所有我发布的求书列表
-     * @type {Array}
+     * 我上传的求书
+     * @type {{isLoading: boolean, needBooks: Array, loadMore: Function, _hasMoreFlag: boolean, hasMore: Function}}
      */
-    this.myNeedBookList = [];
-    /**
-     * 加载所有我上传的二手书
-     */
-    this.loadMyNeedBookList = function () {
-        that.isLoading = true;
-        var query = AV.User.current().relation('usedBooks').query();
-        query.equalTo('role', 'need');
-        query.descending('updatedAt');
-        query.find().done(function (avosUsedBooks) {
-            that.myNeedBookList.length = 0;
-            that.myNeedBookList.pushUniqueArray(avosUsedBooks);
-        }).always(function () {
-            that.isLoading = false;
-            $rootScope.$digest();
-        });
+    this.MyNeedBook = {
+        isLoading: false,
+        needBooks: [],
+        loadMore: function () {
+            var query = AV.User.current().relation('usedBooks').query();
+            query.skip(that.MyNeedBook.needBooks.length);
+            query.limit(LoadCount);
+            query.equalTo('role', 'need');
+            query.descending('updatedAt');
+            query.find().done(function (needBookList) {
+                if (needBookList.length > 0) {
+                    that.MyNeedBook.needBooks.pushUniqueArray(needBookList);
+                } else {
+                    that.MyNeedBook._hasMoreFlag = false;
+                }
+            }).always(function () {
+                that.MyNeedBook.isLoading = false;
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                $rootScope.$digest();
+            });
+        },
+        _hasMoreFlag: true,
+        hasMore: function () {
+            return that.MyNeedBook._hasMoreFlag;
+        }
     };
 
     /**
@@ -88,9 +106,9 @@ APP.service('UsedBook$', function ($rootScope) {
         if (window.confirm('你确定要删除它吗?将不可恢复')) {
             avosUsedBook.destroy().done(function () {
                 if (role == 'sell') {
-                    that.loadMyUsedBookList();
+                    that.MyUsedBook.usedBooks.length = 0;
                 } else if (role == 'need') {
-                    that.loadMyNeedBookList();
+                    that.MyNeedBook.needBooks.length = 0;
                 }
             }).fail(function (error) {
                 alert(error.message);

@@ -6,7 +6,6 @@
 
 APP.controller('person_usedBookList', function ($scope, $ionicScrollDelegate, UsedBook$) {
     $scope.UsedBook$ = UsedBook$;
-    UsedBook$.loadMyUsedBookList();
     $scope.$on('$ionicView.afterEnter', function () {
         $ionicScrollDelegate.scrollTop(true);
     });
