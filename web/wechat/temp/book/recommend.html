@@ -12,8 +12,9 @@
             </ion-item>
             <ion-item style="white-space:normal">
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
-                        ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
-                        ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">{{bigTag}}
+                        ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()"
+                        ui-sref="tab.book_bookList({cmd:'tag',tag:bigTag})"
+                        >{{bigTag}}
                 </button>
             </ion-item>
         </div>

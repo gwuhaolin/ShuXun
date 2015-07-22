@@ -17,6 +17,16 @@
 
                 <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">主人描述:{{usedBook.attributes.des}}</p>
             </ion-item>
+            <!-- 如果是主人本人就显示管理按钮-->
+            <ion-item ng-if="isMy()">
+                <button class="button button-small button-outline button-assertive"
+                        ng-click="UsedBook$.removeUsedBook(usedBook)"
+                        ui-sref="tab.person_needBooksList">删除已卖
+                </button>
+                <button class="button button-small button-outline button-balanced"
+                        ui-sref="tab.person_editOneUsedBook({usedBookId:usedBook.id})">修改信息
+                </button>
+            </ion-item>
         </div>
         <!-- 主人信息-->
         <div class="list card">
@@ -35,7 +45,7 @@
                 </a>
             </ion-item>
             <ion-item ng-if="statusList.length==0">还没有同学评论,快来抢沙发~</ion-item>
-            <ion-item class="item-avatar" collection-repeat="status in statusList">
+            <ion-item class="item-avatar" ng-repeat="status in statusList">
                 <img ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}"
                      ui-sref="tab.userHome({ownerId:status.attributes.source.id})">
 

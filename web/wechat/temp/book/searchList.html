@@ -19,7 +19,6 @@
             </ion-item>
 
             <!-- 搜索结果列表-->
-            <!-- TODO ng-repeat is slow-->
             <one-book-info ng-repeat="bookInfo in SearchBook$.books" book-info="bookInfo"
                            should-show-used-books-count="true"></one-book-info>
 

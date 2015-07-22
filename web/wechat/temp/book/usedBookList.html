@@ -19,12 +19,10 @@
         </div>
         <ion-list>
             <!-- 二手书列表-->
-            <!-- TODO ng-repeat is slow-->
             <one-used-book ng-if="cmd=='nearUsed' || cmd =='isbnUsed'"
                            ng-repeat="usedBook in usedBooks | orderBy:sortWay"
                            used-book="usedBook"></one-used-book>
             <!-- 求书列表-->
-            <!-- TODO ng-repeat is slow-->
             <one-need-book ng-if="cmd=='nearNeed' || cmd == 'isbnNeed'"
                            ng-repeat="needBook in usedBooks | orderBy:sortWay"
                            need-book="needBook"></one-need-book>

@@ -80,6 +80,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
     function _buildUsedBookQuery(role, majorFilter) {
         var query = new AV.Query(Model.UsedBook);
         query.descending("updatedAt");
+        query.include(['info']);
         role && query.equalTo('role', role);
         var me = AV.User.current();
         var avosGeo = me ? me.get('location') : null;

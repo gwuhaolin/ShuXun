@@ -7,21 +7,6 @@ APP.directive('usedBookOneLine', function () {
         $element.addClass('item text-center');
         $element.css('height', '144px');
         $element.css('padding', '0');
-
-        if ($scope.usedBooks) {
-            AV._.each($scope.usedBooks, function (usedBook) {
-                var bookInfo = usedBook.get('info');
-                if (bookInfo && bookInfo.id && !bookInfo.has('isbn13')) {
-                    var query = new AV.Query(Model.BookInfo);
-                    query.select('title', 'image', 'isbn13');
-                    query.get(bookInfo.id).done(function (bookInfo) {
-                        usedBook.set('info', bookInfo);
-                    }).always(function () {
-                        $scope.$digest();
-                    });
-                }
-            });
-        }
     }
 
     return {

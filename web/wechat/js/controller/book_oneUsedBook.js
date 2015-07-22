@@ -7,6 +7,8 @@
 APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, WeChatJS$, Status$) {
     $scope.User$ = User$;
     $scope.WeChatJS$ = WeChatJS$;
+    $scope.UsedBook$ = UsedBook$;
+
     var usedBookObjectId = $stateParams['usedBookAvosObjectId'];
     var query = new AV.Query(Model.UsedBook);
     query.include('owner');
@@ -16,6 +18,15 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     }).always(function () {
         $scope.$digest();
     });
+
+    /**
+     * 当前这本旧书是否是我的？
+     * @returns {*|AV.Object|boolean}
+     */
+    $scope.isMy = function () {
+        var me = AV.User.current();
+        return $scope.usedBook && me && me.id == $scope.usedBook.attributes.owner.id;
+    };
 
     //加载评论数据
     Status$.getStatusList_reviewBook(usedBookObjectId).done(function (statusList) {
