@@ -14,14 +14,12 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
             isbn13: $stateParams.isbn13,
             price: null,
             des: '',
-            image: '',
-            title: ''
+            owner: AV.User.current()
         };
         $ionicScrollDelegate.scrollTop();
         if ($scope.usedBookInfo.isbn13) {
             loadDoubanBookInfo();
         }
-        $scope.usedBookInfo.owner = AV.User.current();
     });
 
     $ionicModal.fromTemplateUrl('template/helpModalView.html', {
@@ -35,11 +33,9 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
         $scope.isLoading = true;
         DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
             if (json) {
-                $scope.doubanBookInfo = json;
-                $scope.usedBookInfo.isbn13 = json.isbn13;
                 $scope.isLoading = false;
-                $scope.usedBookInfo.image = json.image.replace('mpic', 'lpic');//大图显示
-                $scope.usedBookInfo.title = json.title;
+                json.image = json.image.replace('mpic', 'lpic');//大图显示
+                $scope.doubanBookInfo = json;
                 $scope.$digest();
             } else {
                 alert('没有找到图书信息,再去搜搜看~');
