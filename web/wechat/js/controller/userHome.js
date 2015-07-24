@@ -22,7 +22,7 @@ APP.controller('userHome', function ($scope, $stateParams, UsedBook$) {
 
     //统计用户行为
     $scope.$on('$ionicView.afterEnter', function () {
-        var analyticsSugue = leanAnalytics.browseUser($scope.ownerId);
+        var analyticsSugue = leanAnalytics.browseUser(ownerId);
         $scope.$on('$ionicView.afterLeave', function () {
             analyticsSugue.send();
         });
