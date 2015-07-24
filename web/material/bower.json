@@ -14,8 +14,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular-material": "0.10.1-rc3",
-    "avoscloud-sdk": "0.5.5",
-    "leancloud-analytics": "0.0.1"
+    "angular-material": "0.10.1-rc3"
   }
 }
