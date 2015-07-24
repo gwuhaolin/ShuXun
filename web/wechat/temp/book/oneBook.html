@@ -61,7 +61,7 @@
         <!-- 二手书-->
         <div class="list card">
             <ion-item class="item-divider item-button-right">要卖对应旧书的同学
-                <button class="button button-clear button-balanced" style="top: 0"
+                <button class="button button-clear button-balanced"
                         ui-sref="tab.person_uploadOneUsedBook({isbn13:book.isbn13})">上传旧书
                 </button>
             </ion-item>
@@ -78,10 +78,10 @@
                     <p>上传于:{{usedBook.updatedAt | date:'mediumDate' }} </p>
                 </div>
             </ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
-                      style="padding: 0;text-align: center">
-                <a class="button button-small button-clear button-balanced"
-                   ui-sref="tab.book_usedBookList({cmd:'isbnUsed',isbn13:isbn13})">共{{usedBookNumber}}本旧书,查看全部</a>
+            <ion-item class="littleTailItem"
+                      ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
+                      ui-sref="tab.book_usedBookList({cmd:'isbnUsed',isbn13:isbn13})">
+                共{{usedBookNumber}}本旧书,查看全部
             </ion-item>
 
         </div>
@@ -89,7 +89,7 @@
         <!-- 求书-->
         <div class="list card">
             <ion-item class="item-divider item-button-right">正需要它的同学
-                <button class="button button-clear button-balanced" style="top: 0"
+                <button class="button button-clear button-balanced"
                         ui-sref="tab.person_uploadOneNeedBook({isbn13:book.isbn13})">发布求书
                 </button>
             </ion-item>
@@ -108,10 +108,10 @@
                     <p>发布于:{{usedBook.updatedAt | date:'mediumDate' }} </p>
                 </div>
             </ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
-                      style="padding: 0;text-align: center">
-                <a class="button button-small button-clear button-balanced"
-                   ui-sref="tab.book_usedBookList({cmd:'isbnNeed',isbn13:isbn13})">共{{needBookNumber}}位同学想要这本书,查看全部</a>
+            <ion-item class="littleTailItem"
+                      ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
+                      ui-sref="tab.book_usedBookList({cmd:'isbnNeed',isbn13:isbn13})">
+                共{{needBookNumber}}位同学想要这本书,查看全部
             </ion-item>
 
         </div>

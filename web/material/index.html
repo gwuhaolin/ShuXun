@@ -7,36 +7,72 @@
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"/>
 </head>
 <body>
-top tool bar
-<md-toolbar>
+<!--top tool bar-->
+<md-toolbar class=".md-whiteframe-z1" ng-controller="topToolBarCtrl">
     <div class="md-toolbar-tools">
         <!-- user avatar-->
-        <md-button class="md-icon-button">
+        <md-button class="md-icon-button" ng-click="$mdSidenav('userMain').open()">
             <img src="../img/logo-R.png" class="md-avatar">
         </md-button>
         <span flex></span>
         <md-autocomplete
-                md-search-text=""
-                md-search-text-change=""
-                md-items="book in searchResults"
+                md-search-text="SearchBook$.keyword"
+                md-search-text-change="SearchBook$.searchInputOnChange()"
+                md-items="bookInfo in SearchBook$.books"
                 placeholder="搜索图书">
             <md-item-template>
+                <span md-highlight-text="SearchBook$.keyword">{{bookInfo}}</span>
             </md-item-template>
+            <md-not-found>
+                找不到和 <strong>{{SearchBook$.keyword}}</strong> 相关到书
+            </md-not-found>
         </md-autocomplete>
-        <!-- book catalog action button-->
-        <md-button class="md-icon-button">
-            <md-icon md-svg-src="bulb.svg"></md-icon>
-        </md-button>
+        <!-- book tags-->
+        <md-menu>
+            <!-- toggle button-->
+            <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                <md-icon md-svg-src="../img/logo.svg"></md-icon>
+            </md-button>
+            <md-menu-content>
+                <!-- big tag-->
+                <md-menu-item ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">
+
+                    <md-menu>
+                        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                            {{bigTag}}
+                        </md-button>
+                        <md-menu-content>
+                            <!-- little tag-->
+                            <md-menu-item ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]">
+                                <md-button>{{littleTag}}</md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
     </div>
 </md-toolbar>
 
 <!--book main-->
-<main>
-    <md-icon md-font-icon="icon-home"></md-icon>
-</main>
+<md-content layout="column" layout-margin flex>
+    <div ng-repeat="one in [1,2,3,4,5,6,7,8]">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h3><span>{{one}}</span></h3>
+            </div>
+        </md-toolbar>
+        <md-content>
+            <md-list>
+                <md-list-item ng-repeat="two in [1,2,3,4,5,6]">{{two}}</md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+
+</md-content>
 
 <!--user main-->
-<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-open="true">
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="userMain">
     <md-toolbar>
         <h1 class="md-toolbar-tools">个人中心</h1>
     </md-toolbar>
@@ -44,38 +80,6 @@ top tool bar
 
     </md-content>
 </md-sidenav>
-
-book tags content
-<md-fab-toolbar class="md-right" ng-controller="bookTagsContentCtrl" ng-if="BookRecommend$.BookTag.tag">
-    <md-fab-trigger>
-        <md-button class="md-fab">
-            <md-icon md-svg-src="bulb.svg"></md-icon>
-        </md-button>
-    </md-fab-trigger>
-    <md-toolbar>
-        <md-fab-actions class="md-toolbar-tools">
-            <md-button class="md-icon-button">
-                a
-            </md-button>
-            <md-button class="md-icon-button">
-                b
-            </md-button>
-            <md-button class="md-icon-button">
-                c
-            </md-button>
-            <md-menu ng-repeat="bigTag in Object.keys(BookRecommend$.BookTag.tag)">
-                <md-button class="md-icon-button">
-                    {{bigTag}}
-                </md-button>
-                <md-menu-content>
-                    <md-menu-item ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]">
-                        <md-button>{{littleTag}}</md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-        </md-fab-actions>
-    </md-toolbar>
-</md-fab-toolbar>
 
 <!-- build:Angular-js -->
 <script src="bower_components/angular/angular.js"></script>
@@ -113,7 +117,7 @@ book tags content
 <script src="../js/service/User.js"></script>
 <script src="../js/service/WeChatJS.js"></script>
 <!--Controller-->
-<script src="js/controller/bookTagsContentCtrl.js"></script>
+<script src="js/controller/topToolBarCtrl.js"></script>
 <!--Directive-->
 <!-- endbuild -->
 </body>

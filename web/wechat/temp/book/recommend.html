@@ -6,7 +6,7 @@
         <!-- 图书分类-->
         <div ng-if="BookRecommend$.BookTag.tag">
             <ion-item class="item-divider item-button-right">图书分类
-                <button class="button button-small button-clear button-balanced" style="top: 0"
+                <button class="button button-small button-clear button-balanced"
                         ng-click="bookTagsModalView.show()">更多
                 </button>
             </ion-item>
@@ -21,7 +21,7 @@
         <!-- 新书速递-->
         <div ng-if="LatestBook.books.length>0">
             <ion-item class="item-divider item-button-right">新书速递
-                <button class="button button-small button-clear button-balanced" style="top: 0"
+                <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.book_bookList({cmd:'latest'})">更多
                 </button>
             </ion-item>
@@ -30,7 +30,7 @@
         <!-- 附近用户上传的旧书-->
         <div ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
             <ion-item class="item-divider item-button-right">附近卖书
-                <button class="button button-small button-clear button-balanced" style="top: 0"
+                <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.book_usedBookList({cmd:'nearUsed'})">更多
                 </button>
             </ion-item>
@@ -39,7 +39,7 @@
         <!-- 用户附近的用户-->
         <div ng-if="BookRecommend$.NearUser.users.length>0">
             <ion-item class="item-divider item-button-right">附近同学
-                <button class="button button-small button-clear button-balanced" style="top: 0"
+                <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.userList({cmd:'near'})">更多
                 </button>
             </ion-item>
@@ -54,7 +54,7 @@
         <!-- 附近用户发布的求书-->
         <div ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <ion-item class="item-divider item-button-right">附近求书
-                <button class="button button-small button-clear button-balanced" style="top: 0"
+                <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.book_usedBookList({cmd:'nearNeed'})">更多
                 </button>
             </ion-item>
@@ -63,7 +63,7 @@
         <!-- 根据专业推荐的书-->
         <div ng-if="BookRecommend$.TagBook.books.length>0">
             <ion-item class="item-divider item-button-right">{{major}}专业推荐读物
-                <button class="button button-small button-clear button-balanced" style="top: 0"
+                <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.book_bookList({cmd:'tag',tag:major})">更多
                 </button>
             </ion-item>
