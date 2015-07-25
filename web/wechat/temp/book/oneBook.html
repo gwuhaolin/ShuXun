@@ -31,7 +31,7 @@
             </ion-item>
             <!-- 出版信息-->
             <ion-item class="item-button-right">
-                <i ng-if="book.price">定价:<strong ng-bind="book.price"></strong></i>
+                <i ng-if="book.price"><strong ng-bind="book.price"></strong></i>
                 <i>&nbsp;</i>
                 <i ng-if="book.publisher"><em ng-bind="book.publisher"></em>/<em ng-bind="book.pubdate"></em></i>
                 <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版</button>

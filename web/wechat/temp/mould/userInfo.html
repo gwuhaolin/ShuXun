@@ -2,11 +2,11 @@
 <div class="item item-avatar" ng-if="user">
     <img ng-src="{{user.avatarUrlWithSize(64)}}">
 
-    <h2>{{user.attributes.nickName}}
+    <h2>
+        <strong ng-bind="user.attributes.nickName"></strong>
         <i class="icon ion-male" style="color: #5eb1ed" ng-if="user.attributes.sex==1"></i>
         <i class="icon ion-female" style="color: #ff6d9e" ng-if="user.attributes.sex==2"></i>
-        <i><strong ng-bind="user.attributes.startSchoolYear"></strong>级</i>
-
+        <strong ng-bind="user.attributes.startSchoolYear"></strong>级
     </h2>
 
     <p style="white-space: pre-wrap">
