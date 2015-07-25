@@ -1,10 +1,10 @@
 <!--显示标题和详细文字的modal-->
 <ion-modal-view>
     <ion-header-bar>
-        <h2 class="title">{{titleAndPreModalViewData.title}}</h2>
+        <h2 class="title" ng-bind="titleAndPreModalViewData.title"></h2>
         <button class="button button-clear button-balanced" ng-click="titleAndPreModalView.hide()">返回</button>
     </ion-header-bar>
     <ion-content class="padding">
-        <pre>{{titleAndPreModalViewData.pre}}</pre>
+        <pre ng-bind="titleAndPreModalViewData.pre"></pre>
     </ion-content>
 </ion-modal-view>

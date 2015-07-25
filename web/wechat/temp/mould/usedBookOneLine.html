@@ -5,5 +5,5 @@
          ui-sref="tab.book_oneBook({isbn13:usedBook.attributes.isbn13})"
          ng-if="usedBook.attributes.info.attributes.image"
          ng-src="{{usedBook.attributes.info.attributes.image}}">
-    <h5 class="title">{{usedBook.attributes.info.attributes.title}}</h5>
+    <h5 class="title" ng-bind="usedBook.attributes.info.attributes.title"></h5>
 </div>

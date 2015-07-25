@@ -11,11 +11,13 @@
                            should-show-used-books-count="true"></one-book-info>
             <!-- 旧书信息-->
             <ion-item>
-                <p>最高承受价:<strong>{{usedBook.attributes.price}}</strong></p>
+                <p>最高承受价:<strong ng-bind="usedBook.attributes.price"></strong></p>
 
-                <p>发布时间:<strong>{{usedBook.updatedAt | date:'mediumDate' }}</strong></p>
+                <p>发布时间:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
 
-                <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">主人描述:{{usedBook.attributes.des}}</p>
+                <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">
+                    主人描述:<em ng-bind="usedBook.attributes.des"></em>
+                </p>
             </ion-item>
             <!-- 如果是主人本人就显示管理按钮-->
             <ion-item ng-if="isMy()">
@@ -49,9 +51,9 @@
                 <img ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}"
                      ui-sref="tab.userHome({ownerId:status.attributes.source.id})">
 
-                <h2 style="white-space: pre-wrap">{{status.attributes.message}}</h2>
+                <h2 style="white-space: pre-wrap" ng-bind="status.attributes.message"></h2>
 
-                <p>{{status.updatedAt | date:'mediumDate'}}</p>
+                <p ng-bind="status.updatedAt | date:'mediumDate'"></p>
                 <img style="width: 40px;height: 40px;position: absolute;top: 16px;right: 16px;border-radius: 50%;"
                      ui-sref="tab.userHome({ownerId:status.attributes.to.id})"
                      ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}">

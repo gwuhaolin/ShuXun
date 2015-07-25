@@ -2,15 +2,21 @@
 <ion-item class="item-thumbnail-left" ui-sref="tab.book_oneBook({isbn13:bookInfo.attributes.isbn13})">
     <img ng-src="{{bookInfo.attributes.image}}">
 
-    <h2>{{bookInfo.attributes.title}}</h2>
+    <h2 ng-bind="bookInfo.attributes.title"></h2>
 
     <p ng-if="bookInfo.attributes.publisher">
-        {{bookInfo.attributes.publisher}}/{{bookInfo.attributes.pubdate}}</p>
+        <em ng-bind="bookInfo.attributes.publisher"></em>/
+        <em ng-bind="bookInfo.attributes.pubdate"></em>
+    </p>
 
-    <p ng-if="bookInfo.attributes.author.length>0">作者:<strong>{{bookInfo.attributes.author.toString()}}</strong></p>
+    <p ng-if="bookInfo.attributes.author.length>0">
+        作者:<strong ng-bind="bookInfo.attributes.author.toString()"></strong>
+    </p>
 
-    <p ng-if="bookInfo.attributes.price">定价:<strong>{{bookInfo.attributes.price}}</strong></p>
+    <p ng-if="bookInfo.attributes.price">
+        定价:<strong ng-bind="bookInfo.attributes.price"></strong>
+    </p>
     <!-- 这本书的二手书的数量-->
-    <span class="badge badge-balanced" ng-if="bookInfo.usedBookNumber>0">{{bookInfo.usedBookNumber}}</span>
-    <span class="badge badge-calm" ng-if="bookInfo.needBookNumber>0">{{bookInfo.needBookNumber}}</span>
+    <span class="badge badge-balanced" ng-if="bookInfo.usedBookNumber>0" ng-bind="bookInfo.usedBookNumber"></span>
+    <span class="badge badge-calm" ng-if="bookInfo.needBookNumber>0" ng-bind="bookInfo.needBookNumber"></span>
 </ion-item>

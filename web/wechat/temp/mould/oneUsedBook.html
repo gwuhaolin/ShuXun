@@ -2,11 +2,11 @@
 <ion-item class="item-thumbnail-left" ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
     <img ng-if="usedBook.attributes.info.attributes.image" ng-src="{{usedBook.attributes.info.attributes.image}}">
 
-    <h3 ng-if="usedBook.attributes.info.attributes.title">{{usedBook.attributes.info.attributes.title}}</h3>
+    <h3 ng-if="usedBook.attributes.info.attributes.title" ng-bind="usedBook.attributes.info.attributes.title"></h3>
 
-    <p>要价:<strong>{{usedBook.attributes.price}}</strong></p>
+    <p>要价:<strong ng-bind="usedBook.attributes.price"></strong></p>
 
-    <p>时间:<strong>{{usedBook.updatedAt | date:'mediumDate' }}</strong></p>
+    <p>时间:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
 
-    <p ng-if="usedBook.attributes.des">描述:{{usedBook.attributes.des}}</p>
+    <p ng-if="usedBook.attributes.des">描述:<em ng-bind="usedBook.attributes.des"></em></p>
 </ion-item>

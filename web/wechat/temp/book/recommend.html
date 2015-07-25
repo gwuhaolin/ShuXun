@@ -14,7 +14,7 @@
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
                         ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()"
                         ui-sref="tab.book_bookList({cmd:'tag',tag:bigTag})"
-                        >{{bigTag}}
+                        ng-bind="bigTag">
                 </button>
             </ion-item>
         </div>
@@ -62,7 +62,7 @@
         </div>
         <!-- 根据专业推荐的书-->
         <div ng-if="BookRecommend$.TagBook.books.length>0">
-            <ion-item class="item-divider item-button-right">{{major}}专业推荐读物
+            <ion-item class="item-divider item-button-right"><strong ng-bind="major"></strong>专业推荐读物
                 <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.book_bookList({cmd:'tag',tag:major})">更多
                 </button>
@@ -91,13 +91,13 @@
             <ion-content class="has-header">
                 <ion-list>
                     <div ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">
-                        <ion-item class="item-divider item-button-right">{{bigTag}}</ion-item>
+                        <ion-item class="item-divider item-button-right" ng-bind="bigTag"></ion-item>
                         <ion-item style="white-space:normal">
                             <button class="button button-small button-outline button-balanced" style="margin: 5px"
                                     ui-sref="tab.book_bookList({cmd:'tag',tag:tag})"
                                     ng-click="bookTagsModalView.hide()"
-                                    ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]">
-                                {{littleTag}}
+                                    ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]"
+                                    ng-bind="littleTag">
                             </button>
                         </ion-item>
                     </div>

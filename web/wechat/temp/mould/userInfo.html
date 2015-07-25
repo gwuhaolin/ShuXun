@@ -5,11 +5,13 @@
     <h2>{{user.attributes.nickName}}
         <i class="icon ion-male" style="color: #5eb1ed" ng-if="user.attributes.sex==1"></i>
         <i class="icon ion-female" style="color: #ff6d9e" ng-if="user.attributes.sex==2"></i>
-        <i>{{user.attributes.startSchoolYear}}级</i>
+        <i><strong ng-bind="user.attributes.startSchoolYear"></strong>级</i>
 
     </h2>
 
-    <p style="white-space: pre-wrap">{{user.attributes.major}}/{{user.attributes.school}}</p>
+    <p style="white-space: pre-wrap">
+        <em ng-bind="user.attributes.major"></em>/<em ng-bind="user.attributes.school"></em>
+    </p>
     <button ng-if="AV.User.current() && !isMe()"
             class="button button-small button-clear button-balanced"
             style="float: right"
@@ -35,5 +37,5 @@
 <ion-item class="littleTailItem"
           ng-if="!hideUsedBook"
           ui-sref="tab.userHome({ownerId:user.id})">
-    本旧书要卖,发布了{{user.userNeedBookNumber}}个求书
+    本旧书要卖,发布了<strong ng-bind="user.userNeedBookNumber"></strong>个求书
 </ion-item>

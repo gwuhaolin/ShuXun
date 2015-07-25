@@ -31,9 +31,9 @@
             </ion-item>
             <!-- 出版信息-->
             <ion-item class="item-button-right">
-                <i ng-if="book.price">定价:{{book.price}}</i>
+                <i ng-if="book.price">定价:<strong ng-bind="book.price"></strong></i>
                 <i>&nbsp;</i>
-                <i ng-if="book.publisher">{{book.publisher}}/{{book.pubdate}}</i>
+                <i ng-if="book.publisher"><em ng-bind="book.publisher"></em>/<em ng-bind="book.pubdate"></em></i>
                 <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版</button>
             </ion-item>
             <!-- 豆瓣书评-->
@@ -73,15 +73,18 @@
                      ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
 
                 <div ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
-                    <h3 style="white-space: pre-wrap">{{usedBook.attributes.price}}元 {{usedBook.attributes.des}}</h3>
+                    <h3 style="white-space: pre-wrap">
+                        <strong ng-bind="usedBook.attributes.price"></strong>元
+                        <em ng-bind="usedBook.attributes.des"></em>
+                    </h3>
 
-                    <p>上传于:{{usedBook.updatedAt | date:'mediumDate' }} </p>
+                    <p>上传于:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
                 </div>
             </ion-item>
             <ion-item class="littleTailItem"
                       ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
                       ui-sref="tab.book_usedBookList({cmd:'isbnUsed',isbn13:isbn13})">
-                共{{usedBookNumber}}本旧书,查看全部
+                共<strong ng-bind="usedBookNumber"></strong>本旧书,查看全部
             </ion-item>
 
         </div>
@@ -101,17 +104,17 @@
                      ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
 
                 <div ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:usedBook.id})">
-                    <p ng-if="usedBook.attributes.price">最高承受{{usedBook.attributes.price}}元</p>
+                    <p ng-if="usedBook.attributes.price">最高承受<strong ng-bind="usedBook.attributes.price"></strong>元</p>
 
-                    <p ng-if="usedBook.attributes.des">{{usedBook.attributes.des}}</p>
+                    <p ng-if="usedBook.attributes.des" ng-bind="usedBook.attributes.des"></p>
 
-                    <p>发布于:{{usedBook.updatedAt | date:'mediumDate' }} </p>
+                    <p>发布于:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
                 </div>
             </ion-item>
             <ion-item class="littleTailItem"
                       ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
                       ui-sref="tab.book_usedBookList({cmd:'isbnNeed',isbn13:isbn13})">
-                共{{needBookNumber}}位同学想要这本书,查看全部
+                共<strong ng-bind="needBookNumber"></strong>位同学想要这本书,查看全部
             </ion-item>
 
         </div>

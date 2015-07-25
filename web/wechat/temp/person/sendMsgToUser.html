@@ -24,13 +24,13 @@
             <ol ng-if="statusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
                 <li collection-repeat="status in statusList"
                     class="message"
-                    ng-style="{float:status.attributes.source.id==user.id ? 'left':'right',backgroundColor:status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}">
-                    {{status.attributes.message}}
+                    ng-style="{float:status.attributes.source.id==user.id ? 'left':'right',backgroundColor:status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}"
+                    ng-bind="status.attributes.message">
                 </li>
             </ol>
         </ion-item>
         <!-- 当前聊天模式-->
-        <ion-item class="item-divider" style="text-align: center" ng-if="nowModel()">{{nowModel()}}</ion-item>
+        <ion-item class="item-divider" style="text-align: center" ng-if="nowModel()" ng-bind="nowModel()"></ion-item>
         <!-- 我的输入框-->
         <label class="item item-input">
             <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容">
@@ -50,7 +50,8 @@
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
                         ng-disabled="isLoading"
                         ng-repeat="word in commonReplayWords"
-                        ng-click="msg.sendMsg=word">{{word}}
+                        ng-click="msg.sendMsg=word"
+                        ng-bind="word">
                 </button>
             </ion-item>
         </ion-list>

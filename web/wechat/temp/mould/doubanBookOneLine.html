@@ -4,6 +4,6 @@
         <img style="width: 70px;height: 100px"
              ng-if="book.attributes.image" ng-src="{{book.attributes.image}}"
              ui-sref="tab.book_oneBook({isbn13:book.attributes.isbn13})">
-        <h5 ng-if="book.attributes.title" class="title">{{book.attributes.title}}</h5>
+        <h5 class="title" ng-if="book.attributes.title" ng-bind="book.attributes.title"></h5>
     </div>
 </ion-item>

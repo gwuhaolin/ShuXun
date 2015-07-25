@@ -7,9 +7,9 @@
         <ion-item collection-repeat="one in BookReview.reviewList" class="item-avatar">
             <img ng-src="{{one.avatarUrl}}">
 
-            <h3>{{one.title}}</h3>
+            <h3 ng-bind="one.title"></h3>
 
-            <p style="white-space: pre-wrap">{{one.context}}</p>
+            <p style="white-space: pre-wrap" ng-bind="one.context"></p>
         </ion-item>
         <ion-item ng-if="BookReview.reviewList.length==0" class="littleTailItem" ng-click="goBack()">
             <button class="button button-clear button-balanced">还没有书评,回去看看</button>

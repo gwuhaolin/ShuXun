@@ -25,14 +25,17 @@
             </ion-item>
             <ion-item>
                 <p>
-                    {{doubanBookInfo.title}} <span ng-if="doubanBookInfo.price">{{doubanBookInfo.price}}</span>
+                    <strong ng-bind="doubanBookInfo.title"></strong> <span ng-bind="doubanBookInfo.price"></span>
                 </p>
                 <!-- 作者-->
                 <p ng-if="doubanBookInfo['author'].length>0">
-                    {{doubanBookInfo['author'].toString()}} 著
+                    <strong ng-bind="doubanBookInfo['author'].toString()"></strong> 著
                 </p>
                 <!-- 出版信息-->
-                <p ng-if="doubanBookInfo['publisher']">{{doubanBookInfo['publisher']}} {{doubanBookInfo['pubdate']}}</p>
+                <p ng-if="doubanBookInfo['publisher']">
+                    <em ng-bind="doubanBookInfo['publisher']"></em>
+                    <em ng-bind="doubanBookInfo['pubdate']"></em>
+                </p>
             </ion-item>
         </div>
         <hr style="margin: 10px">
@@ -58,7 +61,8 @@
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
                         ng-disabled="isLoading"
                         ng-repeat="word in InfoService$.commonUsedBookDesWords"
-                        ng-click="usedBookInfo.des=usedBookInfo.des+' '+word">{{word}}
+                        ng-click="usedBookInfo.des=usedBookInfo.des+' '+word"
+                        ng-bind="word">
                 </button>
             </ion-item>
         </ion-list>

@@ -15,8 +15,8 @@
             <ion-item item-height="55px"
                       item-width="100%"
                       collection-repeat="major in InfoService$.Major.majors"
-                      ng-click="majorOnChoose(major.attributes.name)">
-                {{major.attributes.name}}
+                      ng-click="majorOnChoose(major.attributes.name)"
+                      ng-bind="major.attributes.name">
             </ion-item>
         </ul>
         <ion-infinite-scroll ng-if="InfoService$.Major.hasMore()"

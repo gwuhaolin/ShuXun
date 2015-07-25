@@ -15,8 +15,8 @@
             <ion-item item-height="55px"
                       item-width="100%"
                       collection-repeat="school in InfoService$.School.schools"
-                      ng-click="schoolOnChoose(school.attributes.name)">
-                {{school.attributes.name}}
+                      ng-click="schoolOnChoose(school.attributes.name)"
+                      ng-bind="school.attributes.name">
             </ion-item>
         </ul>
         <ion-infinite-scroll ng-if="InfoService$.School.hasMore()"

@@ -10,12 +10,12 @@
         <div class="list list-inset">
             <ion-item class="item-icon-right" ng-click="chooseSchoolModalView.show()">
                 在读学校
-                <span class="item-note" ng-if="userInfo.school">{{userInfo.school}}</span>
+                <span class="item-note" ng-if="userInfo.school" ng-bind="userInfo.school"></span>
                 <i class="icon ion-ios-arrow-right balanced"></i>
             </ion-item>
             <ion-item class="item-icon-right" ng-click="chooseMajorModalView.show()">
                 所学专业
-                <span class="item-note" ng-if="userInfo.major">{{userInfo.major}}</span>
+                <span class="item-note" ng-if="userInfo.major" ng-bind="userInfo.major"></span>
                 <i class="icon ion-ios-arrow-right balanced"></i>
             </ion-item>
             <label class="item item-input item-select">

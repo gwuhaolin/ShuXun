@@ -19,7 +19,7 @@
         <div class="card" ng-if="cmd=='private'"
              collection-repeat="status in statusList">
             <ion-item>
-                <p style="white-space: pre-wrap">{{status.attributes.message}}</p>
+                <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
                 <button style="float:right;"
                         class="button button-clear button-balanced button-small"
                         ui-sref="tab.person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:status.attributes.usedBook.id})">
@@ -37,7 +37,7 @@
         <div class="card" ng-if="cmd=='reviewUsedBook'"
              collection-repeat="status in statusList">
             <ion-item>
-                <p style="white-space: pre-wrap">{{status.attributes.message}}</p>
+                <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
                 <button style="float:right;"
                         class="button button-clear button-balanced button-small"
                         ui-sref="tab.person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:status.attributes.usedBook.id})">
