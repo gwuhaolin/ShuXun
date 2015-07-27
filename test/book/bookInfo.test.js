@@ -5,13 +5,13 @@
 "use strict";
 var assert = require('assert');
 var _ = require('underscore');
-var Model = require('../../web/js/Model.js');
+var Model = require('../../web/js/model.js');
 var Util = require('./../util.js');
-var bookInfo = require('../../server/book/bookInfo.js');
+var bookInfo = require('../../server/book/book-info.js');
 var isbn13s_ok = ['9787511721051', '9787210036944', '9787300093598'];
 var isbn13s_no = ['9787511721052', '9787210036945', '9787300093597'];
 
-describe('book/bookInfo.js', function () {
+describe('book/book-info.js', function () {
 
     before(function () {
         Util.initAVOS();

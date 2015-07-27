@@ -1,0 +1,63 @@
+<!--一本二手书信息-->
+<ion-view ng-controller="ion_book_oneUsedBook" view-title="求书 {{usedBook.attributes.title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <!-- 图书基本信息-->
+        <div class="list card">
+            <!-- 图书基本信息-->
+            <ion-one-book-info ng-if="usedBook" book-info="usedBook.attributes.info"
+                           should-show-used-books-count="true"></ion-one-book-info>
+            <!-- 旧书信息-->
+            <ion-item>
+                <p>最高承受价:<strong ng-bind="usedBook.attributes.price"></strong></p>
+
+                <p>发布时间:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
+
+                <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">
+                    主人描述:<em ng-bind="usedBook.attributes.des"></em>
+                </p>
+            </ion-item>
+            <!-- 如果是主人本人就显示管理按钮-->
+            <ion-item ng-if="isMy()">
+                <button class="button button-small button-outline button-assertive"
+                        ng-click="UsedBook$.removeUsedBook(usedBook)"
+                        ui-sref="tab.person_needBooksList">已买删除
+                </button>
+                <button class="button button-small button-outline button-balanced"
+                        ui-sref="tab.person_editOneUsedBook({usedBookId:usedBook.id})">修改信息
+                </button>
+            </ion-item>
+        </div>
+        <!-- 主人信息-->
+        <div class="list card">
+            <ion-item class="item-divider item-button-right">求书同学信息
+                <a class="button button-clear button-balanced"
+                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
+                </a>
+            </ion-item>
+            <ion-user-info user="usedBook.attributes.owner" used-book-object-id="usedBook.id"></ion-user-info>
+        </div>
+        <!-- 用户评论-->
+        <div class="list card">
+            <ion-item class="item-divider item-button-right">大家都说
+                <a class="button button-clear button-balanced"
+                   ui-sref="tab.person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">我也要说
+                </a>
+            </ion-item>
+            <ion-item ng-if="statusList.length==0">还没有同学评论,快来抢沙发~</ion-item>
+            <ion-item class="item-avatar" ng-repeat="status in statusList">
+                <img ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:status.attributes.source.id})">
+
+                <h2 style="white-space: pre-wrap" ng-bind="status.attributes.message"></h2>
+
+                <p ng-bind="status.updatedAt | date:'mediumDate'"></p>
+                <img style="width: 40px;height: 40px;position: absolute;top: 16px;right: 16px;border-radius: 50%;"
+                     ui-sref="tab.userHome({ownerId:status.attributes.to.id})"
+                     ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}">
+            </ion-item>
+        </div>
+    </ion-content>
+</ion-view>

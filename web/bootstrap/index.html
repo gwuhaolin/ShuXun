@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
     <!-- build:Bootstrap-css -->
-    <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../bower_components/bootstrap-css-only/css/bootstrap.css"/>
     <!-- endbuild -->
     <style>
         @keyframes spin {
@@ -26,7 +26,7 @@
 </head>
 <body style="padding-top: 60px">
 
-<nav class="navbar navbar-default navbar-fixed-top" ng-controller="b_navBarCtrl">
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="bs_navBarCtrl">
     <div class="container">
 
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -52,7 +52,7 @@
             </ul>
 
             <!-- 搜索表单-->
-            <form class="navbar-form navbar-left" ng-controller="b_searchResultCtrl">
+            <form class="navbar-form navbar-left" ng-controller="bs_searchResultCtrl">
                 <div class="form-group">
                     <div class="input-group">
                         <input type="search" class="form-control" placeholder="书名、作者、ISBN"
@@ -93,11 +93,11 @@
 
 <div class="container">
     <!-- 搜索结果-->
-    <div class="row" ng-controller="b_searchResultCtrl" ng-hide="SearchBook$.books.length==0">
+    <div class="row" ng-controller="bs_searchResultCtrl" ng-hide="SearchBook$.books.length==0">
         <h4 class="text-center"><strong ng-bind="SearchBook$.keyword"></strong> 搜索结果</h4>
         <hr>
         <div class="col-sm-1 col-md-2" ng-repeat="bookInfo in SearchBook$.books">
-            <b-one-book-info book-info="bookInfo" should-show-used-books-count="true"></b-one-book-info>
+            <bs-one-book-info book-info="bookInfo" should-show-used-books-count="true"></bs-one-book-info>
         </div>
         <div class="col-xs-12 text-center">
             <button class="btn btn-info btn-lg" ng-if="SearchBook$.hasMore()" ng-click="SearchBook$.loadMore()">加载更多
@@ -112,7 +112,7 @@
         <!-- 主要内容区-->
         <main class="col-md-9" ui-view="main"></main>
 
-        <aside class="col-md-3" ng-controller="b_asideCtrl">
+        <aside class="col-md-3" ng-controller="bs_asideCtrl">
             <h4>图书分类</h4>
             <hr>
             <tabset type="tabs">
@@ -126,47 +126,46 @@
         </aside>
     </div>
 </div>
-
-<!-- build:Angular-js -->
-<script src="bower_components/angular/angular.js"></script>
-<!-- endbuild -->
-<!-- build:AngularUIRouter-js -->
-<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-<!-- endbuild -->
-<!-- build:UIBootstrap-js -->
-<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-<!-- endbuild -->
-<!-- build:UIBootstrapTpls-js -->
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<!-- endbuild -->
 <!-- build:Avos-js -->
 <script src="../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
 <!-- endbuild -->
 <!-- build:LeanAnalytics-js -->
 <script src="../../bower_components/leancloud-analytics/src/AV.analytics.js"></script>
 <!-- endbuild -->
+<!-- build:Angular-js -->
+<script src="../../bower_components/angular/angular.js"></script>
+<!-- endbuild -->
+<!-- build:AngularUIRouter-js -->
+<script src="../../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<!-- endbuild -->
+<!-- build:UIBootstrap-js -->
+<script src="../../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<!-- endbuild -->
+<!-- build:UIBootstrapTpls-js -->
+<script src="../../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<!-- endbuild -->
 <!-- build:Main-js -->
 <script src="../js/util.js"></script>
-<script src="../js/Model.js"></script>
-<script src="../js/Analytics.js"></script>
+<script src="../js/model.js"></script>
+<script src="../js/analytics.js"></script>
 <script src="js/app.js"></script>
 <!--Service-->
-<script src="../js/service/BookRecommend.js"></script>
-<script src="../js/service/BusinessSite.js"></script>
-<script src="../js/service/DoubanBook.js"></script>
-<script src="../js/service/InfoService.js"></script>
-<script src="../js/service/BookInfo.js"></script>
-<script src="../js/service/SearchBook.js"></script>
-<script src="../js/service/Status.js"></script>
-<script src="../js/service/UsedBook.js"></script>
-<script src="../js/service/User.js"></script>
+<script src="../js/service/book-recommend.js"></script>
+<script src="../js/service/business-site.js"></script>
+<script src="../js/service/douban-book.js"></script>
+<script src="../js/service/info-service.js"></script>
+<script src="../js/service/book-info.js"></script>
+<script src="../js/service/search-book.js"></script>
+<script src="../js/service/status.js"></script>
+<script src="../js/service/used-book.js"></script>
+<script src="../js/service/user.js"></script>
 <!--Controller-->
-<script src="js/controller/b_navBarCtrl.js"></script>
-<script src="js/controller/b_asideCtrl.js"></script>
-<script src="js/controller/b_book_recommend.js"></script>
-<script src="js/controller/b_searchResultCtrl.js"></script>
+<script src="js/controller/bs-nav-bar-ctrl.js"></script>
+<script src="js/controller/bs-aside-ctrl.js"></script>
+<script src="js/controller/bs-book-recommend-ctrl.js"></script>
+<script src="js/controller/bs-search-result-ctrl.js"></script>
 <!--Directive-->
-<script src="js/directive/b_oneBookInfo.js"></script>
+<script src="js/directive/bs-one-book-info.js"></script>
 <!-- endbuild -->
 </body>
 </html>

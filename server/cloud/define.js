@@ -7,9 +7,9 @@ var AV = require('leanengine');
 var WechatAPI = require('../wechat/wechatAPI.js');
 var LBS = require('../util/lbs.js');
 var Info = require('../util/info.js');
-var DoubanBook = require('../book/doubanBook.js');
-var BookInfo = require('../book/bookInfo.js');
-var DataRepair = require('../util/dataRepair.js');
+var DoubanBook = require('../book/douban-book.js');
+var BookInfo = require('../book/book-info.js');
+var DataRepair = require('../util/data-repair.js');
 
 /**
  * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表

@@ -4,11 +4,11 @@
 var assert = require('assert');
 var _ = require('underscore');
 var Util = require('./../util.js');
-var BookInfo = require('../../server/book/bookInfo.js');
-var doubanBook = require('../../server/book/doubanBook.js');
+var BookInfo = require('../../server/book/book-info.js');
+var doubanBook = require('../../server/book/douban-book.js');
 var doubanIDs_ok = ['2368198', '3796063', '25863979', '26368070'];
 
-describe('book/doubanBook.js', function () {
+describe('book/douban-book.js', function () {
 
     before(function () {
         Util.initAVOS();

@@ -1,0 +1,31 @@
+<ion-view view-title="图书搜索">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_recommend">书循</button>
+    </ion-nav-buttons>
+    <ion-content ng-controller="ion_book_searchList">
+        <ion-list>
+            <!-- 关键字输入框-->
+            <ion-item class="item-input-inset">
+                <button class="button button-small button-clear" ng-click="scanQRBtnOnClick()">扫码
+                </button>
+                <label class="item-input-wrapper">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="search" placeholder="书名 作者 ISBN" ng-model="SearchBook$.keyword"
+                           ng-change="SearchBook$.searchInputOnChange()">
+                </label>
+                <button class="button button-small button-clear" ng-click="SearchBook$.searchBtnOnClick()">
+                    搜索
+                </button>
+            </ion-item>
+
+            <!-- 搜索结果列表-->
+            <ion-one-book-info ng-repeat="bookInfo in SearchBook$.books" book-info="bookInfo"
+                           should-show-used-books-count="true"></ion-one-book-info>
+
+        </ion-list>
+        <ion-infinite-scroll ng-if="SearchBook$.hasMore()"
+                             on-infinite="SearchBook$.loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

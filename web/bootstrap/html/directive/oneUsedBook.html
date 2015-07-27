@@ -1,0 +1,25 @@
+<!--一本二手书-->
+<ion-item class="item-thumbnail-left" ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+    <img ng-if="usedBook.attributes.info.attributes.image" ng-src="{{usedBook.attributes.info.attributes.image}}">
+
+    <h3 ng-if="usedBook.attributes.info.attributes.title" ng-bind="usedBook.attributes.info.attributes.title"></h3>
+
+    <p>要价:<strong ng-bind="usedBook.attributes.price"></strong></p>
+
+    <p>时间:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
+
+    <p ng-if="usedBook.attributes.des">描述:<em ng-bind="usedBook.attributes.des"></em></p>
+</ion-item>
+
+<div class="thumbnail"
+     popover-popup-delay="800"
+     popover-trigger="mouseenter"
+     popover-placement="right"
+     popover-append-to-body="true"
+     popover-template="'html/directive/oneUsedBookPopover.html'">
+    <img style="height: 250px" class="img-responsive" ng-src="{{bookInfo.attributes.bigImage}}">
+
+    <div class="caption">
+        <h5 style="white-space: nowrap;overflow: hidden" ng-bind="bookInfo.attributes.title"></h5>
+    </div>
+</div>

@@ -4,8 +4,8 @@
 var AV = require('leanengine');
 var _ = require('underscore');
 var assert = require('assert');
-var bookUtil = require('../server/book/bookUtil.js');
-var bookInfo = require('../server/book/bookInfo.js');
+var bookUtil = require('../server/book/book-util.js');
+var bookInfo = require('../server/book/book-info.js');
 
 /**
  * 合法的ISBN13并且已经出版过的书

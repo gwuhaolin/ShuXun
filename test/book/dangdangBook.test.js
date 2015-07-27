@@ -4,10 +4,10 @@
 var assert = require('assert');
 var _ = require('underscore');
 var Util = require('./../util.js');
-var dangdangBook = require('../../server/book/dangdangBook.js');
+var dangdangBook = require('../../server/book/dangdang-book.js');
 
 
-describe('book/dangdangBook.js', function () {
+describe('book/dangdang-book.js', function () {
 
     describe('#spiderBookByISBN', function () {
 

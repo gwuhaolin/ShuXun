@@ -1,0 +1,11 @@
+<!--tabs父视图-->
+<ion-tabs ng-controller="ion_tabs" class="tabs-icon-top">
+    <ion-tab title="图书" icon-on="ion-ios-book balanced" icon-off="ion-ios-book-outline" ui-sref="tab.book_recommend">
+        <ion-nav-view name="tab-book"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="个人" icon-on="ion-ios-person balanced" icon-off="ion-ios-person-outline" ui-sref="tab.person_my"
+             badge="Status$.NewUsedBookStatus.unreadCount>0 || Status$.NewNeedBookStatus.unreadCount>0 || Status$.PrivateStatus.unreadCount>0 || Status$.ReviewUsedBookStatus.unreadCount>0 ? '.' : null"
+             badge-style="badge-assertive">
+        <ion-nav-view name="tab-person"></ion-nav-view>
+    </ion-tab>
+</ion-tabs>

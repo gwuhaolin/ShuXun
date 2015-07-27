@@ -3,10 +3,10 @@
  */
 var assert = require('assert');
 var _ = require('underscore');
-var Model = require('../../web/js/Model.js');
-var routerUtil = require('../../server/router/routerUtil.js');
+var Model = require('../../web/js/model.js');
+var routerUtil = require('../../server/router/router-util.js');
 
-describe('router/routerUtil.js', function () {
+describe('router/router-util.js', function () {
 
     describe('#genDataWithDefaultMeta', function () {
         it('要生成好meta属性', function () {

@@ -3,9 +3,9 @@
  */
 var Util = require('../util.js');
 Util.initAVOS();
-var DataRepair = require('../../server/util/dataRepair.js');
+var DataRepair = require('../../server/util/data-repair.js');
 
-describe.skip('util/dataRepair.js', function () {
+describe.skip('util/data-repair.js', function () {
 
     describe('#fillUsedBookInfoWhereInfoIsNull', function () {
         it('对与UsedBook表里的没有Info属性的去抓取图书信息填上该属性', function (done) {

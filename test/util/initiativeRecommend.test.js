@@ -6,12 +6,12 @@ var AV = require('leanengine');
 var Util = require('../util.js');
 Util.initAVOS();
 var assert = require('assert');
-var Model = require('../../web/js/Model.js');
-var InitiativeRecommend = require('../../server/util/initiativeRecommend.js');
+var Model = require('../../web/js/model.js');
+var InitiativeRecommend = require('../../server/util/initiative-recommend.js');
 
 var major = '计算机科学与技术';
 
-describe('util/initiativeRecommend.js', function () {
+describe('util/initiative-recommend.js', function () {
 
     describe('#getAllUserCountEqualMajor', function () {
         it('获得所有对应专业的用户的数量', function (done) {

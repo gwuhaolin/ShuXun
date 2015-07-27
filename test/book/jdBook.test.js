@@ -4,9 +4,9 @@
 var assert = require('assert');
 var _ = require('underscore');
 var Util = require('./../util.js');
-var jdBook = require('../../server/book/jdBook.js');
+var jdBook = require('../../server/book/jd-book.js');
 
-describe('book/jdBook.js', function () {
+describe('book/jd-book.js', function () {
 
     describe('#spiderBookByISBN', function () {
         _.each(Util.ISBN_Legal_HasPub, function (isbn13) {

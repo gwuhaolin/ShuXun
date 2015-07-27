@@ -3,7 +3,7 @@
  */
 "use strict";
 var AV = require('leanengine');
-var Model = require('../../web/js/Model.js');
+var Model = require('../../web/js/model.js');
 
 /**
  * 获得User表里对于unionID的用户

@@ -45,18 +45,18 @@ gulp.task('wechat_js', function () {
     return es.concat(
         gulp.src(
             //把模板变成js
-            ['web/wechat/temp/**/*.html', 'web/wechat/temp/*.html'])
+            ['web/wechat/html/**/*.html', 'web/wechat/html/*.html'])
             .pipe(htmlmin({
                 collapseWhitespace: true,
                 removeComments: true,
                 removeCommentsFromCDATA: true
             }))
             .pipe(templateCache({
-                root: 'temp/',
+                root: 'html/',
                 module: 'APP'
             })),
         //合并app js
-        gulp.src(['web/js/*.js', 'web/wechat/js/*.js', 'web/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive/*js']))
+        gulp.src(['web/js/*.js', 'web/wechat/js/*.js', 'web/js/service/*.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive/*js']))
         //angular依赖
         .pipe(ngAnnotate())
         .pipe(concat('main.js'))//合并

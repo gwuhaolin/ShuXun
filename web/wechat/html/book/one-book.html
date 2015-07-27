@@ -1,0 +1,124 @@
+<ion-view ng-controller="ion_book_oneBook" view-title="{{book.title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <!-- 正在加载-->
+        <div style="text-align: center;padding-top: 10px" ng-if="isLoading">
+            <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
+        </div>
+        <!-- 图书基本信息-->
+        <div class="list card">
+            <!-- 封面-->
+            <ion-item style="text-align: center">
+                <img ng-src="{{book.image}}" style="height: 180px" ng-click="WeChatJS$.previewOneImage(book.image)">
+            </ion-item>
+            <!-- 简介-->
+            <ion-item ng-if="book.summary" class="item-button-right">
+                <h3>简介</h3>
+
+                <p style="white-space: pre-wrap">{{book.summary.substr(0,30)}}...</p>
+                <button class="button button-clear button-balanced"
+                        ng-click="showSummary()">详情
+                </button>
+            </ion-item>
+            <!-- 作者-->
+            <ion-item ng-if="book.author.length>0" class="item-button-right">
+                {{book.author.toString()}} 著
+                <button class="button button-small button-clear button-balanced" ng-if="book.author_intro"
+                        ng-click="showAuthorIntro()">作者简介
+                </button>
+            </ion-item>
+            <!-- 出版信息-->
+            <ion-item class="item-button-right">
+                <i ng-if="book.price"><strong ng-bind="book.price"></strong></i>
+                <i>&nbsp;</i>
+                <i ng-if="book.publisher"><em ng-bind="book.publisher"></em>/<em ng-bind="book.pubdate"></em></i>
+                <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版</button>
+            </ion-item>
+            <!-- 豆瓣书评-->
+            <ion-item ng-if="book.rating"
+                      class="item-button-right">
+                <ion-review-star num-stars="{{book.rating.average/2}}" score="{{book.rating.average}}"
+                             num-raters="{{book.rating.numRaters}}"></ion-review-star>
+                <button class="button button-small button-clear button-balanced"
+                        ui-sref="tab.book_bookReview({doubanBookId:book.id,bookTitle:book.title})">书评
+                </button>
+            </ion-item>
+        </div>
+
+        <!-- 电商购买新书-->
+        <div class="list card" ng-if="businessInfos.length>0">
+            <ion-item class="item-divider">购买新书</ion-item>
+            <ion-item style="white-space:normal">
+                <a class="button button-small button-outline button-balanced" style="margin: 5px"
+                   ng-repeat="info in businessInfos | orderBy:'price'"
+                   ng-href="{{info.url}}">{{info.name}}/{{info.price}}
+                </a>
+            </ion-item>
+        </div>
+
+        <!-- 二手书-->
+        <div class="list card">
+            <ion-item class="item-divider item-button-right">要卖对应旧书的同学
+                <button class="button button-clear button-balanced"
+                        ui-sref="tab.person_uploadOneUsedBook({isbn13:book.isbn13})">上传旧书
+                </button>
+            </ion-item>
+            <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
+            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
+                      ng-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
+                      class="item-avatar">
+                <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
+
+                <div ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+                    <h3 style="white-space: pre-wrap">
+                        <strong ng-bind="usedBook.attributes.price"></strong>元
+                        <em ng-bind="usedBook.attributes.des"></em>
+                    </h3>
+
+                    <p>上传于:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
+                </div>
+            </ion-item>
+            <ion-item class="littleTailItem"
+                      ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
+                      ui-sref="tab.book_usedBookList({cmd:'isbnUsed',isbn13:isbn13})">
+                共<strong ng-bind="usedBookNumber"></strong>本旧书,查看全部
+            </ion-item>
+
+        </div>
+
+        <!-- 求书-->
+        <div class="list card">
+            <ion-item class="item-divider item-button-right">正需要它的同学
+                <button class="button button-clear button-balanced"
+                        ui-sref="tab.person_uploadOneNeedBook({isbn13:book.isbn13})">发布求书
+                </button>
+            </ion-item>
+            <ion-item ng-if="needBookNumber==0" style="text-align: center">还没有同学想要它</ion-item>
+            <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
+                      ng-repeat="usedBook in UsedBook$.ISBN_need.nowEqualISBNNeedBooks"
+                      class="item-avatar">
+                <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
+
+                <div ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:usedBook.id})">
+                    <p ng-if="usedBook.attributes.price">最高承受<strong ng-bind="usedBook.attributes.price"></strong>元</p>
+
+                    <p ng-if="usedBook.attributes.des" ng-bind="usedBook.attributes.des"></p>
+
+                    <p>发布于:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
+                </div>
+            </ion-item>
+            <ion-item class="littleTailItem"
+                      ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
+                      ui-sref="tab.book_usedBookList({cmd:'isbnNeed',isbn13:isbn13})">
+                共<strong ng-bind="needBookNumber"></strong>位同学想要这本书,查看全部
+            </ion-item>
+
+        </div>
+
+    </ion-content>
+</ion-view>
+

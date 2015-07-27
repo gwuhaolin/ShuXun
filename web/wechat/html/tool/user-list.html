@@ -1,0 +1,28 @@
+<!--用户列表-->
+<ion-view ng-controller="ion_userList" view-title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_recommend">书循</button>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+        <div class="button-bar">
+            <!-- 这些属性由 user-info 里加载-->
+            <a class="button button-small" ng-click="sortWay='userUsedBookNumber'"
+               ng-class="{'button-balanced':sortWay=='userUsedBookNumber'}">数量</a>
+            <a class="button button-small" ng-click="sortWay='location'"
+               ng-class="{'button-balanced':sortWay=='location'}">距离</a>
+            <a class="button button-small" ng-class="{'button-balanced':getMajorFilter()}"
+               ng-click="chooseMajorModalView.show()" ng-bind="getMajorFilter() ? getMajorFilter() :'专业'">
+            </a>
+            <a class="button button-small button-energized" ng-click="setMajorFilter()" ng-if="getMajorFilter()">
+                取消专业限制
+            </a>
+        </div>
+        <div class="card" collection-repeat="one in users | orderBy:sortWay:true">
+            <ion-user-info user="one"></ion-user-info>
+        </div>
+        <ion-infinite-scroll ng-if="hasMore()"
+                             on-infinite="loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

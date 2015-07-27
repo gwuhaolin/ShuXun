@@ -1,0 +1,17 @@
+<!--图书列表-->
+<ion-view ng-controller="ion_book_bookList" view-title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-list>
+            <!-- 结果列表-->
+            <ion-one-book-info ng-repeat="bookInfo in books" book-info="bookInfo"
+                           should-show-used-books-count="true"></ion-one-book-info>
+        </ion-list>
+        <ion-infinite-scroll ng-if="hasMore()"
+                             on-infinite="loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

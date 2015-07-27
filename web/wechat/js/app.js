@@ -12,7 +12,7 @@ var APP = angular.module('APP', ['ionic'], null)
         $stateProvider.state('tab', {
             url: '/tab',
             abstract: true,
-            templateUrl: 'temp/tabs.html'
+            templateUrl: 'html/tabs.html'
         })
             //tab-book
             .state('tab.book_recommend', {
@@ -22,7 +22,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/recommend?major',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/recommend.html'
+                        templateUrl: 'html/book/recommend.html'
                     }
                 }
             }).state('tab.book_searchList', {
@@ -32,7 +32,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/searchList/:keyword',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/searchList.html'
+                        templateUrl: 'html/book/search-list.html'
                     }
                 }
             }).state('tab.book_bookList', {
@@ -47,7 +47,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/bookList?cmd&title&tag',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/bookList.html'
+                        templateUrl: 'html/book/book-list.html'
                     }
                 }
             }).state('tab.book_usedBookList', {
@@ -59,7 +59,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/usedBookList?cmd&isbn13&majorFilter',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/usedBookList.html'
+                        templateUrl: 'html/book/used-book-list.html'
                     }
                 }
             }).state('tab.book_oneBook', {
@@ -69,7 +69,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/oneBook/:isbn13',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/oneBook.html'
+                        templateUrl: 'html/book/one-book.html'
                     }
                 }
             }).state('tab.book_oneUsedBook', {
@@ -79,7 +79,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/oneUsedBook/:usedBookAvosObjectId',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/oneUsedBook.html'
+                        templateUrl: 'html/book/one-used-book.html'
                     }
                 }
             }).state('tab.book_oneNeedBook', {
@@ -89,7 +89,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/oneNeedBook/:usedBookAvosObjectId',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/oneNeedBook.html'
+                        templateUrl: 'html/book/one-need-book.html'
                     }
                 }
             }).state('tab.book_bookReview', {
@@ -100,7 +100,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/book/bookReview?doubanBookId&bookTitle',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/book/bookReview.html'
+                        templateUrl: 'html/book/book-review.html'
                     }
                 }
             })
@@ -112,7 +112,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/person/editOneUsedBook/:usedBookId',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/editOneUsedBook.html'
+                        templateUrl: 'html/person/edit-one-used-book.html'
                     }
                 }
             }).state('tab.person_uploadOneUsedBook', {
@@ -122,7 +122,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/person/uploadOneUsedBook/:isbn13',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/uploadOneUsedBook.html'
+                        templateUrl: 'html/person/upload-one-used-book.html'
                     }
                 }
             }).state('tab.person_uploadOneNeedBook', {
@@ -132,21 +132,21 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/person/uploadOneNeedBook/:isbn13',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/uploadOneNeedBook.html'
+                        templateUrl: 'html/person/upload-one-need-book.html'
                     }
                 }
             }).state('tab.person_usedBooksList', {
                 url: '/person/usedBookList',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/usedBookList.html'
+                        templateUrl: 'html/person/used-book-list.html'
                     }
                 }
             }).state('tab.person_needBooksList', {
                 url: '/person/needBookList',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/needBookList.html'
+                        templateUrl: 'html/person/need-book-list.html'
                     }
                 }
             }).state('tab.person_statusList', {
@@ -156,21 +156,21 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/person/statusList?cmd',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/statusList.html'
+                        templateUrl: 'html/person/status-list.html'
                     }
                 }
             }).state('tab.person_editPersonInfo', {
                 url: '/person/editPersonInfo',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/editPersonInfo.html'
+                        templateUrl: 'html/person/edit-person-info.html'
                     }
                 }
             }).state('tab.person_my', {
                 url: '/person/my',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/my.html'
+                        templateUrl: 'html/person/my.html'
                     }
                 }
             }).state('tab.person_sendMsgToUser', {
@@ -183,7 +183,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/person/sendMsgToUser?receiverObjectId&usedBookObjectId&role&inboxType',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/person/sendMsgToUser.html'
+                        templateUrl: 'html/person/send-msg-to-user.html'
                     }
                 }
             })
@@ -192,7 +192,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/hello',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/tool/hello.html'
+                        templateUrl: 'html/tool/hello.html'
                     }
                 }
             }).state('tab.signUp', {
@@ -203,7 +203,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/signUp?code&state',
                 views: {
                     'tab-person': {
-                        templateUrl: 'temp/tool/signUp.html'
+                        templateUrl: 'html/tool/sign-up.html'
                     }
                 }
             }).state('tab.userList', {
@@ -215,7 +215,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/userList?cmd&title&majorFilter',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/tool/userList.html'
+                        templateUrl: 'html/tool/user-list.html'
                     }
                 }
             }).state('tab.userHome', {
@@ -225,7 +225,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 url: '/userHome/:ownerId',
                 views: {
                     'tab-book': {
-                        templateUrl: 'temp/tool/userHome.html'
+                        templateUrl: 'html/tool/user-home.html'
                     }
                 }
             });

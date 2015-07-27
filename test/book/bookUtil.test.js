@@ -7,10 +7,10 @@
 var assert = require('assert');
 var _ = require('underscore');
 var Util = require('./../util.js');
-var bookUtil = require('../../server/book/bookUtil.js');
+var bookUtil = require('../../server/book/book-util.js');
 
 
-describe('book/bookInfo.js', function () {
+describe('book/book-info.js', function () {
 
     describe('#checkCode13', function () {
         it('计算isbn13编码的最后一位校验位', function () {

@@ -1,0 +1,59 @@
+<!-- 我关注的同学发布的新动态-->
+<ion-view ng-controller="ion_person_statusList" view-title="{{title}}">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+        <div class="card" ng-if="cmd=='newUsedBook'"
+             collection-repeat="status in statusList">
+            <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
+            <ion-user-info user="status.attributes.source"></ion-user-info>
+        </div>
+
+        <div class="card" ng-if="cmd=='newNeedBook'"
+             collection-repeat="status in statusList">
+            <ion-one-need-book need-book="status.attributes.usedBook"></ion-one-need-book>
+            <ion-user-info user="status.attributes.source"></ion-user-info>
+        </div>
+
+        <div class="card" ng-if="cmd=='private'"
+             collection-repeat="status in statusList">
+            <ion-item>
+                <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
+                <button style="float:right;"
+                        class="button button-clear button-balanced button-small"
+                        ui-sref="tab.person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:status.attributes.usedBook.id})">
+                    回复私信
+                </button>
+            </ion-item>
+            <ion-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
+                           used-book="status.attributes.usedBook">
+            </ion-one-used-book>
+            <ion-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
+                           need-book="status.attributes.usedBook"></ion-one-need-book>
+            <ion-user-info user="status.attributes.source"></ion-user-info>
+        </div>
+
+        <div class="card" ng-if="cmd=='reviewUsedBook'"
+             collection-repeat="status in statusList">
+            <ion-item>
+                <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
+                <button style="float:right;"
+                        class="button button-clear button-balanced button-small"
+                        ui-sref="tab.person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:status.attributes.usedBook.id})">
+                    回复评论
+                </button>
+            </ion-item>
+            <ion-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
+                           used-book="status.attributes.usedBook">
+            </ion-one-used-book>
+            <ion-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
+                           need-book="status.attributes.usedBook"></ion-one-need-book>
+            <ion-user-info user="status.attributes.source"></ion-user-info>
+        </div>
+
+        <div class="card" ng-if="statusList.length==0">
+            <ion-item style="text-align: center">没有未读消息</ion-item>
+        </div>
+    </ion-content>
+</ion-view>

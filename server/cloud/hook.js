@@ -4,10 +4,10 @@
  */
 "use strict";
 var AV = require('leanengine');
-var Model = require('../../web/js/Model.js');
+var Model = require('../../web/js/model.js');
 var LBS = require('../util/lbs.js');
 var WeChatAPI = require('../wechat/wechatAPI.js');
-var BookInfo = require('../book/bookInfo.js');
+var BookInfo = require('../book/book-info.js');
 
 AV.Cloud.afterSave('UsedBook', function (req) {
     var usedBook = req.object;
