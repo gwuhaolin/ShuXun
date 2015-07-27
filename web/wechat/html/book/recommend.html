@@ -44,10 +44,10 @@
                 </button>
             </ion-item>
             <ion-item style="padding: 0;text-align: center">
-                <img ng-repeat="one in BookRecommend$.NearUser.users"
-                     ng-if="one.attributes.avatarUrl"
-                     ng-src="{{one.avatarUrlWithSize(64)}}"
-                     ui-sref="tab.userHome({ownerId:one.id})"
+                <img ng-repeat="user in BookRecommend$.NearUser.users"
+                     ng-if="user.attributes.avatarUrl"
+                     ng-src="{{user.avatarUrlWithSize(64)}}"
+                     ui-sref="tab.userHome({ownerId:user.id})"
                      style="width: 40px;height: 40px;border-radius: 50%;overflow: hidden;margin: 5px">
             </ion-item>
         </div>

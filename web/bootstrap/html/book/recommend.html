@@ -1,24 +1,54 @@
-<div class="row" ng-controller="bs_bookRecommendCtrl">
+<div class="row" ng-controller="bs_book_recommendCtrl">
 
     <!-- 新书速递-->
     <div class="row" ng-if="LatestBook.books.length>0">
-        <h4>新书速递
-            <a class="btn btn-link">更多</a>
-        </h4>
+        <h4><a ui-sref="book_bookList({cmd:'latest'})">新书速递</a></h4>
         <hr>
-        <div class="col-md-3" ng-repeat="bookInfo in LatestBook.books">
+        <div class="col-md-3" ng-repeat="bookInfo in LatestBook.books.slice(0,8)">
             <bs-one-book-info book-info="bookInfo" should-show-used-books-count="true"></bs-one-book-info>
         </div>
     </div>
 
     <!-- 附近用户上传的旧书-->
     <div class="row" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
-        <h4>附近卖书
-            <a class="btn btn-link">更多</a>
-        </h4>
-
-        <div class="col-md-3" ng-repeat="usedBook in BookRecommend$.NearUsedBook.usedBooks">
+        <h4><a>附近卖书</a></h4>
+        <hr>
+        <div class="col-md-3" ng-repeat="usedBook in BookRecommend$.NearUsedBook.usedBooks.slice(0,8)">
             <bs-one-used-book used-book="usedBook"></bs-one-used-book>
+        </div>
+    </div>
+
+    <!-- 用户附近的用户-->
+    <div class="row" ng-if="BookRecommend$.NearUser.users.length>0">
+        <h4><a>附近同学</a></h4>
+        <hr>
+        <div class="col-xs-6 col-md-1" ng-repeat="user in BookRecommend$.NearUser.users.slice(0,24)">
+            <img class="img-circle"
+                 style="width: 50px;height:50px;margin: 10px"
+                 popover-popup-delay="800"
+                 popover-trigger="mouseenter"
+                 popover-placement="right"
+                 popover-append-to-body="true"
+                 popover-template="'html/directive/one-user-popover.html'"
+                 ng-src="{{user.avatarUrlWithSize(132)}}">
+        </div>
+    </div>
+
+    <!-- 附近用户发布的求书-->
+    <div class="row" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
+        <h4><a>附近求书</a></h4>
+        <hr>
+        <div class="col-md-3" ng-repeat="needBook in BookRecommend$.NearNeedBook.needBooks.slice(0,8)">
+            <bs-one-need-book need-book="needBook"></bs-one-need-book>
+        </div>
+    </div>
+
+    <!-- 根据专业推荐的书-->
+    <div class="row" ng-if="BookRecommend$.TagBook.books.length>0">
+        <h4><a ui-sref="book_bookList({cmd:'tag',tag:major})">专业推荐读物</a></h4>
+        <hr>
+        <div class="col-md-3" ng-repeat="bookInfo in BookRecommend$.TagBook.books.slice(0,8)">
+            <bs-one-book-info book-info="bookInfo" should-show-used-books-count="true"></bs-one-book-info>
         </div>
     </div>
 

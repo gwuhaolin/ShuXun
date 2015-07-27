@@ -4,12 +4,13 @@
  */
 "use strict";
 
-APP.controller('ion_book_recommend', function ($scope, $state, $stateParams, $ionicModal, BookRecommend$, IonicModalView$, User$, BookInfo$) {
+function book_recommendCtrl($scope, $stateParams, BookRecommend$, User$, BookInfo$) {
     $scope.User$ = User$;
     $scope.BookRecommend$ = BookRecommend$;
     $scope.LatestBook = BookInfo$.LatestBook;
 
-    function load() {
+    //unshift加载和当前设置专业相关的TagBook
+    this.setMajorFilterAndLoad = function () {
         $scope.major = $stateParams['major'];
         if ($scope.major) {
             BookRecommend$.NearUsedBook.setMajorFilter($scope.major);
@@ -24,21 +25,11 @@ APP.controller('ion_book_recommend', function ($scope, $state, $stateParams, $io
             me && BookRecommend$.TagBook.setTag(me.get('major'));
         }
         BookRecommend$.TagBook.loadMore();
-    }
+    };
 
     BookRecommend$.NearUser.loadMore();
     BookRecommend$.BookTag.load();
     $scope.LatestBook.loadMore();
     BookRecommend$.NearUsedBook.loadMore();
     BookRecommend$.NearNeedBook.loadMore();
-    $ionicModal.fromTemplateUrl('template/bookTags.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.bookTagsModalView = modal;
-    });
-    $scope.$on('$ionicView.afterEnter', load);
-    //去制定专业的推荐页面
-    IonicModalView$.registerChooseMajorModalView($scope, function (major) {
-        $state.go('tab.book_recommend', {major: major});
-    });
-});
+}

@@ -1,0 +1,7 @@
+<div class="row" ng-controller="bs_book_bookList">
+    <h4 ng-bind="title"></h4>
+    <hr>
+    <div class="col-md-3" ng-repeat="bookInfo in books">
+        <bs-one-book-info book-info="bookInfo" should-show-used-books-count="true"></bs-one-book-info>
+    </div>
+</div>

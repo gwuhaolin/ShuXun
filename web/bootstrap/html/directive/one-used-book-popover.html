@@ -1,0 +1,13 @@
+<p ng-if="usedBook.attributes.price">主人要价:<em ng-bind="usedBook.attributes.price"></em></p>
+<p>上传时间:<em ng-bind="usedBook.updatedAt | date:'mediumDate'"></em></p>
+<p ng-if="usedBook.attributes.des">主人描述:<em ng-bind="usedBook.attributes.des"></em></p>
+<hr>
+<h4 ng-bind="usedBook.attributes.info.attributes.title"></h4>
+<p ng-bind="usedBook.attributes.info.attributes.author.toString()"></p>
+<small>
+    <em ng-bind="usedBook.attributes.info.attributes.price"></em> /
+    <em ng-bind="usedBook.attributes.info.attributes.publisher"></em> /
+    <em ng-bind="usedBook.attributes.info.attributes.pubdate"></em>
+</small>
+<hr>
+<small>{{usedBook.attributes.info.attributes.summary.substr(0,150)}}...</small>

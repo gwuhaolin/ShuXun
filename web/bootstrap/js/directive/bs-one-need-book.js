@@ -1,14 +1,14 @@
 /**
  * Created by wuhaolin on 7/27/15.
  */
-APP.directive('bsOneUsedBook', function (UsedBook$) {
+APP.directive('bsOneNeedBook', function (UsedBook$) {
 
     function link($scope) {
         $scope.UsedBook$ = UsedBook$;
 
         //获得旧书的图书信息
-        var bookInfo = $scope.usedBook.get('info');
-        if(!bookInfo.has('isbn13')){
+        var bookInfo = $scope.needBook.get('info');
+        if (!bookInfo.has('isbn13')) {
             bookInfo.fetch().always(function () {
                 $scope.$digest();
             });
@@ -23,11 +23,11 @@ APP.directive('bsOneUsedBook', function (UsedBook$) {
         restrict: 'E',
         scope: {
             //三本图书的信息
-            usedBook: '=',
+            needBook: '=',
             //是否显示删除，修改按钮
             shouldShowManageBtn: '='
         },
-        templateUrl: 'html/directive/one-used-book.html',
+        templateUrl: 'html/directive/one-need-book.html',
         link: link
     }
 });

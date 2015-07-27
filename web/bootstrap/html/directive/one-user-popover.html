@@ -1,0 +1,9 @@
+<h5 ng-bind="user.attributes.nickName"></h5>
+<p>
+    <small>
+        <span class="glyphicon glyphicon-user" style="color: #5eb1ed" ng-if="user.attributes.sex==1"></span>
+        <span class="glyphicon glyphicon-user" style="color: #ff6d9e" ng-if="user.attributes.sex==2"></span>
+    </small>
+    <small ng-bind="user.attributes.major"></small>
+    <small ng-bind="user.attributes.school"></small>
+</p>

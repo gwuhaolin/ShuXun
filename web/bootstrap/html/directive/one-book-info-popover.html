@@ -4,10 +4,10 @@
     <span class="label label-info" ng-if="bookInfo.needBookNumber>0">{{bookInfo.needBookNumber}}本求书</span>
 </p>
 <p ng-bind="bookInfo.attributes.author.toString()"></p>
-<p>
+<small>
     <em ng-bind="bookInfo.attributes.price"></em> /
     <em ng-bind="bookInfo.attributes.publisher"></em> /
     <em ng-bind="bookInfo.attributes.pubdate"></em>
-</p>
+</small>
 <hr>
-<p>{{bookInfo.attributes.summary.substr(0,150)}}...</p>
+<small>{{bookInfo.attributes.summary.substr(0,150)}}...</small>

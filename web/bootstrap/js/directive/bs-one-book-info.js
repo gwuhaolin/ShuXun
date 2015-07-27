@@ -27,7 +27,7 @@ APP.directive('bsOneBookInfo', function (UsedBook$) {
             bookInfo: '=',
             shouldShowUsedBooksCount: '='
         },
-        templateUrl: 'html/directive/oneBookInfo.html',
+        templateUrl: 'html/directive/one-book-info.html',
         link: link
     }
 });

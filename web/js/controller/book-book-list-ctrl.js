@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('ion_book_bookList', function ($scope, $stateParams, BookRecommend$, BookInfo$) {
+function book_bookList($scope, $stateParams, BookRecommend$, BookInfo$) {
     $scope.title = $stateParams['title'];
     var cmd = $stateParams['cmd'];
     if (cmd == 'tag') {
@@ -19,20 +19,10 @@ APP.controller('ion_book_bookList', function ($scope, $stateParams, BookRecommen
         $scope.books = BookRecommend$.TagBook.books;
         $scope.loadMore = BookRecommend$.TagBook.loadMore;
         $scope.hasMore = BookRecommend$.TagBook.hasMore;
-
-        //统计用户行为
-        $scope.$on('$ionicView.afterEnter', function () {
-            var analyticsSugue = leanAnalytics.browseTag(tag);
-            $scope.$on('$ionicView.afterLeave', function () {
-                //清空列表提高性能 TODO 不会执行
-                BookRecommend$.TagBook.books.length = 0;
-                analyticsSugue.send();
-            });
-        });
     } else if (cmd == 'latest') {
         $scope.books = BookInfo$.LatestBook.books;
         $scope.loadMore = BookInfo$.LatestBook.loadMore;
         $scope.title = '新书速递';
         $scope.hasMore = BookInfo$.LatestBook.hasMore;
     }
-});
+}

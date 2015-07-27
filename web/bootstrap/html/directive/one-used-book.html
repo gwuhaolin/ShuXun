@@ -1,0 +1,13 @@
+<!--一本二手书-->
+<div class="thumbnail"
+     popover-popup-delay="800"
+     popover-trigger="mouseenter"
+     popover-placement="right"
+     popover-append-to-body="true"
+     popover-template="'html/directive/one-used-book-popover.html'">
+    <img style="height: 250px" class="img-responsive" ng-src="{{usedBook.attributes.info.attributes.bigImage}}">
+
+    <div class="caption">
+        <h5 style="white-space: nowrap;overflow: hidden;text-align: center" ng-bind="usedBook.attributes.info.attributes.title"></h5>
+    </div>
+</div>
