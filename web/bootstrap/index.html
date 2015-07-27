@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="APP">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <!-- build:Bootstrap-css -->
+    <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css"/>
+    <!-- endbuild -->
+    <style>
+        @keyframes spin {
+            from {
+                transform: scale(1) rotate(0deg);
+            }
+            to {
+                transform: scale(1) rotate(360deg);
+            }
+        }
+
+        /*旋转元素*/
+        .spin {
+            animation: spin 0.7s infinite linear;
+        }
+    </style>
+</head>
+<body style="padding-top: 60px">
+
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="b_navBarCtrl">
+    <div class="container">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" style="padding: 9px" href="#">
+                <img class="img-responsive img-rounded" style="width: 32px" alt="书循" src="../img/logo-R.png">
+            </a>
+            <button type="button" class="navbar-toggle" btn-checkbox ng-model="navbarCollapseIsClosed">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" collapse="navbarCollapseIsClosed">
+
+            <!-- 常用链接-->
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">Link</a>
+                </li>
+            </ul>
+
+            <!-- 搜索表单-->
+            <form class="navbar-form navbar-left" ng-controller="b_searchResultCtrl">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="search" class="form-control" placeholder="书名、作者、ISBN"
+                               ng-model="SearchBook$.keyword"
+                               ng-change="SearchBook$.searchInputOnChange()">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-search" ng-class="{spin:SearchBook$.isLoading}"></span>
+                        </span>
+                    </div>
+                </div>
+            </form>
+
+            <!-- 游客链接-->
+            <button class="btn btn-default navbar-btn" ng-if="!me">登入</button>
+            <button class="btn btn-default navbar-btn" ng-if="!me">加入</button>
+
+            <!-- 用户链接-->
+            <ul class="nav navbar-nav navbar-right" ng-if="me">
+                <li ng-if="Status$.unreadCountSum()>0">
+                    <a href="#">消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
+                </li>
+                <li dropdown>
+                    <!-- avatar-->
+                    <a href="#" style="padding: 9px" dropdown-toggle>
+                        <img class="img-responsive img-circle" style="width: 32px"
+                             ng-src="{{me.avatarUrlWithSize(64)}}">
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ng-click="logOut()">
+                            <a><span class="glyphicon glyphicon-eject"></span> 退出</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- 搜索结果-->
+    <div class="row" ng-controller="b_searchResultCtrl" ng-hide="SearchBook$.books.length==0">
+        <h4 class="text-center"><strong ng-bind="SearchBook$.keyword"></strong> 搜索结果</h4>
+        <hr>
+        <div class="col-sm-1 col-md-2" ng-repeat="bookInfo in SearchBook$.books">
+            <b-one-book-info book-info="bookInfo" should-show-used-books-count="true"></b-one-book-info>
+        </div>
+        <div class="col-xs-12 text-center">
+            <button class="btn btn-info btn-lg" ng-if="SearchBook$.hasMore()" ng-click="SearchBook$.loadMore()">加载更多
+            </button>
+            <button class="btn btn-danger btn-lg" ng-click="SearchBook$.books.length=0;SearchBook$.keyword=''">结束搜索
+            </button>
+        </div>
+        <hr>
+    </div>
+
+    <div class="row">
+        <!-- 主要内容区-->
+        <main class="col-md-9" ui-view="main"></main>
+
+        <aside class="col-md-3" ng-controller="b_asideCtrl">
+            <h4>图书分类</h4>
+            <hr>
+            <tabset type="tabs">
+                <tab ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()" heading="{{bigTag}}">
+                    <a class="btn btn-link btn-sm" style="margin: 5px"
+                       ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]"
+                       ng-bind="littleTag"></a>
+                </tab>
+            </tabset>
+            <hr>
+        </aside>
+    </div>
+</div>
+
+<!-- build:Angular-js -->
+<script src="bower_components/angular/angular.js"></script>
+<!-- endbuild -->
+<!-- build:AngularUIRouter-js -->
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<!-- endbuild -->
+<!-- build:UIBootstrap-js -->
+<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+<!-- endbuild -->
+<!-- build:UIBootstrapTpls-js -->
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<!-- endbuild -->
+<!-- build:Avos-js -->
+<script src="../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
+<!-- endbuild -->
+<!-- build:LeanAnalytics-js -->
+<script src="../../bower_components/leancloud-analytics/src/AV.analytics.js"></script>
+<!-- endbuild -->
+<!-- build:Main-js -->
+<script src="../js/util.js"></script>
+<script src="../js/Model.js"></script>
+<script src="../js/Analytics.js"></script>
+<script src="js/app.js"></script>
+<!--Service-->
+<script src="../js/service/BookRecommend.js"></script>
+<script src="../js/service/BusinessSite.js"></script>
+<script src="../js/service/DoubanBook.js"></script>
+<script src="../js/service/InfoService.js"></script>
+<script src="../js/service/BookInfo.js"></script>
+<script src="../js/service/SearchBook.js"></script>
+<script src="../js/service/Status.js"></script>
+<script src="../js/service/UsedBook.js"></script>
+<script src="../js/service/User.js"></script>
+<!--Controller-->
+<script src="js/controller/b_navBarCtrl.js"></script>
+<script src="js/controller/b_asideCtrl.js"></script>
+<script src="js/controller/b_book_recommend.js"></script>
+<script src="js/controller/b_searchResultCtrl.js"></script>
+<!--Directive-->
+<script src="js/directive/b_oneBookInfo.js"></script>
+<!-- endbuild -->
+</body>
+</html>

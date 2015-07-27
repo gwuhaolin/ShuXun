@@ -1,0 +1,13 @@
+<h4 ng-bind="bookInfo.attributes.title"></h4>
+<p ng-if="shouldShowUsedBooksCount">
+    <span class="label label-success" ng-if="bookInfo.usedBookNumber>0">{{bookInfo.usedBookNumber}}本二手书</span>
+    <span class="label label-info" ng-if="bookInfo.needBookNumber>0">{{bookInfo.needBookNumber}}本求书</span>
+</p>
+<p ng-bind="bookInfo.attributes.author.toString()"></p>
+<p>
+    <em ng-bind="bookInfo.attributes.price"></em> /
+    <em ng-bind="bookInfo.attributes.publisher"></em> /
+    <em ng-bind="bookInfo.attributes.pubdate"></em>
+</p>
+<hr>
+<p>{{bookInfo.attributes.summary.substr(0,150)}}...</p>

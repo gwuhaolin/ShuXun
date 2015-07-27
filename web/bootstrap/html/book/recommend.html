@@ -1,0 +1,25 @@
+<div class="row" ng-controller="b_book_recommend">
+
+    <!-- 新书速递-->
+    <div class="row" ng-if="LatestBook.books.length>0">
+        <h4>新书速递
+            <a class="btn btn-link">更多</a>
+        </h4>
+        <hr>
+        <div class="col-md-3" ng-repeat="bookInfo in LatestBook.books">
+            <b-one-book-info book-info="bookInfo" should-show-used-books-count="true"></b-one-book-info>
+        </div>
+    </div>
+
+    <!-- 附近用户上传的旧书-->
+    <div class="row" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
+        <h4>附近卖书
+            <a class="btn btn-link">更多</a>
+        </h4>
+
+        <div class="col-md-3" ng-repeat="usedBook in BookRecommend$.NearUsedBook.usedBooks">
+            <b-one-used-book used-book="usedBook"></b-one-used-book>
+        </div>
+    </div>
+
+</div>

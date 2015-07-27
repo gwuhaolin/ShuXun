@@ -27,7 +27,7 @@ APP.service('BookInfo$', function ($rootScope) {
         hasMoreFlag: true,
         loadMore: function () {
             var query = new AV.Query(Model.BookInfo);
-            query.select(['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'pubdate', 'price']);
+            query.select(['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'summary', 'price']);
             query.descending('pubdate');
             query.skip(that.LatestBook.books.length + RandomStart);
             query.limit(LoadCount);

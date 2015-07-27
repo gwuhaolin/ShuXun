@@ -3,7 +3,7 @@
  */
 APP.directive('usedBookOneLine', function () {
 
-    function link($scope, $element) {
+    function link($element) {
         $element.addClass('item text-center');
         $element.css('height', '144px');
         $element.css('padding', '0');

@@ -10,6 +10,11 @@
 APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo$) {
     var that = this;
     /**
+     * 当前是否正在加载数据
+     * @type {boolean}
+     */
+    this.isLoading = false;
+    /**
      * 目前正在搜索的关键字
      * @type {string}
      */
