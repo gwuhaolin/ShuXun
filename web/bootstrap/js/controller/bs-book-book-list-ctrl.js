@@ -4,6 +4,6 @@
  */
 "use strict";
 
-APP.controller('bs_book_bookList', function ($scope, $injector) {
-    $injector.invoke(book_bookList, this, {$scope: $scope});
+APP.controller('bs_book_bookList', function ($scope, $controller) {
+    $controller('book_bookList', {$scope: $scope});
 });

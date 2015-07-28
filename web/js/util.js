@@ -3,6 +3,7 @@
  * 自定义全局函数和路由配置
  */
 "use strict";
+
 //应用当前版本号
 var AppVersion = '2.0';
 //AVOSCloud

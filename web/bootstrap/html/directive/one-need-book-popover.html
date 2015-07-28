@@ -1,6 +1,6 @@
-<p ng-if="needBook.attributes.price">最高承受价:<em ng-bind="needBook.attributes.price"></em></p>
-<p>发布时间:<em ng-bind="needBook.updatedAt | date:'mediumDate'"></em></p>
+<p ng-if="needBook.attributes.price">最高承受价: <em ng-bind="needBook.attributes.price"></em> 元</p>
 <p ng-if="needBook.attributes.des">主人描述:<em ng-bind="needBook.attributes.des"></em></p>
+<small>发布于:<em ng-bind="needBook.updatedAt | date:'mediumDate'"></em></small>
 <hr>
 <h4 ng-bind="needBook.attributes.info.attributes.title"></h4>
 <p ng-bind="needBook.attributes.info.attributes.author.toString()"></p>

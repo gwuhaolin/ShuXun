@@ -1,6 +1,8 @@
 /**
  * Created by wuhaolin on 5/31/15.
  */
+"use strict";
+
 APP.directive('ionOneNeedBook', function (UsedBook$) {
 
     function link($scope) {

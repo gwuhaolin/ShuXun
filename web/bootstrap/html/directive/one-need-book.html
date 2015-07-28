@@ -1,13 +1,15 @@
 <!--一本二手书-->
-<div class="thumbnail"
-     popover-popup-delay="800"
-     popover-trigger="mouseenter"
-     popover-placement="right"
-     popover-append-to-body="true"
-     popover-template="'html/directive/one-need-book-popover.html'">
+<a class="thumbnail"
+   popover-popup-delay="800"
+   popover-trigger="mouseenter"
+   popover-placement="{{popoverPlacement}}"
+   popover-append-to-body="true"
+   popover-template="'html/directive/one-need-book-popover.html'"
+   ui-sref="book_oneNeedBook({usedBookAvosObjectId:needBook.id})">
     <img style="height: 250px" class="img-responsive" ng-src="{{needBook.attributes.info.attributes.bigImage}}">
 
     <div class="caption">
-        <h5 style="white-space: nowrap;overflow: hidden;text-align: center" ng-bind="needBook.attributes.info.attributes.title"></h5>
+        <h5 style="white-space: nowrap;overflow: hidden;text-align: center"
+            ng-bind="needBook.attributes.info.attributes.title"></h5>
     </div>
-</div>
+</a>

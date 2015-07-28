@@ -31,7 +31,7 @@
 
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <a class="navbar-brand" style="padding: 9px" href="#">
+            <a class="navbar-brand" style="padding: 9px" ui-sref="book_recommend()">
                 <img class="img-responsive img-rounded" style="width: 32px" alt="书循" src="../img/logo-R.png">
             </a>
             <button type="button" class="navbar-toggle" btn-checkbox ng-model="navbarCollapseIsClosed">
@@ -46,13 +46,37 @@
 
             <!-- 常用链接-->
             <ul class="nav navbar-nav">
-                <li>
-                    <a href="#">Link</a>
+                <li><a ui-sref="book_bookList({cmd:'latest'})">新书速递</a></li>
+                <li><a ui-sref="book_usedBookList({cmd:'nearUsed'})">附近旧书</a></li>
+                <li><a ui-sref="book_usedBookList({cmd:'nearNeed'})">附近求书</a></li>
+            </ul>
+
+            <!-- 游客链接-->
+            <button class="btn btn-default navbar-btn" ng-if="!me">登入</button>
+            <button class="btn btn-default navbar-btn" ng-if="!me">加入</button>
+
+            <!-- 用户链接-->
+            <ul class="nav navbar-nav navbar-right" ng-if="me">
+                <li><a ui-sref="userHome({ownerId:me.id})">我的书架</a></li>
+                <li ng-if="Status$.unreadCountSum()>0">
+                    <a>消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
+                </li>
+                <li dropdown>
+                    <!-- avatar-->
+                    <a href="#" style="padding: 9px" dropdown-toggle>
+                        <img class="img-responsive img-circle" style="width: 32px"
+                             ng-src="{{me.avatarUrlWithSize(64)}}">
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ng-click="logOut()">
+                            <a class="text-warning"><span class="glyphicon glyphicon-eject"></span> 退出</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
 
             <!-- 搜索表单-->
-            <form class="navbar-form navbar-left" ng-controller="bs_searchResultCtrl">
+            <form class="navbar-form navbar-right">
                 <div class="form-group">
                     <div class="input-group">
                         <input type="search" class="form-control" placeholder="书名、作者、ISBN"
@@ -64,67 +88,36 @@
                     </div>
                 </div>
             </form>
-
-            <!-- 游客链接-->
-            <button class="btn btn-default navbar-btn" ng-if="!me">登入</button>
-            <button class="btn btn-default navbar-btn" ng-if="!me">加入</button>
-
-            <!-- 用户链接-->
-            <ul class="nav navbar-nav navbar-right" ng-if="me">
-                <li ng-if="Status$.unreadCountSum()>0">
-                    <a href="#">消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
-                </li>
-                <li dropdown>
-                    <!-- avatar-->
-                    <a href="#" style="padding: 9px" dropdown-toggle>
-                        <img class="img-responsive img-circle" style="width: 32px"
-                             ng-src="{{me.avatarUrlWithSize(64)}}">
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li ng-click="logOut()">
-                            <a><span class="glyphicon glyphicon-eject"></span> 退出</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
         </div>
     </div>
 </nav>
 
 <div class="container">
     <!-- 搜索结果-->
-    <div class="row" ng-controller="bs_searchResultCtrl" ng-hide="SearchBook$.books.length==0">
-        <h4 class="text-center"><strong ng-bind="SearchBook$.keyword"></strong> 搜索结果</h4>
-        <hr>
-        <div class="col-sm-1 col-md-2" ng-repeat="bookInfo in SearchBook$.books">
-            <bs-one-book-info book-info="bookInfo" should-show-used-books-count="true"></bs-one-book-info>
+    <div class="row" ng-controller="bs_navBarCtrl" ng-hide="SearchBook$.books.length==0">
+        <div class="col-md-12">
+            <h4 class="text-center"><strong ng-bind="SearchBook$.keyword"></strong> 搜索结果</h4>
+            <hr>
+        </div>
+        <div class="col-sm-1 col-md-3" ng-repeat="bookInfo in SearchBook$.books">
+            <bs-one-book-info book-info="bookInfo"
+                              should-show-used-books-count="true"
+                              ng-click="endSearch()"></bs-one-book-info>
         </div>
         <div class="col-xs-12 text-center">
-            <button class="btn btn-info btn-lg" ng-if="SearchBook$.hasMore()" ng-click="SearchBook$.loadMore()">加载更多
+            <button style="margin: 5px" class="btn btn-info btn-lg" ng-if="SearchBook$.hasMore()"
+                    ng-click="SearchBook$.loadMore()">加载更多
             </button>
-            <button class="btn btn-danger btn-lg" ng-click="SearchBook$.books.length=0;SearchBook$.keyword=''">结束搜索
+            <button style="margin: 5px" class="btn btn-danger btn-lg"
+                    ng-click="endSearch()">结束搜索
             </button>
+            <hr>
         </div>
-        <hr>
     </div>
 
-    <div class="row">
-        <!-- 主要内容区-->
-        <main class="col-md-9" ui-view="main"></main>
+    <!-- 主要内容区-->
+    <main class="row" ui-view="main"></main>
 
-        <aside class="col-md-3" ng-controller="bs_asideCtrl">
-            <h4>图书分类</h4>
-            <hr>
-            <tabset type="tabs">
-                <tab ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()" heading="{{bigTag}}">
-                    <a class="btn btn-link btn-sm" style="margin: 5px"
-                       ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]"
-                       ng-bind="littleTag"></a>
-                </tab>
-            </tabset>
-            <hr>
-        </aside>
-    </div>
 </div>
 <!-- build:Avos-js -->
 <script src="../../bower_components/avoscloud-sdk/dist/av-core.js"></script>
@@ -159,18 +152,35 @@
 <script src="../js/service/status.js"></script>
 <script src="../js/service/used-book.js"></script>
 <script src="../js/service/user.js"></script>
+<script src="js/service/bootstrap-modal-view.js"></script>
 <!--Controller-->
+<script src="js/controller/bs-nav-bar-ctrl.js"></script>
+
 <script src="../js/controller/book-recommend-ctrl.js"></script>
 <script src="js/controller/bs-book-recommend-ctrl.js"></script>
+
 <script src="../js/controller/book-book-list-ctrl.js"></script>
 <script src="js/controller/bs-book-book-list-ctrl.js"></script>
-<script src="js/controller/bs-nav-bar-ctrl.js"></script>
-<script src="js/controller/bs-aside-ctrl.js"></script>
-<script src="js/controller/bs-search-result-ctrl.js"></script>
+
+<script src="../js/controller/book-used-book-list-ctrl.js"></script>
+<script src="js/controller/bs-book-used-book-list-ctrl.js"></script>
+
+<script src="../js/controller/book-one-book-ctrl.js"></script>
+<script src="js/controller/bs-book-one-book-ctrl.js"></script>
+
+<script src="../js/controller/book-one-used-book-ctrl.js"></script>
+<script src="js/controller/bs-book-one-used-book-ctrl.js"></script>
+
+<script src="../js/controller/user-home-ctrl.js"></script>
+<script src="js/controller/bs-user-home-ctrl.js"></script>
+
 <!--Directive-->
+<script src="js/directive/bs-infinite-scroll.js"></script>
 <script src="js/directive/bs-one-book-info.js"></script>
 <script src="js/directive/bs-one-used-book.js"></script>
 <script src="js/directive/bs-one-need-book.js"></script>
+<script src="js/directive/bs-one-user.js"></script>
+<script src="js/directive/bs-one-book-info-detail.js"></script>
 <!-- endbuild -->
 </body>
 </html>

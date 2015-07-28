@@ -4,25 +4,12 @@
  */
 "use strict";
 
-APP.controller('ion_userHome', function ($scope, $stateParams, UsedBook$) {
-    $scope.UsedBook$ = UsedBook$;
-    var ownerId = $stateParams.ownerId;
-    var query = new AV.Query(Model.User);
-    query.get(ownerId).done(function (owner) {
-        $scope.owner = owner;
-        UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
-            $scope.usedBooks = usedBooks;
-            $scope.$digest();
-        });
-        UsedBook$.loadNeedBookListForOwner(owner).done(function (needBooks) {
-            $scope.needBooks = needBooks;
-            $scope.$digest();
-        })
-    });
+APP.controller('ion_userHome', function ($scope, $controller) {
+    $controller('userHome', {$scope: $scope});
 
     //统计用户行为
     $scope.$on('$ionicView.afterEnter', function () {
-        var analyticsSugue = leanAnalytics.browseUser(ownerId);
+        var analyticsSugue = leanAnalytics.browseUser($scope.ownerId);
         $scope.$on('$ionicView.afterLeave', function () {
             analyticsSugue.send();
         });

@@ -1,0 +1,48 @@
+<div class="row" ng-controller="bs_userHome">
+
+    <div class="row">
+        <div class=col-md-4>
+            <ol class="breadcrumb">
+                <li><a ui-sref="book_recommend()">图书主页</a></li>
+                <li class="active"><strong>用户-</strong>{{owner.attributes.nickName}}</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>主人信息</h4>
+            <hr>
+        </div>
+        <div class="col-md-12 text-center">
+            <bs-one-user user="owner"
+                         avatar-size="80"
+                         image-size="132"></bs-one-user>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>主人要卖的旧书</h4>
+            <hr>
+            <h4 class="text-warning" ng-if="usedBooks.length==0">主人要卖的旧书</h4>
+        </div>
+
+        <div class="col-md-3" ng-repeat="usedBook in usedBooks">
+            <bs-one-used-book used-book="usedBook"></bs-one-used-book>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>主人发布的求书</h4>
+            <hr>
+            <h4 class="text-warning" ng-if="needBooks.length==0">主人发布的求书</h4>
+        </div>
+
+        <div class="col-md-3" ng-repeat="needBook in needBooks">
+            <bs-one-need-book need-book="needBook"></bs-one-need-book>
+        </div>
+    </div>
+
+</div>

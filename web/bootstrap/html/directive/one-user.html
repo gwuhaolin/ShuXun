@@ -1,0 +1,10 @@
+<img class="img-circle"
+     style="cursor: pointer"
+     ng-style="{'width':avatarSize+'px','height':avatarSize+'px','margin':margin+'px'}"
+     ui-sref="userHome({ownerId:user.id})"
+     popover-popup-delay="800"
+     popover-trigger="mouseenter"
+     popover-placement="{{popoverPlacement}}"
+     popover-append-to-body="true"
+     popover-template="'html/directive/one-user-popover.html'"
+     ng-src="{{user.avatarUrlWithSize(imageSize)}}">

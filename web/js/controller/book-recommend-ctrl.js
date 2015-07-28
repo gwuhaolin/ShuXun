@@ -4,13 +4,13 @@
  */
 "use strict";
 
-function book_recommendCtrl($scope, $stateParams, BookRecommend$, User$, BookInfo$) {
+APP.controller('book_recommendCtrl', function ($scope, $stateParams, BookRecommend$, User$, BookInfo$) {
     $scope.User$ = User$;
     $scope.BookRecommend$ = BookRecommend$;
     $scope.LatestBook = BookInfo$.LatestBook;
 
     //unshift加载和当前设置专业相关的TagBook
-    this.setMajorFilterAndLoad = function () {
+    $scope._setMajorFilterAndLoad = function () {
         $scope.major = $stateParams['major'];
         if ($scope.major) {
             BookRecommend$.NearUsedBook.setMajorFilter($scope.major);
@@ -32,4 +32,4 @@ function book_recommendCtrl($scope, $stateParams, BookRecommend$, User$, BookInf
     $scope.LatestBook.loadMore();
     BookRecommend$.NearUsedBook.loadMore();
     BookRecommend$.NearNeedBook.loadMore();
-}
+});

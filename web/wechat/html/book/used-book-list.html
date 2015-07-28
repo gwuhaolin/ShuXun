@@ -1,4 +1,4 @@
-<ion-view ng-controller="ion_book_usedBookList" view-title="{{title}}">
+<ion-view ng-controller="ion_book_usedBookList" view-title="{{getMajorFilter() ? getMajorFilter() : title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_recommend">书循</button>
     </ion-nav-buttons>
@@ -9,9 +9,11 @@
                ng-class="{'button-balanced':sortWay=='attributes.price'}">图书价格</a>
             <a class="button button-small " ng-click="sortWay='attributes.location'"
                ng-class="{'button-balanced':sortWay=='attributes.location'}">离你距离</a>
-            <a class="button button-small" ng-if="setMajorFilter" ng-class="{'button-balanced':getMajorFilter()}"
-               ng-click="chooseMajorModalView.show()">
-                {{getMajorFilter() ? getMajorFilter() :'主人专业'}}
+            <a class="button button-small"
+               ng-if="setMajorFilter"
+               ng-class="{'button-balanced':getMajorFilter()}"
+               ng-click="chooseMajorModalView.show()"
+               ng-bind="getMajorFilter() ? getMajorFilter() :'主人专业'">
             </a>
             <a class="button button-small button-energized" ng-click="setMajorFilter()" ng-if="getMajorFilter()">
                 取消限制
@@ -20,12 +22,12 @@
         <ion-list>
             <!-- 二手书列表-->
             <ion-one-used-book ng-if="cmd=='nearUsed' || cmd =='isbnUsed'"
-                           ng-repeat="usedBook in usedBooks | orderBy:sortWay"
-                           used-book="usedBook"></ion-one-used-book>
+                               ng-repeat="usedBook in usedBooks | orderBy:sortWay"
+                               used-book="usedBook"></ion-one-used-book>
             <!-- 求书列表-->
             <ion-one-need-book ng-if="cmd=='nearNeed' || cmd == 'isbnNeed'"
-                           ng-repeat="needBook in usedBooks | orderBy:sortWay"
-                           need-book="needBook"></ion-one-need-book>
+                               ng-repeat="needBook in usedBooks | orderBy:sortWay"
+                               need-book="needBook"></ion-one-need-book>
         </ion-list>
         <ion-infinite-scroll ng-if="hasMore()"
                              on-infinite="loadMore(isbn13)"

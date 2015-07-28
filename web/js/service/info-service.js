@@ -13,14 +13,19 @@ APP.service('InfoService$', function ($rootScope) {
          */
         majors: [],
         /**
+         * 是否正在加载中
+         */
+        isLoading:false,
+        /**
          * 搜索专业时的关键字
          * @type {string}
          */
         searchMajorKeyword: '',
         loadMore: function () {
+            that.Major.isLoading = true;
             var query = new AV.Query(Model.Major);
             if (that.Major.searchMajorKeyword.length > 0) {
-                query.startsWith("name", that.Major.searchMajorKeyword);
+                query.startsWith("name", that.Major.searchMajorKeyword);//TODO 换成正则表达式
             }
             query.skip(that.Major.majors.length);
             query.limit(10);
@@ -31,6 +36,7 @@ APP.service('InfoService$', function ($rootScope) {
                     that.Major.hasMoreFlag = false;
                 }
             }).always(function () {
+                that.Major.isLoading = false;
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
@@ -61,7 +67,7 @@ APP.service('InfoService$', function ($rootScope) {
                 query.near("location", avosGeo);
             }
             if (that.School.searchSchoolKeyword.length > 0) {
-                query.startsWith("name", that.School.searchSchoolKeyword);
+                query.startsWith("name", that.School.searchSchoolKeyword);//TODO 换成正则表达式
             }
             query.skip(that.School.schools.length);
             query.limit(10);

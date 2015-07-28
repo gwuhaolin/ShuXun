@@ -1,8 +1,14 @@
 /**
  * Created by wuhaolin on 7/27/15.
  */
-APP.controller('bs_book_recommendCtrl', function ($scope, $injector) {
-    $injector.invoke(book_recommendCtrl, this, {$scope: $scope});
+"use strict";
 
-    this.setMajorFilterAndLoad();
+APP.controller('bs_book_recommendCtrl', function ($scope, $controller, $state, BootstrapModalView$) {
+    $controller('book_recommendCtrl', {$scope: $scope});
+    $scope._setMajorFilterAndLoad();
+    $scope.chooseMajor = function () {
+        BootstrapModalView$.openChooseMajorModalView($scope, function (major) {
+            $state.go('book_recommend', {major: major});
+        })
+    }
 });

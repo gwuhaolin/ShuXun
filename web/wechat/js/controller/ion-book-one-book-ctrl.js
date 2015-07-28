@@ -4,31 +4,10 @@
  */
 "use strict";
 
-APP.controller('ion_book_oneBook', function ($scope, $state, $stateParams, $ionicModal, DoubanBook$, WeChatJS$, InfoService$, UsedBook$, IonicModalView$, BusinessSite$, User$) {
-    $scope.User$ = User$;
-    //////////// 豆瓣图书信息 /////////
-    var isbn13 = $stateParams.isbn13;
-    $scope.book = null;
-    //目前是否正在加载数据
-    $scope.isLoading = true;
-    DoubanBook$.getBookByISBD(isbn13, function (json) {
-        if (json) {
-            json.image = json.image.replace('mpic', 'lpic');//大图显示
-            $scope.book = json;
-            isbn13 = json.isbn13;
-            $scope.isLoading = false;
-            $scope.$digest();
-            //加载电商联盟信息
-            BusinessSite$.getBusinessInfoByISBN(json.isbn13).done(function (infos) {
-                $scope.businessInfos = infos;
-                $scope.$digest();
-            });
-        } else {
-            alert('没有找到图书信息,再去搜搜看~');
-            $state.go('tab.book_searchList');
-        }
-    });
+APP.controller('ion_book_oneBook', function ($scope, $controller, $ionicModal, IonicModalView$, WeChatJS$) {
+    $controller('book_oneBook', {$scope: $scope});
 
+    $scope.WeChatJS$ = WeChatJS$;
     //显示作者介绍
     $scope.showAuthorIntro = function () {
         var title = $scope.book['author'].toString();
@@ -57,26 +36,9 @@ APP.controller('ion_book_oneBook', function ($scope, $state, $stateParams, $ioni
         IonicModalView$.alertTitleAndPreModalView(title, pre);
     };
 
-    //////////// 二手书信息 /////////
-    $scope.UsedBook$ = UsedBook$;
-    UsedBook$.ISBN_sell.getUsedBookNumberEqualISBN(isbn13).done(function (number) {
-        //对应的图书有多少本二手书
-        $scope.usedBookNumber = number;
-    });
-    UsedBook$.ISBN_sell.loadMoreUsedBookEqualISBN(isbn13);//先加载5个
-
-    //////////// 求书信息 /////////
-    UsedBook$.ISBN_need.getNeedBookNumberEqualISBN(isbn13).done(function (number) {
-        //对应的图书有多少本二手书
-        $scope.needBookNumber = number;
-    });
-    UsedBook$.ISBN_need.loadMoreNeedBookEqualISBN(isbn13);//先加载5个
-
-    $scope.WeChatJS$ = WeChatJS$;
-
     //统计用户行为
     $scope.$on('$ionicView.afterEnter', function () {
-        var analyticsSugue = leanAnalytics.browseBookInfo(isbn13);
+        var analyticsSugue = leanAnalytics.browseBookInfo($scope.isbn13);
         $scope.$on('$ionicView.afterLeave', function () {
             analyticsSugue.send();
         });

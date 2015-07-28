@@ -1,0 +1,45 @@
+<div class="row" ng-controller="bs_book_usedBookList">
+
+    <div class="row">
+        <div class=col-md-6>
+            <ol class="breadcrumb">
+                <li><a ui-sref="book_recommend()">图书主页</a></li>
+                <li class="active" ng-bind="getMajorFilter() ? getMajorFilter() : title"></li>
+            </ol>
+        </div>
+        <div class="col-md-6">
+            <div class="btn-toolbar pull-right">
+                <div class="btn-group">
+                    <label class="btn btn-default" ng-model="sortWay" btn-radio="'attributes.price'">图书价格</label>
+                    <label class="btn btn-default" ng-model="sortWay" btn-radio="'attributes.location'">离你距离</label>
+                </div>
+                <div class="btn-group">
+                    <label class="btn btn-default"
+                           ng-if="setMajorFilter"
+                           ng-class="{'btn-info':getMajorFilter()}"
+                           ng-click="chooseMajor()"
+                           ng-bind="getMajorFilter() ? getMajorFilter() : '主人专业筛选'">
+                    </label>
+                    <label class="btn btn-warning" ng-click="setMajorFilter(null)"
+                           ng-if="getMajorFilter()">取消专业限制</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 ng-bind="getMajorFilter() ? getMajorFilter() : title"></h4>
+            <hr>
+        </div>
+        <div class="col-md-3" ng-if="cmd=='nearUsed' || cmd =='isbnUsed'"
+             ng-repeat="usedBook in usedBooks | orderBy:sortWay">
+            <bs-one-used-book used-book="usedBook"></bs-one-used-book>
+        </div>
+        <div class="col-md-3" ng-if="cmd=='nearNeed' || cmd == 'isbnNeed'"
+             ng-repeat="needBook in usedBooks | orderBy:sortWay">
+            <bs-one-need-book need-book="needBook"></bs-one-need-book>
+        </div>
+        <bs-infinite-scroll ng-if="hasMore()" on-infinite="loadMore()"></bs-infinite-scroll>
+    </div>
+</div>

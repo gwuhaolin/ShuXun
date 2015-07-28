@@ -2,6 +2,8 @@
  * Created by wuhaolin on 5/31/15.
  * 一个用户的信息
  */
+"use strict";
+
 APP.directive('ionUserInfo', function (WeChatJS$, User$) {
     function link($scope) {
         $scope.AV = AV;

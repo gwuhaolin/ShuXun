@@ -5,7 +5,7 @@
 "use strict";
 
 //二手书列表
-APP.controller('ion_book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$, IonicModalView$) {
+APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
     $scope.cmd = $stateParams['cmd'];
     $scope.sortWay = '';
     if ($scope.cmd == 'nearUsed') {
@@ -36,14 +36,8 @@ APP.controller('ion_book_usedBookList', function ($scope, $stateParams, UsedBook
         $scope.hasMore = UsedBook$.ISBN_need.hasMore;
     }
 
-    //按照专业筛选
-    IonicModalView$.registerChooseMajorModalView($scope, function (major) {
-        $scope.setMajorFilter && $scope.setMajorFilter(major);
-        $scope.title += '-' + major;
-    });
     var majorFilter = $stateParams['majorFilter'];
     if (majorFilter && $scope.setMajorFilter) {
         $scope.setMajorFilter(majorFilter);
-        $scope.title += '-' + $scope.getMajorFilter();
     }
 });

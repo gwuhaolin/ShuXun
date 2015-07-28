@@ -1,8 +1,11 @@
 /**
  * Created by wuhaolin on 7/26/15.
  */
-APP.controller('bs_navBarCtrl', function ($scope,  Status$) {
-    $scope.Status$= Status$;
+"use strict";
+
+APP.controller('bs_navBarCtrl', function ($scope, Status$, SearchBook$) {
+    $scope.Status$ = Status$;
+    $scope.SearchBook$ = SearchBook$;
 
     $scope.bookSearchResultMenuIsOpen = false;
 
@@ -15,5 +18,13 @@ APP.controller('bs_navBarCtrl', function ($scope,  Status$) {
         AV.User.logOut();
         eraseCookie('unionId');
         window.location.reload();
-    }
+    };
+
+    /**
+     * 结束搜索，清空搜索浏览
+     */
+    $scope.endSearch = function () {
+        SearchBook$.books.length = 0;
+        SearchBook$.keyword = '';
+    };
 });

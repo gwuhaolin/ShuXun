@@ -56,7 +56,7 @@ gulp.task('wechat_js', function () {
                 module: 'APP'
             })),
         //合并app js
-        gulp.src(['web/js/*.js', 'web/wechat/js/*.js', 'web/js/service/*.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive/*js']))
+        gulp.src(['web/js/*.js', 'web/wechat/js/*.js', 'web/js/service/*.js', 'web/js/controller/*.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive/*js']))
         //angular依赖
         .pipe(ngAnnotate())
         .pipe(concat('main.js'))//合并

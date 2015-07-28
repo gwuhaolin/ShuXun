@@ -1,7 +1,23 @@
 <div class="row" ng-controller="bs_book_bookList">
-    <h4 ng-bind="title"></h4>
-    <hr>
-    <div class="col-md-3" ng-repeat="bookInfo in books">
-        <bs-one-book-info book-info="bookInfo" should-show-used-books-count="true"></bs-one-book-info>
+
+    <div class="row">
+        <div class=col-md-6>
+            <ol class="breadcrumb">
+                <li><a ui-sref="book_recommend()">图书主页</a></li>
+                <li class="active" ng-bind="title"></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 ng-bind="title"></h4>
+            <hr>
+        </div>
+        <div class="col-md-3" ng-repeat="bookInfo in books">
+            <bs-one-book-info book-info="bookInfo"
+                              should-show-used-books-count="true"></bs-one-book-info>
+        </div>
+        <bs-infinite-scroll class="col-xs-12" ng-if="hasMore()" on-infinite="loadMore()"></bs-infinite-scroll>
     </div>
 </div>

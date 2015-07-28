@@ -2,6 +2,8 @@
  * Created by wuhaolin on 5/31/15.
  * 星星评分
  */
+"use strict";
+
 APP.directive('ion-reviewStar', function () {
     function link($scope, $element) {
         var numStars = $scope.numStars, score = $scope.score, numRaters = $scope.numRaters;

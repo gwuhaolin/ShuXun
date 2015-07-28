@@ -1,14 +1,19 @@
 /**
  * Created by wuhaolin on 7/27/15.
  */
+"use strict";
+
 APP.directive('bsOneNeedBook', function (UsedBook$) {
 
     function link($scope) {
+        if (!$scope.popoverPlacement) {
+            $scope.popoverPlacement = 'right';
+        }
         $scope.UsedBook$ = UsedBook$;
 
         //获得旧书的图书信息
         var bookInfo = $scope.needBook.get('info');
-        if (!bookInfo.has('isbn13')) {
+        if (bookInfo && !bookInfo.has('isbn13')) {
             bookInfo.fetch().always(function () {
                 $scope.$digest();
             });
@@ -25,7 +30,8 @@ APP.directive('bsOneNeedBook', function (UsedBook$) {
             //三本图书的信息
             needBook: '=',
             //是否显示删除，修改按钮
-            shouldShowManageBtn: '='
+            shouldShowManageBtn: '=',
+            popoverPlacement: '@?'//default=right
         },
         templateUrl: 'html/directive/one-need-book.html',
         link: link

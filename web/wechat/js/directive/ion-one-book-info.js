@@ -1,6 +1,8 @@
 /**
  * Created by wuhaolin on 7/20/15.
  */
+"use strict";
+
 APP.directive('ionOneBookInfo', function (UsedBook$) {
     function link($scope) {
         if ($scope.shouldShowUsedBooksCount && $scope.bookInfo) {

@@ -4,8 +4,8 @@
  */
 "use strict";
 
-APP.controller('ion_book_bookList', function ($scope, $injector, $stateParams, BookRecommend$) {
-    $injector.invoke(book_bookList, this, {$scope: $scope});
+APP.controller('ion_book_bookList', function ($scope, $controller, $stateParams, BookRecommend$) {
+    $controller('book_bookList', {$scope: $scope});
 
     var cmd = $stateParams['cmd'];
     if (cmd == 'tag') {

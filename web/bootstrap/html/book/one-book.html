@@ -1,0 +1,126 @@
+<div class="row" ng-controller="bs_book_oneBook">
+
+    <div class="col-md-9">
+
+        <div class="row">
+            <div class=col-md-6>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="book_recommend()">图书主页</a></li>
+                    <li class="active" ng-bind="book.title"></li>
+                </ol>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default btn-info">上传旧书</button>
+                    <button type="button" class="btn btn-default btn-primary">发布求书</button>
+                </div>
+            </div>
+        </div>
+
+        <bs-one-book-info-detail class="row" book-json="book"></bs-one-book-info-detail>
+
+        <div class="row" ng-if="book.rating">
+            <div class="col-md-12">
+                <h4>书评</h4>
+                <hr>
+            </div>
+            <div class="col-md-12">
+                <ul class="media-list">
+                    <li class="media" ng-repeat="review in BookReview.reviewList">
+                        <div class="media-left">
+                            <img style="width: 40px;height: 40px;" class="img-circle" ng-src="{{review.avatarUrl}}">
+                        </div>
+
+                        <div class="media-body">
+                            <h5 ng-bind="review.title"></h5>
+
+                            <p ng-bind="review.context"></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <bs-infinite-scroll ng-if="BookReview.hasMore()" on-infinite="BookReview.loadMore()"></bs-infinite-scroll>
+        </div>
+    </div>
+
+    <aside class="col-md-3">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>网购新书比价</h4>
+                <hr>
+            </div>
+            <div class="col-md-12">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="info in businessInfos | orderBy:'price'">
+                        <img style="width: 32px;height: 32px" class="img-circle" ng-src="../{{info.logoUrl}}">
+                        <a target="_blank" ng-href="{{info.url}}">
+                            <strong>{{info.price}}元</strong>
+                            <em ng-bind="info.name"></em>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4 ng-if="usedBookNumber>0"><strong ng-bind="usedBookNumber"></strong> 位同学卖对应旧书</h4>
+                <h4 class="text-warning" ng-if="usedBookNumber==0">还没有对应的二手书</h4>
+                <hr>
+            </div>
+            <div class="col-md-12" ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0">
+                <ul class="list-group">
+                    <li class="list-group-item"
+                        popover-popup-delay="800"
+                        popover-trigger="mouseenter"
+                        popover-placement="left"
+                        popover-append-to-body="true"
+                        ng-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
+                        popover-title="{{usedBook.attributes.owner.attributes.nickName}}"
+                        popover="{{usedBook.attributes.owner.attributes.major}} \ {{usedBook.attributes.owner.attributes.school}}">
+                        <img class="img-circle"
+                             style="width: 32px;height:32px;"
+                             ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
+                             ui-sref="userHome({ownerId:usedBook.attributes.owner.id})">
+                        <a ui-sref="book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+                            <strong>{{usedBook.attributes.price}} 元</strong>
+                            <em ng-bind="usedBook.attributes.des"></em>
+                            <small>{{usedBook.updatedAt | date:'mediumDate'}}</small>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4 ng-if="needBookNumber>0"><strong ng-bind="needBookNumber"></strong> 位同学正需要它</h4>
+                <h4 class="text-warning" ng-if="needBookNumber==0">还没有同学正需要它</h4>
+                <hr>
+            </div>
+            <div class="col-md-12" ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0">
+                <ul class="list-group">
+                    <li class="list-group-item"
+                        popover-popup-delay="800"
+                        popover-trigger="mouseenter"
+                        popover-placement="left"
+                        popover-append-to-body="true"
+                        ng-repeat="usedBook in UsedBook$.ISBN_need.nowEqualISBNNeedBooks"
+                        popover-title="{{usedBook.attributes.owner.attributes.nickName}}"
+                        popover="{{usedBook.attributes.owner.attributes.major}} \ {{usedBook.attributes.owner.attributes.school}}">
+                        <img class="img-circle"
+                             style="width: 32px;height:32px;"
+                             ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
+                             ui-sref="userHome({ownerId:usedBook.attributes.owner.id})">
+                        <a ui-sref="book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+                            <strong>最高承受 {{usedBook.attributes.price}} 元</strong>
+                            <em ng-bind="usedBook.attributes.des"></em>
+                            <small>{{usedBook.updatedAt | date:'mediumDate'}}</small>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+</div>

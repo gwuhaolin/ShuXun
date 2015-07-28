@@ -4,7 +4,7 @@
  */
 "use strict";
 
-function book_bookList($scope, $stateParams, BookRecommend$, BookInfo$) {
+APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, BookInfo$) {
     $scope.title = $stateParams['title'];
     var cmd = $stateParams['cmd'];
     if (cmd == 'tag') {
@@ -25,4 +25,4 @@ function book_bookList($scope, $stateParams, BookRecommend$, BookInfo$) {
         $scope.title = '新书速递';
         $scope.hasMore = BookInfo$.LatestBook.hasMore;
     }
-}
+});
