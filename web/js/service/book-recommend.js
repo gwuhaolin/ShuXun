@@ -52,18 +52,18 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         hasMoreFlag: true,
         loadMore: function () {
             //来自 豆瓣图书 里的tag相关的图书
-            DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, LoadCount, function (json) {
+            DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, LoadCount).done(function (json) {
                 var jsonBooks = json['books'];
                 if (jsonBooks.length > 0) {
                     for (var i = 0; i < jsonBooks.length; i++) {
-                        that.TagBook.books.push(Model.BookInfo.new(jsonBooks[i]));
+                        that.TagBook.books.push(Model.BookInfo.fromDouban(jsonBooks[i]));
                     }
                 } else {
                     that.TagBook.hasMoreTag = false;
                 }
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
-            })
+            });
         },
         hasMore: function () {
             return that.TagBook.hasMoreFlag;

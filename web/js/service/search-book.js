@@ -47,7 +47,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
                 if (that.totalNum > 0) {
                     var booksJSON = json['books'];
                     for (var i = 0; i < booksJSON.length; i++) {
-                        that.books.push(Model.BookInfo.new(booksJSON[i]));
+                        that.books.push(Model.BookInfo.fromDouban(booksJSON[i]));
                     }
                 } else {
                     alert('没有找到你想要的图书');

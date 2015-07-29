@@ -4,50 +4,20 @@
  */
 "use strict";
 
-APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
+APP.service('DoubanBook$', function ($rootScope) {
     var that = this;
     var baseUri = 'http://api.douban.com/v2/book';
 
     /**
      * 用书的ISBN号码获得书的信息
-     * @param bookISBN 书的ISBN号码
-     * @param fields 要返回的字段
-     * @param callback 如果找到了对应的书就返回JSON书信息,否则返回null
+     * @param isbn 书的ISBN号码
+     * @returns {AV.Promise} douban book json
      */
-    this.getBookByISBD = function (bookISBN, callback, fields) {
-        function buildUrl(isbn13) {
-            var url = baseUri + '/isbn/' + isbn13;
-            if (fields == null) {//默认是获取所有的字段
-                fields = 'id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
-            }
-            url += '?fields=' + fields;
-            return url;
-        }
+    this.getBookByISBN = function (isbn) {
+        var url = baseUri + '/isbn/' + isbn + '?fields=id,rating,author,pubdate,image,binding,translator,catalog,pages,publisher,isbn13,title,author_intro,summary,price';
+        return jsonp(url);
+    };
 
-        jsonp(buildUrl(bookISBN), function (json) {
-            callback(json);
-        }, function () {//没有找到对于的书的信息
-            if (bookISBN.length == 13) {//如果isbn编码是13位的就对其进行修正后再尝试一遍
-                jsonp(buildUrl(correctISBN13(bookISBN)), function (json) {
-                    callback(json);
-                }, function () {//去抓取信息
-                    BookInfo$.getJsonBookByISBN13(bookISBN).done(function (jsonBook) {
-                        callback(jsonBook);
-                    }).fail(function () {
-                        callback(null);
-                    });
-                });
-            }
-        });
-    };
-    /**
-     * 只要部分必要的字段
-     * @param bookISBN
-     * @param callback
-     */
-    this.getBookByISBD_simple = function (bookISBN, callback) {
-        that.getBookByISBD(bookISBN, callback, 'author,pubdate,image,publisher,title,price,isbn13');
-    };
     /**
      * 搜索图书
      * @param keyword 查询关键字 keyword和tag必传其一
@@ -69,9 +39,9 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
             url += '&count=' + count;
         }
         url += '&fields=isbn13,title,image,author,publisher,pubdate,price';
-        jsonp(url, function (json) {
+        jsonp(url).done(function (json) {
             rePromise.resolve(json);
-        }, function (err) {
+        }).fail(function (err) {
             rePromise.reject(err);
         });
         return rePromise;
@@ -82,13 +52,12 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
      * @param tag 一个类别图书
      * @param start 取结果的offset 默认为0
      * @param count 取结果的条数 默认为20，最大为100
-     * @param callback
-     * @returns [json]
+     * @returns {AV.Promise} [json]
      */
-    this.getBooksByTag = function (tag, start, count, callback) {
+    this.getBooksByTag = function (tag, start, count) {
         var url = baseUri + '/search';
         if (!tag || tag.length < 1) {
-            return [];
+            return AV.Promise.as([]);
         }
         url += '?tag=' + tag;
         if (start) {
@@ -98,9 +67,7 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
             url += '&count=' + count;
         }
         url += '&fields=isbn13,title,image,author,publisher,pubdate,price';
-        jsonp(url, function (json) {
-            callback(json);
-        });
+        return jsonp(url);
     };
 
     /**
@@ -139,26 +106,26 @@ APP.service('DoubanBook$', function ($rootScope, BookInfo$) {
         }
     };
 
-    /**
-     * 修正有问题的ISBN13错误的号码
-     * @param isbn13
-     * @return String 正确的10为的ISBN
-     */
-    function correctISBN13(isbn13) {
-        var isbn9 = isbn13.substring(3, 12);
-        var s = 0;
-        for (var i = 0; i < 9; i++) {
-            var num = parseInt(isbn9.charAt(i));
-            s += num * (10 - i);
-        }
-        var m = s % 11;
-        var n = 11 - m;
-        var check = String(n);
-        if (n == 10) {
-            check = 'X';
-        } else if (n == 11) {
-            check = '0';
-        }
-        return String(isbn9 + check);
-    }
+    ///**
+    // * 修正有问题的ISBN13错误的号码
+    // * @param isbn13
+    // * @return String 正确的10为的ISBN
+    // */
+    //function correctISBN13(isbn13) {
+    //    var isbn9 = isbn13.substring(3, 12);
+    //    var s = 0;
+    //    for (var i = 0; i < 9; i++) {
+    //        var num = parseInt(isbn9.charAt(i));
+    //        s += num * (10 - i);
+    //    }
+    //    var m = s % 11;
+    //    var n = 11 - m;
+    //    var check = String(n);
+    //    if (n == 10) {
+    //        check = 'X';
+    //    } else if (n == 11) {
+    //        check = '0';
+    //    }
+    //    return String(isbn9 + check);
+    //}
 });

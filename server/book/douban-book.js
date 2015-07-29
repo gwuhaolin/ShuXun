@@ -250,6 +250,7 @@ exports.spiderBusinessInfo = function (isbn13) {
      * 更具网购网站名称计算出该网站的logo的URL
      * @param name 网站的名称
      * @returns {string} logo的URL
+     * TODO 去掉/img/
      */
     function computeLogoUrlFromName(name) {
         var re = '/img/pathLogo.png';

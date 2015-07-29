@@ -1,4 +1,4 @@
-<ion-view ng-controller="ion_book_oneBook" view-title="{{book.title}}">
+<ion-view ng-controller="ion_book_oneBook" view-title="{{bookInfo.attributes.title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
     </ion-nav-buttons>
@@ -11,39 +11,39 @@
         <div class="list card">
             <!-- 封面-->
             <ion-item style="text-align: center">
-                <img ng-src="{{book.image}}" style="height: 180px" ng-click="WeChatJS$.previewOneImage(book.image)">
+                <img ng-src="{{bookInfo.attributes.bigImage}}" style="height: 180px" ng-click="WeChatJS$.previewOneImage(bookInfo.attributes.bigImage)">
             </ion-item>
             <!-- 简介-->
-            <ion-item ng-if="book.summary" class="item-button-right">
+            <ion-item ng-if="bookInfo.attributes.summary" class="item-button-right">
                 <h3>简介</h3>
 
-                <p style="white-space: pre-wrap">{{book.summary.substr(0,30)}}...</p>
+                <p style="white-space: pre-wrap">{{bookInfo.attributes.summary.substr(0,30)}}...</p>
                 <button class="button button-clear button-balanced"
                         ng-click="showSummary()">详情
                 </button>
             </ion-item>
             <!-- 作者-->
-            <ion-item ng-if="book.author.length>0" class="item-button-right">
-                {{book.author.toString()}} 著
-                <button class="button button-small button-clear button-balanced" ng-if="book.author_intro"
+            <ion-item ng-if="bookInfo.attributes.author.length>0" class="item-button-right">
+                {{bookInfo.attributes.author.toString()}} 著
+                <button class="button button-small button-clear button-balanced" ng-if="bookInfo.attributes.author_intro"
                         ng-click="showAuthorIntro()">作者简介
                 </button>
             </ion-item>
             <!-- 出版信息-->
             <ion-item class="item-button-right">
-                <i ng-if="book.price"><strong ng-bind="book.price"></strong></i>
+                <i ng-if="bookInfo.attributes.price"><strong ng-bind="bookInfo.attributes.price"></strong></i>
                 <i>&nbsp;</i>
-                <i ng-if="book.publisher"><em ng-bind="book.publisher"></em>/<em ng-bind="book.pubdate"></em></i>
+                <i ng-if="bookInfo.attributes.publisher"><em ng-bind="bookInfo.attributes.publisher"></em>/<em ng-bind="bookInfo.attributes.pubdate"></em></i>
                 <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版</button>
             </ion-item>
 
             <!-- 豆瓣书评-->
-            <ion-item class="item-button-right" ng-if="book.rating">
-                <ion-review-star num-stars="{{book.rating.average/2}}" score="{{book.rating.average}}"
-                                 num-raters="{{book.rating.numRaters}}"></ion-review-star>
+            <ion-item class="item-button-right" ng-if="bookInfo.attributes.rating">
+                <ion-review-star num-stars="{{bookInfo.attributes.rating.average/2}}" score="{{bookInfo.attributes.rating.average}}"
+                                 num-raters="{{bookInfo.attributes.rating.numRaters}}"></ion-review-star>
                 <i>&nbsp;</i>
                 <button class="button button-small button-clear button-balanced"
-                        ui-sref="tab.book_bookReview({doubanBookId:book.id,bookTitle:book.title})">书评
+                        ui-sref="tab.book_bookReview({doubanBookId:bookInfo.attributes.doubanId,bookTitle:bookInfo.attributes.title})">书评
                 </button>
             </ion-item>
         </div>
@@ -63,7 +63,7 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">要卖对应旧书的同学
                 <button class="button button-clear button-balanced"
-                        ui-sref="tab.person_uploadOneUsedBook({isbn13:book.isbn13})">上传旧书
+                        ui-sref="tab.person_uploadOneUsedBook({isbn13:bookInfo.attributes.isbn13})">上传旧书
                 </button>
             </ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
@@ -94,7 +94,7 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">正需要它的同学
                 <button class="button button-clear button-balanced"
-                        ui-sref="tab.person_uploadOneNeedBook({isbn13:book.isbn13})">发布求书
+                        ui-sref="tab.person_uploadOneNeedBook({isbn13:bookInfo.attributes.isbn13})">发布求书
                 </button>
             </ion-item>
             <ion-item ng-if="needBookNumber==0" style="text-align: center">还没有同学想要它</ion-item>

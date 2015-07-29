@@ -68,11 +68,10 @@ Array.prototype.unshiftUniqueArray = function (array) {
 /**
  * 自定义的jsonp调用
  * @param url 目标url
- * @param callback
- * @param onError 当发生错误时调用
- * callback返回json
+ * @returns {AV.Promise} json
  */
-function jsonp(url, callback, onError) {
+function jsonp(url) {
+    var rePromise = new AV.Promise();
     var script = document.createElement('script');
     script.type = "text/javascript";
     var random = Date.now() + String(Math.floor(Math.random() * 100));
@@ -81,14 +80,13 @@ function jsonp(url, callback, onError) {
         script.parentNode.removeChild(script);
     };
     script.onerror = function (error) {
-        if (onError) {
-            onError(error);
-        }
+        rePromise.reject(error);
     };
     window['CB' + random] = function (json) {
-        callback(json);
+        rePromise.resolve(json);
     };
     document.head.appendChild(script);
+    return rePromise;
 }
 
 function createCookie(name, value, days) {

@@ -6,7 +6,7 @@
             <div class=col-md-6>
                 <ol class="breadcrumb">
                     <li><a ui-sref="book_recommend()">图书主页</a></li>
-                    <li class="active" ng-bind="book.title"></li>
+                    <li class="active" ng-bind="bookInfo.attributes.title"></li>
                 </ol>
             </div>
             <div class="col-md-6">
@@ -18,9 +18,9 @@
             </div>
         </div>
 
-        <bs-one-book-info-detail class="row" book-json="book"></bs-one-book-info-detail>
+        <bs-one-book-info-detail class="row" book-info="bookInfo"></bs-one-book-info-detail>
 
-        <div class="row" id="书评" ng-if="book.rating">
+        <div class="row" id="书评" ng-if="bookInfo.attributes.rating">
             <div class="col-md-12">
                 <h4>书评</h4>
                 <hr>

@@ -10,29 +10,29 @@ APP.controller('ion_book_oneBook', function ($scope, $controller, $ionicModal, I
     $scope.WeChatJS$ = WeChatJS$;
     //显示作者介绍
     $scope.showAuthorIntro = function () {
-        var title = $scope.book['author'].toString();
-        var pre = $scope.book['author_intro'];
+        var title = $scope.bookInfo.attributes.author.toString();
+        var pre = $scope.bookInfo.attributes.author_intro;
         IonicModalView$.alertTitleAndPreModalView(title, pre);
     };
     //显示出版信息
     $scope.showPubInfo = function () {
         var title = '出版信息';
-        var b = $scope.book;
-        var pre = '作者:' + b['author'].toString() +
-            '\n出版社:' + b['publisher'] +
-            '\n出版年:' + b['pubdate'] +
-            '\n页数:' + b['pages'] +
-            '\n定价:' + b['price'] +
-            '\n装帧:' + b['binding'] +
-            '\nISBN:' + b['isbn13'] +
-            '\n目录:\n' + b['catalog'];
+        var bookJson = $scope.bookInfo.attributes;
+        var pre = '作者:' + bookJson.author.toString() +
+            '\n出版社:' + bookJson.publisher +
+            '\n出版年:' + bookJson.pubdate +
+            '\n页数:' + bookJson.pages +
+            '\n定价:' + bookJson.price +
+            '\n装帧:' + bookJson.binding +
+            '\nISBN:' + bookJson.isbn13 +
+            '\n目录:\n' + bookJson.catalog;
         IonicModalView$.alertTitleAndPreModalView(title, pre);
     };
 
     //显示图书简介
     $scope.showSummary = function () {
         var title = '图书简介';
-        var pre = $scope.book.summary;
+        var pre = $scope.bookInfo.attributes.summary;
         IonicModalView$.alertTitleAndPreModalView(title, pre);
     };
 

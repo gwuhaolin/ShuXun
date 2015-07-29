@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('ion_person_uploadOneUsedBook', function ($scope, $state, $stateParams, DoubanBook$, UsedBook$, InfoService$) {
+APP.controller('ion_person_uploadOneUsedBook', function ($scope, $state, $stateParams, BookInfo$, UsedBook$, InfoService$) {
     $scope.InfoService$ = InfoService$;
 
     $scope.isLoading = false;
@@ -21,17 +21,26 @@ APP.controller('ion_person_uploadOneUsedBook', function ($scope, $state, $stateP
     //用$scope.usedBookInfo.isbn13去豆瓣加载图书信息
     function loadDoubanBookInfo() {
         $scope.isLoading = true;
-        DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
-            if (json) {
-                $scope.isLoading = false;
-                json.image = json.image.replace('mpic', 'lpic');//大图显示
-                $scope.doubanBookInfo = json;
-                $scope.$digest();
-            } else {
-                alert('没有找到图书信息,再去搜搜看~');
-                $state.go('tab.book_searchList');
-            }
+        BookInfo$.getBookInfoByISBN($scope.usedBookInfo.isbn13).done(function (bookInfo) {
+            $scope.bookInfo = bookInfo;
+        }).fail(function () {
+            alert('没有找到图书信息,再去搜搜看~');
+            $state.go('tab.book_searchList');
+        }).always(function () {
+            $scope.isLoading = false;
+            $scope.$digest();
         });
+        //DoubanBook$.getBookByISBD_simple($scope.usedBookInfo.isbn13, function (json) {
+        //    if (json) {
+        //        $scope.isLoading = false;
+        //        json.image = json.image.replace('mpic', 'lpic');//大图显示
+        //        $scope.doubanBookInfo = json;
+        //        $scope.$digest();
+        //    } else {
+        //        alert('没有找到图书信息,再去搜搜看~');
+        //        $state.go('tab.book_searchList');
+        //    }
+        //});
     }
 
     /**

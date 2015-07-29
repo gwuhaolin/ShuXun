@@ -1,53 +1,53 @@
 <div class="row">
     <div class="col-md-12">
-        <h4 ng-bind="bookJson.title"></h4>
+        <h4 ng-bind="bookInfo.attributes.title"></h4>
         <hr>
     </div>
     <div class="col-md-3">
-        <img style="width: 100%" class="img-responsive img-rounded" ng-src="{{bookJson.image}}">
+        <img style="width: 100%" class="img-responsive img-rounded" ng-src="{{bookInfo.attributes.image}}">
     </div>
     <div class="col-md-9">
-        <dl class="dl-horizontal" ng-if="bookJson.author.length>0">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.author.length>0">
             <dt>作者</dt>
-            <dd ng-bind="bookJson.author.toString()"></dd>
+            <dd ng-bind="bookInfo.attributes.author.toString()"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.translator.length>0">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.translator.length>0">
             <dt>译者</dt>
-            <dd ng-bind="bookJson.translator.toString()"></dd>
+            <dd ng-bind="bookInfo.attributes.translator.toString()"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.publisher">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.publisher">
             <dt>出版社</dt>
-            <dd ng-bind="bookJson.publisher"></dd>
+            <dd ng-bind="bookInfo.attributes.publisher"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.pubdate">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.pubdate">
             <dt>出版时间</dt>
-            <dd ng-bind="bookJson.pubdate"></dd>
+            <dd ng-bind="bookInfo.attributes.pubdate"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.page">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.page">
             <dt>页数</dt>
-            <dd ng-bind="bookJson.page"></dd>
+            <dd ng-bind="bookInfo.attributes.page"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.price">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.price">
             <dt>定价</dt>
-            <dd ng-bind="bookJson.price"></dd>
+            <dd ng-bind="bookInfo.attributes.price"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.binding">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.binding">
             <dt>装帧</dt>
-            <dd ng-bind="bookJson.binding"></dd>
+            <dd ng-bind="bookInfo.attributes.binding"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.isbn13">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.isbn13">
             <dt>ISBN</dt>
-            <dd ng-bind="bookJson.isbn13"></dd>
+            <dd ng-bind="bookInfo.attributes.isbn13"></dd>
         </dl>
-        <dl class="dl-horizontal" ng-if="bookJson.rating">
+        <dl class="dl-horizontal" ng-if="bookInfo.attributes.rating">
             <dt>豆瓣书评</dt>
             <dd>
                 <strong>
-                    <em>{{bookJson.rating.average}}</em>分
-                    <em>{{bookJson.rating.numRaters}}</em>人参与
+                    <em>{{bookInfo.attributes.rating.average}}</em>分
+                    <em>{{bookInfo.attributes.rating.numRaters}}</em>人参与
                 </strong>
                 <rating class="text-warning"
-                        ng-model="bookJson.rating.average"
+                        ng-model="bookInfo.attributes.rating.average"
                         max="10"
                         state-on="'glyphicon glyphicon-star'"
                         state-off="'glyphicon glyphicon-star-empty'"></rating>
@@ -56,32 +56,32 @@
     </div>
 </div>
 
-<div class="row" ng-if="bookJson.summary">
+<div class="row" ng-if="bookInfo.attributes.summary">
     <div class="col-md-12">
         <hr>
         <h4>内容简介</h4>
     </div>
     <div class="col-md-12">
-        <p style="text-indent: 2em" ng-bind="bookJson.summary"></p>
+        <p style="text-indent: 2em" ng-bind="bookInfo.attributes.summary"></p>
     </div>
 </div>
 
-<div class="row" ng-if="bookJson.author_intro">
+<div class="row" ng-if="bookInfo.attributes.author_intro">
     <div class="col-md-12">
         <hr>
         <h4>作者简介</h4>
     </div>
     <div class="col-md-12">
-        <p style="text-indent: 2em" ng-bind="bookJson.author_intro"></p>
+        <p style="text-indent: 2em" ng-bind="bookInfo.attributes.author_intro"></p>
     </div>
 </div>
 
-<div class="row" ng-if="bookJson.catalog">
+<div class="row" ng-if="bookInfo.attributes.catalog">
     <div class="col-md-12">
         <hr>
         <h4>本书目录</h4>
     </div>
     <div class="col-md-12">
-        <pre ng-bind="bookJson.catalog"></pre>
+        <pre ng-bind="bookInfo.attributes.catalog"></pre>
     </div>
 </div>

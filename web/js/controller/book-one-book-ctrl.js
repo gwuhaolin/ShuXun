@@ -4,28 +4,27 @@
  */
 "use strict";
 
-APP.controller('book_oneBook', function ($scope, $state, $stateParams, DoubanBook$, UsedBook$, BusinessSite$, User$) {
+APP.controller('book_oneBook', function ($scope, $state, $stateParams, BookInfo$, UsedBook$, BusinessSite$, User$) {
     $scope.User$ = User$;
     //////////// 豆瓣图书信息 /////////
     $scope.isbn13 = $stateParams.isbn13;
     $scope.book = null;
     //目前是否正在加载数据
     $scope.isLoading = true;
-    DoubanBook$.getBookByISBD($scope.isbn13, function (json) {
-        if (json) {
-            json.image = json.image.replace('mpic', 'lpic');//大图显示
-            $scope.book = json;
-            $scope.isLoading = false;
-            $scope.$digest();
-            //加载电商联盟信息
-            BusinessSite$.getBusinessInfoByISBN(json.isbn13).done(function (infos) {
-                $scope.businessInfos = infos;
-                $scope.$digest();
-            });
-        } else {
-            alert('没有找到图书信息,再去搜搜看~');
-            $state.go('tab.book_searchList');
-        }
+    //加载图书信息
+    BookInfo$.getBookInfoByISBN($scope.isbn13).done(function (bookInfo) {
+        $scope.bookInfo = bookInfo;
+    }).fail(function () {
+        alert('没有找到图书信息,再去搜搜看~');
+        $state.go('tab.book_searchList');
+    }).always(function () {
+        $scope.isLoading = false;
+        $scope.$digest();
+    });
+    //加载电商联盟信息
+    BusinessSite$.getBusinessInfoByISBN($scope.isbn13).done(function (infos) {
+        $scope.businessInfos = infos;
+        $scope.$digest();
     });
 
     //////////// 二手书信息 /////////

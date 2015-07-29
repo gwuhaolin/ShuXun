@@ -8,7 +8,7 @@ APP.directive('bsOneBookInfoDetail', function () {
         restrict: 'E',
         scope: {
             //三本图书的信息,json格式
-            bookJson: '='
+            bookInfo: '='
         },
         templateUrl: 'html/directive/one-book-info-detail.html'
     }

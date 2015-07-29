@@ -9,7 +9,7 @@
             <ion-spinner icon="ripple" class="spinner-balanced"></ion-spinner>
         </div>
         <!-- 扫码-->
-        <div ng-if="!usedBookInfo.isbn13">
+        <div ng-if="!usedBookJson.isbn13">
             <h5>扫码书后面的条形码获得图书信息</h5>
             <button class="button button-outline button-balanced" ng-click="scanQRBtnOnClick()">扫条形码</button>
             <br>
@@ -17,39 +17,28 @@
             </button>
         </div>
         <!-- 图书基本信息-->
-        <div class="list card" ng-if="usedBookInfo.isbn13">
+        <div class="list card" ng-if="usedBookJson.isbn13">
             <!-- 封面-->
             <ion-item style="text-align: center">
-                <img ng-src="{{doubanBookInfo.image}}" style="height: 180px"
-                     ng-click="WeChatJS$.previewOneImage(doubanBookInfo.image)">
+                <img ng-src="{{bookInfo.attributes.bigImage}}" style="height: 180px"
+                     ng-click="WeChatJS$.previewOneImage(bookInfo.attributes.bigImage)">
             </ion-item>
-            <ion-item>
-                <p>
-                    <strong ng-bind="doubanBookInfo.title"></strong> <span ng-bind="doubanBookInfo.price"></span>
-                </p>
-                <!-- 作者-->
-                <p ng-if="doubanBookInfo['author'].length>0">
-                    <strong ng-bind="doubanBookInfo['author'].toString()"></strong> 著
-                </p>
-                <!-- 出版信息-->
-                <p ng-if="doubanBookInfo['publisher']">
-                    <em ng-bind="doubanBookInfo['publisher']"></em>
-                    <em ng-bind="doubanBookInfo['pubdate']"></em>
-                </p>
-            </ion-item>
+            <!-- 图书基本信息-->
+            <ion-one-book-info ng-if="bookInfo" book-info="bookInfo"
+                               should-show-used-books-count="true"></ion-one-book-info>
         </div>
         <hr style="margin: 10px">
         <!-- 填写价格和描述-->
         <div class="list list-inset">
             <label class="item item-input">
-                <input type="number" ng-model="usedBookInfo.price" placeholder="输入要价(数字,人民币元)">
+                <input type="number" ng-model="usedBookJson.price" placeholder="输入要价(数字,人民币元)">
             </label>
             <label class="item item-input">
-                <input type="text" ng-model="usedBookInfo.des" placeholder="对这本书你还有什么想说的吗?">
+                <input type="text" ng-model="usedBookJson.des" placeholder="对这本书你还有什么想说的吗?">
             </label>
         </div>
 
-        <button ng-disabled="!(!isLoading && usedBookInfo.isbn13 && usedBookInfo.price)"
+        <button ng-disabled="!(!isLoading && usedBookJson.isbn13 && usedBookJson.price)"
                 class="button button-block button-outline button-balanced" ng-click="submitOnClick('sell')">
             提交二手书
         </button>
@@ -61,7 +50,7 @@
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
                         ng-disabled="isLoading"
                         ng-repeat="word in InfoService$.commonUsedBookDesWords"
-                        ng-click="usedBookInfo.des=usedBookInfo.des+' '+word"
+                        ng-click="usedBookJson.des=usedBookJson.des+' '+word"
                         ng-bind="word">
                 </button>
             </ion-item>

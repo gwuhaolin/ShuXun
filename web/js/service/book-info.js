@@ -4,18 +4,30 @@
  */
 "use strict";
 
-APP.service('BookInfo$', function ($rootScope) {
+APP.service('BookInfo$', function ($rootScope, DoubanBook$) {
     var that = this;
 
     /**
+     * TODO 在获取图书信息前先验证isbn编码合法 以及纠错
      * 获得对应isbn图书的信息
-     * @param isbn13
-     * @returns {*|AV.Promise} 返回兼容豆瓣的json格式
+     * 先调用豆瓣book API，如果去豆瓣获取失败再要服务器的蜘蛛去抓取
+     * @param isbn 图书的isbn编码
+     * @returns {*|AV.Promise} 返回AV.BookInfo instance
      */
-    this.getJsonBookByISBN13 = function (isbn13) {
-        return AV.Cloud.run('getJsonBookByISBN13', {
-            isbn13: isbn13
+    this.getBookInfoByISBN = function (isbn) {
+        var rePromise = new AV.Promise();
+        DoubanBook$.getBookByISBN(isbn).done(function (doubanJson) {
+            rePromise.resolve(Model.BookInfo.fromDouban(doubanJson));
+        }).fail(function (doubanErr) {
+            AV.Cloud.run('getJsonBookByISBN13', {
+                isbn13: isbn
+            }).done(function (bookInfoJson) {
+                rePromise.resolve(Model.BookInfo.new(bookInfoJson));
+            }).fail(function (spiderErr) {
+                rePromise.reject(spiderErr ? spiderErr : doubanErr);
+            })
         });
+        return rePromise;
     };
 
     /**
