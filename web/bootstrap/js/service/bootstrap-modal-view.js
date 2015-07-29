@@ -3,7 +3,7 @@
  */
 "use strict";
 
-APP.service('BootstrapModalView$', function ($rootScope, $controller,$modal, InfoService$) {
+APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, InfoService$) {
 
     /**
      * 打开选择专业modal view
@@ -32,12 +32,5 @@ APP.service('BootstrapModalView$', function ($rootScope, $controller,$modal, Inf
         });
         modalInstance.result.then(schoolOnChooseCallback);
     };
-
-    this.openSendMsgToUserModalView = function () {
-        var modalInstance = $modal.open({
-            templateUrl: 'html/directive/choose-school-modal-view.html',
-            controller:$controller('bs_person_sendMsgToUser')
-        });
-    }
 
 });

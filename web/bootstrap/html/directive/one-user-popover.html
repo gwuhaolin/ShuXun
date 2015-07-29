@@ -6,4 +6,9 @@
     </small>
     <small ng-bind="user.attributes.major"></small>
     <small ng-bind="user.attributes.school"></small>
+    <small>{{user.attributes.startSchoolYear}}级</small>
+</p>
+<p ng-if="!hideUsedBook">
+    <strong ng-bind="user.userUsedBookNumber"></strong> 本旧书要卖,发布了
+    <strong ng-bind="user.userNeedBookNumber"></strong> 个求书
 </p>

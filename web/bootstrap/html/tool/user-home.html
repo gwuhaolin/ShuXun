@@ -9,17 +9,45 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row text-center">
+
         <div class="col-md-12">
-            <h4>主人信息</h4>
-            <hr>
-        </div>
-        <div class="col-md-12 text-center">
             <bs-one-user user="owner"
                          margin="5"
                          popover-placement="right"
                          avatar-size="80"
                          image-size="132"></bs-one-user>
+        </div>
+
+        <div class="col-md-12">
+            <h3 ng-bind="owner.attributes.nickName"></h3>
+            <h4>
+                <span>
+                    <span class="glyphicon glyphicon-user" style="color: #5eb1ed"
+                          ng-if="owner.attributes.sex==1"></span>
+                    <span class="glyphicon glyphicon-user" style="color: #ff6d9e"
+                          ng-if="owner.attributes.sex==2"></span>
+                </span>
+                <span ng-bind="owner.attributes.major"></span>
+                <span ng-bind="owner.attributes.school"></span>
+                <span>{{owner.attributes.startSchoolYear}}级</span>
+            </h4>
+        </div>
+
+        <div class="col-md-12" ng-if="AV.User.current() && !isMe()">
+            <a class="btn btn-info btn-sm"
+               ui-sref="person_sendMsgToUser({receiverObjectId:owner.id,role:'buy',inboxType:'private'})">发私信</a>
+            <a class="btn btn-default btn-sm"
+               target="_blank"
+               ng-if="owner.attributes.location"
+               ng-href="{{ownerMapUrl()}}">
+                主人位置
+            </a>
+            <button class="btn btn-primary btn-sm" ng-if="!isMyFollowee && !isMe()"
+                    ng-click="User$.followUser(owner.id)">关注Ta
+            </button>
+            <button class="btn btn-warning btn-sm" ng-if="isMyFollowee" ng-click="User$.unfollowUser(owner.id)">取消关注
+            </button>
         </div>
     </div>
 

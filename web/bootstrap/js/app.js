@@ -73,6 +73,19 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'html/book/one-need-book.html'
             }
         }
+    }).state('person_sendMsgToUser', {
+        /**
+         * @param:receiverObjectId 接受者的微信openID
+         * @param:usedBookObjectId 当前太难的二手书的AVOS ID
+         * @param:role 消息发送者扮演的身份是 buy | sell
+         * @param:inboxType 是否为发私信
+         */
+        url: '/person/sendMsgToUser?receiverObjectId&usedBookObjectId&role&inboxType',
+        views: {
+            'main': {
+                templateUrl: 'html/person/send-msg-to-user.html'
+            }
+        }
     }).state('userHome', {
         /**
          * @param:ownerId 主人的AVOS ID
@@ -86,6 +99,14 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
     });
     $urlRouterProvider.otherwise('/book/recommend');
 });
-APP.run(function (User$) {
+APP.run(function ($rootScope, $location, $anchorScroll, User$) {
     User$.loginWithUnionId(readCookie('unionId'));
+    /**
+     * 滚动到一个hash标签
+     * @param hashId
+     */
+    $rootScope.scrollToHash = function (hashId) {
+        $location.hash(hashId);
+        $anchorScroll();
+    };
 });

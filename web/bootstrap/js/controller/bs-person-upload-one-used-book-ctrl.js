@@ -4,29 +4,19 @@
  */
 "use strict";
 
-APP.controller('ion_person_uploadOneUsedBook', function ($scope, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, DoubanBook$, WeChatJS$, UsedBook$, InfoService$) {
-    $scope.WeChatJS$ = WeChatJS$;
+APP.controller('ion_person_uploadOneUsedBook', function ($scope, $state, $stateParams, DoubanBook$, UsedBook$, InfoService$) {
     $scope.InfoService$ = InfoService$;
 
     $scope.isLoading = false;
-    $scope.$on('$ionicView.afterEnter', function () {
-        $scope.usedBookInfo = {
-            isbn13: $stateParams.isbn13,
-            price: null,
-            des: '',
-            owner: AV.User.current()
-        };
-        $ionicScrollDelegate.scrollTop();
-        if ($scope.usedBookInfo.isbn13) {
-            loadDoubanBookInfo();
-        }
-    });
-
-    $ionicModal.fromTemplateUrl('template/helpModalView.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.noBarCodeModalView = modal;
-    });
+    $scope.usedBookInfo = {
+        isbn13: $stateParams.isbn13,
+        price: null,
+        des: '',
+        owner: AV.User.current()
+    };
+    if ($scope.usedBookInfo.isbn13) {
+        loadDoubanBookInfo();
+    }
 
     //用$scope.usedBookInfo.isbn13去豆瓣加载图书信息
     function loadDoubanBookInfo() {
@@ -44,13 +34,6 @@ APP.controller('ion_person_uploadOneUsedBook', function ($scope, $state, $stateP
         });
     }
 
-    $scope.scanQRBtnOnClick = function () {
-        WeChatJS$.scanQRCode(function (code) {
-            $scope.usedBookInfo.isbn13 = code;
-            loadDoubanBookInfo();
-        });
-    };
-
     /**
      * @param role 是要卖掉二手书(sell)还是发布需求(need)
      */
@@ -60,11 +43,10 @@ APP.controller('ion_person_uploadOneUsedBook', function ($scope, $state, $stateP
         var avosUsedBook = Model.UsedBook.new($scope.usedBookInfo);
         UsedBook$.saveUsedBook(avosUsedBook).done(function () {
             if (role == 'sell') {
-                $state.go('tab.person_usedBooksList');
+                $state.go('person_usedBooksList');
             } else if (role == 'need') {
-                $state.go('tab.person_needBooksList');
+                $state.go('person_needBooksList');
             }
-            $ionicHistory.clearHistory();
         }).fail(function (error) {
             alert(error.message);
         }).always(function () {

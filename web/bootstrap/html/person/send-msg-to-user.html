@@ -1,0 +1,92 @@
+<div class="row" ng-controller="bs_person_sendMsgToUser">
+
+    <div class="col-md-9">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="btn-group">
+                    <button class="btn btn-danger" ng-click="goBack()">退出聊天</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>
+                    回复-<span ng-bind="user.attributes.nickName"></span>
+                    -<span ng-if="nowModel()" ng-bind="nowModel()"></span>
+                </h4>
+                <hr>
+            </div>
+            <!-- 聊天记录-->
+            <div class="row">
+                <h3 class="col-md-12" ng-if="statusList.length>0" ng-repeat="status in statusList">
+                    <span class="label"
+                          ng-style="{float:status.attributes.source.id==user.id ? 'left':'right',backgroundColor:status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}"
+                          ng-bind="status.attributes.message">
+                    </span>
+                </h3>
+            </div>
+            <!-- 我的输入框-->
+            <form class="col-md-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="输入回复内容"
+                               ng-model="msg.sendMsg"
+                               popover-placement="bottom"
+                               popover-template="'common-replay-words-popover.html'">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary"
+                                    ng-disabled="!msg.sendMsg || isLoading"
+                                    ng-click="sendOnClick()">发送
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <script type="text/ng-template" id="common-replay-words-popover.html">
+                <h4>快速回复内容</h4>
+                <button style="margin: 5px"
+                        class="btn btn-default btn-sm"
+                        ng-disabled="isLoading"
+                        ng-repeat="word in commonReplayWords"
+                        ng-click="msg.sendMsg=word"
+                        ng-bind="word"></button>
+            </script>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <!-- 对方用户信息-->
+        <div class="row" ng-if="user">
+            <div class="col-md-12">
+                <h4>对方信息</h4>
+                <hr>
+            </div>
+            <div class="col-md-12">
+                <bs-one-user user="user"
+                             popover-placement="left"
+                             image-size="132"
+                             avatar-size="80"
+                             margin="5"></bs-one-user>
+            </div>
+        </div>
+        <!-- 二手书信息-->
+        <div class="row" ng-if="usedBook">
+            <div class="col-md-12">
+                <h4>当前图书</h4>
+                <hr>
+            </div>
+            <div class="col-md-12">
+                <!-- 二手书信息-->
+                <bs-one-used-book ng-if="usedBook && usedBook.get('role')=='sell'" used-book="usedBook"
+                                  popover-placement="right"></bs-one-used-book>
+                <bs-one-need-book ng-if="usedBook && usedBook.get('role')=='need'" need-book="usedBook"
+                                  popover-placement="right"></bs-one-need-book>
+            </div>
+        </div>
+    </div>
+
+</div>

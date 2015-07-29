@@ -14,6 +14,13 @@
             </div>
             <div class="col-md-6">
                 <div class="btn-toolbar pull-right">
+                    <div class="btn-group" ng-if="!isMy()">
+                        <a class="btn btn-info"
+                           ui-sref="person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
+                            联系主人
+                        </a>
+                        <a class="btn btn-primary" ng-click="scrollToHash('comments')">查看评论</a>
+                    </div>
                     <div class="btn-group" ng-if="isMy()">
                         <button class="btn btn-danger" ng-click="UsedBook$.removeUsedBook(usedBook)"
                                 ui-sref="person_usedBooksList">已卖下架
@@ -59,7 +66,7 @@
 
         <bs-one-book-info-detail book-json="usedBook.attributes.info.attributes"></bs-one-book-info-detail>
 
-        <div class="row">
+        <div class="row" id="comments">
             <div class="col-md-12">
                 <h4>大家都说</h4>
                 <hr>

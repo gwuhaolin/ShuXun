@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('UsedBook$', function ($rootScope) {
+APP.service('UsedBook$', function ($rootScope, $state) {
     var that = this;
 
     /**
@@ -98,7 +98,8 @@ APP.service('UsedBook$', function ($rootScope) {
     };
 
     /**
-     * 删除一本没有卖出的二手书
+     * 删除一本没有卖出的二手书保存到数据库
+     * 会更新MyUsedBook.usedBooks ｜ MyNeedBook.needBooks
      * @param avosUsedBook
      */
     this.removeUsedBook = function (avosUsedBook) {
@@ -107,13 +108,46 @@ APP.service('UsedBook$', function ($rootScope) {
             avosUsedBook.destroy().done(function () {
                 if (role == 'sell') {
                     that.MyUsedBook.usedBooks.length = 0;
+                    that.MyUsedBook.loadMore();
                 } else if (role == 'need') {
                     that.MyNeedBook.needBooks.length = 0;
+                    that.MyNeedBook.loadMore();
                 }
             }).fail(function (error) {
                 alert(error.message);
+            }).always(function () {
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                $rootScope.$digest();
             })
         }
+    };
+
+    /**
+     * 上传一本书保存到数据库
+     * 会更新MyUsedBook.usedBooks ｜ MyNeedBook.needBooks
+     * @param avosUsedBook
+     * @returns {*|AV.Promise}
+     */
+    this.saveUsedBook = function (avosUsedBook) {
+        var rePromise = new AV.Promise();
+        avosUsedBook.save(null).done(function () {
+            var role = avosUsedBook.get('role');
+            if (role == 'sell') {
+                that.MyUsedBook.usedBooks.length = 0;
+                that.MyUsedBook.loadMore();
+            } else if (role == 'need') {
+                that.MyNeedBook.needBooks.length = 0;
+                that.MyNeedBook.loadMore();
+            }
+            rePromise.resolve(avosUsedBook);
+        }).fail(function (error) {
+            rePromise.reject(error);
+        }).always(function () {
+            $rootScope.isLoading = false;
+            $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            $rootScope.$digest();
+        });
+        return rePromise;
     };
 
     this.ISBN_sell = {
