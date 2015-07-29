@@ -18,13 +18,13 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
         $scope.$digest();
     });
 
+    $scope.me = AV.User.current();
     /**
      * 当前这本旧书是否是我的？
      * @returns {*|AV.Object|boolean}
      */
     $scope.isMy = function () {
-        var me = AV.User.current();
-        return $scope.usedBook && me && me.id == $scope.usedBook.attributes.owner.id;
+        return $scope.usedBook &&  $scope.me &&  $scope.me.id == $scope.usedBook.attributes.owner.id;
     };
 
     //加载评论数据

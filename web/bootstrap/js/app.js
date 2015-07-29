@@ -86,6 +86,26 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'html/person/send-msg-to-user.html'
             }
         }
+    }).state('person_uploadOneUsedBook', {
+        /**
+         * @param:isbn13 要上传的二手书的isbn13号码
+         */
+        url: '/person/uploadOneUsedBook/:isbn13',
+        views: {
+            'main': {
+                templateUrl: 'html/person/upload-one-used-book.html'
+            }
+        }
+    }).state('person_uploadOneNeedBook', {
+        /**
+         * @param:isbn13 要上传的二手书的isbn13号码
+         */
+        url: '/person/uploadOneNeedBook/:isbn13',
+        views: {
+            'main': {
+                templateUrl: 'html/person/upload-one-need-book.html'
+            }
+        }
     }).state('userHome', {
         /**
          * @param:ownerId 主人的AVOS ID
