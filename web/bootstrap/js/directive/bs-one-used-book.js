@@ -6,9 +6,6 @@
 APP.directive('bsOneUsedBook', function (UsedBook$) {
 
     function link($scope) {
-        if (!$scope.popoverPlacement) {
-            $scope.popoverPlacement = 'right';
-        }
         $scope.UsedBook$ = UsedBook$;
 
         //获得旧书的图书信息
@@ -31,7 +28,7 @@ APP.directive('bsOneUsedBook', function (UsedBook$) {
             usedBook: '=',
             //是否显示删除，修改按钮
             shouldShowManageBtn: '=',
-            popoverPlacement: '@?'//default=right
+            popoverPlacement: '@'
         },
         templateUrl: 'html/directive/one-used-book.html',
         link: link

@@ -24,7 +24,8 @@
             </div>
             <div class="col-md-3" ng-repeat="bookInfo in LatestBook.books.slice(0,8)">
                 <bs-one-book-info book-info="bookInfo"
-                                  should-show-used-books-count="true"></bs-one-book-info>
+                                  should-show-used-books-count="true"
+                                  popover-placement="right"></bs-one-book-info>
             </div>
         </div>
 
@@ -35,7 +36,7 @@
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="usedBook in BookRecommend$.NearUsedBook.usedBooks.slice(0,8)">
-                <bs-one-used-book used-book="usedBook"
+                <bs-one-used-book used-book="usedBook" popover-placement="right"
                         ></bs-one-used-book>
             </div>
         </div>
@@ -50,6 +51,7 @@
                 <bs-one-user user="user"
                              image-size="132"
                              margin="20"
+                             popover-placement="right"
                              avatar-size="66"></bs-one-user>
             </div>
         </div>
@@ -62,6 +64,7 @@
             </div>
             <div class="col-md-3" ng-repeat="needBook in BookRecommend$.NearNeedBook.needBooks.slice(0,8)">
                 <bs-one-need-book need-book="needBook"
+                                  popover-placement="right"
                         ></bs-one-need-book>
             </div>
         </div>
@@ -75,6 +78,7 @@
             <div class="col-md-3" ng-repeat="bookInfo in BookRecommend$.TagBook.books.slice(0,8)">
                 <bs-one-book-info book-info="bookInfo"
                                   should-show-used-books-count="true"
+                                  popover-placement="right"
                         ></bs-one-book-info>
             </div>
         </div>

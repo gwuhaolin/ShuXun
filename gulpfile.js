@@ -81,6 +81,48 @@ gulp.task('wechat', function () {
     gulp.start('wechat_js', 'wechat_index');
 });
 
+/////////////////////////////////////// bootstrap ////////////////////////////////////////
+gulp.task('bootstrap_js', function () {
+    return es.concat(
+        gulp.src(
+            //把模板变成js
+            ['web/bootstrap/html/**/*.html', 'web/bootstrap/html/*.html'])
+            .pipe(htmlmin({
+                collapseWhitespace: true,
+                removeComments: true,
+                removeCommentsFromCDATA: true
+            }))
+            .pipe(templateCache({
+                root: 'html/',
+                module: 'APP'
+            })),
+        //合并app js
+        gulp.src(['web/js/*.js', 'web/bootstrap/js/*.js', 'web/js/service/*.js', 'web/js/controller/*.js', 'web/bootstrap/js/service/*.js', 'web/bootstrap/js/controller/*.js', 'web/bootstrap/js/directive/*js']))
+        //angular依赖
+        .pipe(ngAnnotate())
+        .pipe(concat('main.js'))//合并
+        .pipe(uglify({outSourceMap: false}))//压缩
+        .pipe(gulp.dest('public/bootstrap'));
+});
+
+gulp.task('bootstrap_index', function () {
+    return gulp.src('web/bootstrap/index.html')
+        .pipe(htmlreplace(CDN({
+            'Main-js': 'main.js'
+        })))
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            removeCommentsFromCDATA: true
+        }))
+        .pipe(gulp.dest('public/bootstrap'));
+});
+
+gulp.task('bootstrap', function () {
+    gulp.start('bootstrap_js', 'bootstrap_index');
+});
+
+
 /////////////////////////////////////// homepage ////////////////////////////////////////
 gulp.task('home', function () {
     return gulp.src('web/index.html')
@@ -143,5 +185,5 @@ gulp.task('clear', function () {
 });
 
 gulp.task('default', ['clear'], function () {
-    gulp.start('image', 'wechat', 'desktop', 'home');
+    gulp.start('image', 'wechat', 'bootstrap', 'desktop', 'home');
 });

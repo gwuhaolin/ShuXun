@@ -33,8 +33,11 @@
             </div>
             <div class="col-md-12">
                 <div class="col-md-3">
-                    <bs-one-user class="center-block" user="usedBook.attributes.owner"
+                    <bs-one-user class="center-block"
+                                 user="usedBook.attributes.owner"
                                  avatar-size="80"
+                                 popover-placement="right"
+                                 margin="5"
                                  image-size="132"></bs-one-user>
                 </div>
                 <div class="col-md-9">
@@ -65,7 +68,10 @@
             <div class="col-md-12">
                 <ul class="media-list">
                     <li class="media" ng-repeat="status in statusList">
-                        <bs-one-user class="media-left" user="status.attributes.source"
+                        <bs-one-user class="media-left"
+                                     user="status.attributes.source"
+                                     popover-placement="right"
+                                     margin="5"
                                      avatar-size="32"></bs-one-user>
                         <div class="media-body">
                             <em ng-bind="status.attributes.message"></em>

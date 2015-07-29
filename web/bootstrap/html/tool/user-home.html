@@ -16,6 +16,8 @@
         </div>
         <div class="col-md-12 text-center">
             <bs-one-user user="owner"
+                         margin="5"
+                         popover-placement="right"
                          avatar-size="80"
                          image-size="132"></bs-one-user>
         </div>
@@ -29,7 +31,7 @@
         </div>
 
         <div class="col-md-3" ng-repeat="usedBook in usedBooks">
-            <bs-one-used-book used-book="usedBook"></bs-one-used-book>
+            <bs-one-used-book used-book="usedBook" popover-placement="right"></bs-one-used-book>
         </div>
     </div>
 
@@ -41,7 +43,7 @@
         </div>
 
         <div class="col-md-3" ng-repeat="needBook in needBooks">
-            <bs-one-need-book need-book="needBook"></bs-one-need-book>
+            <bs-one-need-book need-book="needBook" popover-placement="right"></bs-one-need-book>
         </div>
     </div>
 

@@ -4,16 +4,12 @@
 "use strict";
 
 APP.directive('bsOneBookInfoDetail', function () {
-    function link($scope) {
-    }
-
     return {
         restrict: 'E',
         scope: {
             //三本图书的信息,json格式
             bookJson: '='
         },
-        templateUrl: 'html/directive/one-book-info-detail.html',
-        link: link
+        templateUrl: 'html/directive/one-book-info-detail.html'
     }
 });

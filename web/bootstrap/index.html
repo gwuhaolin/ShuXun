@@ -102,6 +102,7 @@
         <div class="col-sm-1 col-md-3" ng-repeat="bookInfo in SearchBook$.books">
             <bs-one-book-info book-info="bookInfo"
                               should-show-used-books-count="true"
+                              popover-placement="right"
                               ng-click="endSearch()"></bs-one-book-info>
         </div>
         <div class="col-xs-12 text-center">
