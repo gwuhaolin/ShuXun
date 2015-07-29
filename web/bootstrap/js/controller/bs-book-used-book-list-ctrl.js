@@ -10,7 +10,7 @@ APP.controller('bs_book_usedBookList', function ($scope, $controller, BootstrapM
 
     //按照专业筛选
     $scope.chooseMajor = function () {
-        BootstrapModalView$.openChooseMajorModalView($scope, function (major) {
+        BootstrapModalView$.openChooseMajorModalView(function (major) {
             $scope.setMajorFilter && $scope.setMajorFilter(major);
         });
     };

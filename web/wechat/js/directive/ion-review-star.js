@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.directive('ion-reviewStar', function () {
+APP.directive('ionReviewStar', function () {
     function link($scope, $element) {
         var numStars = $scope.numStars, score = $scope.score, numRaters = $scope.numRaters;
         var colorStarHtmlTemp = '<i class="icon ion-ios-star energized"></i>',

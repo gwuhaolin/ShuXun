@@ -1,16 +1,5 @@
 <!--个人主页-->
 <ion-view ng-controller="ion_person_sendMsgToUser" view-title="回复{{user.attributes.nickName}}">
-    <style>
-        .message {
-            display: block;
-            clear: both;
-            border-radius: 10px;
-            padding: 5px;
-            margin: 5px;
-            max-width: 80%;
-            white-space: normal;
-        }
-    </style>
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
     </ion-nav-buttons>
@@ -18,13 +7,14 @@
         <!-- 对方用户信息-->
         <ion-user-info ng-if="user" user="user"></ion-user-info>
         <!-- 二手书信息-->
-        <ion-one-used-book ng-if="usedBook" used-book="usedBook"></ion-one-used-book>
+        <ion-one-used-book ng-if="usedBook && usedBook.get('role')=='sell'" used-book="usedBook"></ion-one-used-book>
+        <ion-one-need-book ng-if="usedBook && usedBook.get('role')=='need'" need-book="usedBook"></ion-one-need-book>
         <!-- 聊天记录-->
         <ion-item style="margin: 0;padding: 0;border-right: none;border-left: none">
             <ol ng-if="statusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
-                <li collection-repeat="status in statusList"
-                    class="message"
-                    ng-style="{float:status.attributes.source.id==user.id ? 'left':'right',backgroundColor:status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}"
+                <li ng-repeat="status in statusList"
+                    style="display: block;clear: both;border-radius: 10px;padding: 5px;margin: 5px;max-width: 80%;white-space: normal;"
+                    ng-style="{'float':status.attributes.source.id==user.id ? 'left':'right','background-color':status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}"
                     ng-bind="status.attributes.message">
                 </li>
             </ol>

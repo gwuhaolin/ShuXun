@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <div class="input-group">
+        <input type="search" class="form-control" placeholder="输入名称搜索"
+               ng-model="InfoService$.School.searchSchoolKeyword">
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search" ng-class="{spin:InfoService$.School.isLoading}"></span>
+        </span>
+    </div>
+</div>
+<div class="modal-body">
+    <a class="btn btn-default btn-sm" style="margin: 5px"
+       ng-repeat="school in InfoService$.School.schools"
+       ng-click="$close(school.attributes.name)"
+       ng-bind="school.attributes.name"></a>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="$dismiss()">取消</button>
+</div>

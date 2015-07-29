@@ -23,10 +23,4 @@ APP.controller('ion_book_searchList', function ($scope, $timeout, $state, $state
             }
         });
     };
-
-    $scope.$on('$ionicView.afterLeave', function () {
-        //清空列表提高性能 TODO 不会执行
-        SearchBook$.books.length = 0;
-        SearchBook$.keyword = '';
-    });
 });

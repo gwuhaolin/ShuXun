@@ -15,7 +15,7 @@ APP.service('InfoService$', function ($rootScope) {
         /**
          * 是否正在加载中
          */
-        isLoading:false,
+        isLoading: false,
         /**
          * 搜索专业时的关键字
          * @type {string}
@@ -25,7 +25,7 @@ APP.service('InfoService$', function ($rootScope) {
             that.Major.isLoading = true;
             var query = new AV.Query(Model.Major);
             if (that.Major.searchMajorKeyword.length > 0) {
-                query.startsWith("name", that.Major.searchMajorKeyword);//TODO 换成正则表达式
+                query.startsWith("name", that.Major.searchMajorKeyword);
             }
             query.skip(that.Major.majors.length);
             query.limit(10);
@@ -60,14 +60,24 @@ APP.service('InfoService$', function ($rootScope) {
          * @type {Array}
          */
         schools: [],
+        /**
+         * 是否正在加载中
+         */
+        isLoading: false,
+        /**
+         * 搜索学校时的关键字
+         * @type {string}
+         */
+        searchSchoolKeyword: '',
         loadMore: function () {
+            that.School.isLoading = true;
             var query = new AV.Query(Model.School);
             var avosGeo = AV.User.current() ? AV.User.current().get('location') : MyLocationByIP;
             if (avosGeo) {//如果有用户的地理位置就按照地理位置排序
                 query.near("location", avosGeo);
             }
             if (that.School.searchSchoolKeyword.length > 0) {
-                query.startsWith("name", that.School.searchSchoolKeyword);//TODO 换成正则表达式
+                query.startsWith("name", that.School.searchSchoolKeyword);
             }
             query.skip(that.School.schools.length);
             query.limit(10);
@@ -78,15 +88,11 @@ APP.service('InfoService$', function ($rootScope) {
                     that.School.hasMoreFlag = false;
                 }
             }).always(function () {
+                that.School.isLoading = false;
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
-        /**
-         * 搜索学校时的关键字
-         * @type {string}
-         */
-        searchSchoolKeyword: '',
         hasMoreFlag: true,
         hasMore: function () {
             return that.School.hasMoreFlag;

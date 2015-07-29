@@ -36,10 +36,12 @@
                 <i ng-if="book.publisher"><em ng-bind="book.publisher"></em>/<em ng-bind="book.pubdate"></em></i>
                 <button class="button button-small button-clear button-balanced" ng-click="showPubInfo()">出版</button>
             </ion-item>
-            <!-- 豆瓣书评 TODO 显示有问题-->
+
+            <!-- 豆瓣书评-->
             <ion-item class="item-button-right" ng-if="book.rating">
                 <ion-review-star num-stars="{{book.rating.average/2}}" score="{{book.rating.average}}"
                                  num-raters="{{book.rating.numRaters}}"></ion-review-star>
+                <i>&nbsp;</i>
                 <button class="button button-small button-clear button-balanced"
                         ui-sref="tab.book_bookReview({doubanBookId:book.id,bookTitle:book.title})">书评
                 </button>

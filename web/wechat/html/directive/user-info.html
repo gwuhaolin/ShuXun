@@ -37,5 +37,5 @@
 <ion-item class="littleTailItem"
           ng-if="!hideUsedBook"
           ui-sref="tab.userHome({ownerId:user.id})">
-    本旧书要卖,发布了<strong ng-bind="user.userNeedBookNumber"></strong>个求书
+    <strong ng-bind="user.userUsedBookNumber"></strong>本旧书要卖,发布了<strong ng-bind="user.userNeedBookNumber"></strong>个求书
 </ion-item>
