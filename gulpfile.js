@@ -15,15 +15,12 @@ var htmlmin = require('gulp-htmlmin');
 var clean = require('gulp-clean');
 function CDN(cdn) {
     var CDNLib = {
-        'jQuery-js': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
         'Ionic-css': 'http://7xiv48.com1.z0.glb.clouddn.com/ionic/css/ionic.min.css',
         'Ionic-js': 'http://7xiv48.com1.z0.glb.clouddn.com/ionic/js/ionic.bundle.min.js',
         'Angular-js': '//cdn.bootcss.com/angular.js/1.4.1/angular.min.js',
         'AngularUIRouter-js': '//cdn.bootcss.com/angular-ui-router/0.2.15/angular-ui-router.min.js',
         'LeanAnalytics-js': 'http://7xiv48.com1.z0.glb.clouddn.com/AV.analytics.min.js',
         'Avos-js': 'https://cdn1.lncld.net/static/js/av-core-mini-0.5.5.js',
-        'Semantic-js': 'http://7xiv48.com1.z0.glb.clouddn.com/semantic/semantic.min.js',
-        'Semantic-css': 'http://7xiv48.com1.z0.glb.clouddn.com/semantic/semantic.min.css',
         'Bootstrap-css': '//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css',
         'UIBootstrap-js': '//cdn.bootcss.com/angular-ui-bootstrap/0.13.1/ui-bootstrap.min.js',
         'UIBootstrapTpls-js': '//cdn.bootcss.com/angular-ui-bootstrap/0.13.1/ui-bootstrap-tpls.min.js'
@@ -122,21 +119,6 @@ gulp.task('desktop', function () {
     gulp.start('desktop_js', 'desktop_index');
 });
 
-
-/////////////////////////////////////// homepage ////////////////////////////////////////
-gulp.task('home', function () {
-    return gulp.src('web/index.html')
-        .pipe(htmlreplace(CDN({
-            'Main-js': 'desktop/main.js'
-        })))
-        .pipe(htmlmin({
-            collapseWhitespace: true,
-            removeComments: true,
-            removeCommentsFromCDATA: true
-        }))
-        .pipe(gulp.dest('public'));
-});
-
 /////////////////////////////////////// default ////////////////////////////////////////
 gulp.task('clear', function () {
     return gulp.src(['public/*'], {read: false})
@@ -144,5 +126,5 @@ gulp.task('clear', function () {
 });
 
 gulp.task('default', ['clear'], function () {
-    gulp.start('image', 'wechat', 'desktop', 'home');
+    gulp.start('image', 'wechat', 'desktop');
 });
