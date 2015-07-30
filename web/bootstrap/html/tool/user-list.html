@@ -1,17 +1,17 @@
-<div class="row" ng-controller="bs_book_usedBookList">
+<div class="row" ng-controller="bs_userList">
 
     <div class="row">
         <div class=col-md-6>
             <ol class="breadcrumb">
                 <li><a ui-sref="book_recommend()">图书主页</a></li>
-                <li class="active" ng-bind="getMajorFilter() ? getMajorFilter() : title"></li>
+                <li class="active" ng-bind="title"></li>
             </ol>
         </div>
         <div class="col-md-6">
             <div class="btn-toolbar pull-right">
                 <div class="btn-group">
-                    <button class="btn btn-default" ng-model="sortWay" btn-radio="'attributes.price'">图书价格</button>
-                    <button class="btn btn-default" ng-model="sortWay" btn-radio="'attributes.location'">离你距离</button>
+                    <button class="btn btn-info" ng-model="sortWay" btn-radio="'userUsedBookNumber'">图书价格</button>
+                    <button class="btn btn-primary" ng-model="sortWay" btn-radio="'location'">离你距离</button>
                 </div>
                 <div class="btn-group">
                     <button class="btn btn-default"
@@ -30,16 +30,15 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h4 ng-bind="getMajorFilter() ? getMajorFilter() : title"></h4>
+            <h4 ng-bind="title"></h4>
             <hr>
         </div>
-        <div class="col-md-3" ng-if="cmd=='nearUsed' || cmd =='isbnUsed'"
-             ng-repeat="usedBook in usedBooks | orderBy:sortWay">
-            <bs-one-used-book used-book="usedBook" popover-placement="right"></bs-one-used-book>
-        </div>
-        <div class="col-md-3" ng-if="cmd=='nearNeed' || cmd == 'isbnNeed'"
-             ng-repeat="needBook in usedBooks | orderBy:sortWay">
-            <bs-one-need-book need-book="needBook" popover-placement="right"></bs-one-need-book>
+        <div class="col-md-3 text-center" ng-repeat="user in users | orderBy:sortWay:true">
+            <bs-one-user user="user"
+                         image-size="132"
+                         margin="20"
+                         popover-placement="right"
+                         avatar-size="66"></bs-one-user>
         </div>
         <bs-infinite-scroll ng-if="hasMore()" on-infinite="loadMore()"></bs-infinite-scroll>
     </div>

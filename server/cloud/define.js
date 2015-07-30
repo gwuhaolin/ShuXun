@@ -122,6 +122,7 @@ AV.Cloud.define('getWechatJsConfig', function (req, res) {
 /**
  * 微信获取用户信息 OAuth step 2
  * @param:code 微信获取信息的凭证
+ * @return: {{openId: *, username: =unionid, password: =unionid, nickName: *, sex: *, avatarUrl: *}}
  */
 AV.Cloud.define('getWechatOAuthUserInfo', function (req, res) {
     var code = req.params.code;
@@ -135,6 +136,7 @@ AV.Cloud.define('getWechatOAuthUserInfo', function (req, res) {
 /**
  * 网页版获取用户信息 OAuth step 2
  * @param:code 微信获取信息的凭证
+ * @return: {{openId: *, username: =unionid, password: =unionid, nickName: *, sex: *, avatarUrl: *}}
  */
 AV.Cloud.define('getDesktopOAuthUserInfo', function (req, res) {
     var code = req.params.code;

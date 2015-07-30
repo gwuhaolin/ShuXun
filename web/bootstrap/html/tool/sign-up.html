@@ -1,0 +1,59 @@
+<div class="row" ng-controller="bs_signUp">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4>需要验证你的身份</h4>
+            <hr>
+        </div>
+        <div class="col-md-12 text-center">
+            <tabset justified="true">
+                <tab heading="微信关注" active="step=='subscribe'" disable="step!='subscribe'">
+                    <br><h4>使用微信扫描二维码或加书循微信号<strong>ishuxun</strong></h4><br>
+                    <img class="img-responsive img-rounded center-block" ng-src="../img/QRCode.png">
+                    <a class="btn btn-info btn-lg" ui-sref="hello">关注好了</a>
+                </tab>
+                <tab heading="填写信息" active="step=='info'" disable="step!='info'">
+                    <br><h4>这些信息有助于你找到书</h4><br>
+
+                    <form class="col-md-offset-3 col-md-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input disabled type="text" class="form-control" placeholder="在读学校"
+                                       ng-value="userInfo.major">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" ng-click="chooseSchool()">选择学校</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input disabled type="text" class="form-control" placeholder="所学专业"
+                                       ng-value="userInfo.school">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" ng-click="chooseMajor()">选择专业</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" ng-model="userInfo.startSchoolYear" title="入学时间">
+                                <option ng-repeat="one in InfoService$.startSchoolYearOptions" value="{{one}}">
+                                    {{one}}
+                                </option>
+                            </select>
+                        </div>
+                        <button class="btn btn-info" ng-click="submitOnClick()">加入书循</button>
+                    </form>
+                </tab>
+                <tab heading="登入成功" active="step=='ok'" disable="step!='ok'">
+                    <br><h4>现在开始你的寻书之旅</h4><br>
+                    <a class="btn btn-info btn-lg" ui-sref="book_recommend({major:me.get('major')})">
+                        开始寻书
+                    </a>
+                    <a class="btn btn-primary btn-lg" ui-sref="userHome({ownerId:me.id})">
+                        个人主页
+                    </a>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,18 @@ APP.controller('bs_navBarCtrl', function ($scope, Status$, SearchBook$) {
     //监听着UserLoginSuccess事件，如果再其它地方用户登录成功了就广播该事件，然后header就会刷新
     $scope.$on('UserLoginSuccess', function () {
         $scope.me = AV.User.current();
+        //加载我关注的同学的数量
+        var query = AV.User.current().followeeQuery();
+        query.count().done(function (followeeNumber) {
+            $scope.followeeNumber = followeeNumber;
+            $scope.$digest();
+        });
+        //加载我的粉丝的数量
+        query = AV.User.current().followerQuery();
+        query.count().done(function (followerNumber) {
+            $scope.followerNumber = followerNumber;
+            $scope.$digest();
+        });
     });
 
     $scope.logOut = function () {

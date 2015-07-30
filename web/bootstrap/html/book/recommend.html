@@ -47,7 +47,7 @@
         <!-- 用户附近的用户-->
         <div id="附近同学" class="row" ng-if="BookRecommend$.NearUser.users.length>0">
             <div class="col-md-12">
-                <h4><a>附近同学</a></h4>
+                <h4><a ui-sref="userList({cmd:'near'})">附近同学</a></h4>
                 <hr>
             </div>
             <div class="col-xs-6 col-md-2" ng-repeat="user in BookRecommend$.NearUser.users.slice(0,24)">

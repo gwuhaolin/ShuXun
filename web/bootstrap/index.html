@@ -52,8 +52,8 @@
             </ul>
 
             <!-- 游客链接-->
-            <button class="btn btn-default navbar-btn" ng-if="!me">登入</button>
-            <button class="btn btn-default navbar-btn" ng-if="!me">加入</button>
+            <a ui-sref="hello" class="btn btn-info navbar-btn" ng-if="!me">登入</a>
+            <a ui-sref="hello" class="btn btn-primary navbar-btn" ng-if="!me">加入</a>
 
             <!-- 用户链接-->
             <ul class="nav navbar-nav navbar-right" ng-if="me">
@@ -89,8 +89,14 @@
                              ng-src="{{me.avatarUrlWithSize(64)}}">
                     </a>
                     <ul class="dropdown-menu">
+                        <li ng-if="followeeNumber>0">
+                            <a ui-sref="userList({cmd:'followee'})">关注<strong ng-bind="followeeNumber"></strong>位同学</a>
+                        </li>
+                        <li ng-if="followerNumber>0">
+                            <a ui-sref="userList({cmd:'follower'})">有<strong ng-bind="followerNumber"></strong>位粉丝</a>
+                        </li>
                         <li ng-click="logOut()">
-                            <a class="text-warning"><span class="glyphicon glyphicon-eject"></span> 退出</a>
+                            <a href="#">退出</a>
                         </li>
                     </ul>
                 </li>
@@ -159,6 +165,8 @@
 <!-- build:UIBootstrapTpls-js -->
 <script src="../../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <!-- endbuild -->
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+
 <!-- build:Main-js -->
 <script src="../js/util.js"></script>
 <script src="../js/model.js"></script>
@@ -205,6 +213,12 @@
 <script src="../js/controller/person-edit-one-used-book-ctrl.js"></script>
 <script src="js/controller/bs-person-edit-one-used-book.js"></script>
 
+<script src="../js/controller/user-list-ctrl.js"></script>
+<script src="js/controller/bs-user-list-ctrl.js"></script>
+
+<script src="js/controller/bs-hello-ctrl.js"></script>
+
+<script src="js/controller/bs-signup-ctrl.js"></script>
 <!--Directive-->
 <script src="js/directive/bs-infinite-scroll.js"></script>
 <script src="js/directive/bs-one-book-info.js"></script>

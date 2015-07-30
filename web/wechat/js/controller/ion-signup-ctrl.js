@@ -26,11 +26,11 @@ APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $
     });
 
     IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
-        $scope.userInfo['school'] = school;
+        $scope.userInfo.school = school;
     });
 
     IonicModalView$.registerChooseMajorModalView($scope, function (major) {
-        $scope.userInfo['major'] = major;
+        $scope.userInfo.major = major;
     });
 
     $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;

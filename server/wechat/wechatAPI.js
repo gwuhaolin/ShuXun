@@ -41,7 +41,7 @@ exports.getJsConfig = function (url) {
 /**
  * 把微信返回的json转换为兼容User表的json
  * @param userInfo 微信返回的json
- * @returns {{openId: *, username: *, password: *, nickName: *, sex: *, avatarUrl: *}}
+ * @returns {{openId: *, username: =unionid, password: =unionid, nickName: *, sex: *, avatarUrl: *}}
  * @private
  */
 function _tranWechatUserInfoToAVOS(userInfo) {
@@ -70,10 +70,32 @@ exports.getOAuthUserInfo_WeChat = function (code) {
         if (err) {
             rePromise.reject(err);
         } else {
+            //result like {
+            //    "access_token": "ACCESS_TOKEN",
+            //    "expires_in": 7200,
+            //    "refresh_token": "REFRESH_TOKEN",
+            //    "openid": "3d6be0a4035d839573b04816624a415e",
+            //    "scope": "SCOPE",
+            //    "unionid": "rf43g6g565hy5rsy6u2sgVt7hMZOPfL"
+            //}
             APIClient.getUser(result.data['openid'], function (err, userInfo) {
                 if (err) {
                     rePromise.reject(err);
                 } else {
+                    //userInfo like {
+                    //    "openid": "OPENID",
+                    //    "nickname": "NICKNAME",
+                    //    "sex": 1,
+                    //    "province": "PROVINCE",
+                    //    "city": "CITY",
+                    //    "country": "COUNTRY",
+                    //    "headimgurl": "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0",
+                    //    "privilege": [
+                    //        "PRIVILEGE1",
+                    //        "PRIVILEGE2"
+                    //    ],
+                    //    "unionid": " o6_bmasdasdsad6_2sgVt7hMZOPfL"
+                    //};
                     rePromise.resolve(_tranWechatUserInfoToAVOS(userInfo));
                 }
             })
