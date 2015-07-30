@@ -14,6 +14,6 @@ APP.controller('bs_hello', function ($scope, $state, $stateParams, User$) {
         id: 'WechatLoginQRCodeCon',
         appid: WECHAT.AppID_Desktop,
         scope: 'snsapi_login',
-        redirect_uri: encodeURI('http://www.ishuxun.cn/desktop/tool/signUp.html')
+        redirect_uri: encodeURI('http://www.ishuxun.cn/desktop/#/signUp')
     });
 });
