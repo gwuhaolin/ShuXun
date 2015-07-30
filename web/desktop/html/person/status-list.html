@@ -1,0 +1,63 @@
+<div class="row" ng-controller="bs_person_statusList">
+
+    <div class="row">
+        <div class=col-md-6>
+            <ol class="breadcrumb">
+                <li><a ui-sref="book_recommend()">图书主页</a></li>
+                <li class="active" ng-bind="title"></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 ng-bind="title"></h4>
+            <h4 class="text-warning" ng-if="statusList.length==0">没有未读消息</h4>
+            <hr>
+        </div>
+        <div class="col-md-3 text-center" ng-if="cmd=='newUsedBook'"
+             ng-repeat="status in statusList">
+            <bs-one-user user="status.attributes.source"></bs-one-user>
+            <bs-one-used-book used-book="status.attributes.usedBook"></bs-one-used-book>
+        </div>
+
+        <div class="col-md-3 text-center" ng-if="cmd=='newNeedBook'"
+             ng-repeat="status in statusList">
+            <bs-one-user user="status.attributes.source"></bs-one-user>
+            <bs-one-need-book need-book="status.attributes.usedBook"></bs-one-need-book>
+        </div>
+
+        <div class="col-md-3 text-center" ng-if="cmd=='private'"
+             ng-repeat="status in statusList">
+            <bs-one-user user="status.attributes.source"></bs-one-user>
+            <bs-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
+                              used-book="status.attributes.usedBook">
+            </bs-one-used-book>
+            <ion-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
+                               need-book="status.attributes.usedBook"></ion-one-need-book>
+            <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
+            <button style="float:right;"
+                    class="button button-clear button-balanced button-small"
+                    ui-sref="person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:status.attributes.usedBook.id})">
+                回复私信
+            </button>
+        </div>
+
+        <div class="col-md-3 text-center" ng-if="cmd=='reviewUsedBook'"
+             ng-repeat="status in statusList">
+            <bs-one-user user="status.attributes.source"></bs-one-user>
+            <bs-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
+                              used-book="status.attributes.usedBook">
+            </bs-one-used-book>
+            <bs-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
+                              need-book="status.attributes.usedBook"></bs-one-need-book>
+            <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
+            <button style="float:right;"
+                    class="button button-clear button-balanced button-small"
+                    ui-sref="person_sendMsgToUser({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:status.attributes.usedBook.id})">
+                回复评论
+            </button>
+        </div>
+
+    </div>
+</div>

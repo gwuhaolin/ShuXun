@@ -153,7 +153,11 @@ var APP = angular.module('APP', ['ionic'], null)
                 }
             }).state('tab.person_statusList', {
                 /**
-                 * @param:cmd 当前模式 =newUsedBook时显上传的二手书 =newNeedBook 显示发布的求书
+                 * @param:cmd 当前模式
+                 * =newUsedBook时显上传的二手书
+                 * =newNeedBook 显示发布的求书
+                 * =private 有同学给你发私信
+                 * =reviewUsedBook 有同学评价你的书
                  */
                 url: '/person/statusList?cmd',
                 views: {

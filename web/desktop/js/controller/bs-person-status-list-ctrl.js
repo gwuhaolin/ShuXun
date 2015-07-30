@@ -4,6 +4,6 @@
  */
 "use strict";
 
-APP.controller('ion_person_statusList', function ($scope, $controller) {
+APP.controller('bs_person_statusList', function ($scope, $controller) {
     $controller('person_statusList', {$scope: $scope});
 });
