@@ -47,7 +47,7 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
         /**
          * @param:isbn13 一本书的isbn13号码
          */
-        url: '/book/oneBook/:isbn13',
+        url: '/book/oneBook/?isbn13',
         views: {
             'main': {
                 templateUrl: 'html/book/one-book.html'
@@ -57,7 +57,7 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
         /**
          * @param:usedBookAvosObjectId 二手书的AVOS ID
          */
-        url: '/book/oneUsedBook/:usedBookAvosObjectId',
+        url: '/book/oneUsedBook/?usedBookAvosObjectId',
         views: {
             'main': {
                 templateUrl: 'html/book/one-used-book.html'
@@ -67,7 +67,7 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
         /**
          * @param:usedBookAvosObjectId 二手书的AVOS ID
          */
-        url: '/book/oneNeedBook/:usedBookAvosObjectId',
+        url: '/book/oneNeedBook/?usedBookAvosObjectId',
         views: {
             'main': {
                 templateUrl: 'html/book/one-need-book.html'
@@ -92,7 +92,7 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
             /**
              * @param:isbn13 要上传的二手书的isbn13号码
              */
-            url: '/person/uploadOneUsedBook/:isbn13',
+            url: '/person/uploadOneUsedBook/?isbn13',
             views: {
                 'main': {
                     templateUrl: 'html/person/upload-one-used-book.html'
@@ -102,7 +102,7 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
             /**
              * @param:isbn13 要上传的二手书的isbn13号码
              */
-            url: '/person/uploadOneNeedBook/:isbn13',
+            url: '/person/uploadOneNeedBook/?isbn13',
             views: {
                 'main': {
                     templateUrl: 'html/person/upload-one-need-book.html'
@@ -112,7 +112,7 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
             /**
              * @param:usedBookId 要编辑的二手书的AVOS usedBookId
              */
-            url: '/person/editOneUsedBook/:usedBookId',
+            url: '/person/editOneUsedBook/?usedBookId',
             views: {
                 'main': {
                     templateUrl: 'html/person/edit-one-used-book.html'
@@ -145,7 +145,7 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
             /**
              * @param:ownerId 主人的AVOS ID
              */
-            url: '/userHome/:ownerId',
+            url: '/userHome/?ownerId',
             views: {
                 'main': {
                     templateUrl: 'html/tool/user-home.html'
@@ -166,9 +166,8 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
         }).state('signUp', {
             /**
              * @param:code 用于去微信获取用户消息的凭证
-             * @param:state 验证完身份后要去的状态
              */
-            url: '/signUp?code&state',
+            url: '/signUp?code',
             views: {
                 'main': {
                     templateUrl: 'html/tool/sign-up.html'

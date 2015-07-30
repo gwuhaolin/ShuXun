@@ -21,7 +21,7 @@ APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $
             User$.updateMyInfoWithJson(userInfo);//更新微信信息
         });
     }).fail(function () {//用户还没有关注
-        alert('要先关注书循微信号哦');
+        alert('要先关注书循微信号后在微信里才能使用这些功能哦(加微信号 ishuxun 或 书循)');
         window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzAwMDQwMjMxNg==&mid=205566574&idx=1&sn=5784b3b5f4d870ca4715c2dd56d8f01e#rd';
     });
 

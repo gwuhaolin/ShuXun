@@ -93,8 +93,8 @@ APP.service('WeChatJS$', function ($rootScope) {
      * 直接生成引导用户Web OAuth点击的URL
      */
     this.getOAuthURL = function () {
-        var redirectUrl = location.href.split('#')[0] + '#/tab/signUp';
-        return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID_WeChat + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_base&state=#wechat_redirect';
+        var redirectUrl = 'http://www.ishuxun.cn/wechatOAuthForwarder';
+        return 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + WECHAT.AppID_WeChat + '&redirect_uri=' + encodeURIComponent(redirectUrl) + '&response_type=code&scope=snsapi_base&state=wechat#wechat_redirect';
     };
 
     /**

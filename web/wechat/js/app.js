@@ -31,7 +31,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:keyword 要搜索的关键字
                  */
-                url: '/book/searchList/:keyword',
+                url: '/book/searchList/?keyword',
                 views: {
                     'tab-book': {
                         templateUrl: 'html/book/search-list.html'
@@ -68,7 +68,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:isbn13 一本书的isbn13号码
                  */
-                url: '/book/oneBook/:isbn13',
+                url: '/book/oneBook/?isbn13',
                 views: {
                     'tab-book': {
                         templateUrl: 'html/book/one-book.html'
@@ -78,7 +78,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:usedBookAvosObjectId 二手书的AVOS ID
                  */
-                url: '/book/oneUsedBook/:usedBookAvosObjectId',
+                url: '/book/oneUsedBook/?usedBookAvosObjectId',
                 views: {
                     'tab-book': {
                         templateUrl: 'html/book/one-used-book.html'
@@ -88,7 +88,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:usedBookAvosObjectId 二手书的AVOS ID
                  */
-                url: '/book/oneNeedBook/:usedBookAvosObjectId',
+                url: '/book/oneNeedBook/?usedBookAvosObjectId',
                 views: {
                     'tab-book': {
                         templateUrl: 'html/book/one-need-book.html'
@@ -111,7 +111,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:usedBookId 要编辑的二手书的AVOS usedBookId
                  */
-                url: '/person/editOneUsedBook/:usedBookId',
+                url: '/person/editOneUsedBook/?usedBookId',
                 views: {
                     'tab-person': {
                         templateUrl: 'html/person/edit-one-used-book.html'
@@ -121,7 +121,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:isbn13 要上传的二手书的isbn13号码
                  */
-                url: '/person/uploadOneUsedBook/:isbn13',
+                url: '/person/uploadOneUsedBook/?isbn13',
                 views: {
                     'tab-person': {
                         templateUrl: 'html/person/upload-one-used-book.html'
@@ -131,7 +131,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:isbn13 要上传的二手书的isbn13号码
                  */
-                url: '/person/uploadOneNeedBook/:isbn13',
+                url: '/person/uploadOneNeedBook/?isbn13',
                 views: {
                     'tab-person': {
                         templateUrl: 'html/person/upload-one-need-book.html'
@@ -204,9 +204,8 @@ var APP = angular.module('APP', ['ionic'], null)
             }).state('tab.signUp', {
                 /**
                  * @param:code 用于去微信获取用户消息的凭证
-                 * @param:state 验证完身份后要去的状态
                  */
-                url: '/signUp?code&state',
+                url: '/signUp?code',
                 views: {
                     'tab-person': {
                         templateUrl: 'html/tool/sign-up.html'
@@ -228,7 +227,7 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:ownerId 主人的AVOS ID
                  */
-                url: '/userHome/:ownerId',
+                url: '/userHome/?ownerId',
                 views: {
                     'tab-book': {
                         templateUrl: 'html/tool/user-home.html'

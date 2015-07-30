@@ -4,46 +4,45 @@
  */
 "use strict";
 var express = require('express');
-//var hbs = require('hbs');
-require('./util/hbs-helper.js');
+var useragent = require('express-useragent');
 var AV = require('leanengine');
 var WechatMsg = require('./wechat/wechatMsg.js');
 var cloud = require('./cloud/cloud.js');
-//var desktopRouter = express.Router();
-//var bookRouter = require('./router/book.js');
-//var personRouter = require('./router/person.js');
-//var toolRouter = require('./router/tool.js');
 
 var app = express();
+
 app.use(cloud);//加载定义的云代码
 
-//配置HBS
-//app.set('views', './public/desktop');
-//app.set('view engine', 'html');
-//app.engine('html', require('hbs').__express);
-//注册hbs片段
-//hbs.registerPartials('./public/desktop/hbsPartial');
-//配置router
-//app.use('/desktop', desktopRouter);
-//desktopRouter.use('/book', bookRouter);
-//desktopRouter.use('/person', personRouter);
-//desktopRouter.use('/tool', toolRouter);
+app.use('/wechatMsg', WechatMsg);//配置微信消息服务
 
-//配置静态资源
-app.use(express.static('./public'));
+/**
+ * 把微信OAuth回调映射到AngularJs signup路由
+ */
+app.get('/wechatOAuthForwarder', function (req, res) {
+    var code = req.query.code;
+    var state = req.query.state;
+    if (state == 'wechat') {
+        res.redirect('/wechat/#/tab/signUp?code=' + code);
+    } else if (state == 'desktop') {
+        res.redirect('/desktop/#/signUp?code=' + code);
+    } else {
+        res.redirect('/');
+    }
+});
 
-//配置微信消息服务
-app.use('/wechatMsg', WechatMsg);
+/**
+ * UA检测，如果是桌面浏览器就去desktop 是移动浏览器就去wechat
+ */
+app.get('/', function (req, res) {
+    var userAgent = useragent.parse(req.headers['user-agent']);
+    if (userAgent.isMobile) {//是移动浏览器
+        res.redirect('/wechat');
+    } else if (userAgent.isDesktop) {//是桌面浏览器
+        res.redirect('/desktop');
+    } else if (userAgent.isBot) {//是搜索引擎
 
-////404处理
-//app.use(function (req, res) {
-//    res.status(400);
-//    res.render('tool/error.html');
-//});
-////错误处理
-//app.use(function (err, req, res) {
-//    res.status(500);
-//    res.render('tool/error.html');
-//});
+    }
+});
+app.use(express.static('./public'));//配置静态资源
 
 module.exports = app;
