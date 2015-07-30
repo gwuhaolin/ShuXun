@@ -106,6 +106,16 @@ APP.config(function ($stateProvider, $urlRouterProvider) {
                 templateUrl: 'html/person/upload-one-need-book.html'
             }
         }
+    }).state('person_editOneUsedBook', {
+        /**
+         * @param:usedBookId 要编辑的二手书的AVOS usedBookId
+         */
+        url: '/person/editOneUsedBook/:usedBookId',
+        views: {
+            'main': {
+                templateUrl: 'html/person/edit-one-used-book.html'
+            }
+        }
     }).state('userHome', {
         /**
          * @param:ownerId 主人的AVOS ID

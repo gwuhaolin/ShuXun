@@ -1,4 +1,4 @@
-<div class="row" ng-controller="bs_person_uploadOneUsedBook">
+<div class="row" ng-controller="bs_person_editOneUsedBook">
 
     <div class="col-md-9">
 
@@ -7,7 +7,8 @@
                 <ol class="breadcrumb">
                     <li><a ui-sref="book_oneBook({isbn13:bookInfo.attributes.isbn13})"
                            ng-bind="bookInfo.attributes.title"></a></li>
-                    <li class="active"><strong>上传</strong>-<strong ng-bind="bookInfo.attributes.title"></strong></li>
+                    <li class="active"><strong>修改我的-</strong>-<strong
+                            ng-bind="usedBook.attributes.info.attributes.title"></strong></li>
                 </ol>
             </div>
             <div class="col-md-6">
@@ -16,7 +17,7 @@
             </div>
         </div>
 
-        <bs-one-book-info-detail book-info="bookInfo"></bs-one-book-info-detail>
+        <bs-one-book-info-detail book-info="usedBook.attributes.info"></bs-one-book-info-detail>
 
     </div>
 
@@ -24,24 +25,25 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h4>上传-<span ng-bind="bookInfo.attributes.title"></span></h4>
+                <h4>修改我的-<span ng-bind="usedBook.attributes.info.attributes.title"></span></h4>
                 <hr>
             </div>
             <form class="col-md-12">
                 <div class="form-group">
-                    <input autofocus type="number" class="form-control" ng-model="usedBookJson.price"
-                           placeholder="输入要价(数字,人民币元)">
+                    <input autofocus type="number" class="form-control" placeholder="人民币 只输入数值"
+                           ng-model="usedBook.attributes.price"
+                           ng-change="valueHasChange=true">
                 </div>
                 <div class="form-group">
-                    <textarea type="text" class="form-control" placeholder="对这本书你还有什么想说的吗?"
-                              ng-model="usedBookJson.des"
+                    <textarea type="text" class="form-control" placeholder="这书有什么特别之处"
+                              ng-model="usedBook.attributes.des"
+                              ng-change="valueHasChange=true"
                               popover-placement="left"
                               popover-template="'commonUsedBookDesWords.html'"></textarea>
                 </div>
-                <button class="btn btn-primary btn-block"
-                        ng-disabled="!(!isLoading && usedBookJson.isbn13 && usedBookJson.price)"
-                        ng-click="submitOnClick('sell')">
-                    提交二手书
+                <button class="btn btn-primary btn-block" ng-click="submitOnClick()"
+                        ng-disabled="!valueHasChange">
+                    提交修改
                 </button>
             </form>
             <script type="text/ng-template" id="commonUsedBookDesWords.html">
@@ -50,7 +52,7 @@
                         style="margin: 5px"
                         ng-disabled="isLoading"
                         ng-repeat="word in InfoService$.commonUsedBookDesWords"
-                        ng-click="usedBookJson.des=usedBookJson.des+' '+word"
+                        ng-click="usedBook.attributes.des=usedBook.attributes.des+' '+word"
                         ng-bind="word"></button>
             </script>
         </div>

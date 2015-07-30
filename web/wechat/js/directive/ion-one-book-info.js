@@ -27,7 +27,7 @@ APP.directive('ionOneBookInfo', function (UsedBook$) {
         scope: {
             //三本图书的信息
             bookInfo: '=',
-            shouldShowUsedBooksCount: '='
+            shouldShowUsedBooksCount: '@?'
         },
         templateUrl: 'html/directive/one-book-info.html',
         link: link

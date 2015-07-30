@@ -1,22 +1,19 @@
 /**
- * Created by wuhaolin on 5/20/15.
- * 编辑一本二手书的信息
+ * Created by wuhaolin on 7/30/15.
  */
-"use strict";
 
-APP.controller('ion_person_editOneUsedBook', function ($scope, $controller, $state, $ionicHistory, UsedBook$) {
+APP.controller('bs_person_editOneUsedBook', function ($scope, $controller, $state, UsedBook$, InfoService$) {
     $controller('person_editOneUsedBook', {$scope: $scope});
+    $scope.InfoService$ = InfoService$;
 
     $scope.submitOnClick = function () {
         $scope.saveUsedBook(function () {
             if ($scope.usedBook.get('role') == 'sell') {
                 UsedBook$.MyUsedBook.loadMore();
-                $state.go('tab.person_usedBooksList');
             } else if ($scope.usedBook.get('role') == 'need') {
                 UsedBook$.MyNeedBook.loadMore();
-                $state.go('tab.person_needBooksList');
             }
-            $ionicHistory.clearHistory();
+            $state.go('userHome', {ownerId: AV.User.current().id});
         });
     }
 });

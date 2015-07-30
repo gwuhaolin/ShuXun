@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('UsedBook$', function ($rootScope, $state) {
+APP.service('UsedBook$', function ($rootScope) {
     var that = this;
 
     /**

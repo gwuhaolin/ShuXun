@@ -57,13 +57,34 @@
 
             <!-- 用户链接-->
             <ul class="nav navbar-nav navbar-right" ng-if="me">
+
                 <li><a ui-sref="userHome({ownerId:me.id})">我的书架</a></li>
-                <li ng-if="Status$.unreadCountSum()>0">
-                    <a>消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
+
+                <li dropdown ng-if="Status$.unreadCountSum()>0">
+                    <a dropdown-toggle>消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
+                    <ul class="dropdown-menu">
+                        <li ng-if="Status$.NewUsedBookStatus.unreadCount>0">
+                            <a>你关注的同学新上传了旧书</a>
+                            <span class="badge" ng-bind="Status$.NewUsedBookStatus.unreadCount"></span>
+                        </li>
+                        <li ng-if="Status$.NewNeedBookStatus.unreadCount>0">
+                            <a>你关注的同学新发布了求书</a>
+                            <span class="badge" ng-bind="Status$.NewNeedBookStatus.unreadCount"></span>
+                        </li>
+                        <li ng-if="Status$.PrivateStatus.unreadCount>0">
+                            <a>有同学给你发私信</a>
+                            <span class="badge" ng-bind="Status$.PrivateStatus.unreadCount"></span>
+                        </li>
+                        <li ng-if="Status$.ReviewUsedBookStatus.unreadCount>0">
+                            <a>有同学评价你的书</a>
+                            <span class="badge" ng-bind="Status$.ReviewUsedBookStatus.unreadCount"></span>
+                        </li>
+                    </ul>
                 </li>
+
                 <li dropdown>
                     <!-- avatar-->
-                    <a href="#" style="padding: 9px" dropdown-toggle>
+                    <a style="padding: 9px" dropdown-toggle>
                         <img class="img-responsive img-circle" style="width: 32px"
                              ng-src="{{me.avatarUrlWithSize(64)}}">
                     </a>
@@ -180,6 +201,9 @@
 
 <script src="../js/controller/person-upload-one-used-book-ctrl.js"></script>
 <script src="js/controller/bs-person-upload-one-used-book-ctrl.js"></script>
+
+<script src="../js/controller/person-edit-one-used-book-ctrl.js"></script>
+<script src="js/controller/bs-person-edit-one-used-book.js"></script>
 
 <!--Directive-->
 <script src="js/directive/bs-infinite-scroll.js"></script>
