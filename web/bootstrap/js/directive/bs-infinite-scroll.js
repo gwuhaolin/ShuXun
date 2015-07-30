@@ -3,22 +3,26 @@
  */
 "use strict";
 
-APP.directive('bs-infinite-scroll', function ($window) {
+APP.directive('bsInfiniteScroll', function () {
+
+    function link($scope) {
+        $scope.msg = '加载更多';
+        $scope.loadMoreOnClick = function () {
+            $scope.onInfinite();
+            $scope.msg = '加载中...';
+            setTimeout(function () {
+                $scope.msg = '加载更多';
+                $scope.$digest();
+            }, 2500);
+        }
+    }
 
     return {
         restrict: 'E',
         scope: {
             onInfinite: '&'
         },
-        link: function ($scope, $element) {
-            $element.addClass('col-xs-12');
-            var e = $element[0];
-
-            $window.on('scroll', function () {
-                if ($window.scrollTop >= e.scrollHeight) {
-                    $scope.onInfinite();
-                }
-            });
-        }
+        templateUrl: 'html/directive/load-more.html',
+        link: link
     }
 });
