@@ -3,14 +3,6 @@
     <div class="col-md-9">
 
         <div class="row">
-            <div class="col-md-6">
-                <div class="btn-group">
-                    <button class="btn btn-danger" ng-click="goBack()">退出聊天</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
             <div class="col-md-12">
                 <h4>
                     回复-<span ng-bind="user.attributes.nickName"></span>
@@ -30,21 +22,18 @@
             <!-- 我的输入框-->
             <form class="col-md-12">
                 <div class="form-group">
-                    <div class="input-group">
                         <textarea type="text"
                                   class="form-control"
                                   placeholder="输入回复内容"
                                   ng-model="msg.sendMsg"
                                   popover-placement="bottom"
                                   popover-template="'common-replay-words-popover.html'"></textarea>
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary"
-                                    ng-disabled="!msg.sendMsg || isLoading"
-                                    ng-click="sendOnClick()">发送
-                            </button>
-                        </span>
-                    </div>
                 </div>
+                <button class="btn btn-danger pull-left" ng-click="goBack()">退出聊天</button>
+                <button class="btn btn-primary pull-right"
+                        ng-disabled="!msg.sendMsg || isLoading"
+                        ng-click="sendOnClick()">发送
+                </button>
             </form>
             <script type="text/ng-template" id="common-replay-words-popover.html">
                 <h4>快速回复内容</h4>
