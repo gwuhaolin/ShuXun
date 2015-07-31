@@ -123,6 +123,7 @@ AV.Cloud.define('getWechatJsConfig', function (req, res) {
  * 微信获取用户信息 OAuth step 2
  * @param:code 微信获取信息的凭证
  * @return: {{openId: *, username: =unionid, password: =unionid, nickName: *, sex: *, avatarUrl: *}}
+ * 如果用户没有关注书循微信号将会返回错误 APIClient.getUser(openID) 导致
  */
 AV.Cloud.define('getWechatOAuthUserInfo', function (req, res) {
     var code = req.params.code;
@@ -137,6 +138,7 @@ AV.Cloud.define('getWechatOAuthUserInfo', function (req, res) {
  * 网页版获取用户信息 OAuth step 2
  * @param:code 微信获取信息的凭证
  * @return: {{openId: *, username: =unionid, password: =unionid, nickName: *, sex: *, avatarUrl: *}}
+ * 不需要必须关注书循微信号也可以正确获得用户信息，只需要用户用扫码同意后即可
  */
 AV.Cloud.define('getDesktopOAuthUserInfo', function (req, res) {
     var code = req.params.code;

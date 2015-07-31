@@ -60,8 +60,8 @@ function _tranWechatUserInfoToAVOS(userInfo) {
  * 调用OAuthClient_WeChat.getAccessToken方法获取用户的openId
  * 根据openId调用APIClient.getUser获取用户的json格式的信息
  * @param code 微信服务器url回调里的code参数
- * @returns {AV.Promise} json格式的用户信息，只能获得已经关注你了的用户的信息。
- * 如果用户没有关注将会返回错误
+ * @returns {AV.Promise} 兼容_User表的json格式的用户信息，只能获得已经关注你了的用户的信息。
+ * 如果用户没有关注书循微信号将会返回错误 APIClient.getUser(openID) 导致
  */
 exports.getOAuthUserInfo_WeChat = function (code) {
     var rePromise = new AV.Promise(null);
@@ -110,8 +110,8 @@ exports.getOAuthUserInfo_WeChat = function (code) {
  * 再判断User表里有对应的unionId的用户吗？如果没有就返回error
  * 如果有就返回json格式的用户的信息
  * @param code 微信服务器url回调里的code参数
- * @returns {AV.Promise} json格式的用户信息，只能获得已经关注你了的用户的信息。
- * 如果用户没有关注将会返回错误
+ * @returns {AV.Promise} 兼容_User表的json格式的用户信息，
+ * 不需要必须关注书循微信号也可以正确获得用户信息，只需要用户用扫码同意后即可
  */
 exports.getOAuthUserInfo_Desktop = function (code) {
     var rePromise = new AV.Promise(null);

@@ -44,7 +44,6 @@
 
             <!-- 游客链接-->
             <a ui-sref="hello" class="btn btn-info navbar-btn" ng-if="!me">登入</a>
-            <a ui-sref="hello" class="btn btn-primary navbar-btn" ng-if="!me">加入</a>
 
             <!-- 用户链接-->
             <ul class="nav navbar-nav navbar-right" ng-if="me">
@@ -79,7 +78,7 @@
 
                 <li dropdown>
                     <!-- avatar-->
-                    <a style="padding: 9px" dropdown-toggle>
+                    <a style="padding: 9px;cursor: pointer" dropdown-toggle>
                         <img class="img-responsive img-circle" style="width: 32px"
                              ng-src="{{me.avatarUrlWithSize(64)}}">
                     </a>

@@ -13,13 +13,29 @@
                     <a class="btn btn-info btn-lg" ui-sref="hello">关注好了</a>
                 </tab>
                 <tab heading="填写信息" active="step=='info'" disable="step!='info'">
+                    <!-- 微信信息-->
+                    <div class="col-md-offset-3 col-md-6">
+                        <img ng-src="{{userInfo.avatarUrl}}" style="width: 80px;height: 80px"
+                             class="center-block img-responsive img-circle">
+
+                        <h3 ng-bind="userInfo.nickName"></h3>
+                        <h4>
+                            <span class="glyphicon glyphicon-user" style="color: #5eb1ed"
+                                  ng-if="userInfo.sex==1"></span>
+                            <span class="glyphicon glyphicon-user" style="color: #ff6d9e"
+                                  ng-if="userInfo.sex==2"></span>
+                            <span ng-bind="userInfo.school"></span>
+                            <span ng-bind="userInfo.school"></span>
+                            <span>{{userInfo.startSchoolYear}}级</span>
+                        </h4>
+                    </div>
                     <br><h4>这些信息有助于你找到书</h4><br>
 
                     <form class="col-md-offset-3 col-md-6">
                         <div class="form-group">
                             <div class="input-group">
                                 <input disabled type="text" class="form-control" placeholder="在读学校"
-                                       ng-value="userInfo.major">
+                                       ng-value="userInfo.school">
                                 <span class="input-group-btn">
                                     <button class="btn btn-info" ng-click="chooseSchool()">选择学校</button>
                                 </span>
@@ -28,7 +44,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input disabled type="text" class="form-control" placeholder="所学专业"
-                                       ng-value="userInfo.school">
+                                       ng-value="userInfo.major">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" ng-click="chooseMajor()">选择专业</button>
                                 </span>
@@ -41,7 +57,10 @@
                                 </option>
                             </select>
                         </div>
-                        <button class="btn btn-info" ng-click="submitOnClick()">加入书循</button>
+                        <button class="btn btn-info" ng-click="submitOnClick()"
+                                ng-disabled="isLoading || !(userInfo.school && userInfo.major && userInfo.startSchoolYear)">
+                            加入书循
+                        </button>
                     </form>
                 </tab>
                 <tab heading="登入成功" active="step=='ok'" disable="step!='ok'">
