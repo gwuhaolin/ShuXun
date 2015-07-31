@@ -19,7 +19,7 @@
                            ui-sref="person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
                             联系主人
                         </a>
-                        <a class="btn btn-primary" ng-click="scrollToHash('comments')">查看评论</a>
+                        <a class="btn btn-primary" ng-click="scrollToHash('大家都说')">大家都说</a>
                     </div>
                     <div class="btn-group" ng-if="isMy()">
                         <button class="btn btn-danger" ng-click="UsedBook$.removeUsedBook(usedBook)"
@@ -66,13 +66,14 @@
 
         <bs-one-book-info-detail book-info="usedBook.attributes.info"></bs-one-book-info-detail>
 
-        <div class="row" id="comments">
+        <div class="row" id="大家都说">
             <div class="col-md-12">
                 <h4>大家都说</h4>
                 <hr>
-                <a class="btn btn-link btn-info" ng-if="statusList.length==0">还没有同学评论,快来抢沙发~</a>
+                <a class="btn btn-link btn-info" ng-if="statusList.length==0"
+                   ui-sref="person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">还没有同学评论,快来抢沙发~</a>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12" ng-if="statusList.length>0">
                 <ul class="media-list">
                     <li class="media" ng-repeat="status in statusList">
                         <bs-one-user class="media-left"
@@ -89,6 +90,7 @@
                         </div>
                     </li>
                 </ul>
+                <a ui-sref="person_sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">我也要说</a>
             </div>
         </div>
 

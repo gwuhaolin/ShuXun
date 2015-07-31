@@ -1,10 +1,8 @@
 <div class="modal-header">
     <div class="input-group">
-        <input type="search" class="form-control" placeholder="输入名称搜索"
+        <input autofocus type="search" class="form-control" placeholder="输入名称搜索"
                ng-model="InfoService$.School.searchSchoolKeyword">
-        <span class="input-group-addon">
-            <span class="glyphicon glyphicon-search" ng-class="{spin:InfoService$.School.isLoading}"></span>
-        </span>
+        <span class="input-group-addon" ng-if="InfoService$.School.isLoading">加载中...</span>
     </div>
 </div>
 <div class="modal-body">

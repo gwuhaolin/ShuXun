@@ -10,14 +10,16 @@
                 </ol>
             </div>
             <div class="col-md-6">
-                <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default" ng-click="scrollToHash('书评')">书评</button>
-                    <button type="button" class="btn btn-default btn-info"
-                            ui-sref="person_uploadOneUsedBook({isbn13:bookInfo.attributes.isbn13})">上传旧书
-                    </button>
-                    <button type="button" class="btn btn-default btn-primary"
-                            ui-sref="person_uploadOneNeedBook({isbn13:bookInfo.attributes.isbn13})">发布求书
-                    </button>
+                <div class="btn-toolbar pull-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" ng-click="scrollToHash('书评')">书评</button>
+                        <a class="btn btn-default btn-info"
+                           ui-sref="person_uploadOneUsedBook({isbn13:bookInfo.attributes.isbn13})">上传旧书
+                        </a>
+                        <a class="btn btn-default btn-primary"
+                           ui-sref="person_uploadOneNeedBook({isbn13:bookInfo.attributes.isbn13})">发布求书
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

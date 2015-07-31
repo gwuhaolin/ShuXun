@@ -7,7 +7,7 @@
 //二手书列表
 APP.controller('bs_book_usedBookList', function ($scope, $controller, BootstrapModalView$) {
     $controller('book_usedBookList', {$scope: $scope});
-
+    $scope.loadMore();
     //按照专业筛选
     $scope.chooseMajor = function () {
         BootstrapModalView$.openChooseMajorModalView(function (major) {
