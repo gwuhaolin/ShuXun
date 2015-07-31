@@ -30,6 +30,9 @@ app.get('/wechatOAuthForwarder', function (req, res) {
     }
 });
 
+app.use(require('prerender-node').set('prerenderServiceUrl', 'http://101.200.192.219:3000'));
+//app.use(require('prerender-node').set('prerenderServiceUrl', 'http://prerender.ishuxun.cn'));
+
 /**
  * UA检测，如果是桌面浏览器就去desktop 是移动浏览器就去wechat
  */
@@ -37,10 +40,8 @@ app.get('/', function (req, res) {
     var userAgent = useragent.parse(req.headers['user-agent']);
     if (userAgent.isMobile) {//是移动浏览器
         res.redirect('/wechat');
-    } else if (userAgent.isDesktop) {//是桌面浏览器
+    } else {//是桌面浏览器
         res.redirect('/desktop');
-    } else if (userAgent.isBot) {//是搜索引擎
-
     }
 });
 
@@ -48,8 +49,7 @@ app.get('/', function (req, res) {
  * 配置静态资源
  */
 app.use('/', express.static('./public', {
-        maxAge: 1000 * 3600 * 24 * 7//一个星期
-    }
-));
+    maxAge: 1000 * 3600 * 24 * 7//一个星期
+}));
 
 module.exports = app;

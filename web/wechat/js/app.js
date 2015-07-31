@@ -6,7 +6,8 @@
 
 var leanAnalytics = new _LeanAnalytics('Wechat');
 var APP = angular.module('APP', ['ionic'], null)
-    .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    .config(function ($locationProvider, $stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+        $locationProvider.hashPrefix('!');
         //配置ionic样式
         $ionicConfigProvider.tabs.style('standard');
         $ionicConfigProvider.tabs.position('bottom');

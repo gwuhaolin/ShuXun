@@ -5,7 +5,8 @@
 
 var leanAnalytics = new _LeanAnalytics('desktop');
 var APP = angular.module('APP', ['ui.bootstrap', 'ui.router']);
-APP.config(function ($stateProvider, $urlRouterProvider) {
+APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
+    $locationProvider.hashPrefix('!');
     $stateProvider.state('book_recommend', {
         /**
          * @param:major 所有模块专门显示这个专业的书

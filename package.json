@@ -33,6 +33,7 @@
     "express-useragent": "^0.1.9",
     "leanengine": "^0.1.4",
     "moment": "^2.10.3",
+    "prerender-node": "^2.0.2",
     "superagent": "^1.2.0",
     "superagent-charset": "^0.0.1",
     "underscore": "^1.8.3",
