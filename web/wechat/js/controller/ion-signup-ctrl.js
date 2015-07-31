@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, InfoService$, User$, Status$, IonicModalView$) {
+APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, InfoService$, User$, Status$, IonicModalView$, WeChatJS$) {
     //是否正在加载中..
     $scope.isLoading = true;
     //调用微信接口获取用户信息
@@ -21,8 +21,7 @@ APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $
             User$.updateMyInfoWithJson(userInfo);//更新微信信息
         });
     }).fail(function () {//用户还没有关注
-        alert('要先关注书循微信号后在微信里才能使用这些功能哦(加微信号 ishuxun 或 书循)');
-        window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzAwMDQwMjMxNg==&mid=205566574&idx=1&sn=5784b3b5f4d870ca4715c2dd56d8f01e#rd';
+        WeChatJS$.tellUserGoWechat();
     });
 
     IonicModalView$.registerChooseSchoolModalView($scope, function (school) {

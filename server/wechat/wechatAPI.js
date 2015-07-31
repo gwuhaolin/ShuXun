@@ -8,7 +8,6 @@ var AppConfig = require('../../config/config.js');
 var WeChatAPIClient = require('wechat-api');
 var WeChatOAuthClient = require('wechat-oauth');
 var AV = require('leanengine');
-var User = require('../user/user.js');
 var APIClient = new WeChatAPIClient(AppConfig.WeChat.AppID_WeChat, AppConfig.WeChat.Secret_WeChat);
 var OAuthClient_WeChat = new WeChatOAuthClient(AppConfig.WeChat.AppID_WeChat, AppConfig.WeChat.Secret_WeChat);
 var OAuthClient_Desktop = new WeChatOAuthClient(AppConfig.WeChat.AppID_Desktop, AppConfig.WeChat.Secret_Desktop);

@@ -58,7 +58,7 @@ APP.service('WeChatJS$', function ($rootScope) {
     });
 
     wx.error(function () {
-        that.config();
+        that.tellUserGoWechat();
     });
 
 
@@ -114,6 +114,16 @@ APP.service('WeChatJS$', function ($rootScope) {
                 });
             }
         });
+    };
+
+    /**
+     * 用户还没有关注书循微信号 或者没有在微信里打开当前网页 导致微信js接口无法使用
+     * 这时提示用户去关注书循微信号
+     */
+    this.tellUserGoWechat = function () {
+        alert('要先关注书循微信号后在微信里才能使用这些功能哦(加微信号 ishuxun 或 书循)');
+        window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzAwMDQwMjMxNg==&mid=205566574&idx=1&sn=5784b3b5f4d870ca4715c2dd56d8f01e#rd';
     }
+
 
 });
