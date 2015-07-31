@@ -43,6 +43,13 @@ app.get('/', function (req, res) {
 
     }
 });
-app.use(express.static('./public'));//配置静态资源
+
+/**
+ * 配置静态资源
+ */
+app.use('/', express.static('./public', {
+        maxAge: 1000 * 3600 * 24 * 7//一个星期
+    }
+));
 
 module.exports = app;
