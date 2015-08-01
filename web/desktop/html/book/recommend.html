@@ -2,7 +2,7 @@
     <div class="col-md-9">
 
         <div class="row">
-            <div class=col-md-6>
+            <div class="col-md-6 hidden-xs">
                 <ol class="breadcrumb">
                     <li class="active">图书主页</li>
                 </ol>
@@ -89,15 +89,59 @@
     </div>
 
     <aside class="col-md-3 hidden-sm hidden-xs">
-        <h4>图书分类</h4>
-        <hr>
-        <tabset type="tabs">
-            <tab ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()" heading="{{bigTag}}">
-                <a class="btn btn-link btn-sm" style="margin: 5px"
-                   ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]"
-                   ng-bind="littleTag"
-                   ui-sref="book_bookList({cmd:'tag',tag:littleTag})"></a>
-            </tab>
-        </tabset>
+
+        <div class="row" ng-if="WechatNews$.newsList.length>0">
+            <div class="col-md-12" style="height: 150px;overflow: hidden;margin-bottom: 10px">
+                <carousel interval="4000">
+                    <slide ng-repeat="news in WechatNews$.newsList">
+                        <a target="_blank" ng-href="{{news.attributes.url}}">
+                            <img style="width: 100%"
+                                 ng-src="{{news.attributes.thumbImageFile.url()}}">
+
+                            <div class="carousel-caption">
+                                <h4 ng-bind="news.attributes.title"></h4>
+                            </div>
+                        </a>
+                    </slide>
+                </carousel>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>图书分类</h4>
+                <hr>
+                <tabset type="tabs">
+                    <tab ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()" heading="{{bigTag}}">
+                        <a class="btn btn-link btn-sm" style="margin: 5px"
+                           ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]"
+                           ng-bind="littleTag"
+                           ui-sref="book_bookList({cmd:'tag',tag:littleTag})"></a>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>微信服务号</h4>
+                <hr>
+                <h5>书循微信号让旧书交易更简单</h5>
+                <ul class="list-unstyled">
+                    <li>扫条码找书传书</li>
+                    <li>接收买家咨询提醒</li>
+                </ul>
+                <img ng-src="../img/wechat.png"
+                     style="width: 32px;height: 32px"
+                     popover-placement="left"
+                     popover-template="'scanWechatQRCode.html'"
+                     popover-trigger="mouseenter">
+            </div>
+            <script type="text/ng-template" id="scanWechatQRCode.html">
+                <h5 class="center-block">微信扫描二维码使用书循微信号</h5>
+                <img ng-src="../img/QRCode.png" class="img-responsive center-block">
+            </script>
+        </div>
+
     </aside>
 </div>

@@ -4,7 +4,6 @@
  */
 "use strict";
 var express = require('express');
-var useragent = require('express-useragent');
 var AV = require('leanengine');
 var WechatMsg = require('./wechat/wechatMsg.js');
 var cloud = require('./cloud/cloud.js');
@@ -30,18 +29,6 @@ app.get('/wechatOAuthForwarder', function (req, res) {
     }
 });
 
-/**
- * UA检测，如果是桌面浏览器就去desktop 是移动浏览器就去wechat
- */
-app.get('/', function (req, res) {
-    var userAgent = useragent.parse(req.headers['user-agent']);
-    if (userAgent.isMobile) {//是移动浏览器
-        res.redirect('/wechat');
-    } else {//是桌面浏览器
-        res.redirect('/desktop');
-    }
-});
-
 app.use('/desktop', require('prerender-node').set('prerenderServiceUrl', 'http://101.200.192.219:3000'));
 //app.use(require('prerender-node').set('prerenderServiceUrl', 'http://prerender.ishuxun.cn'));
 
@@ -49,5 +36,10 @@ app.use('/desktop', require('prerender-node').set('prerenderServiceUrl', 'http:/
  * 配置静态资源
  */
 app.use('/', express.static('./public'));
+
+// Handle 404
+app.use(function (req, res) {
+    res.redirect('/desktop');
+});
 
 module.exports = app;

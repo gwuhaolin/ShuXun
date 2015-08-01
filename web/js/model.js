@@ -88,6 +88,8 @@ Model.Major = AV.Object.extend('Major');
 
 Model.UsedBook = AV.Object.extend('UsedBook');
 
+Model.WechatNews = AV.Object.extend('WechatNews');
+
 if (typeof module != 'undefined') {//Nodejs
     module.exports = Model;
 }

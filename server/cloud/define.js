@@ -1,6 +1,6 @@
 /**
  * Created by wuhaolin on 4/8/15.
- * AVOS 运代码
+ * 定义的给客户端调用的云函数
  */
 "use strict";
 var AV = require('leanengine');
@@ -9,26 +9,6 @@ var LBS = require('../util/lbs.js');
 var Info = require('../util/info.js');
 var DoubanBook = require('../book/douban-book.js');
 var BookInfo = require('../book/book-info.js');
-var DataRepair = require('../util/data-repair.js');
-
-/**
- * 去豆瓣抓取最新的图书,保存到AVOS LatestBook表
- */
-AV.Cloud.define('spiderAndSaveLatestBooks', function (req, res) {
-    DoubanBook.spiderAndSaveLatestBooks();
-    res.success();
-});
-
-/**
- * 数据修复
- */
-AV.Cloud.define('repairData', function (req, res) {
-    DataRepair.fillUsedBookInfoWhereInfoIsNull();
-    DataRepair.updateBookInfoUsedBooksRelation();
-    DataRepair.updateBookInfoWhereTagsAndRatingIsNull();
-    DataRepair.updateNoDoubanIdBookInfoFromDouban();
-    res.success();
-});
 
 /**
  * 获得对应图书的信息

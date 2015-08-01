@@ -6,7 +6,7 @@
 APP.controller('bs_navBarCtrl', function ($scope, Status$, SearchBook$) {
     $scope.Status$ = Status$;
     $scope.SearchBook$ = SearchBook$;
-
+    $scope.navbarCollapseIsClosed = true;
     $scope.bookSearchResultMenuIsOpen = false;
 
     //监听着UserLoginSuccess事件，如果再其它地方用户登录成功了就广播该事件，然后header就会刷新

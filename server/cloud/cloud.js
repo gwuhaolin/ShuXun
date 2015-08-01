@@ -6,5 +6,5 @@
 var AV = require('leanengine');
 require('./define.js');
 require('./hook.js');
-
+require('./timer.js');
 module.exports = AV.Cloud;
