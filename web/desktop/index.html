@@ -45,6 +45,21 @@
             <!-- 游客链接-->
             <a ui-sref="hello" class="btn btn-info navbar-btn" ng-if="!me">登入</a>
 
+            <!-- 搜索表单-->
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-btn" ng-if="SearchBook$.books.length>0">
+                            <button class="btn btn-danger" ng-click="endSearch()">结束搜索</button>
+                        </span>
+                        <input autofocus type="search" class="form-control" placeholder="搜索 书名、作者、ISBN"
+                               ng-model="SearchBook$.keyword"
+                               ng-change="SearchBook$.searchInputOnChange()">
+                        <span class="input-group-addon" ng-if="SearchBook$.isLoading">加载中...</span>
+                    </div>
+                </div>
+            </form>
+
             <!-- 用户链接-->
             <ul class="nav navbar-nav navbar-right" ng-if="me">
 
@@ -102,20 +117,6 @@
                 </li>
             </ul>
 
-            <!-- 搜索表单-->
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-btn" ng-if="SearchBook$.books.length>0">
-                            <button class="btn btn-danger" ng-click="endSearch()">结束搜索</button>
-                        </span>
-                        <input autofocus type="search" class="form-control" placeholder="搜索 书名、作者、ISBN"
-                               ng-model="SearchBook$.keyword"
-                               ng-change="SearchBook$.searchInputOnChange()">
-                        <span class="input-group-addon" ng-if="SearchBook$.isLoading">加载中...</span>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 </nav>
