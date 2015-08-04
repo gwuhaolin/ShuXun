@@ -90,7 +90,7 @@ function searchBookFromDouban(keyword, res) {
                 var books = json.books;
                 for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
                     var title = books[i].title;
-                    var bookUrl = 'http://ishuxun.cn/wechat/#/tab/book/oneBook/?isbn13=' + books[i].isbn13;
+                    var bookUrl = 'http://www.ishuxun.cn/wechat/#/tab/book/oneBook/?isbn13=' + books[i].isbn13;
                     re.push({
                         title: title,
                         image: books[i].image,
