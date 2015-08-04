@@ -29,8 +29,7 @@ app.get('/wechatOAuthForwarder', function (req, res) {
     }
 });
 
-app.use('/desktop', require('prerender-node').set('prerenderServiceUrl', 'http://101.200.192.219:3000'));
-//app.use(require('prerender-node').set('prerenderServiceUrl', 'http://prerender.ishuxun.cn'));
+app.use(require('prerender-node').set('prerenderServiceUrl', 'http://prerender.ishuxun.cn'));
 
 /**
  * 配置静态资源
