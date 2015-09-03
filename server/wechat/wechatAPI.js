@@ -69,14 +69,16 @@ exports.getOAuthUserInfo_WeChat = function (code) {
         if (err) {
             rePromise.reject(err);
         } else {
-            //result like {
-            //    "access_token": "ACCESS_TOKEN",
-            //    "expires_in": 7200,
-            //    "refresh_token": "REFRESH_TOKEN",
-            //    "openid": "3d6be0a4035d839573b04816624a415e",
-            //    "scope": "SCOPE",
-            //    "unionid": "rf43g6g565hy5rsy6u2sgVt7hMZOPfL"
-            //}
+            //result = {
+            //    "data": {
+            //        "access_token": "OezXcEiiBSKSxW0eoylIeNsoQsBi-EJn9cIrY8koOhTTs0EsIbkwLfpvofrWpVnxrTQgeddPIMk_rncx3xtrKGGgYY_-Ay4MdU0hc3B6ci9T9T616U1kuLRBprVBQXAsVvK4C2gjKAg68Fkbp6yYrw",
+            //        "expires_in": 7200,
+            //        "refresh_token": "OezXcEiiBSKSxW0eoylIeNsoQsBi-EJn9cIrY8koOhTTs0EsIbkwLfpvofrWpVnxrN7wAJ-X14pABdIYKHSpEwn3Y1Q7ZK591Mv6A0q_JitEooeac9FqOImlnQtj0bhdhKd9wz-Dk8PUNz_7UFD65w",
+            //        "openid": "o6OKuw208fNg19y9mInz4iUOq2VU",
+            //        "scope": "snsapi_base",
+            //        "create_at": 1438859453118
+            //    }
+            //};
             APIClient.getUser(result.data['openid'], function (err, userInfo) {
                 if (err) {
                     rePromise.reject(err);

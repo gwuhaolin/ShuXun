@@ -22,7 +22,7 @@ APP.directive('bsInfiniteScroll', function () {
         scope: {
             onInfinite: '&'
         },
-        templateUrl: 'html/directive/load-more.html',
+        template: '<div class="row"><div class="col-xs-12 text-center"><button class="btn btn-info btn-lg" style="margin: 10px" ng-bind="msg" ng-click="loadMoreOnClick()"></button> </div> </div>',
         link: link
     }
 });
