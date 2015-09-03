@@ -250,24 +250,23 @@ exports.spiderBusinessInfo = function (isbn13) {
      * 更具网购网站名称计算出该网站的logo的URL
      * @param name 网站的名称
      * @returns {string} logo的URL
-     * TODO 去掉/img/
      */
     function computeLogoUrlFromName(name) {
-        var re = '/img/pathLogo.png';
+        var re = 'pathLogo.png';
         if (name.indexOf('京东') >= 0) {
-            re = '/img/logo-jd.png';
+            re = 'logo-jd.png';
         } else if (name.indexOf('亚马逊') >= 0) {
-            re = '/img/logo-amazon.png';
+            re = 'logo-amazon.png';
         } else if (name.indexOf('当当') >= 0) {
-            re = '/img/logo-dangdang.png';
+            re = 'logo-dangdang.png';
         } else if (name.indexOf('文轩') >= 0) {
-            re = '/img/logo-wenxuan.png';
+            re = 'logo-wenxuan.png';
         } else if (name.indexOf('淘书') >= 0) {
-            re = '/img/logo-taoshu.png';
+            re = 'logo-taoshu.png';
         } else if (name.indexOf('中国图书') >= 0) {
-            re = '/img/logo-bookschina.png';
+            re = 'logo-bookschina.png';
         } else if (name.indexOf('China-pub') >= 0) {
-            re = '/img/logo-chinapub.png';
+            re = 'logo-chinapub.png';
         }
         return re;
     }

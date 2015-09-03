@@ -60,7 +60,7 @@
             <div class="col-md-12">
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="info in businessInfos | orderBy:'price'">
-                        <img style="width: 32px;height: 32px" class="img-circle" ng-src="../{{info.logoUrl}}">
+                        <img style="width: 32px;height: 32px" class="img-circle" ng-src="../img/{{info.logoUrl}}">
                         <a target="_blank" ng-href="{{info.url}}">
                             <strong>{{info.price}}元</strong>
                             <em ng-bind="info.name"></em>
