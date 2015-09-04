@@ -135,7 +135,7 @@ exports.initiativeRecommendToOneUser = function (user) {
         }
         title = '有' + senderName + '找你买书';
         msg = '和你同是' + major + '专业的' + senderName + '正需要你可能有的书,把你带不走的书留给' + senderName + '吧';
-        url = 'http://www.ishuxun.cn/wechat/#/tab/book/usedBookList?cmd=nearNeed&majorFilter=' + major;
+        url = 'http://www.ishuxun.cn/wechat/#/book/usedBookList?cmd=nearNeed&majorFilter=' + major;
     } else if (startSchoolYear >= 2012) {//小鲜肉
         if (sex == 1) {
             senderName = '学姐';
@@ -146,7 +146,7 @@ exports.initiativeRecommendToOneUser = function (user) {
         }
         title = '有' + senderName + '有书要处理给你';
         msg = '和你同是' + major + '专业的即将毕业的' + senderName + '有很多带不走的书要处理,快来抢购你下学期的课本吧';
-        url = 'http://www.ishuxun.cn/wechat/#/tab/book/usedBookList?cmd=nearUsed&majorFilter=' + major;
+        url = 'http://www.ishuxun.cn/wechat/#/book/usedBookList?cmd=nearUsed&majorFilter=' + major;
     } else {
         return AV.Promise.as('不会发生给' + startSchoolYear + '年级的同学');
     }

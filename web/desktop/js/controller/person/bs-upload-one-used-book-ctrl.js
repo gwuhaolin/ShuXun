@@ -12,7 +12,7 @@ APP.controller('bs_person_uploadOneUsedBook', function ($scope, $controller, $st
      */
     $scope.submitOnClick = function (role) {
         $scope.saveUsedBook(role, function () {
-            $state.go('userHome', {ownerId: AV.User.current().id});
+            $state.go('common.userHome', {ownerId: AV.User.current().id});
         });
     };
 

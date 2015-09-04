@@ -17,7 +17,7 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams, BookInfo$
         $scope.SEO$.setSEO($scope.bookInfo);
     }).fail(function () {
         alert('没有找到图书信息,再去搜搜看~');
-        $state.go('tab.book_searchList');
+        $state.go('book.searchList');
     }).always(function () {
         $scope.isLoading = false;
         $scope.$digest();

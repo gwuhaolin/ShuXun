@@ -13,7 +13,7 @@ APP.controller('bs_person_editOneUsedBook', function ($scope, $controller, $stat
             } else if ($scope.usedBook.get('role') == 'need') {
                 UsedBook$.MyNeedBook.loadMore();
             }
-            $state.go('userHome', {ownerId: AV.User.current().id});
+            $state.go('common.userHome', {ownerId: AV.User.current().id});
         });
     }
 });

@@ -1,6 +1,6 @@
 <ion-view ng-controller="ion_person_uploadOneUsedBook" view-title="发布求书">
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+        <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
     <ion-content style="text-align: center" class="padding">
         <!-- 正在加载-->
@@ -65,7 +65,7 @@
                 </button>
             </ion-header-bar>
             <ion-content class="padding" style="text-align: center">
-                <button class="button button-block button-outline button-balanced" ui-sref="tab.book_searchList"
+                <button class="button button-block button-outline button-balanced" ui-sref="book.searchList"
                         ng-click="noBarCodeModalView.hide()">
                     开始获取
                 </button>

@@ -15,6 +15,6 @@ APP.controller('ion_book_recommend', function ($scope, $controller, $state, $ion
     $scope.$on('$ionicView.afterEnter', $scope._setMajorFilterAndLoad);
     //去制定专业的推荐页面
     IonicModalView$.registerChooseMajorModalView($scope, function (major) {
-        $state.go('tab.book_recommend', {major: major});
+        $state.go('book.recommend', {major: major});
     });
 });

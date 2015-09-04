@@ -11,33 +11,67 @@ var APP = angular.module('APP', ['ionic'], null)
         $ionicConfigProvider.tabs.style('standard');
         $ionicConfigProvider.tabs.position('bottom');
         //配置路由表
-        $stateProvider.state('tab', {
-            url: '/tab',
-            abstract: true,
-            templateUrl: 'html/tabs.html'
-        })
-            //tab-book
-            .state('tab.book_recommend', {
+        $stateProvider
+            .state('common', {
+                url: '/common',
+                abstract: true,
+                template: '<ion-nav-view></ion-nav-view>'
+            }).state('book', {
+                url: '/book',
+                abstract: true,
+                templateUrl: 'tabs.html'
+            }).state('person', {
+                url: '/person',
+                abstract: true,
+                templateUrl: 'tabs.html'
+            })
+            //common
+            .state('common.hello', {
+                url: '/hello',
+                templateUrl: 'html/common/hello.html'
+            }).state('common.signUp', {
+                /**
+                 * @param:code 用于去微信获取用户消息的凭证
+                 */
+                url: '/signUp?code',
+                templateUrl: 'html/common/sign-up.html'
+            }).state('common.userList', {
+                /**
+                 * @param:cmd 当前模式 =near时显示你附近的用户
+                 * @param:title 当前View要显示的标题
+                 * @param:majorFilter 专业筛选限制
+                 */
+                url: '/userList?cmd&title&majorFilter',
+                templateUrl: 'html/common/user-list.html'
+            }).state('common.userHome', {
+                /**
+                 * @param:ownerId 主人的AVOS ID
+                 */
+                url: '/userHome/?ownerId',
+                templateUrl: 'html/common/user-home.html'
+            })
+            //book
+            .state('book.recommend', {
                 /**
                  * @param:major 所有模块专门显示这个专业的书
                  */
-                url: '/book/recommend?major',
+                url: '/recommend?major',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/recommend.html'
                     }
                 }
-            }).state('tab.book_searchList', {
+            }).state('book.searchList', {
                 /**
                  * @param:keyword 要搜索的关键字
                  */
-                url: '/book/searchList/?keyword',
+                url: '/searchList/?keyword',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/search-list.html'
                     }
                 }
-            }).state('tab.book_bookList', {
+            }).state('book.bookList', {
                 /**
                  * @param:cmd 当前模式 =tag时显示一类书 =need
                  * 当cmd=tag 时用的表示显示哪一类型的书
@@ -46,112 +80,112 @@ var APP = angular.module('APP', ['ionic'], null)
                  * @param:title 当前View要显示的标题
                  * @param:tag 当cmd=tag 时用的表示显示哪一类型的书
                  */
-                url: '/book/bookList?cmd&title&tag',
+                url: '/bookList?cmd&title&tag',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/book-list.html'
                     }
                 }
-            }).state('tab.book_usedBookList', {
+            }).state('book.usedBookList', {
                 /**
                  * @param:cmd 当前模式 =near时显示你附近的二手书 =isbn时显示所有对应ISBN的二手书
                  * @param:isbn13 当cmd=isbn时使用
                  * @param:majorFilter 专业筛选
                  */
-                url: '/book/usedBookList?cmd&isbn13&majorFilter',
+                url: '/usedBookList?cmd&isbn13&majorFilter',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/used-book-list.html'
                     }
                 }
-            }).state('tab.book_oneBook', {
+            }).state('book.oneBook', {
                 /**
                  * @param:isbn13 一本书的isbn13号码
                  */
-                url: '/book/oneBook/?isbn13',
+                url: '/oneBook/?isbn13',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/one-book.html'
                     }
                 }
-            }).state('tab.book_oneUsedBook', {
+            }).state('book.oneUsedBook', {
                 /**
                  * @param:usedBookAvosObjectId 二手书的AVOS ID
                  */
-                url: '/book/oneUsedBook/?usedBookAvosObjectId',
+                url: '/oneUsedBook/?usedBookAvosObjectId',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/one-used-book.html'
                     }
                 }
-            }).state('tab.book_oneNeedBook', {
+            }).state('book.oneNeedBook', {
                 /**
                  * @param:usedBookAvosObjectId 二手书的AVOS ID
                  */
-                url: '/book/oneNeedBook/?usedBookAvosObjectId',
+                url: '/oneNeedBook/?usedBookAvosObjectId',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/one-need-book.html'
                     }
                 }
-            }).state('tab.book_bookReview', {
+            }).state('book_bookReview', {
                 /**
                  * @param:doubanBookId 豆瓣图书id
                  * @param:图书的名称
                  */
-                url: '/book/bookReview?doubanBookId&bookTitle',
+                url: '/bookReview?doubanBookId&bookTitle',
                 views: {
-                    'tab-book': {
+                    'book': {
                         templateUrl: 'html/book/book-review.html'
                     }
                 }
             })
-            //tab-person
-            .state('tab.person_editOneUsedBook', {
+            //person
+            .state('person.editOneUsedBook', {
                 /**
                  * @param:usedBookId 要编辑的二手书的AVOS usedBookId
                  */
-                url: '/person/editOneUsedBook/?usedBookId',
+                url: '/editOneUsedBook/?usedBookId',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/edit-one-used-book.html'
                     }
                 }
-            }).state('tab.person_uploadOneUsedBook', {
+            }).state('person.uploadOneUsedBook', {
                 /**
                  * @param:isbn13 要上传的二手书的isbn13号码
                  */
-                url: '/person/uploadOneUsedBook/?isbn13',
+                url: '/uploadOneUsedBook/?isbn13',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/upload-one-used-book.html'
                     }
                 }
-            }).state('tab.person_uploadOneNeedBook', {
+            }).state('person.uploadOneNeedBook', {
                 /**
                  * @param:isbn13 要上传的二手书的isbn13号码
                  */
-                url: '/person/uploadOneNeedBook/?isbn13',
+                url: '/uploadOneNeedBook/?isbn13',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/upload-one-need-book.html'
                     }
                 }
-            }).state('tab.person_usedBooksList', {
-                url: '/person/usedBookList',
+            }).state('person.usedBooksList', {
+                url: '/usedBookList',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/used-book-list.html'
                     }
                 }
-            }).state('tab.person_needBooksList', {
-                url: '/person/needBookList',
+            }).state('person.needBooksList', {
+                url: '/needBookList',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/need-book-list.html'
                     }
                 }
-            }).state('tab.person_statusList', {
+            }).state('person.statusList', {
                 /**
                  * @param:cmd 当前模式
                  * =newUsedBook时显上传的二手书
@@ -159,94 +193,54 @@ var APP = angular.module('APP', ['ionic'], null)
                  * =private 有同学给你发私信
                  * =reviewUsedBook 有同学评价你的书
                  */
-                url: '/person/statusList?cmd',
+                url: '/statusList?cmd',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/status-list.html'
                     }
                 }
-            }).state('tab.person_editPersonInfo', {
-                url: '/person/editPersonInfo',
+            }).state('person.editPersonInfo', {
+                url: '/editPersonInfo',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/edit-person-info.html'
                     }
                 }
-            }).state('tab.person_my', {
+            }).state('person.my', {
                 url: '/person/my',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/my.html'
                     }
                 }
-            }).state('tab.person_sendMsgToUser', {
+            }).state('person.sendMsgToUser', {
                 /**
                  * @param:receiverObjectId 接受者的微信openID
                  * @param:usedBookObjectId 当前太难的二手书的AVOS ID
                  * @param:role 消息发送者扮演的身份是 buy | sell
                  * @param:inboxType 是否为发私信
                  */
-                url: '/person/sendMsgToUser?receiverObjectId&usedBookObjectId&role&inboxType',
+                url: '/sendMsgToUser?receiverObjectId&usedBookObjectId&role&inboxType',
                 views: {
-                    'tab-person': {
+                    'person': {
                         templateUrl: 'html/person/send-msg-to-user.html'
                     }
                 }
-            })
-            //公共
-            .state('tab.hello', {
-                url: '/hello',
-                views: {
-                    'tab-person': {
-                        templateUrl: 'html/tool/hello.html'
-                    }
-                }
-            }).state('tab.signUp', {
-                /**
-                 * @param:code 用于去微信获取用户消息的凭证
-                 */
-                url: '/signUp?code',
-                views: {
-                    'tab-person': {
-                        templateUrl: 'html/tool/sign-up.html'
-                    }
-                }
-            }).state('tab.userList', {
-                /**
-                 * @param:cmd 当前模式 =near时显示你附近的用户
-                 * @param:title 当前View要显示的标题
-                 * @param:majorFilter 专业筛选限制
-                 */
-                url: '/userList?cmd&title&majorFilter',
-                views: {
-                    'tab-book': {
-                        templateUrl: 'html/tool/user-list.html'
-                    }
-                }
-            }).state('tab.userHome', {
-                /**
-                 * @param:ownerId 主人的AVOS ID
-                 */
-                url: '/userHome/?ownerId',
-                views: {
-                    'tab-book': {
-                        templateUrl: 'html/tool/user-home.html'
-                    }
-                }
             });
-        $urlRouterProvider.otherwise('/tab/book/recommend');
+        $urlRouterProvider.otherwise('/book/recommend');
     });
 
 APP.run(function ($rootScope, $state, User$, WeChatJS$, SEO$) {
     WeChatJS$.config();//马上调用配置微信
+    SEO$.disableSEO();
     $rootScope.SEO$ = SEO$;
     User$.loginWithUnionId(readCookie('unionId'));
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
         var stateName = nextState['name'];
-        if (stateName.indexOf('tab.person_') >= 0) {//需要登录
+        if (stateName.indexOf('person.') >= 0) {//需要登录
             if (!AV.User.current()) {
                 event.preventDefault();//停止当前
-                $state.go('tab.hello');//去验证身份
+                $state.go('common.hello');//去验证身份
             }
         }
     });

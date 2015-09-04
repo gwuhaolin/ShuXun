@@ -20,7 +20,7 @@
 
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <a class="navbar-brand" style="padding: 9px" ui-sref="book_recommend()">
+            <a class="navbar-brand" style="padding: 9px" ui-sref="book.recommend()">
                 <img class="img-responsive img-rounded" style="width: 32px" alt="书循" src="../img/logo-R.png">
             </a>
             <button type="button" class="navbar-toggle" btn-checkbox ng-model="navbarCollapseIsClosed">
@@ -35,13 +35,13 @@
 
             <!-- 常用链接-->
             <ul class="nav navbar-nav">
-                <li><a ui-sref="book_bookList({cmd:'latest'})">新书速递</a></li>
-                <li><a ui-sref="book_usedBookList({cmd:'nearUsed'})">附近旧书</a></li>
-                <li><a ui-sref="book_usedBookList({cmd:'nearNeed'})">附近求书</a></li>
+                <li><a ui-sref="book.bookList({cmd:'latest'})">新书速递</a></li>
+                <li><a ui-sref="book.usedBookList({cmd:'nearUsed'})">附近旧书</a></li>
+                <li><a ui-sref="book.usedBookList({cmd:'nearNeed'})">附近求书</a></li>
             </ul>
 
             <!-- 游客链接-->
-            <a ui-sref="hello" class="btn btn-info navbar-btn" ng-if="!me">登入</a>
+            <a ui-sref="common.hello" class="btn btn-info navbar-btn" ng-if="!me">登入</a>
 
             <!-- 搜索表单-->
             <form class="navbar-form navbar-right">
@@ -61,28 +61,28 @@
             <!-- 用户链接-->
             <ul class="nav navbar-nav navbar-right" ng-if="me">
 
-                <li><a ui-sref="userHome({ownerId:me.id})">我的书架</a></li>
+                <li><a ui-sref="common.userHome({ownerId:me.id})">我的书架</a></li>
 
                 <li dropdown ng-if="Status$.unreadCountSum()>0">
                     <a dropdown-toggle>消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
                     <ul class="dropdown-menu">
                         <li ng-if="Status$.NewUsedBookStatus.unreadCount>0">
-                            <a ui-sref="person_statusList({cmd:'newUsedBook'})">你关注的同学新上传了旧书
+                            <a ui-sref="person.statusList({cmd:'newUsedBook'})">你关注的同学新上传了旧书
                                 <span class="badge" ng-bind="Status$.NewUsedBookStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li ng-if="Status$.NewNeedBookStatus.unreadCount>0">
-                            <a ui-sref="person_statusList({cmd:'newNeedBook'})">你关注的同学新发布了求书
+                            <a ui-sref="person.statusList({cmd:'newNeedBook'})">你关注的同学新发布了求书
                                 <span class="badge" ng-bind="Status$.NewNeedBookStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li ng-if="Status$.PrivateStatus.unreadCount>0">
-                            <a ui-sref="person_statusList({cmd:'private'})">有同学给你发私信
+                            <a ui-sref="person.statusList({cmd:'private'})">有同学给你发私信
                                 <span class="badge" ng-bind="Status$.PrivateStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li ng-if="Status$.ReviewUsedBookStatus.unreadCount>0">
-                            <a ui-sref="person_statusList({cmd:'reviewUsedBook'})">有同学评价你的书
+                            <a ui-sref="person.statusList({cmd:'reviewUsedBook'})">有同学评价你的书
                                 <span class="badge" ng-bind="Status$.ReviewUsedBookStatus.unreadCount"></span>
                             </a>
                         </li>
@@ -97,16 +97,16 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li ng-if="followeeNumber>0">
-                            <a ui-sref="userList({cmd:'followee'})">关注<strong ng-bind="followeeNumber"></strong>位同学</a>
+                            <a ui-sref="common.userList({cmd:'followee'})">关注<strong ng-bind="followeeNumber"></strong>位同学</a>
                         </li>
                         <li ng-if="followerNumber>0">
-                            <a ui-sref="userList({cmd:'follower'})">有<strong ng-bind="followerNumber"></strong>位粉丝</a>
+                            <a ui-sref="common.userList({cmd:'follower'})">有<strong ng-bind="followerNumber"></strong>位粉丝</a>
                         </li>
                         <li>
-                            <a ui-sref="person_uploadOneUsedBook()">上传旧书</a>
+                            <a ui-sref="person.uploadOneUsedBook()">上传旧书</a>
                         </li>
                         <li>
-                            <a ui-sref="person_uploadOneNeedBook()">发布求书</a>
+                            <a ui-sref="person.uploadOneNeedBook()">发布求书</a>
                         </li>
                         <li ng-click="logOut()">
                             <a href="#">退出</a>
@@ -141,7 +141,7 @@
     </div>
 
     <!-- 主要内容区-->
-    <main class="row" ui-view="main"></main>
+    <main class="row" ui-view></main>
 
 </div>
 <!-- build:Avos-js -->
@@ -182,44 +182,44 @@
 <script src="js/service/bootstrap-modal-view.js"></script>
 <script src="js/service/wechat-news.js"></script>
 <!--Controller-->
-<script src="js/controller/bs-nav-bar-ctrl.js"></script>
+<script src="js/controller/common/bs-nav-bar-ctrl.js"></script>
 
-<script src="../js/controller/book-recommend-ctrl.js"></script>
-<script src="js/controller/bs-book-recommend-ctrl.js"></script>
+<script src="../js/controller/book/book-recommend-ctrl.js"></script>
+<script src="js/controller/book/bs-book-recommend-ctrl.js"></script>
 
-<script src="../js/controller/book-book-list-ctrl.js"></script>
-<script src="js/controller/bs-book-book-list-ctrl.js"></script>
+<script src="../js/controller/book/book-list-ctrl.js"></script>
+<script src="js/controller/book/bs-book-list-ctrl.js"></script>
 
-<script src="../js/controller/book-used-book-list-ctrl.js"></script>
-<script src="js/controller/bs-book-used-book-list-ctrl.js"></script>
+<script src="../js/controller/book/used-book-list-ctrl.js"></script>
+<script src="js/controller/book/bs-used-book-list-ctrl.js"></script>
 
-<script src="../js/controller/book-one-book-ctrl.js"></script>
-<script src="js/controller/bs-book-one-book-ctrl.js"></script>
+<script src="../js/controller/book/one-book-ctrl.js"></script>
+<script src="js/controller/book/bs-one-book-ctrl.js"></script>
 
-<script src="../js/controller/book-one-used-book-ctrl.js"></script>
-<script src="js/controller/bs-book-one-used-book-ctrl.js"></script>
+<script src="../js/controller/book/one-used-book-ctrl.js"></script>
+<script src="js/controller/book/bs-one-used-book-ctrl.js"></script>
 
-<script src="../js/controller/user-home-ctrl.js"></script>
-<script src="js/controller/bs-user-home-ctrl.js"></script>
+<script src="../js/controller/common/user-home-ctrl.js"></script>
+<script src="js/controller/common/bs-user-home-ctrl.js"></script>
 
-<script src="../js/controller/person-send-msg-to-user-ctrl.js"></script>
-<script src="js/controller/bs-person-send-msg-to-user-ctrl.js"></script>
+<script src="../js/controller/person/send-msg-to-user-ctrl.js"></script>
+<script src="js/controller/person/bs-send-msg-to-user-ctrl.js"></script>
 
-<script src="../js/controller/person-upload-one-used-book-ctrl.js"></script>
-<script src="js/controller/bs-person-upload-one-used-book-ctrl.js"></script>
+<script src="../js/controller/person/upload-one-used-book-ctrl.js"></script>
+<script src="js/controller/person/bs-upload-one-used-book-ctrl.js"></script>
 
-<script src="../js/controller/person-edit-one-used-book-ctrl.js"></script>
-<script src="js/controller/bs-person-edit-one-used-book.js"></script>
+<script src="../js/controller/person/edit-one-used-book-ctrl.js"></script>
+<script src="js/controller/person/bs-edit-one-used-book.js"></script>
 
-<script src="../js/controller/user-list-ctrl.js"></script>
-<script src="js/controller/bs-user-list-ctrl.js"></script>
+<script src="../js/controller/common/user-list-ctrl.js"></script>
+<script src="js/controller/common/bs-user-list-ctrl.js"></script>
 
-<script src="../js/controller/person-status-list-ctrl.js"></script>
-<script src="js/controller/bs-person-status-list-ctrl.js"></script>
+<script src="../js/controller/person/status-list-ctrl.js"></script>
+<script src="js/controller/person/bs-status-list-ctrl.js"></script>
 
-<script src="js/controller/bs-hello-ctrl.js"></script>
+<script src="js/controller/common/bs-hello-ctrl.js"></script>
 
-<script src="js/controller/bs-signup-ctrl.js"></script>
+<script src="js/controller/common/bs-signup-ctrl.js"></script>
 <!--Directive-->
 <script src="js/directive/bs-infinite-scroll.js"></script>
 <script src="js/directive/bs-one-book-info.js"></script>

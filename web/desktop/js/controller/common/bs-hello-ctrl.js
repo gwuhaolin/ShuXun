@@ -6,7 +6,7 @@
 
 APP.controller('bs_hello', function ($scope, $state, $stateParams, User$) {
     User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
-        $state.go('userHome', {ownerId: AV.User.current().id});
+        $state.go('common.userHome', {ownerId: AV.User.current().id});
     });
 
     //生成微信二维码

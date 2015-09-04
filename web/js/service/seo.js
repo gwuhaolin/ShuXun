@@ -5,17 +5,17 @@
 APP.service('SEO$', function () {
     var that = this;
 
-    that.title = '';
+    that.title = null;
     that.setTitle = function (meta) {
         that.title = _tran(meta) + ' 书循 ';
     };
 
-    that.keywords = '';
+    that.keywords = null;
     that.setKeywords = function (meta) {
         that.keywords = _tran(meta) + ' 书,便宜,循环,二手,旧书,教材,课本,图书,大学,学生,简介,作者,书评,比价,书循,ishuxun';
     };
 
-    that.description = '';
+    that.description = null;
     that.setDescription = function (meta) {
         that.description = '便宜转让二手旧书 ' + _tran(meta);
     };
@@ -25,7 +25,12 @@ APP.service('SEO$', function () {
         that.setKeywords(meta);
         that.setDescription(meta);
     };
-    that.setSEO();
+
+    that.disableSEO = function () {
+        that.setTitle = angular.noop;
+        that.setKeywords = angular.noop;
+        that.setDescription = angular.noop;
+    };
 
     function _tran(meta) {
         var re = '';

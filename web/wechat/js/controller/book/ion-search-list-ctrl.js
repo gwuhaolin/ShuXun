@@ -17,7 +17,7 @@ APP.controller('ion_book_searchList', function ($scope, $timeout, $state, $state
     $scope.scanQRBtnOnClick = function () {
         WeChatJS$.scanQRCode(function (code) {
             if (code && code.length >= 10 && code.length <= 13) {
-                $state.go('tab.book_oneBook', {isbn13: code});
+                $state.go('book.oneBook', {isbn13: code});
             } else {
                 alert('不合法的ISBN号');
             }

@@ -5,7 +5,7 @@
         <div class="row">
             <div class=col-md-6>
                 <ol class="breadcrumb">
-                    <li><a ui-sref="book_recommend()">图书主页</a></li>
+                    <li><a ui-sref="book.recommend()">图书主页</a></li>
                     <li class="active" ng-bind="bookInfo.attributes.title"></li>
                 </ol>
             </div>
@@ -14,10 +14,10 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-default" ng-click="scrollToHash('书评')">书评</button>
                         <a class="btn btn-default btn-info"
-                           ui-sref="person_uploadOneUsedBook({isbn13:bookInfo.attributes.isbn13})">上传旧书
+                           ui-sref="person.uploadOneUsedBook({isbn13:bookInfo.attributes.isbn13})">上传旧书
                         </a>
                         <a class="btn btn-default btn-primary"
-                           ui-sref="person_uploadOneNeedBook({isbn13:bookInfo.attributes.isbn13})">发布求书
+                           ui-sref="person.uploadOneNeedBook({isbn13:bookInfo.attributes.isbn13})">发布求书
                         </a>
                     </div>
                 </div>
@@ -89,8 +89,8 @@
                         <img class="img-circle"
                              style="width: 32px;height:32px;"
                              ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
-                             ui-sref="userHome({ownerId:usedBook.attributes.owner.id})">
-                        <a ui-sref="book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+                             ui-sref="common.userHome({ownerId:usedBook.attributes.owner.id})">
+                        <a ui-sref="book.oneUsedBook({usedBookAvosObjectId:usedBook.id})">
                             <strong>{{usedBook.attributes.price}} 元</strong>
                             <em ng-bind="usedBook.attributes.des"></em>
                             <small>{{usedBook.updatedAt | date:'mediumDate'}}</small>
@@ -119,8 +119,8 @@
                         <img class="img-circle"
                              style="width: 32px;height:32px;"
                              ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
-                             ui-sref="userHome({ownerId:usedBook.attributes.owner.id})">
-                        <a ui-sref="book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+                             ui-sref="common.userHome({ownerId:usedBook.attributes.owner.id})">
+                        <a ui-sref="book.oneUsedBook({usedBookAvosObjectId:usedBook.id})">
                             <strong>最高承受 {{usedBook.attributes.price}} 元</strong>
                             <em ng-bind="usedBook.attributes.des"></em>
                             <small>{{usedBook.updatedAt | date:'mediumDate'}}</small>

@@ -90,7 +90,7 @@ function searchBookFromDouban(keyword, res) {
                 var books = json.books;
                 for (var i = 0; i < books.length && i < 9; i++) {//最多9本书
                     var title = books[i].title;
-                    var bookUrl = 'http://www.ishuxun.cn/wechat/#/tab/book/oneBook/?isbn13=' + books[i].isbn13;
+                    var bookUrl = 'http://www.ishuxun.cn/wechat/#/book/oneBook/?isbn13=' + books[i].isbn13;
                     re.push({
                         title: title,
                         image: books[i].image,
@@ -101,7 +101,7 @@ function searchBookFromDouban(keyword, res) {
                     re.push({
                         title: '还有剩下' + (total - json.count) + '本相关的书,点击查看',
                         image: 'http://www.ishuxun.cn/img/logo-R.png',
-                        url: 'http://www.ishuxun.cn/wechat/#/tab/book/searchList?keyword=' + keyword
+                        url: 'http://www.ishuxun.cn/wechat/#/book/searchList?keyword=' + keyword
                     });
                 }
             }
@@ -120,7 +120,7 @@ function searchBookFromDouban(keyword, res) {
             }
             res.reply(re);
         } else {
-            res.reply('没有找到和 ' + keyword + ' 相关的书,来<a href="http://www.ishuxun.cn/wechat/#/tab/book/searchList/">这里试试看</a>');
+            res.reply('没有找到和 ' + keyword + ' 相关的书,来<a href="http://www.ishuxun.cn/wechat/#/book/searchList/">这里试试看</a>');
         }
     }).fail(function (err) {
         console.error(err);

@@ -10,7 +10,7 @@
                 <tab heading="微信关注" active="step=='subscribe'" disable="step!='subscribe'">
                     <br><h4>使用微信扫描二维码或加书循微信号<strong>ishuxun</strong></h4><br>
                     <img class="img-responsive img-rounded center-block" ng-src="../img/QRCode.png">
-                    <a class="btn btn-info btn-lg" ui-sref="hello">关注好了</a>
+                    <a class="btn btn-info btn-lg" ui-sref="common.hello">关注好了</a>
                 </tab>
                 <tab heading="填写信息" active="step=='info'" disable="step!='info'">
                     <!-- 微信信息-->
@@ -65,10 +65,10 @@
                 </tab>
                 <tab heading="登入成功" active="step=='ok'" disable="step!='ok'">
                     <br><h4>现在开始你的寻书之旅</h4><br>
-                    <a class="btn btn-info btn-lg" ui-sref="book_recommend({major:me.get('major')})">
+                    <a class="btn btn-info btn-lg" ui-sref="book.recommend({major:me.get('major')})">
                         开始寻书
                     </a>
-                    <a class="btn btn-primary btn-lg" ui-sref="userHome({ownerId:me.id})">
+                    <a class="btn btn-primary btn-lg" ui-sref="common.userHome({ownerId:me.id})">
                         个人主页
                     </a>
                 </tab>

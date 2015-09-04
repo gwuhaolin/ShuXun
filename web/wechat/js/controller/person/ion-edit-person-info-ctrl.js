@@ -40,7 +40,7 @@ APP.controller('ion_person_editPersonInfo', function ($scope, $state, $ionicHist
         }).fail(function (error) {
             alert('修改失败:' + error.message);
         }).always(function () {
-            $state.go('tab.person_my');
+            $state.go('person.my');
             $ionicHistory.clearHistory();
         });
     };

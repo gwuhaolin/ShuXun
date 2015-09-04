@@ -2,7 +2,7 @@
      style="display: inline-block;padding: 5px;width: 80px;height: 142px">
     <p style="font-size: xx-small;margin: 0">{{usedBook.attributes.des}}&nbsp;</p>
     <img style="width: 70px;height: 100px;cursor: pointer"
-         ui-sref="tab.book_oneBook({isbn13:usedBook.attributes.isbn13})"
+         ui-sref="book.oneBook({isbn13:usedBook.attributes.isbn13})"
          ng-if="usedBook.attributes.info.attributes.image"
          ng-src="{{usedBook.attributes.info.attributes.image}}">
     <h5 class="title" ng-bind="usedBook.attributes.info.attributes.title"></h5>

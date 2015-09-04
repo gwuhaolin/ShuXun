@@ -9,7 +9,7 @@ APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $
     $scope.isLoading = true;
     //调用微信接口获取用户信息
     var wechatAOuthCode = $stateParams['code'];
-    var nextState = 'tab.person_my';
+    var nextState = 'person.my';
     User$.getWeChatOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
         $scope.isLoading = false;
         $scope.userInfo = userInfo;

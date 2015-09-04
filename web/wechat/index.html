@@ -2,11 +2,7 @@
 <html lang="zh-CN" ng-app="APP">
 <head>
     <meta charset="utf-8">
-    <meta name="fragment" content="!">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>{{SEO$.title}}</title>
-    <meta name="keywords" content="{{SEO$.keywords}}">
-    <meta name="description" content="{{SEO$.description}}">
     <!-- build:Ionic-css -->
     <link rel="stylesheet" href="../../bower_components/ionic/release/css/ionic.css">
     <!-- endbuild -->
@@ -39,6 +35,20 @@
     <ion-nav-back-button></ion-nav-back-button>
 </ion-nav-bar>
 <ion-nav-view></ion-nav-view>
+<!--tabs父视图-->
+<script type="text/ng-template" id="tabs.html">
+    <ion-tabs ng-controller="ion_tabs" class="tabs-icon-top">
+        <ion-tab title="图书" icon-on="ion-ios-book balanced" icon-off="ion-ios-book-outline"
+                 ui-sref="book.recommend">
+            <ion-nav-view name="book"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="个人" icon-on="ion-ios-person balanced" icon-off="ion-ios-person-outline" ui-sref="person.my"
+                 badge="Status$.NewUsedBookStatus.unreadCount>0 || Status$.NewNeedBookStatus.unreadCount>0 || Status$.PrivateStatus.unreadCount>0 || Status$.ReviewUsedBookStatus.unreadCount>0 ? '.' : null"
+                 badge-style="badge-assertive">
+            <ion-nav-view name="person"></ion-nav-view>
+        </ion-tab>
+    </ion-tabs>
+</script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <!-- build:Ionic-js -->
 <script src="../../bower_components/ionic/release/js/ionic.bundle.js"></script>
@@ -67,52 +77,52 @@
 <script src="js/service/wechat-js.js"></script>
 <script src="js/service/ionic-modal-view.js"></script>
 <!--Controller-->
-<script src="../js/controller/book-book-list-ctrl.js"></script>
-<script src="js/controller/ion-book-book-list-ctrl.js"></script>
+<script src="../js/controller/book/book-list-ctrl.js"></script>
+<script src="js/controller/book/ion-book-list-ctrl.js"></script>
 
-<script src="js/controller/ion-book-book-review-ctrl.js"></script>
+<script src="js/controller/book/ion-book-review-ctrl.js"></script>
 
-<script src="../js/controller/book-one-book-ctrl.js"></script>
-<script src="js/controller/ion-book-one-book-ctrl.js"></script>
+<script src="../js/controller/book/one-book-ctrl.js"></script>
+<script src="js/controller/book/ion-one-book-ctrl.js"></script>
 
-<script src="../js/controller/book-one-used-book-ctrl.js"></script>
-<script src="js/controller/ion-book-one-used-book-ctrl.js"></script>
+<script src="../js/controller/book/one-used-book-ctrl.js"></script>
+<script src="js/controller/book/ion-one-used-book-ctrl.js"></script>
 
-<script src="../js/controller/book-recommend-ctrl.js"></script>
-<script src="js/controller/ion-book-recommend-ctrl.js"></script>
+<script src="../js/controller/book/book-recommend-ctrl.js"></script>
+<script src="js/controller/book/ion-book-recommend-ctrl.js"></script>
 
-<script src="js/controller/ion-book-search-list-ctrl.js"></script>
+<script src="js/controller/book/ion-search-list-ctrl.js"></script>
 
-<script src="../js/controller/book-used-book-list-ctrl.js"></script>
-<script src="js/controller/ion-book-used-book-list-ctrl.js"></script>
+<script src="../js/controller/book/used-book-list-ctrl.js"></script>
+<script src="js/controller/book/ion-used-book-list-ctrl.js"></script>
 
-<script src="js/controller/ion-hello-ctrl.js"></script>
+<script src="js/controller/common/ion-hello-ctrl.js"></script>
 
-<script src="../js/controller/person-edit-one-used-book-ctrl.js"></script>
-<script src="js/controller/ion-person-edit-one-used-book-ctrl.js"></script>
+<script src="../js/controller/person/edit-one-used-book-ctrl.js"></script>
+<script src="js/controller/person/ion-edit-one-used-book-ctrl.js"></script>
 
-<script src="js/controller/ion-person-edit-person-info-ctrl.js"></script>
-<script src="js/controller/ion-person-my-ctrl.js"></script>
-<script src="js/controller/ion-person-need-book-list-ctrl.js"></script>
+<script src="js/controller/person/ion-edit-person-info-ctrl.js"></script>
+<script src="js/controller/person/ion-my-ctrl.js"></script>
+<script src="js/controller/person/ion-need-book-list-ctrl.js"></script>
 
-<script src="../js/controller/person-send-msg-to-user-ctrl.js"></script>
-<script src="js/controller/ion-person-send-msg-to-user-ctrl.js"></script>
+<script src="../js/controller/person/send-msg-to-user-ctrl.js"></script>
+<script src="js/controller/person/ion-send-msg-to-user-ctrl.js"></script>
 
-<script src="../js/controller/person-status-list-ctrl.js"></script>
-<script src="js/controller/ion-person-status-list-ctrl.js"></script>
+<script src="../js/controller/person/status-list-ctrl.js"></script>
+<script src="js/controller/person/ion-status-list-ctrl.js"></script>
 
-<script src="../js/controller/person-upload-one-used-book-ctrl.js"></script>
-<script src="js/controller/ion-person-upload-one-used-book-ctrl.js"></script>
+<script src="../js/controller/person/upload-one-used-book-ctrl.js"></script>
+<script src="js/controller/person/ion-upload-one-used-book-ctrl.js"></script>
 
-<script src="js/controller/ion-person-used-book-list-ctrl.js"></script>
-<script src="js/controller/ion-signup-ctrl.js"></script>
-<script src="js/controller/ion-tabs-ctrl.js"></script>
+<script src="js/controller/person/ion-used-book-list-ctrl.js"></script>
+<script src="js/controller/common/ion-signup-ctrl.js"></script>
+<script src="js/controller/common/ion-tabs-ctrl.js"></script>
 
-<script src="../js/controller/user-home-ctrl.js"></script>
-<script src="js/controller/ion-user-home-ctrl.js"></script>
+<script src="../js/controller/common/user-home-ctrl.js"></script>
+<script src="js/controller/common/ion-user-home-ctrl.js"></script>
 
-<script src="../js/controller/user-list-ctrl.js"></script>
-<script src="js/controller/ion-user-list-ctrl.js"></script>
+<script src="../js/controller/common/user-list-ctrl.js"></script>
+<script src="js/controller/common/ion-user-list-ctrl.js"></script>
 <!--Directive-->
 <script src="js/directive/ion-douban-book-oneline.js"></script>
 <script src="js/directive/ion-one-need-book.js"></script>

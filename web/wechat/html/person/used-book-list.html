@@ -1,7 +1,7 @@
 <!--管理上传的二手书列表-->
 <ion-view ng-controller="ion_person_usedBookList" view-title="管理我上传的旧书">
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-balanced" ui-sref="tab.person_my">我</button>
+        <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
     <ion-content>
         <div style="text-align: center;margin: 10px" ng-if="UsedBook$.MyUsedBook.isLoading">
@@ -10,7 +10,7 @@
         <ion-list>
             <ion-item class="item-divider item-button-right">正在架上
                 <button class="button button-clear button-balanced"
-                        ui-sref="tab.person_uploadOneUsedBook">上传旧书
+                        ui-sref="person.uploadOneUsedBook">上传旧书
                 </button>
             </ion-item>
             <ion-one-used-book ng-repeat="usedBook in UsedBook$.MyUsedBook.usedBooks" used-book="usedBook"

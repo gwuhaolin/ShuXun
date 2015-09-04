@@ -10,7 +10,7 @@ APP.controller('bs_book_recommendCtrl', function ($scope, $controller, $state, B
     $scope._setMajorFilterAndLoad();
     $scope.chooseMajor = function () {
         BootstrapModalView$.openChooseMajorModalView(function (major) {
-            $state.go('book_recommend', {major: major});
+            $state.go('book.recommend', {major: major});
         })
     };
 });

@@ -1,6 +1,6 @@
 <ion-view ng-controller="ion_book_oneBook" view-title="{{bookInfo.attributes.title}}">
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-balanced" ui-sref="tab.book_searchList">寻书</button>
+        <button class="button button-clear button-balanced" ui-sref="book.searchList">寻书</button>
     </ion-nav-buttons>
     <ion-content>
         <!-- 正在加载-->
@@ -43,7 +43,7 @@
                                  num-raters="{{bookInfo.attributes.rating.numRaters}}"></ion-review-star>
                 <i>&nbsp;</i>
                 <button class="button button-small button-clear button-balanced"
-                        ui-sref="tab.book_bookReview({doubanBookId:bookInfo.attributes.doubanId,bookTitle:bookInfo.attributes.title})">书评
+                        ui-sref="book_bookReview({doubanBookId:bookInfo.attributes.doubanId,bookTitle:bookInfo.attributes.title})">书评
                 </button>
             </ion-item>
         </div>
@@ -63,7 +63,7 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">要卖对应旧书的同学
                 <button class="button button-clear button-balanced"
-                        ui-sref="tab.person_uploadOneUsedBook({isbn13:bookInfo.attributes.isbn13})">上传旧书
+                        ui-sref="person.uploadOneUsedBook({isbn13:bookInfo.attributes.isbn13})">上传旧书
                 </button>
             </ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
@@ -71,9 +71,9 @@
                       ng-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
                       class="item-avatar">
                 <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
-                     ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
+                     ui-sref="common.userHome({ownerId:usedBook.attributes.owner.id})">
 
-                <div ui-sref="tab.book_oneUsedBook({usedBookAvosObjectId:usedBook.id})">
+                <div ui-sref="book.oneUsedBook({usedBookAvosObjectId:usedBook.id})">
                     <h3 style="white-space: pre-wrap">
                         <strong ng-bind="usedBook.attributes.price"></strong>元
                         <em ng-bind="usedBook.attributes.des"></em>
@@ -84,7 +84,7 @@
             </ion-item>
             <ion-item class="littleTailItem"
                       ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
-                      ui-sref="tab.book_usedBookList({cmd:'isbnUsed',isbn13:isbn13})">
+                      ui-sref="book.usedBookList({cmd:'isbnUsed',isbn13:isbn13})">
                 共<strong ng-bind="usedBookNumber"></strong>本旧书,查看全部
             </ion-item>
 
@@ -94,7 +94,7 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">正需要它的同学
                 <button class="button button-clear button-balanced"
-                        ui-sref="tab.person_uploadOneNeedBook({isbn13:bookInfo.attributes.isbn13})">发布求书
+                        ui-sref="person.uploadOneNeedBook({isbn13:bookInfo.attributes.isbn13})">发布求书
                 </button>
             </ion-item>
             <ion-item ng-if="needBookNumber==0" style="text-align: center">还没有同学想要它</ion-item>
@@ -102,9 +102,9 @@
                       ng-repeat="usedBook in UsedBook$.ISBN_need.nowEqualISBNNeedBooks"
                       class="item-avatar">
                 <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
-                     ui-sref="tab.userHome({ownerId:usedBook.attributes.owner.id})">
+                     ui-sref="common.userHome({ownerId:usedBook.attributes.owner.id})">
 
-                <div ui-sref="tab.book_oneNeedBook({usedBookAvosObjectId:usedBook.id})">
+                <div ui-sref="book.oneNeedBook({usedBookAvosObjectId:usedBook.id})">
                     <p ng-if="usedBook.attributes.price">最高承受<strong ng-bind="usedBook.attributes.price"></strong>元</p>
 
                     <p ng-if="usedBook.attributes.des" ng-bind="usedBook.attributes.des"></p>
@@ -114,7 +114,7 @@
             </ion-item>
             <ion-item class="littleTailItem"
                       ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
-                      ui-sref="tab.book_usedBookList({cmd:'isbnNeed',isbn13:isbn13})">
+                      ui-sref="book.usedBookList({cmd:'isbnNeed',isbn13:isbn13})">
                 共<strong ng-bind="needBookNumber"></strong>位同学想要这本书,查看全部
             </ion-item>
 
