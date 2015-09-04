@@ -103,7 +103,7 @@ AV.Cloud.afterSave('_Status', function (req) {
         msg = status.get('message');
     var role = status.get('role'),//当前发送者的角色sell buy
         usedBook = status.get('usedBook');//在 私信,评论二手书时 才有
-    var url = 'http://www.ishuxun.cn/wechat/#/person/sendMsgToUser?receiverObjectId=' + sender.id + '&inboxType=' + inboxType,
+    var url = 'http://www.ishuxun.cn/wechat/#/person/send-msg-to-user?receiverObjectId=' + sender.id + '&inboxType=' + inboxType,
         title;
     if (role == 'buy') {
         url += '&role=sell';

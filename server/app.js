@@ -21,9 +21,9 @@ app.get('/wechatOAuthForwarder', function (req, res) {
     var code = req.query.code;
     var state = req.query.state;
     if (state == 'wechat') {
-        res.redirect('/wechat/#/tab/signUp?code=' + code);
+        res.redirect('/wechat/#/common/signup?code=' + code);
     } else if (state == 'desktop') {
-        res.redirect('/desktop/#!/signUp?code=' + code);
+        res.redirect('/desktop/#!/common/signUp?code=' + code);
     } else {
         res.redirect('/');
     }
