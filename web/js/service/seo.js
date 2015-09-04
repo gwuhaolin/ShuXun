@@ -17,7 +17,7 @@ APP.service('SEO$', function () {
 
     that.description = '';
     that.setDescription = function (meta) {
-        that.description = '便宜 转让 二手 旧书 ' + _tran(meta);
+        that.description = '便宜转让二手旧书 ' + _tran(meta);
     };
 
     that.setSEO = function (meta) {
@@ -31,47 +31,51 @@ APP.service('SEO$', function () {
         var re = '';
         if (typeof meta === 'array') {
             AV._.each(meta, function (oneMeta) {
-                if (oneMeta) {
-                    re += _tran(oneMeta) + ' ';
+                var value = _tran(oneMeta);
+                if (value) {
+                    re += value + ' ';
                 }
             })
         } else if (meta instanceof Model.BookInfo) {
             AV._.each(['title', 'author', 'publisher'], function (key) {
-                var value = meta.attributes[key];
+                var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += _tran(value) + ',';
+                    re += value + ',';
                 }
             });
         } else if (meta instanceof Model.UsedBook) {
-            AV._.each(['price', 'des'], function (key) {
-                var value = meta.attributes[key];
+            AV._.each(['info', 'des'], function (key) {
+                var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += _tran(value) + ',';
+                    re += value + ',';
                 }
             });
         } else if (meta instanceof Model.User) {
             AV._.each(['major', 'school', 'nickName'], function (key) {
-                var value = meta.attributes[key];
+                var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += _tran(value) + ',';
+                    re += value + ',';
                 }
             });
         } else if (meta instanceof AV.Object) {
             for (var key in meta.attributes) {
-                var value = meta.attributes[key];
+                var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += _tran(value) + ',';
+                    re += value + ',';
                 }
             }
         } else if (typeof meta === 'object') {
             for (key in meta) {
-                value = meta[key];
+                value = _tran(meta[key]);
                 if (value) {
-                    re += _tran(value) + ',';
+                    re += value + ',';
                 }
             }
         } else if (typeof  meta === 'string') {
-            re = meta.trim();
+            value = meta.trim();
+            re = value.length > 0 ? value : null;
+        } else {
+            re = null;
         }
         return re;
     }
