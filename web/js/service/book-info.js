@@ -59,6 +59,30 @@ APP.service('BookInfo$', function ($rootScope, DoubanBook$) {
     };
 
     /**
+     * 在BookInfo表里进行全文检索
+     * @param keyword 关键字
+     * @returns {*|AV.Promise}
+     * 返回AVOS BookInfo 数组，每个bookInfo都有usedBooksCount代表当前bookInfo有几本旧书
+     */
+    this.searchBook = function (keyword) {
+        var rePromise = new AV.Promise();
+        var query1 = new AV.Query(Model.BookInfo);
+        query1.contains('author', keyword);
+        var query2 = new AV.Query(Model.BookInfo);
+        query2.contains('title', keyword);
+        var query3 = new AV.Query(Model.BookInfo);
+        query3.equalTo('tags', keyword);
+        var query = AV.Query.or(query1, query2, query3);
+        query.select('title', 'publisher', 'pubdate', 'author', 'price', 'image', 'isbn13');
+        query.find().done(function (bookInfos) {
+            rePromise.resolve(bookInfos);
+        }).fail(function (err) {
+            rePromise.reject(err);
+        });
+        return rePromise;
+    };
+
+    /**
      * 获得对应的ISBN号码的图书在各大电商平台的价格信息
      * @param isbn13 图书的豆瓣ID
      * @return {AV.Promise} 返回[{url,name,price,logoUrl}]
