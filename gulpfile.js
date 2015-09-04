@@ -13,6 +13,7 @@ var es = require("event-stream");
 var htmlreplace = require('gulp-html-replace');
 var htmlmin = require('gulp-htmlmin');
 var clean = require('gulp-clean');
+var NOW = Date.now().toString();
 function CDN(cdn) {
     var CDNLib = {
         'Ionic-css': 'http://7xiv48.com1.z0.glb.clouddn.com/ionic/css/ionic.min.css',
@@ -56,7 +57,7 @@ gulp.task('wechat_js', function () {
         gulp.src(['web/js/*.js', 'web/wechat/js/*.js', 'web/js/service/*.js', 'web/js/controller/*.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/*.js', 'web/wechat/js/directive/*js']))
         //angular依赖
         .pipe(ngAnnotate())
-        .pipe(concat('main.js'))//合并
+        .pipe(concat('index-' + NOW + '.js'))//合并
         .pipe(uglify({outSourceMap: false}))//压缩
         .pipe(gulp.dest('public/wechat'));
 });
@@ -64,7 +65,7 @@ gulp.task('wechat_js', function () {
 gulp.task('wechat_index', function () {
     return gulp.src('web/wechat/index.html')
         .pipe(htmlreplace(CDN({
-            'Main-js': 'main.js'
+            'Index-js': 'index-' + NOW + '.js'
         })))
         .pipe(htmlmin({
             collapseWhitespace: true,
@@ -97,7 +98,7 @@ gulp.task('desktop_js', function () {
         gulp.src(['web/js/*.js', 'web/desktop/js/*.js', 'web/js/service/*.js', 'web/js/controller/*.js', 'web/desktop/js/service/*.js', 'web/desktop/js/controller/*.js', 'web/desktop/js/directive/*js']))
         //angular依赖
         .pipe(ngAnnotate())
-        .pipe(concat('main.js'))//合并
+        .pipe(concat('index-' + NOW + '.js'))//合并
         .pipe(uglify({outSourceMap: false}))//压缩
         .pipe(gulp.dest('public/desktop'));
 });
@@ -105,7 +106,7 @@ gulp.task('desktop_js', function () {
 gulp.task('desktop_index', function () {
     return gulp.src('web/desktop/index.html')
         .pipe(htmlreplace(CDN({
-            'Main-js': 'main.js'
+            'Index-js': 'index-' + NOW + '.js'
         })))
         .pipe(htmlmin({
             collapseWhitespace: true,

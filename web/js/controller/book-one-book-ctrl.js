@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('book_oneBook', function ($scope, $state, $stateParams, BookInfo$, UsedBook$, BusinessSite$, User$) {
+APP.controller('book_oneBook', function ($scope, $state, $stateParams, BookInfo$, UsedBook$, User$) {
     $scope.User$ = User$;
     //////////// 豆瓣图书信息 /////////
     $scope.isbn13 = $stateParams.isbn13;
@@ -22,7 +22,7 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams, BookInfo$
         $scope.$digest();
     });
     //加载电商联盟信息
-    BusinessSite$.getBusinessInfoByISBN($scope.isbn13).done(function (infos) {
+    BookInfo$.getBusinessInfoByISBN($scope.isbn13).done(function (infos) {
         $scope.businessInfos = infos;
         $scope.$digest();
     });

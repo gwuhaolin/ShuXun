@@ -57,4 +57,15 @@ APP.service('BookInfo$', function ($rootScope, DoubanBook$) {
             return that.LatestBook.hasMoreFlag;
         }
     };
+
+    /**
+     * 获得对应的ISBN号码的图书在各大电商平台的价格信息
+     * @param isbn13 图书的豆瓣ID
+     * @return {AV.Promise} 返回[{url,name,price,logoUrl}]
+     */
+    this.getBusinessInfoByISBN = function (isbn13) {
+        return AV.Cloud.run('getBusinessInfo', {
+            isbn13: isbn13
+        }, null);
+    }
 });
