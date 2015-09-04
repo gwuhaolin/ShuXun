@@ -35,5 +35,4 @@ APP.controller('userList', function ($scope, $stateParams, UsedBook$, BookRecomm
 
     var majorFilter = $stateParams['majorFilter'];
     majorFilter && $scope.setMajorFilter(majorFilter);
-    $scope.SEO$.setSEO($scope.users);
 });

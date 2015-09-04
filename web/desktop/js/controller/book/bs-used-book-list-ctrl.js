@@ -14,4 +14,5 @@ APP.controller('bs_book_usedBookList', function ($scope, $controller, BootstrapM
             $scope.setMajorFilter && $scope.setMajorFilter(major);
         });
     };
+    $scope.SEO$.setSEO($scope.usedBooks);
 });

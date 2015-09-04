@@ -14,4 +14,5 @@ APP.controller('bs_userList', function ($scope, $controller, BootstrapModalView$
             $scope.setMajorFilter && $scope.setMajorFilter(major);
         });
     };
+    $scope.SEO$.setSEO($scope.users);
 });

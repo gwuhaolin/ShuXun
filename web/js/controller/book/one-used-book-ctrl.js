@@ -14,7 +14,6 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     query.include('info');
     query.get($scope.usedBookObjectId).done(function (usedBook) {
         $scope.usedBook = usedBook;
-        $scope.SEO$.setSEO($scope.usedBook);
     }).always(function () {
         $scope.$digest();
     });

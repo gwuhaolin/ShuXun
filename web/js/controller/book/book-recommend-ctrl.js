@@ -32,5 +32,4 @@ APP.controller('book_recommendCtrl', function ($scope, $stateParams, BookRecomme
     $scope.LatestBook.loadMore();
     BookRecommend$.NearUsedBook.loadMore();
     BookRecommend$.NearNeedBook.loadMore();
-    $scope.SEO$.setSEO('图书推荐');
 });

@@ -10,7 +10,6 @@ APP.controller('userHome', function ($scope, $stateParams, UsedBook$) {
     var query = new AV.Query(Model.User);
     query.get($scope.ownerId).done(function (owner) {
         $scope.owner = owner;
-        $scope.SEO$.setSEO($scope.owner);
         UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
             $scope.usedBooks = usedBooks;
             $scope.$digest();

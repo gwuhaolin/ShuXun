@@ -230,10 +230,8 @@ var APP = angular.module('APP', ['ionic'], null)
         $urlRouterProvider.otherwise('/book/recommend');
     });
 
-APP.run(function ($rootScope, $state, User$, WeChatJS$, SEO$) {
+APP.run(function ($rootScope, $state, User$, WeChatJS$) {
     WeChatJS$.config();//马上调用配置微信
-    SEO$.disableSEO();
-    $rootScope.SEO$ = SEO$;
     User$.loginWithUnionId(readCookie('unionId'));
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
         var stateName = nextState['name'];

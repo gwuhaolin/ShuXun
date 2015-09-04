@@ -13,6 +13,7 @@ APP.controller('bs_book_oneUsedBook', function ($scope, $controller) {
         return $scope.usedBook ? $scope.usedBook.get('owner') : null;
     }, function () {
         $scope.usedBook && $scope.usedBook.attributes.owner.relation('usedBooks').query().find().done(function (usedBooks) {
+            $scope.SEO$.setSEO($scope.usedBook);
             AV._.each(usedBooks, function (usedBook) {
                 if (usedBook.id != $scope.usedBookObjectId) {
                     var role = usedBook.get('role');

@@ -13,4 +13,5 @@ APP.controller('bs_book_recommendCtrl', function ($scope, $controller, $state, B
             $state.go('book.recommend', {major: major});
         })
     };
+    $scope.SEO$.setSEO('图书推荐');
 });

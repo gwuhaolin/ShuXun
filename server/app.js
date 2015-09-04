@@ -23,7 +23,7 @@ app.get('/wechatOAuthForwarder', function (req, res) {
     if (state == 'wechat') {
         res.redirect('/wechat/#/common/signup?code=' + code);
     } else if (state == 'desktop') {
-        res.redirect('/desktop/#!/common/signUp?code=' + code);
+        res.redirect('/desktop/#!/common/signup?code=' + code);
     } else {
         res.redirect('/');
     }

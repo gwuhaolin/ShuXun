@@ -36,6 +36,7 @@ APP.controller('bs_userHome', function ($scope, $controller, $sce, User$, Bootst
         return $scope.owner;
     }, function () {
         loadIsMyFollowee();
+        $scope.SEO$.setSEO($scope.owner);
     });
     $scope.$on('FollowSomeone', function () {
         loadIsMyFollowee();

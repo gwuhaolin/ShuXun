@@ -7,4 +7,5 @@
 APP.controller('bs_book_bookList', function ($scope, $controller) {
     $controller('book_bookList', {$scope: $scope});
     $scope.loadMore();
+    $scope.SEO$.setSEO($scope.books);
 });
