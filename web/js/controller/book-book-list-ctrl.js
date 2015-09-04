@@ -25,4 +25,5 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         $scope.title = '新书速递';
         $scope.hasMore = BookInfo$.LatestBook.hasMore;
     }
+    $scope.SEO$.setSEO($scope.books);
 });

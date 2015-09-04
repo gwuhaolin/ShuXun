@@ -177,8 +177,9 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
         });
     $urlRouterProvider.otherwise('/book/recommend');
 });
-APP.run(function ($rootScope, $location, $anchorScroll, User$) {
+APP.run(function ($rootScope, $location, $anchorScroll, User$, SEO$) {
     User$.loginWithUnionId(readCookie('unionId'));
+    $rootScope.SEO$ = SEO$;
     /**
      * 滚动到一个hash标签
      * @param hashId

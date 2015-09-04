@@ -2,7 +2,11 @@
 <html lang="zh-CN" ng-app="APP">
 <head>
     <meta charset="utf-8">
+    <meta name="fragment" content="!">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>{{SEO$.title}}</title>
+    <meta name="keywords" content="{{SEO$.keywords}}">
+    <meta name="description" content="{{SEO$.description}}">
     <!-- build:Ionic-css -->
     <link rel="stylesheet" href="../../bower_components/ionic/release/css/ionic.css">
     <!-- endbuild -->
@@ -59,6 +63,7 @@
 <script src="../js/service/status.js"></script>
 <script src="../js/service/used-book.js"></script>
 <script src="../js/service/user.js"></script>
+<script src="../js/service/seo.js"></script>
 <script src="js/service/wechat-js.js"></script>
 <script src="js/service/ionic-modal-view.js"></script>
 <!--Controller-->
@@ -117,5 +122,6 @@
 <script src="js/directive/ion-user-info.js"></script>
 <script src="js/directive/ion-one-book-info.js"></script>
 <!-- endbuild -->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </body>
 </html>

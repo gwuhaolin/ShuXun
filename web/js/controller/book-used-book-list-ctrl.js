@@ -40,4 +40,5 @@ APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, B
     if (majorFilter && $scope.setMajorFilter) {
         $scope.setMajorFilter(majorFilter);
     }
+    $scope.SEO$.setSEO($scope.usedBooks);
 });

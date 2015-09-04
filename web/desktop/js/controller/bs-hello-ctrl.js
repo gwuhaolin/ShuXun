@@ -17,4 +17,5 @@ APP.controller('bs_hello', function ($scope, $state, $stateParams, User$) {
         state: 'desktop',
         redirect_uri: encodeURI('http://www.ishuxun.cn/wechatOAuthForwarder')
     });
+    $scope.SEO$.setSEO('微信 登入');
 });

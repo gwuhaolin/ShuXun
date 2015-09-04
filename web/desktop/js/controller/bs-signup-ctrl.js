@@ -56,4 +56,6 @@ APP.controller('bs_signUp', function ($scope, $stateParams, User$, BootstrapModa
             $scope.$digest();
         });
     };
+
+    $scope.SEO$.setSEO('加入 注册');
 });
