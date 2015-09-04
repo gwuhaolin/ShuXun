@@ -57,22 +57,4 @@ APP.service('BookInfo$', function ($rootScope, DoubanBook$) {
             return that.LatestBook.hasMoreFlag;
         }
     };
-
-    /**
-     * 在BookInfo表里进行全文检索
-     * @param keyword 关键字
-     * @returns {*|AV.Promise}
-     * 返回AVOS BookInfo 数组，每个bookInfo都有usedBooksCount代表当前bookInfo有几本旧书
-     */
-    this.searchBook = function (keyword) {
-        var rePromise = new AV.Promise();
-        var query = new AV.SearchQuery('BookInfo');
-        query.queryString(keyword);
-        query.find(null).done(function (bookInfos) {
-            rePromise.resolve(bookInfos);
-        }).fail(function (err) {
-            rePromise.reject(err);
-        });
-        return rePromise;
-    }
 });

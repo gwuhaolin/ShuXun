@@ -22,7 +22,6 @@ AV.Cloud.define('spiderAndSaveLatestBooks', function (req, res) {
 AV.Cloud.define('repairData', function (req, res) {
     DataRepair.fillUsedBookInfoWhereInfoIsNull();
     DataRepair.updateBookInfoUsedBooksRelation();
-    DataRepair.updateBookInfoWhereTagsAndRatingIsNull();
     DataRepair.updateNoDoubanIdBookInfoFromDouban();
     res.success();
 });

@@ -36,6 +36,7 @@
     "superagent": "^1.2.0",
     "superagent-charset": "^0.0.1",
     "underscore": "^1.8.3",
+    "unirest": "^0.4.2",
     "wechat": "^1.2.3",
     "wechat-api": "^1.7.1",
     "wechat-oauth": "^1.0.1"

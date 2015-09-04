@@ -7,7 +7,7 @@ var _ = require('underscore');
 var AV = require('leanengine');
 var Model = require('../../web/js/model.js');
 var url = require('url');
-var SuperAgent = require('superagent');
+var Unirest = require('unirest');
 var Cheerio = require('cheerio');
 var BookInfo = require('./book-info.js');
 var DoubanAPIKey = '03cddf77fa33367f0b699e67ee99a37d';
@@ -19,23 +19,19 @@ exports.spiderAndSaveLatestBooks = function () {
      */
     function spiderLatestBooksId() {
         var rePromise = new AV.Promise(null);
-        SuperAgent.get('http://book.douban.com/latest')
-            .end(function (err, res) {
-                if (err) {
-                    rePromise.reject(err);
+        Unirest.get('http://book.douban.com/latest')
+            .end(function (res) {
+                if (res.ok) {
+                    var re = [];
+                    var $ = Cheerio.load(res.raw_body);
+                    $('a[href^="http://book.douban.com/subject/"]').each(function () {
+                        var url = $(this).attr('href');
+                        var id = url.split('/')[4];
+                        re.push(id);
+                    });
+                    rePromise.resolve(re);
                 } else {
-                    if (res.ok) {
-                        var re = [];
-                        var $ = Cheerio.load(res.text);
-                        $('a[href^="http://book.douban.com/subject/"]').each(function () {
-                            var url = $(this).attr('href');
-                            var id = url.split('/')[4];
-                            re.push(id);
-                        });
-                        rePromise.resolve(re);
-                    } else {
-                        rePromise.reject(res.text);
-                    }
+                    rePromise.reject(res.error);
                 }
             });
         return rePromise;
@@ -114,34 +110,29 @@ exports.spiderAndSaveLatestBooks = function () {
  */
 exports.spiderDoubanBookReview = function (doubanBookId, start) {
     var rePromise = new AV.Promise(null);
-    SuperAgent
-        .get('http://book.douban.com/subject/' + doubanBookId + '/reviews')
+    Unirest.get('http://book.douban.com/subject/' + doubanBookId + '/reviews')
         .query({
             start: start
-        }).end(function (err, res) {
-            if (err) {
-                rePromise.reject(err);
+        }).end(function (res) {
+            if (res.ok) {
+                var re = [];
+                var $ = Cheerio.load(res.raw_body);
+                $('.ctsh').each(function () {
+                    var avatarUrl = $(this).find('img').first().attr('src');
+                    var a = $(this).find('h3').first().children('a').first();
+                    var reviewId = $(a).attr('href').split('/')[4];
+                    var title = $(a).text();
+                    var context = $(this).find('.review-short').first().children('span').first().text();
+                    re.push({
+                        reviewId: reviewId,
+                        avatarUrl: avatarUrl,
+                        title: title,
+                        context: context
+                    })
+                });
+                rePromise.resolve(re);
             } else {
-                if (res.ok) {
-                    var re = [];
-                    var $ = Cheerio.load(res.text);
-                    $('.ctsh').each(function () {
-                        var avatarUrl = $(this).find('img').first().attr('src');
-                        var a = $(this).find('h3').first().children('a').first();
-                        var reviewId = $(a).attr('href').split('/')[4];
-                        var title = $(a).text();
-                        var context = $(this).find('.review-short').first().children('span').first().text();
-                        re.push({
-                            reviewId: reviewId,
-                            avatarUrl: avatarUrl,
-                            title: title,
-                            context: context
-                        })
-                    });
-                    rePromise.resolve(re);
-                } else {
-                    rePromise.reject(res.text);
-                }
+                rePromise.reject(res.error);
             }
         });
     return rePromise;
@@ -171,16 +162,16 @@ function simplifyDoubanBookJson(doubanJson) {
  */
 exports.spiderBookByISBN = function (isbn) {
     var rePromise = new AV.Promise(null);
-    SuperAgent.get('https://api.douban.com/v2/book/isbn/' + isbn)
+    Unirest.get('https://api.douban.com/v2/book/isbn/' + isbn)
         .query({
             fields: BookInfo.BookInfoAttrName_douban.toString(),
             client_id: DoubanAPIKey
         })
-        .end(function (err, res) {
-            if (err) {
-                rePromise.reject(err);
-            } else {
+        .end(function (res) {
+            if (res.ok) {
                 rePromise.resolve(simplifyDoubanBookJson(res.body));
+            } else {
+                rePromise.reject(res.error);
             }
         });
     return rePromise;
@@ -193,18 +184,16 @@ exports.spiderBookByISBN = function (isbn) {
  */
 exports.spiderBookByDoubanId = function (doubanId) {
     var rePromise = new AV.Promise(null);
-    SuperAgent.get('https://api.douban.com/v2/book/' + doubanId)
-        .query({
-            fields: BookInfo.BookInfoAttrName_douban.toString(),
-            client_id: DoubanAPIKey
-        })
-        .end(function (err, res) {
-            if (err) {
-                rePromise.reject(err);
-            } else {
-                rePromise.resolve(simplifyDoubanBookJson(res.body));
-            }
-        });
+    Unirest.get('https://api.douban.com/v2/book/' + doubanId).query({
+        fields: BookInfo.BookInfoAttrName_douban.toString(),
+        client_id: DoubanAPIKey
+    }).end(function (res) {
+        if (res.ok) {
+            rePromise.resolve(simplifyDoubanBookJson(res.body));
+        } else {
+            rePromise.reject(res.error);
+        }
+    });
     return rePromise;
 };
 
@@ -216,31 +205,25 @@ exports.spiderBookByDoubanId = function (doubanId) {
 exports.spiderBusinessInfo = function (isbn13) {
     var rePromise = new AV.Promise(null);
     exports.spiderDoubanIdByISBN13(isbn13).done(function (doubanId) {
-        SuperAgent
-            .get('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks')
-            .end(function (err, res) {
-                if (err) {
-                    rePromise.reject(err);
-                } else {
-                    if (res.ok) {
-                        var $ = Cheerio.load(res.text);
-                        var re = [];
-                        $("ck-part[type='item']").each(function () {
-                            var one = {};
-                            var first = $(this).children().first();
-                            one.url = $(first).attr('href');
-                            one.url = url.parse(one.url, true).query['url'];
-                            one.name = $(first).text().trim().replace(/网|商城/, '');
-                            one.price = parseFloat($(first).next().text().trim());
-                            one.logoUrl = computeLogoUrlFromName(one.name);
-                            re.push(one);
-                        });
-                        rePromise.resolve(re);
-                    } else {
-                        rePromise.reject(res.text);
-                    }
-                }
-            });
+        Unirest.get('http://frodo.douban.com/h5/book/' + doubanId + '/buylinks').end(function (res) {
+            if (res.ok) {
+                var $ = Cheerio.load(res.raw_body);
+                var re = [];
+                $("ck-part[type='item']").each(function () {
+                    var one = {};
+                    var first = $(this).children().first();
+                    one.url = $(first).attr('href');
+                    one.url = url.parse(one.url, true).query['url'];
+                    one.name = $(first).text().trim().replace(/网|商城/, '');
+                    one.price = parseFloat($(first).next().text().trim());
+                    one.logoUrl = computeLogoUrlFromName(one.name);
+                    re.push(one);
+                });
+                rePromise.resolve(re);
+            } else {
+                rePromise.reject(res.error);
+            }
+        });
     }).fail(function (err) {
         rePromise.reject(err);
     });
@@ -312,24 +295,19 @@ exports.searchBooks = function (keyword, tag, start, count, fields) {
         fields = BookInfo.BookInfoAttrName_douban;
     }
     var rePromise = new AV.Promise(null);
-    SuperAgent.get('https://api.douban.com/v2/book/search')
-        .query({
-            q: keyword,
-            tag: tag,
-            start: start,
-            count: count,
-            fields: fields.toString(),
-            client_id: DoubanAPIKey
-        }).end(function (err, res) {
-            if (err) {
-                rePromise.reject(err);
-            } else {
-                if (res.ok) {
-                    rePromise.resolve(res.body);
-                } else {
-                    rePromise.reject(res.body);
-                }
-            }
-        });
+    Unirest.get('https://api.douban.com/v2/book/search').query({
+        q: keyword,
+        tag: tag,
+        start: start,
+        count: count,
+        fields: fields.toString(),
+        client_id: DoubanAPIKey
+    }).end(function (res) {
+        if (res.ok) {
+            rePromise.resolve(res.body);
+        } else {
+            rePromise.reject(res.error);
+        }
+    });
     return rePromise;
 };

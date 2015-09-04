@@ -7,7 +7,7 @@
 /**
  * 图书搜索,调用豆瓣接口
  */
-APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo$) {
+APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$) {
     var that = this;
     /**
      * 当前是否正在加载数据
@@ -90,12 +90,20 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
      */
     this.loadFromBookInfo = function () {
         that.isLoading = true;
-        BookInfo$.searchBook(that.keyword).done(function (bookInfos) {
+        var query1 = new AV.Query(Model.BookInfo);
+        query1.contains('author', that.keyword);
+        var query2 = new AV.Query(Model.BookInfo);
+        query2.contains('title', that.keyword);
+        var query3 = new AV.Query(Model.BookInfo);
+        query3.equalTo('tags', that.keyword);
+        var query = AV.Query.or(query1, query2, query3);
+        query.select('title', 'publisher', 'pubdate', 'author', 'price', 'image', 'isbn13');
+        query.find().done(function (bookInfos) {
             that.books.unshiftUniqueArray(bookInfos);
             that.totalNum += bookInfos.length;
             that.isLoading = false;
             $rootScope.$digest();
             $rootScope.$broadcast('scroll.infiniteScrollComplete');
-        })
+        });
     }
 });

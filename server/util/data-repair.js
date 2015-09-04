@@ -85,29 +85,3 @@ exports.updateNoDoubanIdBookInfoFromDouban = function () {
         })
     })
 };
-
-/**
- * 对于BookInfo表,tags和rating还为空,需要重新去抓取完善属性
- */
-exports.updateBookInfoWhereTagsAndRatingIsNull = function () {
-    var query = new AV.Query(Model.BookInfo);
-    query.doesNotExist('tags');
-    query.doesNotExist('rating');
-    query.limit(1000);
-    query.find().done(function (avosBookInfoList) {
-        _.each(avosBookInfoList, function (avosBookInfo, index) {
-            setTimeout(function () {
-                var isbn13 = avosBookInfo.get('isbn13');
-                BookInfo.spiderBookInfo(isbn13).done(function (jsonBookInfo) {
-                    BookInfo.updateAvosBookInfo(avosBookInfo, jsonBookInfo).done(function (avosBookInfo) {
-                        //console.log(avosBookInfo);
-                    }).fail(function (err) {
-                        console.error(err);
-                    });
-                }).fail(function (err) {
-                    console.error(err);
-                });
-            }, index * 1000);
-        })
-    })
-};

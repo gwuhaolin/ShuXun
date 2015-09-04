@@ -147,38 +147,3 @@ exports.fillUsedBookInfo = function (avosUsedBook) {
 
     return rePromise;
 };
-
-/**
- * 根据图书pubdate获得最新出版的图书
- * @param skip
- * @param limit
- * @returns {AV.Promise} query.find()
- */
-exports.getLatestBooks = function (skip, limit) {
-    var query = new AV.Query(Model.BookInfo);
-    query.descending('pubdate');
-    query.skip(skip);
-    query.limit(limit);
-    return query.find();
-};
-
-/**
- * 获得用户附近的要卖的书
- * @param skip
- * @param limit
- * @param role 是附近的卖书=='sell' 还是求书=='need'
- * @param user? 当前用户 用于获得用户的地理位置
- * @returns {AV.Promise} query.find()
- */
-exports.getNearUsedBook = function (skip, limit, role, user) {
-    var query = new AV.Query(Model.UsedBook);
-    query.skip(skip);
-    query.limit(limit);
-    query.equalTo('role', role);
-    if (user) {
-        query.notEqualTo('owner', user);//不要显示自己的上传的
-        query.near("location", user.get('location'));
-    }
-    return query.find();
-};
-

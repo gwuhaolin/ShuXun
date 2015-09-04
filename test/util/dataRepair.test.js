@@ -28,11 +28,4 @@ describe.skip('util/data-repair.js', function () {
         });
     });
 
-    describe('#updateBookInfoWhereTagsAndRatingIsNull', function () {
-        it('对于BookInfo表,tags和rating还为空,需要重新去抓取完善属性', function (done) {
-            this.timeout(10000000);
-            DataRepair.updateBookInfoWhereTagsAndRatingIsNull();
-        });
-    });
-
 });
