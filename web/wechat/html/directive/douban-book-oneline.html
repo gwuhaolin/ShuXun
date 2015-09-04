@@ -3,7 +3,7 @@
          style="display: inline-block;padding: 5px;width: 80px;height: 122px">
         <img style="width: 70px;height: 100px"
              ng-if="book.attributes.image" ng-src="{{book.attributes.image}}"
-             ui-sref="book.oneBook({isbn13:book.attributes.isbn13})">
+             ui-sref="book.one-book({isbn13:book.attributes.isbn13})">
         <h5 class="title" ng-if="book.attributes.title" ng-bind="book.attributes.title"></h5>
     </div>
 </ion-item>

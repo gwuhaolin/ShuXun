@@ -1,7 +1,7 @@
 <!--一本二手书信息-->
 <ion-view ng-controller="ion_book_oneUsedBook" view-title="求书 {{usedBook.attributes.title}}">
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-balanced" ui-sref="book.searchList">寻书</button>
+        <button class="button button-clear button-balanced" ui-sref="book.search-list">寻书</button>
     </ion-nav-buttons>
     <ion-content>
         <!-- 图书基本信息-->
@@ -23,10 +23,10 @@
             <ion-item ng-if="isMy()">
                 <button class="button button-small button-outline button-assertive"
                         ng-click="UsedBook$.removeUsedBook(usedBook)"
-                        ui-sref="person.needBooksList">已买删除
+                        ui-sref="person.need-books-list">已买删除
                 </button>
                 <button class="button button-small button-outline button-balanced"
-                        ui-sref="person.editOneUsedBook({usedBookId:usedBook.id})">修改信息
+                        ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">修改信息
                 </button>
             </ion-item>
         </div>
@@ -34,7 +34,7 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">求书同学信息
                 <a class="button button-clear button-balanced"
-                   ui-sref="person.sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
+                   ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
                 </a>
             </ion-item>
             <ion-user-info user="usedBook.attributes.owner" used-book-object-id="usedBook.id"></ion-user-info>
@@ -43,19 +43,19 @@
         <div class="list card">
             <ion-item class="item-divider item-button-right">大家都说
                 <a class="button button-clear button-balanced"
-                   ui-sref="person.sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">我也要说
+                   ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">我也要说
                 </a>
             </ion-item>
             <ion-item ng-if="statusList.length==0">还没有同学评论,快来抢沙发~</ion-item>
             <ion-item class="item-avatar" ng-repeat="status in statusList">
                 <img ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}"
-                     ui-sref="common.userHome({ownerId:status.attributes.source.id})">
+                     ui-sref="common.user-home({ownerId:status.attributes.source.id})">
 
                 <h2 style="white-space: pre-wrap" ng-bind="status.attributes.message"></h2>
 
                 <p ng-bind="status.updatedAt | date:'mediumDate'"></p>
                 <img style="width: 40px;height: 40px;position: absolute;top: 16px;right: 16px;border-radius: 50%;"
-                     ui-sref="common.userHome({ownerId:status.attributes.to.id})"
+                     ui-sref="common.user-home({ownerId:status.attributes.to.id})"
                      ng-src="{{status.attributes.source.avatarUrlWithSize(64)}}">
             </ion-item>
         </div>

@@ -15,7 +15,7 @@
     <button ng-if="AV.User.current() && !isMe()"
             class="button button-small button-clear button-balanced"
             style="float: right"
-            ui-sref="person.sendMsgToUser({receiverObjectId:user.id,role:'buy',inboxType:'private',usedBookObjectId:usedBookObjectId})">
+            ui-sref="person.send-msg-to-user({receiverObjectId:user.id,role:'buy',inboxType:'private',usedBookObjectId:usedBookObjectId})">
         发私信
     </button>
     <button ng-if="user.attributes.location" class="button button-small button-clear button-balanced"
@@ -36,6 +36,6 @@
 <!-- 主人所有旧书链接-->
 <ion-item class="littleTailItem"
           ng-if="!hideUsedBook"
-          ui-sref="common.userHome({ownerId:user.id})">
+          ui-sref="common.user-home({ownerId:user.id})">
     <strong ng-bind="user.userUsedBookNumber"></strong>本旧书要卖,发布了<strong ng-bind="user.userNeedBookNumber"></strong>个求书
 </ion-item>

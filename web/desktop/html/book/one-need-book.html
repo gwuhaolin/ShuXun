@@ -6,8 +6,8 @@
             <div class=col-md-6>
                 <ol class="breadcrumb">
                     <li><a ui-sref="book.recommend()">图书主页</a></li>
-                    <li><a ui-sref="book.usedBookList({cmd:'nearNeed'})">附近求书</a></li>
-                    <li><a ui-sref="book.oneBook({isbn13:usedBook.attributes.isbn13})"
+                    <li><a ui-sref="book.used-book-list({cmd:'nearNeed'})">附近求书</a></li>
+                    <li><a ui-sref="book.one-book({isbn13:usedBook.attributes.isbn13})"
                            ng-bind="usedBook.attributes.info.attributes.title"></a></li>
                     <li class="active"><strong>求书</strong>-{{usedBook.attributes.info.attributes.title}}</li>
                 </ol>
@@ -16,7 +16,7 @@
                 <div class="btn-toolbar pull-right">
                     <div class="btn-group" ng-if="!isMy()">
                         <a class="btn btn-info"
-                           ui-sref="person.sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
+                           ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
                             联系主人
                         </a>
                         <a class="btn btn-primary"
@@ -24,9 +24,9 @@
                     </div>
                     <div class="btn-group" ng-if="isMy()">
                         <button class="btn btn-danger" ng-click="UsedBook$.removeUsedBook(usedBook)"
-                                ui-sref="common.userHome({ownerId:me.id})">已卖下架
+                                ui-sref="common.user-home({ownerId:me.id})">已卖下架
                         </button>
-                        <button class="btn btn-warning" ui-sref="person_editOneUsedBook({usedBookId:usedBook.id})">
+                        <button class="btn btn-warning" ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">
                             修改信息
                         </button>
                     </div>
@@ -71,7 +71,7 @@
                 <h4>大家都说</h4>
                 <hr>
                 <a class="btn btn-link btn-info" ng-if="statusList.length==0"
-                   ui-sref="person.sendMsgToUser({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">还没有同学评论,快来抢沙发~</a>
+                   ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">还没有同学评论,快来抢沙发~</a>
             </div>
             <div class="col-md-12">
                 <ul class="media-list">
@@ -84,7 +84,7 @@
                         <div class="media-body">
                             <em ng-bind="status.attributes.message"></em>
                             <a class="btn btn-link btn-sm"
-                               ui-sref="common.userHome({ownerId:status.attributes.to.id})"
+                               ui-sref="common.user-home({ownerId:status.attributes.to.id})"
                                ng-bind="status.attributes.to.attributes.nickName"></a>
                             <small ng-bind="status.updatedAt | date:'mediumDate'"></small>
                         </div>

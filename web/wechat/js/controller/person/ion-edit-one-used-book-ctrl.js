@@ -11,10 +11,10 @@ APP.controller('ion_person_editOneUsedBook', function ($scope, $controller, $sta
         $scope.saveUsedBook(function () {
             if ($scope.usedBook.get('role') == 'sell') {
                 UsedBook$.MyUsedBook.loadMore();
-                $state.go('person.usedBooksList');
+                $state.go('person.used-books-list');
             } else if ($scope.usedBook.get('role') == 'need') {
                 UsedBook$.MyNeedBook.loadMore();
-                $state.go('person.needBooksList');
+                $state.go('person.need-books-list');
             }
             $ionicHistory.clearHistory();
         });

@@ -5,7 +5,7 @@
         <div class="row" ng-if="bookInfo">
             <div class=col-md-6>
                 <ol class="breadcrumb">
-                    <li><a ui-sref="book.oneBook({isbn13:bookInfo.attributes.isbn13})"
+                    <li><a ui-sref="book.one-book({isbn13:bookInfo.attributes.isbn13})"
                            ng-bind="bookInfo.attributes.title"></a></li>
                     <li class="active"><strong>上传</strong>-<strong ng-bind="bookInfo.attributes.title"></strong></li>
                 </ol>

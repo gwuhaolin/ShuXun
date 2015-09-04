@@ -21,9 +21,9 @@ APP.controller('ion_person_uploadOneUsedBook', function ($scope, $controller, $s
     $scope.submitOnClick = function (role) {
         $scope.saveUsedBook(role, function () {
             if (role == 'sell') {
-                $state.go('person.usedBooksList');
+                $state.go('person.used-books-list');
             } else if (role == 'need') {
-                $state.go('person.needBooksList');
+                $state.go('person.need-books-list');
             }
             $ionicHistory.clearHistory();
         });

@@ -15,7 +15,7 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
             $scope.bookInfo = bookInfo;
         }).fail(function () {
             alert('没有找到图书信息,再去搜搜看~');
-            $state.go('book.searchList');
+            $state.go('book.search-list');
         }).always(function () {
             $scope.isLoading = false;
             $scope.$digest();

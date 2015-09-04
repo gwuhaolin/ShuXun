@@ -35,9 +35,9 @@
 
             <!-- 常用链接-->
             <ul class="nav navbar-nav">
-                <li><a ui-sref="book.bookList({cmd:'latest'})">新书速递</a></li>
-                <li><a ui-sref="book.usedBookList({cmd:'nearUsed'})">附近旧书</a></li>
-                <li><a ui-sref="book.usedBookList({cmd:'nearNeed'})">附近求书</a></li>
+                <li><a ui-sref="book.book-list({cmd:'latest'})">新书速递</a></li>
+                <li><a ui-sref="book.used-book-list({cmd:'nearUsed'})">附近旧书</a></li>
+                <li><a ui-sref="book.used-book-list({cmd:'nearNeed'})">附近求书</a></li>
             </ul>
 
             <!-- 游客链接-->
@@ -61,28 +61,28 @@
             <!-- 用户链接-->
             <ul class="nav navbar-nav navbar-right" ng-if="me">
 
-                <li><a ui-sref="common.userHome({ownerId:me.id})">我的书架</a></li>
+                <li><a ui-sref="common.user-home({ownerId:me.id})">我的书架</a></li>
 
                 <li dropdown ng-if="Status$.unreadCountSum()>0">
                     <a dropdown-toggle>消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
                     <ul class="dropdown-menu">
                         <li ng-if="Status$.NewUsedBookStatus.unreadCount>0">
-                            <a ui-sref="person.statusList({cmd:'newUsedBook'})">你关注的同学新上传了旧书
+                            <a ui-sref="person.status-list({cmd:'newUsedBook'})">你关注的同学新上传了旧书
                                 <span class="badge" ng-bind="Status$.NewUsedBookStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li ng-if="Status$.NewNeedBookStatus.unreadCount>0">
-                            <a ui-sref="person.statusList({cmd:'newNeedBook'})">你关注的同学新发布了求书
+                            <a ui-sref="person.status-list({cmd:'newNeedBook'})">你关注的同学新发布了求书
                                 <span class="badge" ng-bind="Status$.NewNeedBookStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li ng-if="Status$.PrivateStatus.unreadCount>0">
-                            <a ui-sref="person.statusList({cmd:'private'})">有同学给你发私信
+                            <a ui-sref="person.status-list({cmd:'private'})">有同学给你发私信
                                 <span class="badge" ng-bind="Status$.PrivateStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li ng-if="Status$.ReviewUsedBookStatus.unreadCount>0">
-                            <a ui-sref="person.statusList({cmd:'reviewUsedBook'})">有同学评价你的书
+                            <a ui-sref="person.status-list({cmd:'reviewUsedBook'})">有同学评价你的书
                                 <span class="badge" ng-bind="Status$.ReviewUsedBookStatus.unreadCount"></span>
                             </a>
                         </li>
@@ -97,16 +97,16 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li ng-if="followeeNumber>0">
-                            <a ui-sref="common.userList({cmd:'followee'})">关注<strong ng-bind="followeeNumber"></strong>位同学</a>
+                            <a ui-sref="common.user-list({cmd:'followee'})">关注<strong ng-bind="followeeNumber"></strong>位同学</a>
                         </li>
                         <li ng-if="followerNumber>0">
-                            <a ui-sref="common.userList({cmd:'follower'})">有<strong ng-bind="followerNumber"></strong>位粉丝</a>
+                            <a ui-sref="common.user-list({cmd:'follower'})">有<strong ng-bind="followerNumber"></strong>位粉丝</a>
                         </li>
                         <li>
-                            <a ui-sref="person.uploadOneUsedBook()">上传旧书</a>
+                            <a ui-sref="person.upload-one-used-book()">上传旧书</a>
                         </li>
                         <li>
-                            <a ui-sref="person.uploadOneNeedBook()">发布求书</a>
+                            <a ui-sref="person.upload-one-need-book()">发布求书</a>
                         </li>
                         <li ng-click="logOut()">
                             <a href="#">退出</a>

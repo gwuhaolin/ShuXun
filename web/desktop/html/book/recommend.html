@@ -22,7 +22,7 @@
         <!-- 新书速递-->
         <div class="row" ng-if="LatestBook.books.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="book.bookList({cmd:'latest'})">新书速递</a></h4>
+                <h4><a ui-sref="book.book-list({cmd:'latest'})">新书速递</a></h4>
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="bookInfo in LatestBook.books.slice(0,8)">
@@ -35,7 +35,7 @@
         <!-- 附近用户上传的旧书-->
         <div class="row" id="附近旧书" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="book.usedBookList({cmd:'nearUsed'})">附近旧书</a></h4>
+                <h4><a ui-sref="book.used-book-list({cmd:'nearUsed'})">附近旧书</a></h4>
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="usedBook in BookRecommend$.NearUsedBook.usedBooks.slice(0,8)">
@@ -47,7 +47,7 @@
         <!-- 用户附近的用户-->
         <div id="附近同学" class="row" ng-if="BookRecommend$.NearUser.users.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="common.userList({cmd:'near'})">附近同学</a></h4>
+                <h4><a ui-sref="common.user-list({cmd:'near'})">附近同学</a></h4>
                 <hr>
             </div>
             <div class="col-xs-6 col-md-2" ng-repeat="user in BookRecommend$.NearUser.users.slice(0,24)">
@@ -62,7 +62,7 @@
         <!-- 附近用户发布的求书-->
         <div id="附近求书" class="row" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="book.usedBookList({cmd:'nearNeed'})">附近求书</a></h4>
+                <h4><a ui-sref="book.used-book-list({cmd:'nearNeed'})">附近求书</a></h4>
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="needBook in BookRecommend$.NearNeedBook.needBooks.slice(0,8)">
@@ -75,7 +75,7 @@
         <!-- 根据专业推荐的书-->
         <div id="专业推荐" class="row" ng-if="BookRecommend$.TagBook.books.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="book.bookList({cmd:'tag',tag:major})">专业推荐</a></h4>
+                <h4><a ui-sref="book.book-list({cmd:'tag',tag:major})">专业推荐</a></h4>
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="bookInfo in BookRecommend$.TagBook.books.slice(0,8)">
@@ -116,7 +116,7 @@
                         <a class="btn btn-link btn-sm" style="margin: 5px"
                            ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]"
                            ng-bind="littleTag"
-                           ui-sref="book.bookList({cmd:'tag',tag:littleTag})"></a>
+                           ui-sref="book.book-list({cmd:'tag',tag:littleTag})"></a>
                     </tab>
                 </tabset>
             </div>
