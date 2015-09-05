@@ -80,15 +80,21 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
     function _buildUsedBookQuery(role, majorFilter) {
         var query = new AV.Query(Model.UsedBook);
         query.descending("updatedAt");
-        query.include(['info']);
+        query.include(['bookInfo']);
         role && query.equalTo('role', role);
         var me = AV.User.current();
-        var avosGeo = me ? me.get('location') : null;
-        avosGeo && query.near("location", avosGeo);
-        if (majorFilter) {
+        if (me || majorFilter) {
             var ownerQuery = new AV.Query(Model.User);
-            me && ownerQuery.notEqualTo('objectId', me.id);//不要显示自己的上传的
-            ownerQuery.equalTo('major', majorFilter);
+            if (me) {
+                me && ownerQuery.notEqualTo('objectId', me.id);//不要显示自己的上传的
+                var avosGeo = me ? me.get('location') : null;
+                if (avosGeo) {
+                    ownerQuery.near("location", avosGeo);
+                }
+            }
+            if (majorFilter) {
+                ownerQuery.equalTo('major', majorFilter);
+            }
             query.matchesQuery('owner', ownerQuery);
         }
         return query;

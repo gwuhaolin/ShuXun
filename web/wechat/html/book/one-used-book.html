@@ -1,12 +1,12 @@
 <!--一本二手书信息-->
-<ion-view ng-controller="ion_book_oneUsedBook" view-title="二手 {{usedBook.attributes.info.attributes.title}}">
+<ion-view ng-controller="ion_book_oneUsedBook" view-title="二手 {{usedBook.attributes.bookInfo.attributes.title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="book.search-list">寻书</button>
     </ion-nav-buttons>
     <ion-content>
         <div class="list card">
             <!-- 图书基本信息-->
-            <ion-one-book-info ng-if="usedBook" book-info="usedBook.attributes.info"
+            <ion-one-book-info ng-if="usedBook" book-info="usedBook.attributes.bookInfo"
                            should-show-used-books-count="true"></ion-one-book-info>
             <!-- 旧书信息-->
             <ion-item>

@@ -8,8 +8,8 @@
                     <li><a ui-sref="book.recommend()">图书主页</a></li>
                     <li><a ui-sref="book.used-book-list({cmd:'nearNeed'})">附近求书</a></li>
                     <li><a ui-sref="book.one-book({isbn13:usedBook.attributes.isbn13})"
-                           ng-bind="usedBook.attributes.info.attributes.title"></a></li>
-                    <li class="active"><strong>求书</strong>-{{usedBook.attributes.info.attributes.title}}</li>
+                           ng-bind="usedBook.attributes.bookInfo.attributes.title"></a></li>
+                    <li class="active"><strong>求书</strong>-{{usedBook.attributes.bookInfo.attributes.title}}</li>
                 </ol>
             </div>
             <div class="col-md-6">
@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <bs-one-book-info-detail book-info="usedBook.attributes.info"></bs-one-book-info-detail>
+        <bs-one-book-info-detail book-info="usedBook.attributes.bookInfo"></bs-one-book-info-detail>
 
         <div class="row" id="大家都说">
             <div class="col-md-12">

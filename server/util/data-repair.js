@@ -14,7 +14,7 @@ var DoubanBook = require('./../book/douban-book.js');
  */
 exports.fillUsedBookInfoWhereInfoIsNull = function () {
     var query = new AV.Query(Model.UsedBook);
-    query.doesNotExist('info');
+    query.doesNotExist('bookInfo');
     query.limit(1000);
     query.find().done(function (avosUsedBookList) {
         _.each(avosUsedBookList, function (avosUsedBook, index) {

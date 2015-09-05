@@ -11,7 +11,7 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     $scope.usedBookObjectId = $stateParams['usedBookAvosObjectId'];
     var query = new AV.Query(Model.UsedBook);
     query.include('owner');
-    query.include('info');
+    query.include('bookInfo');
     query.get($scope.usedBookObjectId).done(function (usedBook) {
         $scope.usedBook = usedBook;
     }).always(function () {

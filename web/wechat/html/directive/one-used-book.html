@@ -1,8 +1,8 @@
 <!--一本二手书-->
 <ion-item class="item-thumbnail-left" ui-sref="book.one-used-book({usedBookAvosObjectId:usedBook.id})">
-    <img ng-if="usedBook.attributes.info.attributes.image" ng-src="{{usedBook.attributes.info.attributes.image}}">
+    <img ng-if="usedBook.attributes.bookInfo.attributes.image" ng-src="{{usedBook.attributes.bookInfo.attributes.image}}">
 
-    <h3 ng-if="usedBook.attributes.info.attributes.title" ng-bind="usedBook.attributes.info.attributes.title"></h3>
+    <h3 ng-if="usedBook.attributes.bookInfo.attributes.title" ng-bind="usedBook.attributes.bookInfo.attributes.title"></h3>
 
     <p>要价:<strong ng-bind="usedBook.attributes.price"></strong></p>
 

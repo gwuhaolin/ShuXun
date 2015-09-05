@@ -13,9 +13,10 @@ APP.controller('person_editOneUsedBook', function ($scope, $state, $stateParams,
     });
     //获取usedBook 对应的 BookInfo
     $scope.$watch(function () {
-        return $scope.usedBook.get('info');
+        return $scope.usedBook.get('bookInfo');
     }, function () {
-        $scope.usedBook.get('info') && $scope.usedBook.get('info').fetch().always(function () {
+        var bookInfo = $scope.usedBook.get('bookInfo');
+        bookInfo && bookInfo.fetch().always(function () {
             $scope.$digest();
         });
     });

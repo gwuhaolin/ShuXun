@@ -43,7 +43,7 @@ APP.service('SEO$', function () {
                 }
             });
         } else if (meta instanceof Model.UsedBook) {
-            AV._.each(['info', 'des'], function (key) {
+            AV._.each(['bookInfo', 'des'], function (key) {
                 var value = _tran(meta.attributes[key]);
                 if (value) {
                     re += value + ',';

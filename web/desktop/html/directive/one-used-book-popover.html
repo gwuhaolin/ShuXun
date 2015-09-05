@@ -2,12 +2,12 @@
 <p ng-if="usedBook.attributes.des">主人描述:<em ng-bind="usedBook.attributes.des"></em></p>
 <small>上传于:<em ng-bind="usedBook.updatedAt | date:'mediumDate'"></em></small>
 <hr>
-<h4 ng-bind="usedBook.attributes.info.attributes.title"></h4>
-<p ng-bind="usedBook.attributes.info.attributes.author.toString()"></p>
+<h4 ng-bind="usedBook.attributes.bookInfo.attributes.title"></h4>
+<p ng-bind="usedBook.attributes.bookInfo.attributes.author.toString()"></p>
 <small>
-    <em ng-bind="usedBook.attributes.info.attributes.price"></em> /
-    <em ng-bind="usedBook.attributes.info.attributes.publisher"></em> /
-    <em ng-bind="usedBook.attributes.info.attributes.pubdate"></em>
+    <em ng-bind="usedBook.attributes.bookInfo.attributes.price"></em> /
+    <em ng-bind="usedBook.attributes.bookInfo.attributes.publisher"></em> /
+    <em ng-bind="usedBook.attributes.bookInfo.attributes.pubdate"></em>
 </small>
 <hr>
-<small>{{usedBook.attributes.info.attributes.summary.substr(0,150)}}...</small>
+<small>{{usedBook.attributes.bookInfo.attributes.summary.substr(0,150)}}...</small>

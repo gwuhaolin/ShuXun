@@ -9,7 +9,7 @@ APP.directive('bsOneNeedBook', function (UsedBook$) {
         $scope.UsedBook$ = UsedBook$;
 
         //获得旧书的图书信息
-        var bookInfo = $scope.needBook.get('info');
+        var bookInfo = $scope.needBook.get('bookInfo');
         if (bookInfo && !bookInfo.has('isbn13')) {
             bookInfo.fetch().always(function () {
                 $scope.$digest();

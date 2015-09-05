@@ -1,12 +1,12 @@
 <!--编辑一本上传的二手书-->
-<ion-view ng-controller="ion_person_editOneUsedBook" view-title="修改我的{{usedBook.attributes.info.attributes.title}}">
+<ion-view ng-controller="ion_person_editOneUsedBook" view-title="修改我的{{usedBook.attributes.bookInfo.attributes.title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
     <ion-content class="padding">
         <!-- 图片信息-->
         <div class="list card">
-            <ion-one-book-info book-info="usedBook.attributes.info"
+            <ion-one-book-info book-info="usedBook.attributes.bookInfo"
                                should-show-used-books-count="true"></ion-one-book-info>
         </div>
         <!-- 其他信息-->

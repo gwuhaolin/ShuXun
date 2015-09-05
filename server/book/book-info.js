@@ -106,7 +106,7 @@ exports.updateAvosBookInfo = function (avosBookInfo, jsonBookInfo) {
 
 /**
  * 填充UsedBook对象的bookInfo信息
- * 把usedBook.info属性设置为抓取到的BookInfo
+ * 把usedBook.bookInfo属性设置为抓取到的BookInfo
  * 在对应的BookInfo.usedBooks属性里添加usedBook
  * 如果BookInfo表里已经有对应ISBN的图书信息就直接对接,否则先去抓取,抓取到后再去保存,再对接
  * @param avosUsedBook 要填充的UsedBook对象
@@ -134,7 +134,7 @@ exports.fillUsedBookInfo = function (avosUsedBook) {
     });
 
     function setUsedBookInfo(avosBookInfo) {
-        avosUsedBook.set('info', avosBookInfo);
+        avosUsedBook.set('bookInfo', avosBookInfo);
         var usedBookPromise = avosUsedBook.save();
         avosBookInfo.relation('usedBooks').add(avosUsedBook);
         var bookInfoPromise = avosBookInfo.save();
