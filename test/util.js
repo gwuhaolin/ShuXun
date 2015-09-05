@@ -47,6 +47,15 @@ exports.checkJsonBookInfoIsNice = function (jsonBookInfo) {
     assert(jsonBookInfo.pubdate, '必须要有出版日期');
     assert(jsonBookInfo.title, '必须要有书名');
     assert(jsonBookInfo.image, '必须要有封面URL');
+    var tags = jsonBookInfo.tags;
+    if (tags) {
+        assert(Array.isArray(tags), 'tags 为数组类型');
+        AV._.each(tags, function (tag) {
+            assert(typeof tag.count === 'number', 'tag 要有 count 属性');
+            assert(typeof tag.name === 'string', 'tag 要有 name 属性');
+            assert(Object.keys(tag).length == 2, 'tag 只有 count name 两个属性');
+        })
+    }
 };
 
 /**

@@ -33,7 +33,7 @@ describe('book/douban-book.js', function () {
 
     });
 
-    describe('#spiderBookByISBN', function () {
+    describe.only('#spiderBookByISBN', function () {
         var isbn13 = Util.ISBN_Legal_HasPub[0];
         it(isbn13 + '的信息是有的', function (done) {
             this.timeout(10000);
