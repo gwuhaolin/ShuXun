@@ -27,7 +27,7 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
         isbn13: $stateParams.isbn13,
         price: null,
         des: '',
-        owner: me
+        owner: $scope.me
     };
     $scope.usedBookJson.isbn13 && $scope.loadDoubanBookInfo();
 
