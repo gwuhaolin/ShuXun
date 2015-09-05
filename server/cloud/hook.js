@@ -12,13 +12,6 @@ var BookInfo = require('../book/book-info.js');
 AV.Cloud.afterSave('UsedBook', function (req) {
     var usedBook = req.object;
     var user = usedBook.get('owner');//图书主人
-    user.fetch().done(function () {
-        //设置二手书的地理位置
-        var location = user.get('location');
-        var point = new AV.GeoPoint(location);
-        usedBook.set('location', point);
-        usedBook.save();
-    });
     //设置用户的二手书的relations
     user.relation('usedBooks').add(usedBook);
     user.save();
