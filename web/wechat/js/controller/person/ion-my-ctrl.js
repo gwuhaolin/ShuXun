@@ -11,6 +11,7 @@ APP.controller('ion_person_my', function ($scope, $state, $stateParams, User$, S
         //加载我上传的二手书的数量
         var myUsedBookRelation = AV.User.current().relation('usedBooks');
         var query = myUsedBookRelation.query();
+        query.equalTo('alive', true);
         query.equalTo('role', 'sell');
         query.count().done(function (number) {
             $scope.myUsedBookNumber = number;
@@ -18,6 +19,7 @@ APP.controller('ion_person_my', function ($scope, $state, $stateParams, User$, S
         });
         //加载我发布的求书需求的数量
         query = myUsedBookRelation.query();
+        query.equalTo('alive', true);
         query.equalTo('role', 'need');
         query.count().done(function (number) {
             $scope.myNeedBookNumber = number;

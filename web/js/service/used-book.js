@@ -44,10 +44,10 @@ APP.service('UsedBook$', function ($rootScope) {
         usedBooks: [],
         loadMore: function () {
             var query = AV.User.current().relation('usedBooks').query();
+            query.descending('alive');
             query.skip(that.MyUsedBook.usedBooks.length);
             query.limit(LoadCount);
             query.equalTo('role', 'sell');
-            query.descending('updatedAt');
             query.find().done(function (usedBookList) {
                 if (usedBookList.length > 0) {
                     that.MyUsedBook.usedBooks.pushUniqueArray(usedBookList);
@@ -75,10 +75,10 @@ APP.service('UsedBook$', function ($rootScope) {
         needBooks: [],
         loadMore: function () {
             var query = AV.User.current().relation('usedBooks').query();
+            query.descending('alive');
             query.skip(that.MyNeedBook.needBooks.length);
             query.limit(LoadCount);
             query.equalTo('role', 'need');
-            query.descending('updatedAt');
             query.find().done(function (needBookList) {
                 if (needBookList.length > 0) {
                     that.MyNeedBook.needBooks.pushUniqueArray(needBookList);
@@ -98,28 +98,69 @@ APP.service('UsedBook$', function ($rootScope) {
     };
 
     /**
+     * 重新加载我的UsedBook
+     * @param roleFilter 只重新加载对应的role
+     * @private
+     */
+    function _reloadMyUsedBook(roleFilter) {
+        if (roleFilter == 'sell') {
+            that.MyUsedBook.usedBooks.length = 0;
+            that.MyUsedBook.loadMore();
+        } else if (roleFilter == 'need') {
+            that.MyNeedBook.needBooks.length = 0;
+            that.MyNeedBook.loadMore();
+        }
+        $rootScope.$broadcast('scroll.infiniteScrollComplete');
+        $rootScope.$digest();
+    }
+
+    /**
      * 删除一本没有卖出的二手书保存到数据库
      * 会更新MyUsedBook.usedBooks ｜ MyNeedBook.needBooks
      * @param avosUsedBook
      */
     this.removeUsedBook = function (avosUsedBook) {
-        var role = avosUsedBook.get('role');
         if (window.confirm('你确定要删除它吗?将不可恢复')) {
+            var role = avosUsedBook.get('role');
             avosUsedBook.destroy().done(function () {
-                if (role == 'sell') {
-                    that.MyUsedBook.usedBooks.length = 0;
-                    that.MyUsedBook.loadMore();
-                } else if (role == 'need') {
-                    that.MyNeedBook.needBooks.length = 0;
-                    that.MyNeedBook.loadMore();
-                }
+                _reloadMyUsedBook(role);
             }).fail(function (error) {
                 alert(error.message);
-            }).always(function () {
-                $rootScope.$broadcast('scroll.infiniteScrollComplete');
-                $rootScope.$digest();
-            })
+            });
         }
+    };
+
+    /**
+     * 把这本UsedBook杀死
+     * @param avosUsedBook
+     * @param receiver
+     */
+    that.killUsedBook = function (avosUsedBook, receiver) {
+        avosUsedBook.set('alive', false);
+        receiver && avosUsedBook.set('receiver', receiver);
+        avosUsedBook.save().done(function () {
+            var role = avosUsedBook.get('role');
+            _reloadMyUsedBook(role);
+            alert('成功修改');
+        }).fail(function (err) {
+            alert(err.message);
+        });
+    };
+
+    /**
+     * 把这本UsedBook救活
+     * @param avosUsedBook
+     */
+    that.backToLifeUsedBook = function (avosUsedBook) {
+        avosUsedBook.set('alive', true);
+        avosUsedBook.set('receiver', null);
+        avosUsedBook.save().done(function () {
+            var role = avosUsedBook.get('role');
+            _reloadMyUsedBook(role);
+            alert('成功修改');
+        }).fail(function (err) {
+            alert(err.message);
+        });
     };
 
     /**
@@ -132,13 +173,7 @@ APP.service('UsedBook$', function ($rootScope) {
         var rePromise = new AV.Promise();
         avosUsedBook.save(null).done(function () {
             var role = avosUsedBook.get('role');
-            if (role == 'sell') {
-                that.MyUsedBook.usedBooks.length = 0;
-                that.MyUsedBook.loadMore();
-            } else if (role == 'need') {
-                that.MyNeedBook.needBooks.length = 0;
-                that.MyNeedBook.loadMore();
-            }
+            _reloadMyUsedBook(role);
             rePromise.resolve(avosUsedBook);
         }).fail(function (error) {
             rePromise.reject(error);
@@ -158,6 +193,7 @@ APP.service('UsedBook$', function ($rootScope) {
          */
         getUsedBookNumberEqualISBN: function (isbn13) {
             var query = new AV.Query(Model.UsedBook);
+            query.equalTo('alive', true);
             query.equalTo('role', 'sell');
             query.equalTo("isbn13", isbn13);
             return query.count();
@@ -184,6 +220,7 @@ APP.service('UsedBook$', function ($rootScope) {
                 that.ISBN_sell.hasMoreFlag = true;
             }
             var query = new AV.Query(Model.UsedBook);
+            query.equalTo('alive', true);
             query.equalTo("isbn13", that.ISBN_sell.nowISBN13);
             query.equalTo('role', 'sell');
             query.descending("updatedAt");
@@ -216,6 +253,7 @@ APP.service('UsedBook$', function ($rootScope) {
          */
         getNeedBookNumberEqualISBN: function (isbn13) {
             var query = new AV.Query(Model.UsedBook);
+            query.equalTo('alive', true);
             query.equalTo('role', 'need');
             query.equalTo("isbn13", isbn13);
             return query.count();
@@ -242,6 +280,7 @@ APP.service('UsedBook$', function ($rootScope) {
                 that.ISBN_need.hasMoreFlag = true;
             }
             var query = new AV.Query(Model.UsedBook);
+            query.equalTo('alive', true);
             query.equalTo("isbn13", that.ISBN_need.nowISBN13);
             query.equalTo('role', 'need');
             query.descending("updatedAt");

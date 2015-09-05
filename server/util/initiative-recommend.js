@@ -67,6 +67,7 @@ exports.getAllUserEqualMajor = function (major) {
  */
 function _makeAllUsedBookEqualMajorQuery(major, role) {
     var query = new AV.Query(Model.UsedBook);
+    query.equalTo('alive', true);
     query.equalTo('role', role);
     var innerMajorQuery = new AV.Query(Model.User);
     innerMajorQuery.equalTo('major', major);

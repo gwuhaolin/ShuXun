@@ -23,11 +23,18 @@
                            ng-click="scrollToHash('大家都说')">大家都说</a>
                     </div>
                     <div class="btn-group" ng-if="isMy()">
-                        <button class="btn btn-danger" ng-click="UsedBook$.removeUsedBook(usedBook)"
-                                ui-sref="common.user-home({ownerId:me.id})">已卖下架
+                        <button class="btn btn-info"
+                                ng-if="usedBook.attributes.alive"
+                                ng-click="UsedBook$.killUsedBook(usedBook)"
+                                ui-sref="common.user-home({ownerId:me.id})">已卖
+                        </button>
+                        <button class="btn btn-info"
+                                ng-if="!usedBook.attributes.alive"
+                                ng-click="UsedBook$.backToLifeUsedBook(usedBook)"
+                                ui-sref="common.user-home({ownerId:me.id})">撤销已买
                         </button>
                         <button class="btn btn-warning" ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">
-                            修改信息
+                            修改
                         </button>
                     </div>
                 </div>

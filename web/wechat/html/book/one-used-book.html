@@ -7,25 +7,31 @@
         <div class="list">
             <!-- 图书基本信息-->
             <ion-one-book-info ng-if="usedBook" book-info="usedBook.attributes.bookInfo"
-                           should-show-used-books-count="true"></ion-one-book-info>
+                               should-show-used-books-count="true"></ion-one-book-info>
             <!-- 旧书信息-->
             <ion-item>
                 <h3>主人要价:<strong ng-bind="usedBook.attributes.price"></strong></h3>
 
                 <p>上传时间:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
 
-                <p ng-if="usedBook.attributes.des" style="white-space: pre-wrap">
-                    主人描述:<em ng-bind="usedBook.attributes.des"></em>
+                <p ng-if="usedBook.attributes.des">主人描述:
+                    <strong style="white-space: pre-wrap" ng-bind="usedBook.attributes.des"></strong>
                 </p>
             </ion-item>
             <!-- 如果是主人本人就显示管理按钮-->
             <ion-item ng-if="isMy()">
-                <button class="button button-small button-outline button-assertive"
-                        ng-click="UsedBook$.removeUsedBook(usedBook)"
-                        ui-sref="person.used-books-list">已卖下架
+                <button class="button button-small button-outline button-calm"
+                        ng-if="usedBook.attributes.alive"
+                        ng-click="UsedBook$.killUsedBook(usedBook)"
+                        ui-sref="person.need-books-list">已卖
+                </button>
+                <button class="button button-small button-outline button-calm"
+                        ng-if="!usedBook.attributes.alive"
+                        ng-click="UsedBook$.backToLifeUsedBook(usedBook)"
+                        ui-sref="person.need-books-list">撤销已卖
                 </button>
                 <button class="button button-small button-outline button-balanced"
-                        ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">修改信息
+                        ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">修改
                 </button>
             </ion-item>
         </div>

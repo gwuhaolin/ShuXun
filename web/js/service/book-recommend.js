@@ -81,6 +81,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         var query = new AV.Query(Model.UsedBook);
         query.descending("updatedAt");
         query.include(['bookInfo']);
+        query.equalTo('alive', true);
         role && query.equalTo('role', role);
         var me = AV.User.current();
         if (me || majorFilter) {

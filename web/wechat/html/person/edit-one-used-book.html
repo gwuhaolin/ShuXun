@@ -27,5 +27,9 @@
                 ng-disabled="!valueHasChange">
             提交修改
         </button>
+        <button class="button button-small button-outline button-assertive"
+                ng-click="UsedBook$.removeUsedBook(usedBook)"
+                ui-sref="person.used-books-list">永远删除
+        </button>
     </ion-content>
 </ion-view>
