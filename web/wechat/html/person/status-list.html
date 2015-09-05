@@ -4,19 +4,19 @@
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
     <ion-content class="padding">
-        <div class="card" ng-if="cmd=='newUsedBook'"
+        <div ng-if="cmd=='newUsedBook'"
              collection-repeat="status in statusList">
             <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
             <ion-user-info user="status.attributes.source"></ion-user-info>
         </div>
 
-        <div class="card" ng-if="cmd=='newNeedBook'"
+        <div ng-if="cmd=='newNeedBook'"
              collection-repeat="status in statusList">
             <ion-one-need-book need-book="status.attributes.usedBook"></ion-one-need-book>
             <ion-user-info user="status.attributes.source"></ion-user-info>
         </div>
 
-        <div class="card" ng-if="cmd=='private'"
+        <div ng-if="cmd=='private'"
              collection-repeat="status in statusList">
             <ion-item>
                 <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
@@ -27,14 +27,14 @@
                 </button>
             </ion-item>
             <ion-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
-                           used-book="status.attributes.usedBook">
+                               used-book="status.attributes.usedBook">
             </ion-one-used-book>
             <ion-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
-                           need-book="status.attributes.usedBook"></ion-one-need-book>
+                               need-book="status.attributes.usedBook"></ion-one-need-book>
             <ion-user-info user="status.attributes.source"></ion-user-info>
         </div>
 
-        <div class="card" ng-if="cmd=='reviewUsedBook'"
+        <div ng-if="cmd=='reviewUsedBook'"
              collection-repeat="status in statusList">
             <ion-item>
                 <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
@@ -45,14 +45,14 @@
                 </button>
             </ion-item>
             <ion-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
-                           used-book="status.attributes.usedBook">
+                               used-book="status.attributes.usedBook">
             </ion-one-used-book>
             <ion-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
-                           need-book="status.attributes.usedBook"></ion-one-need-book>
+                               need-book="status.attributes.usedBook"></ion-one-need-book>
             <ion-user-info user="status.attributes.source"></ion-user-info>
         </div>
 
-        <div class="card" ng-if="statusList.length==0">
+        <div ng-if="statusList.length==0">
             <ion-item style="text-align: center">没有未读消息</ion-item>
         </div>
     </ion-content>

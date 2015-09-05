@@ -5,10 +5,10 @@
     </ion-nav-buttons>
     <ion-content>
         <!-- 图书基本信息-->
-        <div class="list card">
+        <div class="list">
             <!-- 图书基本信息-->
             <ion-one-book-info ng-if="usedBook" book-info="usedBook.attributes.bookInfo"
-                           should-show-used-books-count="true"></ion-one-book-info>
+                               should-show-used-books-count="true"></ion-one-book-info>
             <!-- 旧书信息-->
             <ion-item>
                 <p>最高承受价:<strong ng-bind="usedBook.attributes.price"></strong></p>
@@ -31,7 +31,7 @@
             </ion-item>
         </div>
         <!-- 主人信息-->
-        <div class="list card">
+        <div class="list">
             <ion-item class="item-divider item-button-right">求书同学信息
                 <a class="button button-clear button-balanced"
                    ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'private'})">私信主人
@@ -40,7 +40,7 @@
             <ion-user-info user="usedBook.attributes.owner" used-book-object-id="usedBook.id"></ion-user-info>
         </div>
         <!-- 用户评论-->
-        <div class="list card">
+        <div class="list">
             <ion-item class="item-divider item-button-right">大家都说
                 <a class="button button-clear button-balanced"
                    ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBookObjectId,role:'buy',inboxType:'reviewUsedBook'})">我也要说

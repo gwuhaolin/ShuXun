@@ -3,7 +3,7 @@
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="book.recommend">书循</button>
     </ion-nav-buttons>
-    <ion-content class="padding">
+    <ion-content>
         <div class="button-bar">
             <!-- 这些属性由 user-info 里加载-->
             <a class="button button-small" ng-click="sortWay='userUsedBookNumber'"
@@ -17,9 +17,8 @@
                 取消专业限制
             </a>
         </div>
-        <div class="card" collection-repeat="one in users | orderBy:sortWay:true">
-            <ion-user-info user="one"></ion-user-info>
-        </div>
+        <ion-user-info ng-repeat="one in users | orderBy:sortWay:true"
+                       user="one"></ion-user-info>
         <ion-infinite-scroll ng-if="hasMore()"
                              on-infinite="loadMore()"
                              distance="1%">
