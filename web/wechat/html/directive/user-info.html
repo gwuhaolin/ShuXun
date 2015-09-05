@@ -1,17 +1,15 @@
 <!-- 用户基本信息-->
-<div class="item item-avatar" ng-if="user">
+<div style="border-top: 2px solid #ddd" class="item item-avatar" ng-if="user">
     <img ng-src="{{user.avatarUrlWithSize(64)}}">
 
-    <h2>
-        <strong ng-bind="user.attributes.nickName"></strong>
-        <i class="icon ion-male" style="color: #5eb1ed" ng-if="user.attributes.sex==1"></i>
-        <i class="icon ion-female" style="color: #ff6d9e" ng-if="user.attributes.sex==2"></i>
-        <strong ng-bind="user.attributes.startSchoolYear"></strong>级
-    </h2>
-
-    <p style="white-space: pre-wrap">
-        <em ng-bind="user.attributes.major"></em>/<em ng-bind="user.attributes.school"></em>
-    </p>
+    <strong ng-bind="user.attributes.nickName"></strong>
+    <i class="icon ion-male" style="color: #5eb1ed" ng-if="user.attributes.sex==1"></i>
+    <i class="icon ion-female" style="color: #ff6d9e" ng-if="user.attributes.sex==2"></i>
+    <strong ng-bind="user.attributes.startSchoolYear"></strong>级
+    <br>
+    <small ng-bind="user.attributes.major"></small>
+    <small ng-bind="user.attributes.school"></small>
+    <br>
     <button ng-if="AV.User.current() && !isMe()"
             class="button button-small button-clear button-balanced"
             style="float: right"
