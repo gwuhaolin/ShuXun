@@ -46,8 +46,9 @@ var APP = angular.module('APP', ['ionic'], null)
             }).state('common.user-home', {
                 /**
                  * @param:ownerId 主人的AVOS ID
+                 * @param:hashId 滚动到的hashId 主人要卖的旧书 主人发布的求书 主人上传的书漂流
                  */
-                url: '/user-home/?ownerId',
+                url: '/user-home/?ownerId&hashId',
                 templateUrl: 'html/common/user-home.html'
             })
             //book
@@ -171,18 +172,14 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'html/person/upload-one-need-book.html'
                     }
                 }
-            }).state('person.used-books-list', {
-                url: '/used-book-list',
+            }).state('person.upload-one-circle-book', {
+                /**
+                 * @param:isbn13 要上传的书漂流的isbn13号码
+                 */
+                url: '/upload-one-circle-book/?isbn13',
                 views: {
                     'person': {
-                        templateUrl: 'html/person/used-book-list.html'
-                    }
-                }
-            }).state('person.need-books-list', {
-                url: '/need-book-list',
-                views: {
-                    'person': {
-                        templateUrl: 'html/person/need-book-list.html'
+                        templateUrl: 'html/person/upload-one-circle-book.html'
                     }
                 }
             }).state('person.status-list', {
@@ -230,7 +227,7 @@ var APP = angular.module('APP', ['ionic'], null)
         $urlRouterProvider.otherwise('/book/recommend');
     });
 
-APP.run(function ($rootScope, $state, User$, WeChatJS$) {
+APP.run(function ($rootScope, $state, $anchorScroll, User$, WeChatJS$) {
     WeChatJS$.config();//马上调用配置微信
     User$.loginWithUnionId(readCookie('unionId'));
     $rootScope.$on('$stateChangeStart', function (event, nextState) {
@@ -242,4 +239,11 @@ APP.run(function ($rootScope, $state, User$, WeChatJS$) {
             }
         }
     });
+    /**
+     * 滚动到一个hash标签
+     * @param hashId
+     */
+    $rootScope.scrollToHash = function (hashId) {
+        $anchorScroll(hashId);
+    };
 });

@@ -12,7 +12,13 @@ APP.controller('bs_person_uploadOneUsedBook', function ($scope, $controller, $st
      */
     $scope.submitOnClick = function (role) {
         $scope.saveUsedBook(role, function () {
-            $state.go('common.user-home', {ownerId: AV.User.current().id});
+            if (role === 'sell') {
+                $state.go('common.user-home', {ownerId: $scope.me.id, hashId: '主人要卖的旧书'});
+            } else if (role === 'need') {
+                $state.go('common.user-home', {ownerId: $scope.me.id, hashId: '主人发布的求书'});
+            } else if (role === 'circle') {
+                $state.go('common.user-home', {ownerId: $scope.me.id, hashId: '主人上传的书漂流'});
+            }
         });
     };
 

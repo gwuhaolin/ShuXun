@@ -11,10 +11,10 @@ APP.controller('ion_person_editOneUsedBook', function ($scope, $controller, $sta
         $scope.saveUsedBook(function () {
             if ($scope.usedBook.get('role') == 'sell') {
                 UsedBook$.MyUsedBook.loadMore();
-                $state.go('person.used-books-list');
+                $state.go('common.user-home', {ownerId: $scope.usedBook.attributes.owner.id, hashId: '主人要卖的旧书'});
             } else if ($scope.usedBook.get('role') == 'need') {
                 UsedBook$.MyNeedBook.loadMore();
-                $state.go('person.need-books-list');
+                $state.go('common.user-home', {ownerId: $scope.usedBook.attributes.owner.id, hashId: '主人发布的求书'});
             }
             $ionicHistory.clearHistory();
         });

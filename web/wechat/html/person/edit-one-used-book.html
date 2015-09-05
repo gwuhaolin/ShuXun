@@ -29,7 +29,7 @@
         </button>
         <button class="button button-small button-outline button-assertive"
                 ng-click="UsedBook$.removeUsedBook(usedBook)"
-                ui-sref="person.used-books-list">永远删除
+                ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">永远删除
         </button>
     </ion-content>
 </ion-view>

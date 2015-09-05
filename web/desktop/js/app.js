@@ -28,8 +28,9 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
         }).state('common.user-home', {
             /**
              * @param:ownerId 主人的AVOS ID
+             * @param:hashId 滚动到的hashId 主人要卖的旧书 主人发布的求书 主人上传的书漂流
              */
-            url: '/user-home/?ownerId',
+            url: '/user-home/?ownerId&hashId',
             templateUrl: 'html/common/user-home.html'
         }).state('common.user-list', {
             /**
@@ -132,7 +133,7 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
         });
     $urlRouterProvider.otherwise('/book/recommend');
 });
-APP.run(function ($rootScope, $location, $anchorScroll, User$, SEO$) {
+APP.run(function ($rootScope, $anchorScroll, User$, SEO$) {
     User$.loginWithUnionId(readCookie('unionId'));
     SEO$.setSEO();
     $rootScope.SEO$ = SEO$;
@@ -141,7 +142,6 @@ APP.run(function ($rootScope, $location, $anchorScroll, User$, SEO$) {
      * @param hashId
      */
     $rootScope.scrollToHash = function (hashId) {
-        $location.hash(hashId);
-        $anchorScroll();
+        $anchorScroll(hashId);
     };
 });

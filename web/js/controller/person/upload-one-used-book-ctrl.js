@@ -22,11 +22,12 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
         });
     };
 
+    $scope.me = AV.User.current();
     $scope.usedBookJson = {
         isbn13: $stateParams.isbn13,
         price: null,
         des: '',
-        owner: AV.User.current()
+        owner: me
     };
     $scope.usedBookJson.isbn13 && $scope.loadDoubanBookInfo();
 

@@ -28,7 +28,7 @@
                 <h4>修改我的-<span ng-bind="usedBook.attributes.bookInfo.attributes.title"></span></h4>
                 <button class="btn btn-danger btn-sm"
                         ng-click="UsedBook$.removeUsedBook(usedBook)"
-                        ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id})">永远删除
+                        ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">永远删除
                 </button>
                 <hr>
             </div>

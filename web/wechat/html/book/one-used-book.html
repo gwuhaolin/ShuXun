@@ -23,12 +23,12 @@
                 <button class="button button-small button-outline button-calm"
                         ng-if="usedBook.attributes.alive"
                         ng-click="UsedBook$.killUsedBook(usedBook)"
-                        ui-sref="person.need-books-list">已卖
+                        ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">已卖
                 </button>
                 <button class="button button-small button-outline button-calm"
                         ng-if="!usedBook.attributes.alive"
                         ng-click="UsedBook$.backToLifeUsedBook(usedBook)"
-                        ui-sref="person.need-books-list">撤销已卖
+                        ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">撤销已卖
                 </button>
                 <button class="button button-small button-outline button-balanced"
                         ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">修改

@@ -20,10 +20,12 @@ APP.controller('ion_person_uploadOneUsedBook', function ($scope, $controller, $s
      */
     $scope.submitOnClick = function (role) {
         $scope.saveUsedBook(role, function () {
-            if (role == 'sell') {
-                $state.go('person.used-books-list');
-            } else if (role == 'need') {
-                $state.go('person.need-books-list');
+            if (role === 'sell') {
+                $state.go('common.user-home', {ownerId: $scope.me.id, hashId: '主人要卖的旧书'});
+            } else if (role === 'need') {
+                $state.go('common.user-home', {ownerId: $scope.me.id, hashId: '主人发布的求书'});
+            } else if (role === 'circle') {
+                $state.go('common.user-home', {ownerId: $scope.me.id, hashId: '主人上传的书漂流'});
             }
             $ionicHistory.clearHistory();
         });

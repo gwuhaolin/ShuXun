@@ -31,7 +31,9 @@
                     ui-sref="person.upload-one-need-book">发布求书
             </button>
         </ion-item>
-        <ion-item ng-if="myNeedBookNumber>0" ui-sref="person.need-books-list" class="item-icon-right">
+        <ion-item ng-if="myNeedBookNumber>0"
+                  ui-sref="common.user-home({ownerId:user.id,hashId:'主人发布的求书'})"
+                  class="item-icon-right">
             已发布<strong ng-bind="myNeedBookNumber"></strong>个求书
             <i class="icon ion-ios-arrow-right balanced"></i>
         </ion-item>
@@ -41,7 +43,9 @@
                     ui-sref="person.upload-one-used-book">上传旧书
             </button>
         </ion-item>
-        <ion-item ng-if="myUsedBookNumber>0" ui-sref="person.used-books-list" class="item-icon-right">
+        <ion-item ng-if="myUsedBookNumber>0"
+                  ui-sref="common.user-home({ownerId:user.id,hashId:'主人要卖的旧书'})"
+                  class="item-icon-right">
             已上传<strong ng-bind="myUsedBookNumber"></strong>本旧书
             <i class="icon ion-ios-arrow-right balanced"></i>
         </ion-item>

@@ -20,6 +20,7 @@ APP.service('UsedBook$', function ($rootScope) {
      */
     this.loadUsedBookListForOwner = function (avosUser) {
         var query = avosUser.relation('usedBooks').query();
+        query.descending('alive');
         query.equalTo('role', 'sell');
         return query.find();
     };
@@ -31,6 +32,7 @@ APP.service('UsedBook$', function ($rootScope) {
      */
     this.loadNeedBookListForOwner = function (avosUser) {
         var query = avosUser.relation('usedBooks').query();
+        query.descending('alive');
         query.equalTo('role', 'need');
         return query.find();
     };
@@ -110,8 +112,8 @@ APP.service('UsedBook$', function ($rootScope) {
             that.MyNeedBook.needBooks.length = 0;
             that.MyNeedBook.loadMore();
         }
-        $rootScope.$broadcast('scroll.infiniteScrollComplete');
         $rootScope.$digest();
+        $rootScope.$broadcast('scroll.infiniteScrollComplete');
     }
 
     /**
@@ -175,12 +177,9 @@ APP.service('UsedBook$', function ($rootScope) {
             var role = avosUsedBook.get('role');
             _reloadMyUsedBook(role);
             rePromise.resolve(avosUsedBook);
+            alert('成功保存');
         }).fail(function (error) {
             rePromise.reject(error);
-        }).always(function () {
-            $rootScope.isLoading = false;
-            $rootScope.$broadcast('scroll.infiniteScrollComplete');
-            $rootScope.$digest();
         });
         return rePromise;
     };

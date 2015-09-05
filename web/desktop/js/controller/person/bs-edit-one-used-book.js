@@ -13,7 +13,7 @@ APP.controller('bs_person_editOneUsedBook', function ($scope, $controller, $stat
             } else if ($scope.usedBook.get('role') == 'need') {
                 UsedBook$.MyNeedBook.loadMore();
             }
-            $state.go('common.user-home', {ownerId: AV.User.current().id});
+            $state.go('common.user-home', {ownerId: AV.User.current().id, hashId: '主人要卖的旧书'});
         });
     }
 });
