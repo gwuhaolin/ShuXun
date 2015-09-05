@@ -8,8 +8,7 @@
         <div class="col-md-12 text-center">
             <tabset justified="true">
                 <tab heading="微信关注" active="step=='subscribe'" disable="step!='subscribe'">
-                    <br><h4>使用微信扫描二维码或加书循微信号<strong>ishuxun</strong></h4><br>
-                    <img class="img-responsive img-rounded center-block" ng-src="../img/QRCode.png">
+                    <div class="row" ng-include="'html/directive/shuxun-wechat-ad.html'"></div>
                     <a class="btn btn-info btn-lg" ui-sref="common.hello">关注好了</a>
                 </tab>
                 <tab heading="填写信息" active="step=='info'" disable="step!='info'">

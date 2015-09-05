@@ -122,26 +122,6 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <h4>微信服务号</h4>
-                <hr>
-                <h5>书循微信号让旧书交易更简单</h5>
-                <ul class="list-unstyled">
-                    <li>扫条码找书传书</li>
-                    <li>接收买家咨询提醒</li>
-                </ul>
-                <img ng-src="../img/wechat.png"
-                     style="width: 32px;height: 32px"
-                     popover-placement="left"
-                     popover-template="'scanWechatQRCode.html'"
-                     popover-trigger="mouseenter">
-            </div>
-            <script type="text/ng-template" id="scanWechatQRCode.html">
-                <h5 class="center-block">微信扫描二维码使用书循微信号</h5>
-                <img ng-src="../img/QRCode.png" class="img-responsive center-block">
-            </script>
-        </div>
-
+        <div class="row" ng-include="'html/directive/shuxun-wechat-ad.html'"></div>
     </aside>
 </div>

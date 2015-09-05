@@ -16,6 +16,7 @@ APP.controller('bs_signUp', function ($scope, $stateParams, User$, BootstrapModa
         $scope.userInfo = userInfo;
         User$.loginWithUnionId(userInfo.username).done(function (user) {//已经注册过
             User$.updateMyInfoWithJson(userInfo);//更新微信信息
+            $scope.me = user;
             $scope.userObjectId = user.id;
             $scope.step = 'ok';
         }).fail(function () {//已经关注书循，但是还没有注册过

@@ -8,7 +8,7 @@ var AmazonBook = require('../../server/book/amazon-book.js');
 
 describe('book/amazon-book.js', function () {
 
-    describe.only('#spiderBookByISBN', function () {
+    describe('#spiderBookByISBN', function () {
         _.each(Util.ISBN_Legal_HasPub, function (isbn13) {
             it(isbn13 + '的信息是有的', function (done) {
                 AmazonBook.spiderBookByISBN(isbn13).done(function (jsonBookInfo) {
