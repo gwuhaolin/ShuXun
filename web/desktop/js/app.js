@@ -46,6 +46,9 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
              */
             url: '/signup?code',
             templateUrl: 'html/common/sign-up.html'
+        }).state('common.login', {
+            url: '/login',
+            templateUrl: 'html/common/login.html'
         })
         //book
         .state('book.recommend', {

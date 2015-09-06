@@ -82,7 +82,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
             that.loadFromBookInfo();
             that.searchBtnOnClick();
             leanAnalytics.searchBook(that.keyword).send();
-        }, 1000);
+        }, 2000);
     };
 
     /**

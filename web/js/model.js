@@ -21,7 +21,11 @@ Model.User = AV.Object.extend('_User', {
     avatarUrlWithSize: function (size) {
         var avatarUrl = this.get('avatarUrl');
         if (avatarUrl) {
-            return avatarUrl.substring(0, avatarUrl.length - 1) + size;
+            if (avatarUrl.indexOf('wx.qlogo.cn') >= 0) {
+                return avatarUrl.substring(0, avatarUrl.length - 1) + size;
+            } else {
+                return avatarUrl;
+            }
         } else {
             return null;
         }
