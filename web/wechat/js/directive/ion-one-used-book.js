@@ -8,10 +8,10 @@ APP.directive('ionOneUsedBook', function (UsedBook$) {
     function link($scope) {
         $scope.UsedBook$ = UsedBook$;
 
-        //获得旧书的图书信息
+        //如果usedBook的bookInfo属性缺少就去获得旧书的图书信息
         if ($scope.usedBook) {
             var bookInfo = $scope.usedBook.get('bookInfo');
-            if (bookInfo && bookInfo.id && !bookInfo.has('isbn13')) {
+            if (bookInfo && bookInfo.id && !bookInfo.has('title')) {
                 var query = new AV.Query(Model.BookInfo);
                 query.select('title', 'image');
                 query.get(bookInfo.id).done(function (bookInfo) {

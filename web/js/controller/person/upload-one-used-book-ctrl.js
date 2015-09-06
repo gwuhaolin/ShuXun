@@ -34,7 +34,7 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
     $scope.usedBookJson = {
         isbn13: $stateParams.isbn13,
         role: role,
-        price: 0,
+        price: null,
         des: '',
         owner: $scope.me
     };

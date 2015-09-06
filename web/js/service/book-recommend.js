@@ -73,28 +73,25 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
     /**
      * 最新更新的,不是我自己上传的,按照距离我距离排序的,
      * @param role UserBook role属性,是sell(要卖的) 还是 need(求书)
-     * @param majorFilter 附加的专业显示,只显示和我同一个专业的同学上传的书,==null时无限制
+     * @param ownerMajorFilter 附加的专业显示,只显示和我同一个专业的同学上传的书,==null时无限制
      * @returns {AV.Query}
      * @private
      */
-    function _buildUsedBookQuery(role, majorFilter) {
+    function _buildUsedBookQuery(role, ownerMajorFilter) {
         var query = new AV.Query(Model.UsedBook);
         query.descending("updatedAt");
-        query.include(['bookInfo']);
         query.equalTo('alive', true);
         role && query.equalTo('role', role);
         var me = AV.User.current();
-        if (me || majorFilter) {
+        if (me || ownerMajorFilter) {
             var ownerQuery = new AV.Query(Model.User);
             if (me) {
-                me && ownerQuery.notEqualTo('objectId', me.id);//不要显示自己的上传的
-                var avosGeo = me ? me.get('location') : null;
-                if (avosGeo) {
-                    ownerQuery.near("location", avosGeo);
-                }
+                query.notEqualTo('owner', me);//不要显示自己的上传的
+                var avosGeo = me.get('location');
+                avosGeo && ownerQuery.near("location", avosGeo);
             }
-            if (majorFilter) {
-                ownerQuery.equalTo('major', majorFilter);
+            if (ownerMajorFilter) {
+                ownerQuery.equalTo('major', ownerMajorFilter);
             }
             query.matchesQuery('owner', ownerQuery);
         }
@@ -107,7 +104,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
      */
     this.NearCircleBook = {
         circleBooks: [],
-        hasMoreFlag: true,
+        _hasMoreFlag: true,
         loadMore: function () {
             var query = _buildUsedBookQuery('circle', that.NearCircleBook._majorFilter);
             query.skip(that.NearCircleBook.circleBooks.length);
@@ -116,21 +113,21 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 if (circleBooks.length > 0) {
                     that.NearCircleBook.circleBooks.pushUniqueArray(circleBooks);
                 } else {
-                    that.NearCircleBook.hasMoreFlag = false;
+                    that.NearCircleBook._hasMoreFlag = false;
                 }
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
         hasMore: function () {
-            return that.NearCircleBook.hasMoreFlag;
+            return that.NearCircleBook._hasMoreFlag;
         },
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearCircleBook._majorFilter) {
                 RandomStart = 0;
                 that.NearCircleBook.circleBooks.length = 0;
-                that.NearCircleBook.hasMoreFlag = true;
+                that.NearCircleBook._hasMoreFlag = true;
                 that.NearCircleBook._majorFilter = major;
                 that.NearCircleBook.loadMore();
             }
@@ -158,7 +155,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
      */
     this.NearNeedBook = {
         needBooks: [],
-        hasMoreFlag: true,
+        _hasMoreFlag: true,
         loadMore: function () {
             var query = _buildUsedBookQuery('need', that.NearNeedBook._majorFilter);
             query.skip(that.NearNeedBook.needBooks.length + RandomStart);
@@ -167,21 +164,21 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 if (needBooks.length > 0) {
                     that.NearNeedBook.needBooks.pushUniqueArray(needBooks);
                 } else {
-                    that.NearNeedBook.hasMoreFlag = false;
+                    that.NearNeedBook._hasMoreFlag = false;
                 }
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
         hasMore: function () {
-            return that.NearNeedBook.hasMoreFlag;
+            return that.NearNeedBook._hasMoreFlag;
         },
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearNeedBook._majorFilter) {
                 RandomStart = 0;
                 that.NearNeedBook.needBooks.length = 0;
-                that.NearNeedBook.hasMoreFlag = true;
+                that.NearNeedBook._hasMoreFlag = true;
                 that.NearNeedBook._majorFilter = major;
                 that.NearNeedBook.loadMore();
             }
@@ -209,7 +206,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
      */
     this.NearUsedBook = {
         usedBooks: [],
-        hasMoreFlag: true,
+        _hasMoreFlag: true,
         loadMore: function () {
             var query = _buildUsedBookQuery('sell', that.NearUsedBook._majorFilter);
             query.skip(that.NearUsedBook.usedBooks.length + RandomStart);
@@ -218,21 +215,21 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 if (usedBooks.length > 0) {
                     that.NearUsedBook.usedBooks.pushUniqueArray(usedBooks);
                 } else {
-                    that.NearUsedBook.hasMoreFlag = false;
+                    that.NearUsedBook._hasMoreFlag = false;
                 }
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             });
         },
         hasMore: function () {
-            return that.NearUsedBook.hasMoreFlag;
+            return that.NearUsedBook._hasMoreFlag;
         },
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearUsedBook._majorFilter) {
                 RandomStart = 0;
                 that.NearUsedBook.usedBooks.length = 0;
-                that.NearUsedBook.hasMoreFlag = true;
+                that.NearUsedBook._hasMoreFlag = true;
                 that.NearUsedBook._majorFilter = major;
                 that.NearUsedBook.loadMore();
             }
@@ -260,7 +257,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
      */
     this.NearUser = {
         users: [],
-        hasMoreFlag: true,
+        _hasMoreFlag: true,
         /**
          * 最新更新的,不是我自己,按照距离我距离排序的,
          * @param majorFilter 附加的专业显示,只显示和我同一个专业的同学上传的书,==null时无限制
@@ -284,20 +281,20 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 if (users.length > 0) {
                     that.NearUser.users.pushUniqueArray(users);
                 } else {
-                    that.NearUser.hasMoreFlag = false;
+                    that.NearUser._hasMoreFlag = false;
                 }
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
         },
         hasMore: function () {
-            return that.NearUser.hasMoreFlag;
+            return that.NearUser._hasMoreFlag;
         },
         _majorFilter: null,
         setMajorFilter: function (major) {
             if (major != that.NearUser._majorFilter) {
                 that.NearUser.users.length = 0;
-                that.NearUser.hasMoreFlag = true;
+                that.NearUser._hasMoreFlag = true;
                 that.NearUser._majorFilter = major;
                 that.NearUser.loadMore();
             }
