@@ -8,7 +8,14 @@
 APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, BookRecommend$) {
     $scope.cmd = $stateParams['cmd'];
     $scope.sortWay = '';
-    if ($scope.cmd == 'nearUsed') {
+    if ($scope.cmd == 'nearCircle') {
+        $scope.title = '你附近的书漂流';
+        $scope.usedBooks = BookRecommend$.NearCircleBook.circleBooks;
+        $scope.loadMore = BookRecommend$.NearCircleBook.loadMore;
+        $scope.hasMore = BookRecommend$.NearCircleBook.hasMore;
+        $scope.setMajorFilter = BookRecommend$.NearCircleBook.setMajorFilter;
+        $scope.getMajorFilter = BookRecommend$.NearCircleBook.getMajorFilter;
+    } else if ($scope.cmd == 'nearUsed') {
         $scope.title = '你附近的二手书';
         $scope.usedBooks = BookRecommend$.NearUsedBook.usedBooks;
         $scope.loadMore = BookRecommend$.NearUsedBook.loadMore;
@@ -22,6 +29,12 @@ APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, B
         $scope.hasMore = BookRecommend$.NearNeedBook.hasMore;
         $scope.setMajorFilter = BookRecommend$.NearNeedBook.setMajorFilter;
         $scope.getMajorFilter = BookRecommend$.NearNeedBook.getMajorFilter;
+    } else if ($scope.cmd == 'isbnCircle') {
+        $scope.title = '对应的书漂流';
+        $scope.isbn13 = $stateParams['isbn13'];
+        $scope.usedBooks = UsedBook$.ISBN_circle.nowEqualISBNCircleBooks;
+        $scope.loadMore = UsedBook$.ISBN_circle.loadMoreCircleBookEqualISBN;
+        $scope.hasMore = UsedBook$.ISBN_circle.hasMore;
     } else if ($scope.cmd == 'isbnUsed') {
         $scope.title = '对应要卖的旧书';
         $scope.isbn13 = $stateParams['isbn13'];

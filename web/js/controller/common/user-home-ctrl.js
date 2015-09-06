@@ -20,6 +20,11 @@ APP.controller('userHome', function ($scope, $stateParams, UsedBook$) {
             $scope.needBooks = needBooks;
             $scope.$digest();
             hashId && $scope.scrollToHash(hashId);
-        })
+        });
+        UsedBook$.loadCircleBookListForOwner(owner).done(function (circleBooks) {
+            $scope.circleBooks = circleBooks;
+            $scope.$digest();
+            hashId && $scope.scrollToHash(hashId);
+        });
     });
 });

@@ -7,7 +7,7 @@
                 <ol class="breadcrumb">
                     <li><a ui-sref="book.one-book({isbn13:bookInfo.attributes.isbn13})"
                            ng-bind="bookInfo.attributes.title"></a></li>
-                    <li class="active"><strong>上传</strong>-<strong ng-bind="bookInfo.attributes.title"></strong></li>
+                    <li class="active" ng-bind="title"></li>
                 </ol>
             </div>
             <div class="col-md-6">
@@ -43,11 +43,11 @@
 
         <div class="row" ng-if="bookInfo">
             <div class="col-md-12">
-                <h4>上传-<span ng-bind="bookInfo.attributes.title"></span></h4>
+                <h4><span ng-bind="title"></span> <span ng-bind="bookInfo.attributes.title"></span></h4>
                 <hr>
             </div>
             <form class="col-md-12">
-                <div class="form-group">
+                <div class="form-group" ng-if="usedBookJson.role!='circle'">
                     <input autofocus type="number" class="form-control" ng-model="usedBookJson.price"
                            placeholder="输入要价(数字,人民币元)">
                 </div>
@@ -58,9 +58,8 @@
                               popover-template="'commonUsedBookDesWords.html'"></textarea>
                 </div>
                 <button class="btn btn-primary btn-block"
-                        ng-disabled="!(!isLoading && usedBookJson.isbn13 && usedBookJson.price)"
-                        ng-click="submitOnClick('sell')">
-                    提交二手书
+                        ng-disabled="!(!isLoading && usedBookJson.isbn13)"
+                        ng-click="submitOnClick('sell')">提交
                 </button>
             </form>
             <script type="text/ng-template" id="commonUsedBookDesWords.html">

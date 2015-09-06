@@ -1,5 +1,5 @@
 <!--上传一本旧书-->
-<ion-view ng-controller="ion_person_uploadOneUsedBook" view-title="上传二手书">
+<ion-view ng-controller="ion_person_uploadOneUsedBook" view-title="{{title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
@@ -30,7 +30,7 @@
         <hr style="margin: 10px">
         <!-- 填写价格和描述-->
         <div class="list list-inset">
-            <label class="item item-input">
+            <label class="item item-input" ng-if="usedBookJson.role!='circle'">
                 <input type="number" ng-model="usedBookJson.price" placeholder="输入要价(数字,人民币元)">
             </label>
             <label class="item item-input">
@@ -38,9 +38,9 @@
             </label>
         </div>
 
-        <button ng-disabled="!(!isLoading && usedBookJson.isbn13 && usedBookJson.price)"
-                class="button button-block button-outline button-balanced" ng-click="submitOnClick('sell')">
-            提交二手书
+        <button ng-disabled="!(!isLoading && usedBookJson.isbn13)"
+                class="button button-block button-outline button-balanced"
+                ng-click="submitOnClick()">提交
         </button>
 
         <!-- 常用描述语-->

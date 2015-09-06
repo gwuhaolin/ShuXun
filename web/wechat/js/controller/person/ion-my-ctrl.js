@@ -25,6 +25,14 @@ APP.controller('ion_person_my', function ($scope, $state, $stateParams, User$, S
             $scope.myNeedBookNumber = number;
             $scope.$digest();
         });
+        //加载我上传的书漂流需求的数量
+        query = myUsedBookRelation.query();
+        query.equalTo('alive', true);
+        query.equalTo('role', 'circle');
+        query.count().done(function (number) {
+            $scope.myCircleBookNumber = number;
+            $scope.$digest();
+        });
         //加载我关注的同学的数量
         query = AV.User.current().followeeQuery();
         query.count().done(function (followeeNumber) {

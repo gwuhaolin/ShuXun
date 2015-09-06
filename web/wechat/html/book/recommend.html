@@ -27,9 +27,18 @@
             </ion-item>
             <ion-douban-book-oneline books="LatestBook.books"></ion-douban-book-oneline>
         </div>
+        <!-- 附近用户分享的书漂流-->
+        <div ng-if="BookRecommend$.NearCircleBook.circleBooks.length>0">
+            <ion-item class="item-divider item-button-right">图书漂流
+                <button class="button button-small button-clear button-balanced"
+                        ui-sref="book.used-book-list({cmd:'nearCircle'})">更多
+                </button>
+            </ion-item>
+            <ion-used-book-oneline used-books="BookRecommend$.NearCircleBook.circleBooks"></ion-used-book-oneline>
+        </div>
         <!-- 附近用户上传的旧书-->
         <div ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
-            <ion-item class="item-divider item-button-right">附近卖书
+            <ion-item class="item-divider item-button-right">旧书转让
                 <button class="button button-small button-clear button-balanced"
                         ui-sref="book.used-book-list({cmd:'nearUsed'})">更多
                 </button>
@@ -53,7 +62,7 @@
         </div>
         <!-- 附近用户发布的求书-->
         <div ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
-            <ion-item class="item-divider item-button-right">附近求书
+            <ion-item class="item-divider item-button-right">求书公告
                 <button class="button button-small button-clear button-balanced"
                         ui-sref="book.used-book-list({cmd:'nearNeed'})">更多
                 </button>

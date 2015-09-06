@@ -7,18 +7,25 @@
         <ion-list>
             <ion-user-info user="owner" hide-used-book="true"></ion-user-info>
             <!-- 上传的二手书列表-->
-            <ion-item class="item-divider item-button-right" id="主人要卖的旧书">主人要卖的旧书</ion-item>
+            <ion-item class="item-divider item-button-right" id="userUsedBook">Ta的旧书</ion-item>
             <ion-one-used-book ng-if="usedBooks.length>0" ng-repeat="usedBook in usedBooks"
                                used-book="usedBook"></ion-one-used-book>
-            <ion-item ng-if="usedBooks.length==0" ui-sref="book.recommend">
-                主人还没旧书要卖,再去逛逛
+            <ion-item ng-if="usedBooks.length==0" ui-sref="book.used-book-list({cmd:'nearUsed'})">
+                主人还没有要卖的旧书，去看看其他同学的旧书
             </ion-item>
             <!-- 发布的求书列表-->
-            <ion-item class="item-divider item-button-right" id="主人发布的求书">主人发布的求书</ion-item>
-            <ion-one-need-book ng-if="needBooks.length>0" ng-repeat="needBook in needBooks"
-                               need-book="needBook"></ion-one-need-book>
-            <ion-item ng-if="needBooks.length==0" ui-sref="book.recommend">
-                主人还没发布过求书,再去逛逛
+            <ion-item class="item-divider item-button-right" id="userNeedBook">Ta的求书</ion-item>
+            <ion-one-used-book ng-if="needBooks.length>0" ng-repeat="needBook in needBooks"
+                               used-book="needBook"></ion-one-used-book>
+            <ion-item ng-if="needBooks.length==0" ui-sref="book.used-book-list({cmd:'nearNeed'})">
+                主人还没有发布的求书，去看看其他同学的求书
+            </ion-item>
+            <!-- 发布的书漂流列表-->
+            <ion-item class="item-divider item-button-right" id="userCircleBook">Ta的书漂流</ion-item>
+            <ion-one-used-book ng-if="circleBooks.length>0" ng-repeat="circleBook in circleBooks"
+                               used-book="circleBook"></ion-one-used-book>
+            <ion-item ng-if="circleBooks.length==0" ui-sref="book.used-book-list({cmd:'nearCircle'})">
+                主人还没有上传的书漂流，去看看其他同学的书漂流
             </ion-item>
         </ion-list>
     </ion-content>

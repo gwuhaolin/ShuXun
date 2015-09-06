@@ -46,7 +46,7 @@ var APP = angular.module('APP', ['ionic'], null)
             }).state('common.user-home', {
                 /**
                  * @param:ownerId 主人的AVOS ID
-                 * @param:hashId 滚动到的hashId 主人要卖的旧书 主人发布的求书 主人上传的书漂流
+                 * @param:hashId 滚动到的hashId userUsedBook userNeedBook userCircleBook
                  */
                 url: '/user-home/?ownerId&hashId',
                 templateUrl: 'html/common/user-home.html'
@@ -119,16 +119,6 @@ var APP = angular.module('APP', ['ionic'], null)
                         templateUrl: 'html/book/one-used-book.html'
                     }
                 }
-            }).state('book.one-need-book', {
-                /**
-                 * @param:usedBookAvosObjectId 二手书的AVOS ID
-                 */
-                url: '/one-need-book/?usedBookAvosObjectId',
-                views: {
-                    'book': {
-                        templateUrl: 'html/book/one-need-book.html'
-                    }
-                }
             }).state('book.book-review', {
                 /**
                  * @param:doubanBookId 豆瓣图书id
@@ -155,31 +145,12 @@ var APP = angular.module('APP', ['ionic'], null)
             }).state('person.upload-one-used-book', {
                 /**
                  * @param:isbn13 要上传的二手书的isbn13号码
+                 * @param:role 要上传的书的类型
                  */
-                url: '/upload-one-used-book/?isbn13',
+                url: '/upload-one-used-book/?isbn13&role',
                 views: {
                     'person': {
                         templateUrl: 'html/person/upload-one-used-book.html'
-                    }
-                }
-            }).state('person.upload-one-need-book', {
-                /**
-                 * @param:isbn13 要上传的二手书的isbn13号码
-                 */
-                url: '/upload-one-need-book/?isbn13',
-                views: {
-                    'person': {
-                        templateUrl: 'html/person/upload-one-need-book.html'
-                    }
-                }
-            }).state('person.upload-one-circle-book', {
-                /**
-                 * @param:isbn13 要上传的书漂流的isbn13号码
-                 */
-                url: '/upload-one-circle-book/?isbn13',
-                views: {
-                    'person': {
-                        templateUrl: 'html/person/upload-one-circle-book.html'
                     }
                 }
             }).state('person.status-list', {

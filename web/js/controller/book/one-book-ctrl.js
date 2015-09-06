@@ -41,4 +41,10 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams, BookInfo$
         $scope.needBookNumber = number;
     });
     UsedBook$.ISBN_need.loadMoreNeedBookEqualISBN($scope.isbn13);//先加载5个
+    //////////// 书漂流信息 /////////
+    UsedBook$.ISBN_circle.getCircleBookNumberEqualISBN($scope.isbn13).done(function (number) {
+        //对应的图书有多少本二手书
+        $scope.circleBookNumber = number;
+    });
+    UsedBook$.ISBN_circle.loadMoreCircleBookEqualISBN($scope.isbn13);//先加载5个
 });

@@ -103,6 +103,57 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
 
     /**
      * 附近同学发布的求书
+     * @type {{circleBooks: Array, loadMore: Function}}
+     */
+    this.NearCircleBook = {
+        circleBooks: [],
+        hasMoreFlag: true,
+        loadMore: function () {
+            var query = _buildUsedBookQuery('circle', that.NearCircleBook._majorFilter);
+            query.skip(that.NearCircleBook.circleBooks.length);
+            query.limit(LoadCount);
+            query.find().done(function (circleBooks) {
+                if (circleBooks.length > 0) {
+                    that.NearCircleBook.circleBooks.pushUniqueArray(circleBooks);
+                } else {
+                    that.NearCircleBook.hasMoreFlag = false;
+                }
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        hasMore: function () {
+            return that.NearCircleBook.hasMoreFlag;
+        },
+        _majorFilter: null,
+        setMajorFilter: function (major) {
+            if (major != that.NearCircleBook._majorFilter) {
+                RandomStart = 0;
+                that.NearCircleBook.circleBooks.length = 0;
+                that.NearCircleBook.hasMoreFlag = true;
+                that.NearCircleBook._majorFilter = major;
+                that.NearCircleBook.loadMore();
+            }
+        },
+        getMajorFilter: function () {
+            return that.NearCircleBook._majorFilter;
+        },
+        /**
+         * 把主人同一个专业的同学上传的书插入到最开头
+         */
+        unshiftMajorBook: function () {
+            var me = AV.User.current();
+            var major = me ? me.get('major') : null;
+            _buildUsedBookQuery('circle', major).find().done(function (circleBooks) {
+                that.NearCircleBook.circleBooks.unshiftUniqueArray(AV._.shuffle(circleBooks));
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        }
+    };
+
+    /**
+     * 附近同学发布的求书
      * @type {{needBooks: Array, loadMore: Function}}
      */
     this.NearNeedBook = {

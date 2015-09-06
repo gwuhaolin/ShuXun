@@ -22,25 +22,28 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
         });
     };
 
+    var role = $stateParams.role;
+    if (role === 'sell') {
+        $scope.title = '上传要卖的旧书';
+    } else if (role === 'need') {
+        $scope.title = '发布求书公告';
+    } else if (role === 'circle') {
+        $scope.title = '分享书漂流';
+    }
     $scope.me = AV.User.current();
     $scope.usedBookJson = {
         isbn13: $stateParams.isbn13,
-        price: null,
+        role: role,
+        price: 0,
         des: '',
         owner: $scope.me
     };
     $scope.usedBookJson.isbn13 && $scope.loadDoubanBookInfo();
 
-    /**
-     * @param role 是要卖掉二手书(sell)还是发布需求(need)
-     * @param onSuccess 当上传成功时调用
-     */
-    $scope.saveUsedBook = function (role, onSuccess) {
-        $scope.usedBookJson.role = role;
+    $scope.submitOnClick = function () {
         $scope.isLoading = true;
         var avosUsedBook = Model.UsedBook.new($scope.usedBookJson);
         UsedBook$.saveUsedBook(avosUsedBook).done(function () {
-            onSuccess();
         }).fail(function (error) {
             alert(error.message);
         }).always(function () {

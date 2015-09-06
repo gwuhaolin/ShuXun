@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('UsedBook$', function ($rootScope) {
+APP.service('UsedBook$', function ($rootScope, $state) {
     var that = this;
 
     /**
@@ -34,6 +34,18 @@ APP.service('UsedBook$', function ($rootScope) {
         var query = avosUser.relation('usedBooks').query();
         query.descending('alive');
         query.equalTo('role', 'need');
+        return query.find();
+    };
+
+    /**
+     * 加载对应用户所有发布的书漂流
+     * @param avosUser
+     * @returns {*|AV.Promise}
+     */
+    this.loadCircleBookListForOwner = function (avosUser) {
+        var query = avosUser.relation('usedBooks').query();
+        query.descending('alive');
+        query.equalTo('role', 'circle');
         return query.find();
     };
 
@@ -100,21 +112,59 @@ APP.service('UsedBook$', function ($rootScope) {
     };
 
     /**
+     * 我上传的书漂流
+     * @type {{isLoading: boolean, circleBooks: Array, loadMore: Function, _hasMoreFlag: boolean, hasMore: Function}}
+     */
+    this.MyCircleBook = {
+        isLoading: false,
+        circleBooks: [],
+        loadMore: function () {
+            var query = AV.User.current().relation('usedBooks').query();
+            query.descending('alive');
+            query.skip(that.MyCircleBook.circleBooks.length);
+            query.limit(LoadCount);
+            query.equalTo('role', 'circle');
+            query.find().done(function (circleBookList) {
+                if (circleBookList.length > 0) {
+                    that.MyCircleBook.circleBooks.pushUniqueArray(circleBookList);
+                } else {
+                    that.MyCircleBook._hasMoreFlag = false;
+                }
+            }).always(function () {
+                that.MyCircleBook.isLoading = false;
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                $rootScope.$digest();
+            });
+        },
+        _hasMoreFlag: true,
+        hasMore: function () {
+            return that.MyCircleBook._hasMoreFlag;
+        }
+    };
+
+    /**
      * 重新加载我的UsedBook
      * @param roleFilter 只重新加载对应的role
-     * @private
      */
-    function _reloadMyUsedBook(roleFilter) {
-        if (roleFilter == 'sell') {
+    that.reloadMyUsedBookAndGoMyHome = function (roleFilter) {
+        var hashId = '';
+        if (roleFilter === 'sell') {
             that.MyUsedBook.usedBooks.length = 0;
             that.MyUsedBook.loadMore();
-        } else if (roleFilter == 'need') {
+            hashId = 'userUsedBook';
+        } else if (roleFilter === 'need') {
             that.MyNeedBook.needBooks.length = 0;
             that.MyNeedBook.loadMore();
+            hashId = 'userNeedBook';
+        } else if (roleFilter === 'circle') {
+            that.MyCircleBook.circleBooks.length = 0;
+            that.MyCircleBook.loadMore();
+            hashId = 'userCircleBook';
         }
         $rootScope.$digest();
         $rootScope.$broadcast('scroll.infiniteScrollComplete');
-    }
+        $state.go('common.user-home', {ownerId: AV.User.current().id, hashId: hashId});
+    };
 
     /**
      * 删除一本没有卖出的二手书保存到数据库
@@ -125,7 +175,7 @@ APP.service('UsedBook$', function ($rootScope) {
         if (window.confirm('你确定要删除它吗?将不可恢复')) {
             var role = avosUsedBook.get('role');
             avosUsedBook.destroy().done(function () {
-                _reloadMyUsedBook(role);
+                that.reloadMyUsedBookAndGoMyHome(role);
             }).fail(function (error) {
                 alert(error.message);
             });
@@ -142,8 +192,7 @@ APP.service('UsedBook$', function ($rootScope) {
         receiver && avosUsedBook.set('receiver', receiver);
         avosUsedBook.save().done(function () {
             var role = avosUsedBook.get('role');
-            _reloadMyUsedBook(role);
-            alert('成功修改');
+            that.reloadMyUsedBookAndGoMyHome(role);
         }).fail(function (err) {
             alert(err.message);
         });
@@ -158,8 +207,7 @@ APP.service('UsedBook$', function ($rootScope) {
         avosUsedBook.set('receiver', null);
         avosUsedBook.save().done(function () {
             var role = avosUsedBook.get('role');
-            _reloadMyUsedBook(role);
-            alert('成功修改');
+            that.reloadMyUsedBookAndGoMyHome(role);
         }).fail(function (err) {
             alert(err.message);
         });
@@ -174,10 +222,9 @@ APP.service('UsedBook$', function ($rootScope) {
     this.saveUsedBook = function (avosUsedBook) {
         var rePromise = new AV.Promise();
         avosUsedBook.save(null).done(function () {
-            var role = avosUsedBook.get('role');
-            _reloadMyUsedBook(role);
             rePromise.resolve(avosUsedBook);
-            alert('成功保存');
+            var role = avosUsedBook.get('role');
+            that.reloadMyUsedBookAndGoMyHome(role);
         }).fail(function (error) {
             rePromise.reject(error);
         });
@@ -301,6 +348,66 @@ APP.service('UsedBook$', function ($rootScope) {
         hasMoreFlag: true,
         hasMore: function () {
             return that.ISBN_need.hasMoreFlag;
+        }
+    };
+
+    this.ISBN_circle = {
+        /**
+         * 获得对应ISBN的二手书一共有多少本
+         * @param isbn13
+         * @returns {*|AV.Promise}
+         */
+        getCircleBookNumberEqualISBN: function (isbn13) {
+            var query = new AV.Query(Model.UsedBook);
+            query.equalTo('alive', true);
+            query.equalTo('role', 'circle');
+            query.equalTo("isbn13", isbn13);
+            return query.count();
+        },
+        /**
+         * 目前正在加载的二手书的ISBN号码
+         * @type {string}
+         */
+        nowISBN13: '',
+        /**
+         * 目前已经加载了对应的ISBN号码的二手书列表
+         * @type {Array}
+         */
+        nowEqualISBNCircleBooks: [],
+        /**
+         * 获得所有对应ISBN的二手书
+         * @param isbn13
+         */
+        loadMoreCircleBookEqualISBN: function (isbn13) {
+            that.isLoading = true;
+            if (isbn13 != that.ISBN_circle.nowISBN13) {//如果是新的ISBN号码就清空以前的
+                that.ISBN_circle.nowISBN13 = isbn13;
+                that.ISBN_circle.nowEqualISBNCircleBooks = [];
+                that.ISBN_circle.hasMoreFlag = true;
+            }
+            var query = new AV.Query(Model.UsedBook);
+            query.equalTo('alive', true);
+            query.equalTo("isbn13", that.ISBN_circle.nowISBN13);
+            query.equalTo('role', 'circle');
+            query.descending("updatedAt");
+            query.skip(that.ISBN_circle.nowEqualISBNCircleBooks.length);
+            query.limit(5);
+            query.include('owner');
+            query.find().done(function (usedBooks) {
+                if (usedBooks.length > 0) {
+                    that.ISBN_circle.nowEqualISBNCircleBooks.pushUniqueArray(usedBooks);
+                } else {
+                    that.ISBN_circle.hasMoreFlag = false;
+                }
+            }).always(function () {
+                that.isLoading = false;
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                $rootScope.$digest();
+            })
+        },
+        hasMoreFlag: true,
+        hasMore: function () {
+            return that.ISBN_circle.hasMoreFlag;
         }
     };
 });

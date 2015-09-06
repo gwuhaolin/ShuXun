@@ -15,11 +15,13 @@ APP.controller('book_recommendCtrl', function ($scope, $stateParams, BookRecomme
         if ($scope.major) {
             BookRecommend$.NearUsedBook.setMajorFilter($scope.major);
             BookRecommend$.NearNeedBook.setMajorFilter($scope.major);
+            BookRecommend$.NearCircleBook.setMajorFilter($scope.major);
             BookRecommend$.NearUser.setMajorFilter($scope.major);
             BookRecommend$.TagBook.setTag($scope.major);
         } else {
             BookRecommend$.NearUsedBook.unshiftMajorBook();
             BookRecommend$.NearNeedBook.unshiftMajorBook();
+            BookRecommend$.NearCircleBook.unshiftMajorBook();
             BookRecommend$.NearUser.unshiftMajorUser();
             var me = AV.User.current();
             me && BookRecommend$.TagBook.setTag(me.get('major'));
@@ -32,4 +34,5 @@ APP.controller('book_recommendCtrl', function ($scope, $stateParams, BookRecomme
     $scope.LatestBook.loadMore();
     BookRecommend$.NearUsedBook.loadMore();
     BookRecommend$.NearNeedBook.loadMore();
+    BookRecommend$.NearCircleBook.loadMore();
 });

@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('bs_book_oneUsedBook', function ($scope, $controller) {
+APP.controller('bs_book_oneUsedBook', function ($scope, $controller, UsedBook$) {
     $controller('book_oneUsedBook', {$scope: $scope});
 
     $scope.ownerOtherUsedBooks = [];
@@ -12,20 +12,23 @@ APP.controller('bs_book_oneUsedBook', function ($scope, $controller) {
     $scope.$watch(function () {
         return $scope.usedBook ? $scope.usedBook.get('owner') : null;
     }, function () {
-        $scope.usedBook && $scope.usedBook.attributes.owner.relation('usedBooks').query().find().done(function (usedBooks) {
+        if ($scope.usedBook) {
             $scope.SEO$.setSEO($scope.usedBook);
-            AV._.each(usedBooks, function (usedBook) {
-                if (usedBook.id != $scope.usedBookObjectId) {
-                    var role = usedBook.get('role');
-                    if (role == 'sell') {
-                        $scope.ownerOtherUsedBooks.push(usedBook);
-                    } else if (role == 'need') {
-                        $scope.ownerOtherNeedBooks.push(usedBook);
-                    }
-                }
-            });
-        }).always(function () {
-            $scope.$digest();
-        })
+            var owner = $scope.usedBook.get('owner');
+            if (owner) {
+                UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
+                    $scope.ownerOtherUsedBooks = usedBooks;
+                    $scope.$digest()
+                });
+                UsedBook$.loadNeedBookListForOwner(owner).done(function (needBooks) {
+                    $scope.ownerOtherNeedBooks = needBooks;
+                    $scope.$digest()
+                });
+                UsedBook$.loadCircleBookListForOwner(owner).done(function (circleBooks) {
+                    $scope.ownerOtherCircleBooks = circleBooks;
+                    $scope.$digest()
+                });
+            }
+        }
     })
 });

@@ -14,6 +14,15 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     query.include('bookInfo');
     query.get($scope.usedBookObjectId).done(function (usedBook) {
         $scope.usedBook = usedBook;
+        var role = usedBook.get('role');
+        $scope.title = usedBook.attributes.bookInfo.attributes.title;
+        if (role === 'sell') {
+            $scope.title = '出售二手 ' + $scope.title;
+        } else if (role === 'need') {
+            $scope.title = '求购 ' + $scope.title;
+        } else if (role === 'circle') {
+            $scope.title = '分享 ' + $scope.title;
+        }
     }).always(function () {
         $scope.$digest();
     });
@@ -24,7 +33,7 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
      * @returns {*|AV.Object|boolean}
      */
     $scope.isMy = function () {
-        return $scope.usedBook &&  $scope.me &&  $scope.me.id == $scope.usedBook.attributes.owner.id;
+        return $scope.usedBook && $scope.me && $scope.me.id == $scope.usedBook.attributes.owner.id;
     };
 
     //加载评论数据

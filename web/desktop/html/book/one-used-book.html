@@ -9,7 +9,7 @@
                     <li><a ui-sref="book.used-book-list({cmd:'nearUsed'})">附近卖书</a></li>
                     <li><a ui-sref="book.one-book({isbn13:usedBook.attributes.isbn13})"
                            ng-bind="usedBook.attributes.bookInfo.attributes.title"></a></li>
-                    <li class="active"><strong>二手</strong>-{{usedBook.attributes.bookInfo.attributes.title}}</li>
+                    <li class="active" ng-bind="title"></li>
                 </ol>
             </div>
             <div class="col-md-6">
@@ -17,20 +17,28 @@
                     <div class="btn-group" ng-if="!isMy()">
                         <a class="btn btn-info"
                            ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
-                            联系主人
+                            联系Ta
                         </a>
                         <a class="btn btn-primary" ng-click="scrollToHash('大家都说')">大家都说</a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" ng-click="scrollToHash('Ta的旧书')">Ta的旧书</a>
+                        <a class="btn btn-default" ng-click="scrollToHash('Ta的求书')">Ta的求书</a>
                     </div>
                     <div class="btn-group" ng-if="isMy()">
                         <button class="btn btn-info"
                                 ng-if="usedBook.attributes.alive"
-                                ng-click="UsedBook$.killUsedBook(usedBook)"
-                                ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">已卖
+                                ng-click="UsedBook$.killUsedBook(usedBook)">
+                            <span ng-if="usedBook.attributes.role==='sell'">已卖</span>
+                            <span ng-if="usedBook.attributes.role==='need'">已买</span>
+                            <span ng-if="usedBook.attributes.role==='circle'">已送</span>
                         </button>
                         <button class="btn btn-info"
                                 ng-if="!usedBook.attributes.alive"
-                                ng-click="UsedBook$.backToLifeUsedBook(usedBook)"
-                                ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">撤销已卖
+                                ng-click="UsedBook$.backToLifeUsedBook(usedBook)">
+                            <span ng-if="usedBook.attributes.role==='sell'">撤销已卖</span>
+                            <span ng-if="usedBook.attributes.role==='need'">撤销已买</span>
+                            <span ng-if="usedBook.attributes.role==='circle'">撤销已送</span>
                         </button>
                         <button class="btn btn-warning" ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">
                             修改
@@ -42,7 +50,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h4>旧书信息</h4>
+                <h4>图书信息</h4>
                 <hr>
             </div>
             <div class="col-md-12">
@@ -56,7 +64,8 @@
                 </div>
                 <div class="col-md-9">
                     <dl class="dl-horizontal" ng-if="usedBook.attributes.price">
-                        <dt>主人要价</dt>
+                        <dt ng-if="usedBook.attributes.role==='sell'">主人要价</dt>
+                        <dt ng-if="usedBook.attributes.role==='need'">最高承受价</dt>
                         <dd ng-bind="usedBook.attributes.price"></dd>
                     </dl>
                     <dl class="dl-horizontal">
@@ -105,9 +114,20 @@
 
     <aside class="col-md-3">
 
+        <div class="row" ng-if="ownerOtherCircleBooks.length>0">
+            <div class="col-md-12">
+                <h4>Ta的书漂流</h4>
+                <hr>
+            </div>
+            <div class="col-md-12" ng-repeat="circleBook in ownerOtherCircleBooks">
+                <bs-one-used-book used-book="circleBook"
+                                  popover-placement="left"></bs-one-used-book>
+            </div>
+        </div>
+
         <div class="row" ng-if="ownerOtherUsedBooks.length>0">
             <div class="col-md-12">
-                <h4>主人其它要卖的旧书</h4>
+                <h4 id="Ta的旧书">Ta的旧书</h4>
                 <hr>
             </div>
             <div class="col-md-12" ng-repeat="usedBook in ownerOtherUsedBooks">
@@ -118,14 +138,13 @@
 
         <div class="row" ng-if="ownerOtherNeedBooks.length>0">
             <div class="col-md-12">
-                <h4>主人正需要的书</h4>
+                <h4 id="Ta的求书">Ta的求书</h4>
                 <hr>
             </div>
             <div class="col-md-12" ng-repeat="needBook in ownerOtherNeedBooks">
-                <bs-one-need-book need-book="needBook"
-                                  popover-placement="left"></bs-one-need-book>
+                <bs-one-used-book used-book="needBook"
+                                  popover-placement="left"></bs-one-used-book>
             </div>
         </div>
-
     </aside>
 </div>

@@ -33,13 +33,8 @@
             <h4 ng-bind="getMajorFilter() ? getMajorFilter() : title"></h4>
             <hr>
         </div>
-        <div class="col-md-3" ng-if="cmd=='nearUsed' || cmd =='isbnUsed'"
-             ng-repeat="usedBook in usedBooks | orderBy:sortWay">
+        <div class="col-md-3" ng-repeat="usedBook in usedBooks | orderBy:sortWay">
             <bs-one-used-book used-book="usedBook" popover-placement="right"></bs-one-used-book>
-        </div>
-        <div class="col-md-3" ng-if="cmd=='nearNeed' || cmd == 'isbnNeed'"
-             ng-repeat="needBook in usedBooks | orderBy:sortWay">
-            <bs-one-need-book need-book="needBook" popover-placement="right"></bs-one-need-book>
         </div>
         <bs-infinite-scroll ng-if="hasMore()" on-infinite="loadMore()"></bs-infinite-scroll>
     </div>

@@ -10,15 +10,19 @@
         <div class="col-md-6">
             <div class="btn-toolbar pull-right">
                 <div class="btn-group">
-                    <a class="btn btn-default" ng-click="scrollToHash('主人要卖的旧书')">主人要卖的旧书</a>
-                    <a class="btn btn-default" ng-click="scrollToHash('主人发布的求书')">主人发布的求书</a>
+                    <a class="btn btn-default" ng-click="scrollToHash('userUsedBook')">Ta的旧书</a>
+                    <a class="btn btn-default" ng-click="scrollToHash('userNeedBook')">Ta的求书</a>
+                    <a class="btn btn-default" ng-click="scrollToHash('userCircleBook')">Ta的书漂流</a>
                 </div>
                 <div class="btn-group" ng-if="isMe()">
                     <a class="btn btn-default btn-info"
-                       ui-sref="person.upload-one-used-book()">上传旧书
+                       ui-sref="person.upload-one-used-book({role:'sell'})">上传旧书
                     </a>
                     <a class="btn btn-default btn-primary"
-                       ui-sref="person.upload-one-need-book()">发布求书
+                       ui-sref="person.upload-one-used-book({role:'need'})">发布求书
+                    </a>
+                    <a class="btn btn-default btn-primary"
+                       ui-sref="person.upload-one-used-book({role:'circle'})">上传书漂流
                     </a>
                 </div>
             </div>
@@ -66,11 +70,11 @@
         </div>
     </div>
 
-    <div class="row" id="主人要卖的旧书">
+    <div class="row">
         <div class="col-md-12">
-            <h4>主人要卖的旧书</h4>
+            <h4 id="userUsedBook">Ta的旧书</h4>
             <hr>
-            <h4 class="text-warning" ng-if="usedBooks.length==0">主人要卖的旧书</h4>
+            <a class="text-warning" ng-if="usedBooks.length==0" ui-sref="book.used-book-list({cmd:'nearUsed'})">主人还没有要卖的旧书，去看看其他同学的旧书</a>
         </div>
 
         <div class="col-md-3" ng-repeat="usedBook in usedBooks">
@@ -78,15 +82,27 @@
         </div>
     </div>
 
-    <div class="row" id="主人发布的求书">
+    <div class="row">
         <div class="col-md-12">
-            <h4>主人发布的求书</h4>
+            <h4 id="userNeedBook">Ta的求书</h4>
             <hr>
-            <h4 class="text-warning" ng-if="needBooks.length==0">主人发布的求书</h4>
+            <a class="text-warning" ng-if="needBooks.length==0" ui-sref="book.used-book-list({cmd:'nearNeed'})">主人还没有发布的求书，去看看其他同学的求书</a>
         </div>
 
         <div class="col-md-3" ng-repeat="needBook in needBooks">
-            <bs-one-need-book need-book="needBook" popover-placement="right"></bs-one-need-book>
+            <bs-one-used-book used-book="needBook" popover-placement="right"></bs-one-used-book>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 id="userCircleBook">Ta的书漂流</h4>
+            <hr>
+            <a class="text-warning" ng-if="circleBooks.length==0" ui-sref="book.used-book-list({cmd:'nearCircle'})">主人还没有上传的书漂流，去看看其他同学的书漂流</a>
+        </div>
+
+        <div class="col-md-3" ng-repeat="circleBook in circleBooks">
+            <bs-one-used-book used-book="circleBook" popover-placement="right"></bs-one-used-book>
         </div>
     </div>
 

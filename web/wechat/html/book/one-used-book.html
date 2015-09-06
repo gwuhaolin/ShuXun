@@ -1,5 +1,5 @@
 <!--一本二手书信息-->
-<ion-view ng-controller="ion_book_oneUsedBook" view-title="二手 {{usedBook.attributes.bookInfo.attributes.title}}">
+<ion-view ng-controller="ion_book_oneUsedBook" view-title="{{title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="book.search-list">寻书</button>
     </ion-nav-buttons>
@@ -10,9 +10,13 @@
                                should-show-used-books-count="true"></ion-one-book-info>
             <!-- 旧书信息-->
             <ion-item>
-                <h3>主人要价:<strong ng-bind="usedBook.attributes.price"></strong></h3>
+                <h3>
+                    <span ng-if="usedBook.attributes.role==='sell'">主人要价:</span>
+                    <span ng-if="usedBook.attributes.role==='need'">最高承受:</span>
+                    <strong ng-bind="usedBook.attributes.price"></strong>
+                </h3>
 
-                <p>上传时间:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
+                <p>时间:<strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong></p>
 
                 <p ng-if="usedBook.attributes.des">主人描述:
                     <strong style="white-space: pre-wrap" ng-bind="usedBook.attributes.des"></strong>
@@ -22,13 +26,17 @@
             <ion-item ng-if="isMy()">
                 <button class="button button-small button-outline button-calm"
                         ng-if="usedBook.attributes.alive"
-                        ng-click="UsedBook$.killUsedBook(usedBook)"
-                        ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">已卖
+                        ng-click="UsedBook$.killUsedBook(usedBook)">
+                    <span ng-if="usedBook.attributes.role==='sell'">已卖</span>
+                    <span ng-if="usedBook.attributes.role==='need'">已买</span>
+                    <span ng-if="usedBook.attributes.role==='circle'">已送</span>
                 </button>
                 <button class="button button-small button-outline button-calm"
                         ng-if="!usedBook.attributes.alive"
-                        ng-click="UsedBook$.backToLifeUsedBook(usedBook)"
-                        ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'主人要卖的旧书'})">撤销已卖
+                        ng-click="UsedBook$.backToLifeUsedBook(usedBook)">
+                    <span ng-if="usedBook.attributes.role==='sell'">撤销已卖</span>
+                    <span ng-if="usedBook.attributes.role==='need'">撤销已买</span>
+                    <span ng-if="usedBook.attributes.role==='circle'">撤销已送</span>
                 </button>
                 <button class="button button-small button-outline button-balanced"
                         ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">修改
@@ -37,7 +45,7 @@
         </div>
         <!-- 主人信息-->
         <div class="list">
-            <ion-item class="item-divider item-button-right">旧书主人信息
+            <ion-item class="item-divider item-button-right">主人信息
                 <a class="button button-clear button-balanced"
                    ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBook.id,role:'buy',inboxType:'private'})">私信主人
                 </a>

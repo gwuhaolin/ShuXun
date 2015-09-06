@@ -28,7 +28,7 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
         }).state('common.user-home', {
             /**
              * @param:ownerId 主人的AVOS ID
-             * @param:hashId 滚动到的hashId 主人要卖的旧书 主人发布的求书 主人上传的书漂流
+             * @param:hashId 滚动到的hashId userUsedBook userNeedBook userCircleBook
              */
             url: '/user-home/?ownerId&hashId',
             templateUrl: 'html/common/user-home.html'
@@ -85,12 +85,6 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
              */
             url: '/one-used-book/?usedBookAvosObjectId',
             templateUrl: 'html/book/one-used-book.html'
-        }).state('book.one-need-book', {
-            /**
-             * @param:usedBookAvosObjectId 二手书的AVOS ID
-             */
-            url: '/one-need-book/?usedBookAvosObjectId',
-            templateUrl: 'html/book/one-need-book.html'
         })
         //person
         .state('person.send-msg-to-user', {
@@ -106,14 +100,8 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
             /**
              * @param:isbn13 要上传的二手书的isbn13号码
              */
-            url: '/upload-one-used-book/?isbn13',
+            url: '/upload-one-used-book/?isbn13&role',
             templateUrl: 'html/person/upload-one-used-book.html'
-        }).state('person.upload-one-need-book', {
-            /**
-             * @param:isbn13 要上传的二手书的isbn13号码
-             */
-            url: '/upload-one-need-book/?isbn13',
-            templateUrl: 'html/person/upload-one-need-book.html'
         }).state('person.edit-one-used-book', {
             /**
              * @param:usedBookId 要编辑的二手书的AVOS usedBookId

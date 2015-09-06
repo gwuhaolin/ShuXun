@@ -36,8 +36,9 @@
             <!-- 常用链接-->
             <ul class="nav navbar-nav">
                 <li><a ui-sref="book.book-list({cmd:'latest'})">新书速递</a></li>
-                <li><a ui-sref="book.used-book-list({cmd:'nearUsed'})">附近旧书</a></li>
-                <li><a ui-sref="book.used-book-list({cmd:'nearNeed'})">附近求书</a></li>
+                <li><a ui-sref="book.used-book-list({cmd:'nearCircle'})">图书漂流</a></li>
+                <li><a ui-sref="book.used-book-list({cmd:'nearUsed'})">旧书转让</a></li>
+                <li><a ui-sref="book.used-book-list({cmd:'nearNeed'})">求书公告</a></li>
                 <li><a ui-sref="common.user-list({cmd:'near'})">附近同学</a></li>
             </ul>
 
@@ -104,10 +105,13 @@
                             <a ui-sref="common.user-list({cmd:'follower'})">有<strong ng-bind="followerNumber"></strong>位粉丝</a>
                         </li>
                         <li>
-                            <a ui-sref="person.upload-one-used-book()">上传旧书</a>
+                            <a ui-sref="person.upload-one-used-book({role:'sell'})">上传旧书</a>
                         </li>
                         <li>
-                            <a ui-sref="person.upload-one-need-book()">发布求书</a>
+                            <a ui-sref="person.upload-one-used-book({role:'need'})">发布求书</a>
+                        </li>
+                        <li>
+                            <a ui-sref="person.upload-one-used-book({role:'circle'})">上传书漂流</a>
                         </li>
                         <li ng-click="logOut()">
                             <a href="#">退出</a>
@@ -225,7 +229,6 @@
 <script src="js/directive/bs-infinite-scroll.js"></script>
 <script src="js/directive/bs-one-book-info.js"></script>
 <script src="js/directive/bs-one-used-book.js"></script>
-<script src="js/directive/bs-one-need-book.js"></script>
 <script src="js/directive/bs-one-user.js"></script>
 <script src="js/directive/bs-one-book-info-detail.js"></script>
 <!-- endbuild -->

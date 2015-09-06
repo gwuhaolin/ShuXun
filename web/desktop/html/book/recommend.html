@@ -9,11 +9,12 @@
             </div>
             <div class="col-md-6">
                 <div class="btn-group pull-right">
-                    <a class="btn btn-default" ng-click="scrollToHash('附近旧书')">附近旧书</a>
+                    <a class="btn btn-default" ng-click="scrollToHash('图书漂流')">图书漂流</a>
+                    <a class="btn btn-default" ng-click="scrollToHash('旧书转让')">旧书转让</a>
                     <a class="btn btn-default" ng-click="scrollToHash('附近同学')">附近同学</a>
-                    <a class="btn btn-default" ng-click="scrollToHash('附近求书')">附近求书</a>
+                    <a class="btn btn-default" ng-click="scrollToHash('求书公告')">求书公告</a>
                     <a type="button" class="btn btn-default btn-info"
-                       ng-click="chooseMajor()">去其他专业看看
+                       ng-click="chooseMajor()">其他专业
                     </a>
                 </div>
             </div>
@@ -32,15 +33,25 @@
             </div>
         </div>
 
-        <!-- 附近用户上传的旧书-->
-        <div class="row" id="附近旧书" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
+        <!-- 附近用户上传的书漂流-->
+        <div class="row" id="图书漂流" ng-if="BookRecommend$.NearCircleBook.circleBooks.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="book.used-book-list({cmd:'nearUsed'})">附近旧书</a></h4>
+                <h4><a ui-sref="book.used-book-list({cmd:'nearCircle'})">图书漂流</a></h4>
+                <hr>
+            </div>
+            <div class="col-md-3" ng-repeat="circleBook in BookRecommend$.NearCircleBook.circleBooks.slice(0,8)">
+                <bs-one-used-book used-book="circleBook" popover-placement="right"></bs-one-used-book>
+            </div>
+        </div>
+
+        <!-- 附近用户上传的旧书-->
+        <div class="row" id="旧书转让" ng-if="BookRecommend$.NearUsedBook.usedBooks.length>0">
+            <div class="col-md-12">
+                <h4><a ui-sref="book.used-book-list({cmd:'nearUsed'})">旧书转让</a></h4>
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="usedBook in BookRecommend$.NearUsedBook.usedBooks.slice(0,8)">
-                <bs-one-used-book used-book="usedBook" popover-placement="right"
-                        ></bs-one-used-book>
+                <bs-one-used-book used-book="usedBook" popover-placement="right"></bs-one-used-book>
             </div>
         </div>
 
@@ -60,15 +71,14 @@
         </div>
 
         <!-- 附近用户发布的求书-->
-        <div id="附近求书" class="row" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
+        <div id="求书公告" class="row" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="book.used-book-list({cmd:'nearNeed'})">附近求书</a></h4>
+                <h4><a ui-sref="book.used-book-list({cmd:'nearNeed'})">求书公告</a></h4>
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="needBook in BookRecommend$.NearNeedBook.needBooks.slice(0,8)">
-                <bs-one-need-book need-book="needBook"
-                                  popover-placement="right"
-                        ></bs-one-need-book>
+                <bs-one-used-book used-book="needBook"
+                                  popover-placement="right"></bs-one-used-book>
             </div>
         </div>
 
@@ -81,8 +91,7 @@
             <div class="col-md-3" ng-repeat="bookInfo in BookRecommend$.TagBook.books.slice(0,8)">
                 <bs-one-book-info book-info="bookInfo"
                                   should-show-used-books-count="true"
-                                  popover-placement="right"
-                        ></bs-one-book-info>
+                                  popover-placement="right"></bs-one-book-info>
             </div>
         </div>
 
@@ -90,6 +99,7 @@
 
     <aside class="col-md-3 hidden-sm hidden-xs">
 
+        <!-- 微信消息图文-->
         <div class="row" ng-if="WechatNews$.newsList.length>0">
             <div class="col-md-12" style="height: 150px;overflow: hidden;margin-bottom: 10px">
                 <carousel interval="4000">
