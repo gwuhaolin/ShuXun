@@ -25,6 +25,14 @@ APP.directive('ionUserInfo', function (WeChatJS$, User$) {
             });
         }
 
+        //加载它的求书的数量
+        function loadHeCircleBookNumber() {
+            User$.loadHeCircleBookNumber($scope.user).done(function (number) {
+                $scope.user.userCircleBookNumber = number;
+                $scope.$digest();
+            });
+        }
+
         //判断是否我已经关注ta
         function loadIsMyFollowee() {
             User$.loadIsMyFollowee($scope.user).done(function (is) {
@@ -48,6 +56,7 @@ APP.directive('ionUserInfo', function (WeChatJS$, User$) {
             if (!$scope.hideUsedBook) {
                 loadHeUsedBookNumber();
                 loadHeNeedBookNumber();
+                loadHeCircleBookNumber();
             }
         });
         $scope.$on('FollowSomeone', function () {

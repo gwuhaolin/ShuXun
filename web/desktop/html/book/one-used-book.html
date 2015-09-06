@@ -63,7 +63,7 @@
                                  image-size="132"></bs-one-user>
                 </div>
                 <div class="col-md-9">
-                    <dl class="dl-horizontal" ng-if="usedBook.attributes.price">
+                    <dl class="dl-horizontal" ng-if="usedBook.attributes.price>0">
                         <dt ng-if="usedBook.attributes.role==='sell'">主人要价</dt>
                         <dt ng-if="usedBook.attributes.role==='need'">最高承受价</dt>
                         <dd ng-bind="usedBook.attributes.price"></dd>

@@ -13,7 +13,7 @@ APP.controller('bs_book_oneUsedBook', function ($scope, $controller, UsedBook$) 
         return $scope.usedBook ? $scope.usedBook.get('owner') : null;
     }, function () {
         if ($scope.usedBook) {
-            $scope.SEO$.setSEO($scope.usedBook);
+            $scope.SEO$.setSEO([$scope.title, $scope.usedBook]);
             var owner = $scope.usedBook.get('owner');
             if (owner) {
                 UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {

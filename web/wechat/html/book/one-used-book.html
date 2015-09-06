@@ -10,7 +10,9 @@
                                should-show-used-books-count="true"></ion-one-book-info>
             <!-- 旧书信息-->
             <ion-item>
-                <h3>
+                <h3 ng-bind="title"></h3>
+
+                <h3 ng-if="usedBook.attributes.price>0">
                     <span ng-if="usedBook.attributes.role==='sell'">主人要价:</span>
                     <span ng-if="usedBook.attributes.role==='need'">最高承受:</span>
                     <strong ng-bind="usedBook.attributes.price"></strong>

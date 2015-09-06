@@ -237,6 +237,7 @@ APP.service('User$', function ($rootScope, Status$) {
     this.loadHeUsedBookNumber = function (he) {
         if (he) {
             var query = he.relation('usedBooks').query();
+            query.equalTo('alive', true);
             query.equalTo('role', 'sell');
             return query.count();
         } else {
@@ -252,7 +253,24 @@ APP.service('User$', function ($rootScope, Status$) {
     this.loadHeNeedBookNumber = function (he) {
         if (he) {
             var query = he.relation('usedBooks').query();
+            query.equalTo('alive', true);
             query.equalTo('role', 'need');
+            return query.count();
+        } else {
+            return AV.Promise.error('require user ');
+        }
+    };
+
+    /**
+     * 加载he的发布的求书的数量
+     * @param he
+     * @returns {AV.Promise} number 书的数量
+     */
+    this.loadHeCircleBookNumber = function (he) {
+        if (he) {
+            var query = he.relation('usedBooks').query();
+            query.equalTo('alive', true);
+            query.equalTo('role', 'circle');
             return query.count();
         } else {
             return AV.Promise.error('require user ');

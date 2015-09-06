@@ -22,11 +22,20 @@ APP.directive('bsOneUser', function (User$) {
             });
         }
 
+        //加载它的求书的数量
+        function loadHeCircleBookNumber() {
+            User$.loadHeCircleBookNumber($scope.user).done(function (number) {
+                $scope.user.userCircleBookNumber = number;
+                $scope.$digest();
+            });
+        }
+
         $scope.$watch(function () {
             return $scope.user;
         }, function () {
             loadHeUsedBookNumber();
             loadHeNeedBookNumber();
+            loadHeCircleBookNumber();
         });
 
     }

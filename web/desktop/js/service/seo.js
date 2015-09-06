@@ -39,35 +39,35 @@ APP.service('SEO$', function () {
             AV._.each(['title', 'author', 'publisher'], function (key) {
                 var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += value + ',';
+                    re += value + ' ';
                 }
             });
         } else if (meta instanceof Model.UsedBook) {
             AV._.each(['bookInfo', 'des'], function (key) {
                 var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += value + ',';
+                    re += value + ' ';
                 }
             });
         } else if (meta instanceof Model.User) {
-            AV._.each(['major', 'school', 'nickName'], function (key) {
+            AV._.each(['nickName', 'major', 'school'], function (key) {
                 var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += value + ',';
+                    re += value + ' ';
                 }
             });
         } else if (meta instanceof AV.Object) {
             for (var key in meta.attributes) {
                 var value = _tran(meta.attributes[key]);
                 if (value) {
-                    re += value + ',';
+                    re += value + ' ';
                 }
             }
         } else if (typeof meta === 'object') {
             for (key in meta) {
                 value = _tran(meta[key]);
                 if (value) {
-                    re += value + ',';
+                    re += value + ' ';
                 }
             }
         } else if (typeof  meta === 'string') {

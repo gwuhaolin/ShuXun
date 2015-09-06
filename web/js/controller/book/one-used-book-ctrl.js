@@ -17,11 +17,11 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
         var role = usedBook.get('role');
         $scope.title = usedBook.attributes.bookInfo.attributes.title;
         if (role === 'sell') {
-            $scope.title = '出售二手 ' + $scope.title;
+            $scope.title = '旧书转让';
         } else if (role === 'need') {
-            $scope.title = '求购 ' + $scope.title;
+            $scope.title = '求书公告';
         } else if (role === 'circle') {
-            $scope.title = '分享 ' + $scope.title;
+            $scope.title = '图书漂流';
         }
     }).always(function () {
         $scope.$digest();

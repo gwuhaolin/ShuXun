@@ -78,7 +78,7 @@
                 <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
                      ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id})">
 
-                <div ui-sref="book.one-circle-book({usedBookAvosObjectId:usedBook.id})">
+                <div ui-sref="book.one-used-book({usedBookAvosObjectId:usedBook.id})">
                     <h3>
                         <span style="white-space: pre-wrap" ng-if="usedBook.attributes.des"
                               ng-bind="usedBook.attributes.des"></span>
