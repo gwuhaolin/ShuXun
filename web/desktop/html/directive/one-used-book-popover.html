@@ -1,4 +1,7 @@
-<p ng-if="usedBook.attributes.price">主人要价: <strong ng-bind="usedBook.attributes.price"></strong> 元</p>
+<p ng-if="usedBook.attributes.price">
+    <span ng-if="usedBook.attributes.role === 'sell'">主人要价:</span>
+    <span ng-if="usedBook.attributes.role === 'need'">最高承受价:</span>
+    <strong ng-bind="usedBook.attributes.price"></strong> 元</p>
 <p ng-if="usedBook.attributes.des">主人描述:<em ng-bind="usedBook.attributes.des"></em></p>
 <small>上传于:<em ng-bind="usedBook.updatedAt | date:'mediumDate'"></em></small>
 <hr>
