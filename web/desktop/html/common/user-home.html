@@ -74,7 +74,7 @@
         <div class="col-md-12">
             <h4 id="userUsedBook">Ta的旧书</h4>
             <hr>
-            <a class="text-warning" ng-if="usedBooks.length==0" ui-sref="book.used-book-list({cmd:'nearUsed'})">主人还没有要卖的旧书，去看看其他同学的旧书</a>
+            <a class="text-warning" ng-if="usedBooks.length==0" ui-sref="book.used-book-list({cmd:'nearUsed'})">Ta还没有要卖的旧书，去看看其他同学的旧书</a>
         </div>
 
         <div class="col-md-3" ng-repeat="usedBook in usedBooks">
@@ -86,7 +86,7 @@
         <div class="col-md-12">
             <h4 id="userNeedBook">Ta的求书</h4>
             <hr>
-            <a class="text-warning" ng-if="needBooks.length==0" ui-sref="book.used-book-list({cmd:'nearNeed'})">主人还没有发布的求书，去看看其他同学的求书</a>
+            <a class="text-warning" ng-if="needBooks.length==0" ui-sref="book.used-book-list({cmd:'nearNeed'})">Ta还没有发布的求书，去看看其他同学的求书</a>
         </div>
 
         <div class="col-md-3" ng-repeat="needBook in needBooks">
@@ -98,7 +98,7 @@
         <div class="col-md-12">
             <h4 id="userCircleBook">Ta的书漂流</h4>
             <hr>
-            <a class="text-warning" ng-if="circleBooks.length==0" ui-sref="book.used-book-list({cmd:'nearCircle'})">主人还没有上传的书漂流，去看看其他同学的书漂流</a>
+            <a class="text-warning" ng-if="circleBooks.length==0" ui-sref="book.used-book-list({cmd:'nearCircle'})">Ta还没有上传的书漂流，去看看其他同学的书漂流</a>
         </div>
 
         <div class="col-md-3" ng-repeat="circleBook in circleBooks">

@@ -49,11 +49,22 @@
         <div class="list">
             <ion-item class="item-divider item-button-right">主人信息
                 <a class="button button-clear button-balanced"
-                   ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBook.id,role:'buy',inboxType:'private'})">私信主人
+                   ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,usedBookObjectId:usedBook.id,role:'buy',inboxType:'private'})">私信Ta
                 </a>
             </ion-item>
             <ion-user-info user="usedBook.attributes.owner" used-book-object-id="usedBook.id"></ion-user-info>
         </div>
+
+        <ion-item ng-if="usedBook.attributes.role ==='sell'">
+            <button class="button button-block button-small button-balanced">我买了,向Ta预定</button>
+        </ion-item>
+        <ion-item ng-if="usedBook.attributes.role ==='need'">
+            <button class="button button-block button-small button-balanced">我正好有,卖给Ta</button>
+        </ion-item>
+        <ion-item ng-if="usedBook.attributes.role ==='circle'">
+            <button class="button button-block button-small button-balanced">我想要,向Ta索要</button>
+        </ion-item>
+
         <!-- 用户评论-->
         <div class="list">
             <ion-item class="item-divider item-button-right">大家都说

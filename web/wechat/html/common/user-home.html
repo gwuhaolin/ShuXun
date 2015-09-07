@@ -1,5 +1,5 @@
 <!--用户主页-->
-<ion-view ng-controller="ion_userHome" view-title="主人的二手书">
+<ion-view ng-controller="ion_userHome" view-title="Ta的二手书">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="book.recommend">书循</button>
     </ion-nav-buttons>
@@ -11,21 +11,21 @@
             <ion-one-used-book ng-if="usedBooks.length>0" ng-repeat="usedBook in usedBooks"
                                used-book="usedBook"></ion-one-used-book>
             <ion-item ng-if="usedBooks.length==0" ui-sref="book.used-book-list({cmd:'nearUsed'})">
-                主人还没有要卖的旧书，去看看其他同学的旧书
+                Ta还没有要卖的旧书，去看看其他同学的旧书
             </ion-item>
             <!-- 发布的求书列表-->
             <ion-item class="item-divider item-button-right" id="userNeedBook">Ta的求书</ion-item>
             <ion-one-used-book ng-if="needBooks.length>0" ng-repeat="needBook in needBooks"
                                used-book="needBook"></ion-one-used-book>
             <ion-item ng-if="needBooks.length==0" ui-sref="book.used-book-list({cmd:'nearNeed'})">
-                主人还没有发布的求书，去看看其他同学的求书
+                Ta还没有发布的求书，去看看其他同学的求书
             </ion-item>
             <!-- 发布的书漂流列表-->
             <ion-item class="item-divider item-button-right" id="userCircleBook">Ta的书漂流</ion-item>
             <ion-one-used-book ng-if="circleBooks.length>0" ng-repeat="circleBook in circleBooks"
                                used-book="circleBook"></ion-one-used-book>
             <ion-item ng-if="circleBooks.length==0" ui-sref="book.used-book-list({cmd:'nearCircle'})">
-                主人还没有上传的书漂流，去看看其他同学的书漂流
+                Ta还没有上传的书漂流，去看看其他同学的书漂流
             </ion-item>
         </ion-list>
     </ion-content>

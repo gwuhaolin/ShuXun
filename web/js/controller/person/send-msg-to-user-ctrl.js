@@ -26,7 +26,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, U
             if ($scope.msg.role == 'sell') {
                 return '回复买家对旧书的评论';
             } else if ($scope.msg.role == 'buy') {
-                return '对主人的旧书发表评论';
+                return '对Ta的旧书发表评论';
             }
         }
     };

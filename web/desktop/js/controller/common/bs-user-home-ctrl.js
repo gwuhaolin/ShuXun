@@ -20,7 +20,7 @@ APP.controller('bs_userHome', function ($scope, $controller, $sce, User$, Bootst
 
     $scope.ownerMapUrl = function () {
         var location = $scope.owner.attributes.location;
-        var url = 'http://api.map.baidu.com/marker?content=主人位置&output=html&src=shuxun&location=' + location.latitude + ',' + location.longitude + '&title=' + $scope.owner.attributes.nickName;
+        var url = 'http://api.map.baidu.com/marker?content=Ta的位置&output=html&src=shuxun&location=' + location.latitude + ',' + location.longitude + '&title=' + $scope.owner.attributes.nickName;
         return $sce.trustAsResourceUrl(url);
     };
 
