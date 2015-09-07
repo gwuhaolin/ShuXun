@@ -9,6 +9,17 @@ APP.directive('ionUsedBookOneline', function () {
         $element.addClass('item text-center');
         $element.css('height', '144px');
         $element.css('padding', '0');
+        if ($scope.usedBooks) {
+            $scope.showUsedBooks = $scope.usedBooks.slice(0, LoadCount);
+            AV._.each($scope.showUsedBooks, function (usedBook) {
+                var query = new AV.Query(Model.BookInfo);
+                query.select('image', 'title');
+                query.get(usedBook.attributes.bookInfo.id).done(function (bookInfo) {
+                    usedBook.set('bookInfo', bookInfo);
+                    $scope.$digest();
+                })
+            });
+        }
     }
 
     return {

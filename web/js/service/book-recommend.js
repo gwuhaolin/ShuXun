@@ -107,7 +107,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         _hasMoreFlag: true,
         loadMore: function () {
             var query = _buildUsedBookQuery('circle', that.NearCircleBook._majorFilter);
-            query.skip(that.NearCircleBook.circleBooks.length);
+            query.skip(that.NearCircleBook.circleBooks.length + RandomStart);
             query.limit(LoadCount);
             query.find().done(function (circleBooks) {
                 if (circleBooks.length > 0) {
