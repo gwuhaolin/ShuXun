@@ -41,7 +41,7 @@ APP.service('BookInfo$', function ($rootScope, DoubanBook$) {
             var query = new AV.Query(Model.BookInfo);
             query.select(['doubanId', 'isbn13', 'title', 'image', 'pubdate', 'author', 'publisher', 'summary', 'price']);
             query.descending('pubdate');
-            query.skip(that.LatestBook.books.length + RandomStart);
+            query.skip(that.LatestBook.books.length);
             query.limit(LoadCount);
             query.find().done(function (bookInfos) {
                 if (bookInfos.length > 0) {
