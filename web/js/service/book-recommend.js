@@ -26,6 +26,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
             return [];
         }
     };
+    that.BookTag.load();
 
     /**
      * 分类浏览
@@ -73,27 +74,29 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
     /**
      * 最新更新的,不是我自己上传的,按照距离我距离排序的,
      * @param role UserBook role属性,是sell(要卖的) 还是 need(求书)
-     * @param ownerMajorFilter 附加的专业显示,只显示和我同一个专业的同学上传的书,==null时无限制
+     * @param tag 附加的专业显示,只显示和我同一个专业的同学上传的书,==null时无限制
      * @returns {AV.Query}
      * @private
      */
-    function _buildUsedBookQuery(role, ownerMajorFilter) {
+    function _buildUsedBookQuery(role, tag) {
         var query = new AV.Query(Model.UsedBook);
         query.descending("updatedAt");
         query.equalTo('alive', true);
         role && query.equalTo('role', role);
         var me = AV.User.current();
-        if (me || ownerMajorFilter) {
-            var ownerQuery = new AV.Query(Model.User);
+        if (me) {
+            var ownerUserQuery = new AV.Query(Model.User);
             if (me) {
                 query.notEqualTo('owner', me);//不要显示自己的上传的
                 var avosGeo = me.get('location');
-                avosGeo && ownerQuery.near("location", avosGeo);
+                avosGeo && ownerUserQuery.near("location", avosGeo);
             }
-            if (ownerMajorFilter) {
-                ownerQuery.equalTo('major', ownerMajorFilter);
-            }
-            query.matchesQuery('owner', ownerQuery);
+            query.matchesQuery('owner', ownerUserQuery);
+        }
+        if (tag) {
+            var bookInfoQuery = new AV.Query(Model.BookInfo);
+            bookInfoQuery.equalTo('tags', tag);
+            query.matchesQuery('bookInfo', bookInfoQuery);
         }
         return query;
     }
@@ -106,7 +109,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         circleBooks: [],
         _hasMoreFlag: true,
         loadMore: function () {
-            var query = _buildUsedBookQuery('circle', that.NearCircleBook._majorFilter);
+            var query = _buildUsedBookQuery('circle', that.NearCircleBook._tagFilter);
             query.skip(that.NearCircleBook.circleBooks.length + RandomStart);
             query.limit(LoadCount);
             query.find().done(function (circleBooks) {
@@ -122,18 +125,18 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         hasMore: function () {
             return that.NearCircleBook._hasMoreFlag;
         },
-        _majorFilter: null,
-        setMajorFilter: function (major) {
-            if (major != that.NearCircleBook._majorFilter) {
+        _tagFilter: null,
+        setTagFilter: function (major) {
+            if (major != that.NearCircleBook._tagFilter) {
                 RandomStart = 0;
                 that.NearCircleBook.circleBooks.length = 0;
                 that.NearCircleBook._hasMoreFlag = true;
-                that.NearCircleBook._majorFilter = major;
+                that.NearCircleBook._tagFilter = major;
                 that.NearCircleBook.loadMore();
             }
         },
-        getMajorFilter: function () {
-            return that.NearCircleBook._majorFilter;
+        getTagFilter: function () {
+            return that.NearCircleBook._tagFilter;
         },
         /**
          * 把主人同一个专业的同学上传的书插入到最开头
@@ -157,7 +160,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         needBooks: [],
         _hasMoreFlag: true,
         loadMore: function () {
-            var query = _buildUsedBookQuery('need', that.NearNeedBook._majorFilter);
+            var query = _buildUsedBookQuery('need', that.NearNeedBook._tagFilter);
             query.skip(that.NearNeedBook.needBooks.length + RandomStart);
             query.limit(LoadCount);
             query.find().done(function (needBooks) {
@@ -173,18 +176,18 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         hasMore: function () {
             return that.NearNeedBook._hasMoreFlag;
         },
-        _majorFilter: null,
-        setMajorFilter: function (major) {
-            if (major != that.NearNeedBook._majorFilter) {
+        _tagFilter: null,
+        setTagFilter: function (major) {
+            if (major != that.NearNeedBook._tagFilter) {
                 RandomStart = 0;
                 that.NearNeedBook.needBooks.length = 0;
                 that.NearNeedBook._hasMoreFlag = true;
-                that.NearNeedBook._majorFilter = major;
+                that.NearNeedBook._tagFilter = major;
                 that.NearNeedBook.loadMore();
             }
         },
-        getMajorFilter: function () {
-            return that.NearNeedBook._majorFilter;
+        getTagFilter: function () {
+            return that.NearNeedBook._tagFilter;
         },
         /**
          * 把主人同一个专业的同学上传的书插入到最开头
@@ -208,7 +211,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         usedBooks: [],
         _hasMoreFlag: true,
         loadMore: function () {
-            var query = _buildUsedBookQuery('sell', that.NearUsedBook._majorFilter);
+            var query = _buildUsedBookQuery('sell', that.NearUsedBook._tagFilter);
             query.skip(that.NearUsedBook.usedBooks.length + RandomStart);
             query.limit(LoadCount);
             query.find().done(function (usedBooks) {
@@ -224,18 +227,18 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         hasMore: function () {
             return that.NearUsedBook._hasMoreFlag;
         },
-        _majorFilter: null,
-        setMajorFilter: function (major) {
-            if (major != that.NearUsedBook._majorFilter) {
+        _tagFilter: null,
+        setTagFilter: function (major) {
+            if (major != that.NearUsedBook._tagFilter) {
                 RandomStart = 0;
                 that.NearUsedBook.usedBooks.length = 0;
                 that.NearUsedBook._hasMoreFlag = true;
-                that.NearUsedBook._majorFilter = major;
+                that.NearUsedBook._tagFilter = major;
                 that.NearUsedBook.loadMore();
             }
         },
-        getMajorFilter: function () {
-            return that.NearUsedBook._majorFilter;
+        getTagFilter: function () {
+            return that.NearUsedBook._tagFilter;
         },
         /**
          * 把主人同一个专业的同学上传的书插入到最开头

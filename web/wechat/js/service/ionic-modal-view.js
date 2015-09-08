@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory, InfoService$) {
+APP.service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory, InfoService$, BookRecommend$) {
 
     /**
      * 为$scope注册选择学校modalView功能
@@ -40,6 +40,24 @@ APP.service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory,
         $scope.majorOnChoose = function (major) {
             majorOnChooseCallback(major);
             $scope.chooseMajorModalView.hide();
+        };
+    };
+
+    /**
+     * 为$scope注册选择 Book Tag modalView功能
+     * @param $scope
+     * @param bookTagOnChooseCallback 当选中了一个 Book Tag 时调用 返回选中的 Book Tag
+     */
+    this.registerChooseBookTagModalView = function ($scope, bookTagOnChooseCallback) {
+        $scope.BookRecommend$ = BookRecommend$;
+        $ionicModal.fromTemplateUrl('html/directive/choose-book-tag-modal-view.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.chooseBookTagModalView = modal;
+        });
+        $scope.bookTagOnChoose = function (major) {
+            bookTagOnChooseCallback(major);
+            $scope.chooseBookTagModalView.hide();
         };
     };
 

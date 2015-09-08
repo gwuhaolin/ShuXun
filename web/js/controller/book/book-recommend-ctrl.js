@@ -13,9 +13,9 @@ APP.controller('book_recommendCtrl', function ($scope, $stateParams, BookRecomme
     $scope._setMajorFilterAndLoad = function () {
         $scope.major = $stateParams['major'];
         if ($scope.major) {
-            BookRecommend$.NearUsedBook.setMajorFilter($scope.major);
-            BookRecommend$.NearNeedBook.setMajorFilter($scope.major);
-            BookRecommend$.NearCircleBook.setMajorFilter($scope.major);
+            BookRecommend$.NearUsedBook.setTagFilter($scope.major);
+            BookRecommend$.NearNeedBook.setTagFilter($scope.major);
+            BookRecommend$.NearCircleBook.setTagFilter($scope.major);
             BookRecommend$.NearUser.setMajorFilter($scope.major);
             BookRecommend$.TagBook.setTag($scope.major);
         } else {
@@ -30,7 +30,6 @@ APP.controller('book_recommendCtrl', function ($scope, $stateParams, BookRecomme
     };
 
     BookRecommend$.NearUser.loadMore();
-    BookRecommend$.BookTag.load();
     $scope.LatestBook.loadMore();
     BookRecommend$.NearUsedBook.loadMore();
     BookRecommend$.NearNeedBook.loadMore();

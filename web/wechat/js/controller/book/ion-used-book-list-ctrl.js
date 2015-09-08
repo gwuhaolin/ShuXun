@@ -9,8 +9,8 @@ APP.controller('ion_book_usedBookList', function ($scope, $controller, IonicModa
     $controller('book_usedBookList', {$scope: $scope});
 
     //按照专业筛选
-    IonicModalView$.registerChooseMajorModalView($scope, function (major) {
-        $scope.setMajorFilter && $scope.setMajorFilter(major);
+    IonicModalView$.registerChooseBookTagModalView($scope, function (bookTag) {
+        $scope.setTagFilter && $scope.setTagFilter(bookTag);
     });
 
 });

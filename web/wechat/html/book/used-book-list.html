@@ -1,4 +1,4 @@
-<ion-view ng-controller="ion_book_usedBookList" view-title="{{getMajorFilter() ? getMajorFilter() : title}}">
+<ion-view ng-controller="ion_book_usedBookList" view-title="{{getTagFilter() ? getTagFilter() : title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="book.recommend">书循</button>
     </ion-nav-buttons>
@@ -10,12 +10,12 @@
             <a class="button button-small " ng-click="sortWay='attributes.location'"
                ng-class="{'button-balanced':sortWay=='attributes.location'}">离你距离</a>
             <a class="button button-small"
-               ng-if="setMajorFilter"
-               ng-class="{'button-balanced':getMajorFilter()}"
-               ng-click="chooseMajorModalView.show()"
-               ng-bind="getMajorFilter() ? getMajorFilter() :'主人专业'">
+               ng-if="setTagFilter"
+               ng-class="{'button-balanced':getTagFilter()}"
+               ng-click="chooseBookTagModalView.show()"
+               ng-bind="getTagFilter() ? getTagFilter() :'筛选'">
             </a>
-            <a class="button button-small button-energized" ng-click="setMajorFilter()" ng-if="getMajorFilter()">
+            <a class="button button-small button-energized" ng-click="setTagFilter()" ng-if="getTagFilter()">
                 取消限制
             </a>
         </div>

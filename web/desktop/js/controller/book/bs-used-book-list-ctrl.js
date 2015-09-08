@@ -9,9 +9,9 @@ APP.controller('bs_book_usedBookList', function ($scope, $controller, BootstrapM
     $controller('book_usedBookList', {$scope: $scope});
     $scope.loadMore();
     //按照专业筛选
-    $scope.chooseMajor = function () {
-        BootstrapModalView$.openChooseMajorModalView(function (major) {
-            $scope.setMajorFilter && $scope.setMajorFilter(major);
+    $scope.chooseBookTag = function () {
+        BootstrapModalView$.openChooseBookTagModalView(function (bookTag) {
+            $scope.setTagFilter && $scope.setTagFilter(bookTag);
         });
     };
     $scope.SEO$.setSEO($scope.usedBooks);

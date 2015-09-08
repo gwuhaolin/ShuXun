@@ -13,22 +13,22 @@ APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, B
         $scope.usedBooks = BookRecommend$.NearCircleBook.circleBooks;
         $scope.loadMore = BookRecommend$.NearCircleBook.loadMore;
         $scope.hasMore = BookRecommend$.NearCircleBook.hasMore;
-        $scope.setMajorFilter = BookRecommend$.NearCircleBook.setMajorFilter;
-        $scope.getMajorFilter = BookRecommend$.NearCircleBook.getMajorFilter;
+        $scope.setTagFilter = BookRecommend$.NearCircleBook.setTagFilter;
+        $scope.getTagFilter = BookRecommend$.NearCircleBook.getTagFilter;
     } else if ($scope.cmd == 'nearUsed') {
         $scope.title = '你附近的二手书';
         $scope.usedBooks = BookRecommend$.NearUsedBook.usedBooks;
         $scope.loadMore = BookRecommend$.NearUsedBook.loadMore;
         $scope.hasMore = BookRecommend$.NearUsedBook.hasMore;
-        $scope.setMajorFilter = BookRecommend$.NearUsedBook.setMajorFilter;
-        $scope.getMajorFilter = BookRecommend$.NearUsedBook.getMajorFilter;
+        $scope.setTagFilter = BookRecommend$.NearUsedBook.setTagFilter;
+        $scope.getTagFilter = BookRecommend$.NearUsedBook.getTagFilter;
     } else if ($scope.cmd == 'nearNeed') {
         $scope.title = '你附近的求书';
         $scope.usedBooks = BookRecommend$.NearNeedBook.needBooks;
         $scope.loadMore = BookRecommend$.NearNeedBook.loadMore;
         $scope.hasMore = BookRecommend$.NearNeedBook.hasMore;
-        $scope.setMajorFilter = BookRecommend$.NearNeedBook.setMajorFilter;
-        $scope.getMajorFilter = BookRecommend$.NearNeedBook.getMajorFilter;
+        $scope.setTagFilter = BookRecommend$.NearNeedBook.setTagFilter;
+        $scope.getTagFilter = BookRecommend$.NearNeedBook.getTagFilter;
     } else if ($scope.cmd == 'isbnCircle') {
         $scope.title = '对应的书漂流';
         $scope.isbn13 = $stateParams['isbn13'];
@@ -49,8 +49,8 @@ APP.controller('book_usedBookList', function ($scope, $stateParams, UsedBook$, B
         $scope.hasMore = UsedBook$.ISBN_need.hasMore;
     }
 
-    var majorFilter = $stateParams['majorFilter'];
-    if (majorFilter && $scope.setMajorFilter) {
-        $scope.setMajorFilter(majorFilter);
+    var tagFilter = $stateParams['tagFilter'];
+    if (tagFilter && $scope.setTagFilter) {
+        $scope.setTagFilter(tagFilter);
     }
 });

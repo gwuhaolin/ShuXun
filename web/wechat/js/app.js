@@ -91,9 +91,9 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:cmd 当前模式 =near时显示你附近的二手书 =isbn时显示所有对应ISBN的二手书
                  * @param:isbn13 当cmd=isbn时使用
-                 * @param:majorFilter 专业筛选
+                 * @param:tagFilter 专业筛选
                  */
-                url: '/used-book-list?cmd&isbn13&majorFilter',
+                url: '/used-book-list?cmd&isbn13&tagFilter',
                 views: {
                     'book': {
                         templateUrl: 'html/book/used-book-list.html'

@@ -4,7 +4,7 @@
         <div class=col-md-6>
             <ol class="breadcrumb">
                 <li><a ui-sref="book.recommend()">图书主页</a></li>
-                <li class="active" ng-bind="getMajorFilter() ? getMajorFilter() : title"></li>
+                <li class="active" ng-bind="getTagFilter() ? getTagFilter() : title"></li>
             </ol>
         </div>
         <div class="col-md-6">
@@ -14,14 +14,14 @@
                     <button class="btn btn-primary" ng-model="sortWay" btn-radio="'attributes.location'">离你距离</button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-info"
-                            ng-if="setMajorFilter"
-                            ng-class="{'btn-info':getMajorFilter()}"
-                            ng-click="chooseMajor()"
-                            ng-bind="getMajorFilter() ? getMajorFilter() : '主人专业筛选'">
+                    <button class="btn btn-default"
+                            ng-if="setTagFilter"
+                            ng-class="{'btn-info':getTagFilter()}"
+                            ng-click="chooseBookTag()"
+                            ng-bind="getTagFilter() ? getTagFilter() : '筛选'">
                     </button>
-                    <button class="btn btn-warning" ng-click="setMajorFilter(null)"
-                            ng-if="getMajorFilter()">取消专业限制
+                    <button class="btn btn-warning" ng-click="setTagFilter(null)"
+                            ng-if="getTagFilter()">取消限制
                     </button>
                 </div>
             </div>
@@ -30,7 +30,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h4 ng-bind="getMajorFilter() ? getMajorFilter() : title"></h4>
+            <h4 ng-bind="getTagFilter() ? getTagFilter() : title"></h4>
             <hr>
         </div>
         <div class="col-md-3" ng-repeat="usedBook in usedBooks | orderBy:sortWay">

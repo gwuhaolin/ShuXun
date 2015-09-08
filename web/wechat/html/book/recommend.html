@@ -7,7 +7,7 @@
         <div ng-if="BookRecommend$.BookTag.tag">
             <ion-item class="item-divider item-button-right">图书分类
                 <button class="button button-small button-clear button-balanced"
-                        ng-click="bookTagsModalView.show()">更多
+                        ng-click="chooseBookTagModalView.show()">更多
                 </button>
             </ion-item>
             <ion-item style="white-space:normal">
@@ -87,31 +87,4 @@
             看所有专业的书<i class="icon ion-ios-arrow-right"></i>
         </ion-item>
     </ion-content>
-
-    <!-- 图书所有分类-->
-    <script type="text/ng-template" id="template/bookTags.html">
-        <ion-modal-view>
-            <ion-header-bar class="item-input-inset">
-                <h1 class="title">图书热门分类</h1>
-                <button class="button button-clear button-balanced"
-                        ng-click="bookTagsModalView.hide()">返回
-                </button>
-            </ion-header-bar>
-            <ion-content class="has-header">
-                <ion-list>
-                    <div ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">
-                        <ion-item class="item-divider item-button-right" ng-bind="bigTag"></ion-item>
-                        <ion-item style="white-space:normal">
-                            <button class="button button-small button-outline button-balanced" style="margin: 5px"
-                                    ui-sref="book.book-list({cmd:'tag',tag:tag})"
-                                    ng-click="bookTagsModalView.hide()"
-                                    ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag]"
-                                    ng-bind="littleTag">
-                            </button>
-                        </ion-item>
-                    </div>
-                </ion-list>
-            </ion-content>
-        </ion-modal-view>
-    </script>
 </ion-view>

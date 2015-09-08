@@ -1,0 +1,28 @@
+<!-- 选择Book Tag-->
+<ion-modal-view>
+    <ion-header-bar class="item-input-inset">
+        <!-- 关键字输入框-->
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon balanced"></i>
+            <input type="search" placeholder="输入关键字搜索" ng-model="keyword">
+        </label>
+        <button class="button button-clear button-balanced"
+                ng-click="chooseBookTagModalView.hide()">返回
+        </button>
+    </ion-header-bar>
+    <ion-content class="has-header">
+        <ion-list>
+            <div ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">
+                <ion-item class="item-divider item-button-right balanced" ng-bind="bigTag"
+                          ng-click="bookTagOnChoose(bigTag)"></ion-item>
+                <ion-item style="white-space:normal">
+                    <button class="button button-small button-outline button-balanced" style="margin: 5px"
+                            ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag] | filter:keyword"
+                            ng-click="bookTagOnChoose(littleTag)"
+                            ng-bind="littleTag">
+                    </button>
+                </ion-item>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

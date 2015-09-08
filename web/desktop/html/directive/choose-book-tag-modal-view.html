@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <input autofocus type="search" class="form-control" placeholder="输入关键字搜索"
+           ng-model="keyword">
+</div>
+<div class="modal-body">
+
+    <div ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">
+        <h4><a style="cursor: pointer" ng-bind="bigTag" ng-click="bookTagOnChoose(bigTag)"></a></h4>
+
+        <div>
+            <a class="btn btn-link btn-default"
+               ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag] | filter:keyword"
+               ng-click="$close(littleTag)"
+               ng-bind="littleTag"></a>
+        </div>
+        <hr>
+    </div>
+
+    <a class="btn btn-default btn-sm" style="margin: 5px"
+       ng-repeat="major in InfoService$.Major.majors"
+       ng-click="$close(major.attributes.name)"
+       ng-bind="major.attributes.name"></a>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="$dismiss()">取消</button>
+</div>

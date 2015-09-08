@@ -3,7 +3,7 @@
  */
 "use strict";
 
-APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, InfoService$) {
+APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, InfoService$, BookRecommend$) {
 
     /**
      * 打开选择专业modal view
@@ -31,6 +31,20 @@ APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, In
             scope: scope
         });
         modalInstance.result.then(schoolOnChooseCallback);
+    };
+
+    /**
+     * 打开选择 book tag modal view
+     * @param bookTagOnChooseCallback 当选中了一个专业时调用 返回选中的专业
+     */
+    this.openChooseBookTagModalView = function (bookTagOnChooseCallback) {
+        var scope = $rootScope.$new(true);
+        scope.BookRecommend$ = BookRecommend$;
+        var modalInstance = $modal.open({
+            templateUrl: 'html/directive/choose-book-tag-modal-view.html',
+            scope: scope
+        });
+        modalInstance.result.then(bookTagOnChooseCallback);
     };
 
 });
