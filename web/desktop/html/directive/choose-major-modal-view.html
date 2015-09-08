@@ -1,10 +1,10 @@
 <div class="modal-header">
     <input autofocus type="search" class="form-control" placeholder="输入专业"
-           ng-model="InfoService$.Major.searchMajorKeyword">
+           ng-model="$root.InfoService$.Major.searchMajorKeyword">
 </div>
 <div class="modal-body">
     <a class="btn btn-default btn-sm" style="margin: 5px"
-       ng-repeat="major in InfoService$.Major.majors"
+       ng-repeat="major in $root.InfoService$.Major.majors"
        ng-click="$close(major.attributes.name)"
        ng-bind="major.attributes.name"></a>
 </div>

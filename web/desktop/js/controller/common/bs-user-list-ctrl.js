@@ -5,12 +5,12 @@
 "use strict";
 
 //用户列表
-APP.controller('bs_userList', function ($scope, $controller, BootstrapModalView$) {
+APP.controller('bs_userList', function ($scope, $controller) {
     $controller('userList', {$scope: $scope});
     $scope.loadMore();
     //按照专业筛选
     $scope.chooseMajor = function () {
-        BootstrapModalView$.openChooseMajorModalView(function (major) {
+        $scope.BootstrapModalView$.openChooseMajorModalView(function (major) {
             $scope.setMajorFilter && $scope.setMajorFilter(major);
         });
     };

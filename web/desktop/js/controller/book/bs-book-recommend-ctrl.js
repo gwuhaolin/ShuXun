@@ -3,13 +3,12 @@
  */
 "use strict";
 
-APP.controller('bs_book_recommendCtrl', function ($scope, $controller, $state, BootstrapModalView$, WechatNews$) {
+APP.controller('bs_book_recommendCtrl', function ($scope, $controller, $state) {
     $controller('book_recommendCtrl', {$scope: $scope});
-    $scope.WechatNews$ = WechatNews$;
-    WechatNews$.loadMore();
+    $scope.WechatNews$.loadMore();
     $scope._setMajorFilterAndLoad();
     $scope.chooseMajor = function () {
-        BootstrapModalView$.openChooseMajorModalView(function (major) {
+        $scope.BootstrapModalView$.openChooseMajorModalView(function (major) {
             $state.go('book.recommend', {major: major});
         })
     };

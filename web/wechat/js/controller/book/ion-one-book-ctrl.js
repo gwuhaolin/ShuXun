@@ -4,15 +4,14 @@
  */
 "use strict";
 
-APP.controller('ion_book_oneBook', function ($scope, $controller, $ionicModal, IonicModalView$, WeChatJS$) {
+APP.controller('ion_book_oneBook', function ($scope, $controller, $ionicModal) {
     $controller('book_oneBook', {$scope: $scope});
 
-    $scope.WeChatJS$ = WeChatJS$;
     //显示作者介绍
     $scope.showAuthorIntro = function () {
         var title = $scope.bookInfo.attributes.author.toString();
         var pre = $scope.bookInfo.attributes.author_intro;
-        IonicModalView$.alertTitleAndPreModalView(title, pre);
+        $scope.IonicModalView$.alertTitleAndPreModalView(title, pre);
     };
     //显示出版信息
     $scope.showPubInfo = function () {
@@ -26,14 +25,14 @@ APP.controller('ion_book_oneBook', function ($scope, $controller, $ionicModal, I
             '\n装帧:' + bookJson.binding +
             '\nISBN:' + bookJson.isbn13 +
             '\n目录:\n' + bookJson.catalog;
-        IonicModalView$.alertTitleAndPreModalView(title, pre);
+        $scope.IonicModalView$.alertTitleAndPreModalView(title, pre);
     };
 
     //显示图书简介
     $scope.showSummary = function () {
         var title = '图书简介';
         var pre = $scope.bookInfo.attributes.summary;
-        IonicModalView$.alertTitleAndPreModalView(title, pre);
+        $scope.IonicModalView$.alertTitleAndPreModalView(title, pre);
     };
 
     //统计用户行为

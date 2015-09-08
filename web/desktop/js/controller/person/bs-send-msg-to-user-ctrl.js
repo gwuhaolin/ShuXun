@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('bs_person_sendMsgToUser', function ($scope, $controller, $window, Status$) {
+APP.controller('bs_person_sendMsgToUser', function ($scope, $controller, $window) {
     $controller('person_sendMsgToUser', {$scope: $scope});
 
     $scope.$on('NewStatusLoaded', function () {
@@ -12,7 +12,7 @@ APP.controller('bs_person_sendMsgToUser', function ($scope, $controller, $window
 
     //自动刷新拿去新信息,模仿真实聊天
     var autoTimer = setInterval(function () {
-        Status$.makeQueryStatusList_twoUser($scope.receiverObjectId, $scope.msg.usedBookObjectId).count().done(function (count) {
+        $scope.Status$.makeQueryStatusList_twoUser($scope.receiverObjectId, $scope.msg.usedBookObjectId).count().done(function (count) {
             if (count > $scope.statusList.length) {
                 $scope.loadMoreStatus();
             }
@@ -24,6 +24,6 @@ APP.controller('bs_person_sendMsgToUser', function ($scope, $controller, $window
     };
     $scope.$on('$destroy', function () {
         clearInterval(autoTimer);
-        Status$.cleanMyInbox($scope.msg.inboxType, $scope.msg.usedBookObjectId, $scope.receiverObjectId);
+        $scope.Status$.cleanMyInbox($scope.msg.inboxType, $scope.msg.usedBookObjectId, $scope.receiverObjectId);
     });
 });

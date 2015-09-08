@@ -3,10 +3,9 @@
  */
 "use strict";
 
-APP.directive('bsOneUsedBook', function (UsedBook$) {
+APP.directive('bsOneUsedBook', function () {
 
     function link($scope) {
-        $scope.UsedBook$ = UsedBook$;
 
         //如果usedBook的bookInfo属性缺少就去获得旧书的图书信息
         if ($scope.usedBook) {

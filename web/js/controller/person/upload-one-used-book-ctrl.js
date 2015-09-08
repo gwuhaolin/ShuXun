@@ -4,14 +4,13 @@
  */
 "use strict";
 
-APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams, BookInfo$, UsedBook$, InfoService$) {
-    $scope.InfoService$ = InfoService$;
+APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParams) {
     $scope.isLoading = false;
 
     //用$scope.usedBookJson.isbn13去豆瓣加载图书信息
     $scope.loadDoubanBookInfo = function () {
         $scope.isLoading = true;
-        BookInfo$.getBookInfoByISBN($scope.usedBookJson.isbn13).done(function (bookInfo) {
+        $scope.BookInfo$.getBookInfoByISBN($scope.usedBookJson.isbn13).done(function (bookInfo) {
             $scope.bookInfo = bookInfo;
         }).fail(function () {
             alert('没有找到图书信息,再去搜搜看~');
@@ -43,7 +42,7 @@ APP.controller('person_uploadOneUsedBook', function ($scope, $state, $stateParam
     $scope.submitOnClick = function () {
         $scope.isLoading = true;
         var avosUsedBook = Model.UsedBook.new($scope.usedBookJson);
-        UsedBook$.saveUsedBook(avosUsedBook).done(function () {
+        $scope.UsedBook$.saveUsedBook(avosUsedBook).done(function () {
         }).fail(function (error) {
             alert(error.message);
         }).always(function () {

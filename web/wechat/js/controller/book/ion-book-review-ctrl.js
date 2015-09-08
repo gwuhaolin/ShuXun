@@ -4,8 +4,8 @@
  */
 "use strict";
 
-APP.controller('ion_book_bookReview', function ($scope, $stateParams, $ionicHistory, DoubanBook$) {
-    $scope.BookReview = DoubanBook$.BookReview;
+APP.controller('ion_book_bookReview', function ($scope, $stateParams, $ionicHistory) {
+    $scope.BookReview = $scope.DoubanBook$.BookReview;
     $scope.BookReview.nowBookId = $stateParams['doubanBookId'];
     $scope.title = $stateParams['bookTitle'] + ' 书评';
     $scope.$on('$ionicView.afterLeave', function () {

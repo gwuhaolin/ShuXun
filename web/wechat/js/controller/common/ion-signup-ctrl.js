@@ -4,40 +4,40 @@
  */
 "use strict";
 
-APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory, $ionicModal, InfoService$, User$, Status$, IonicModalView$, WeChatJS$) {
+APP.controller('ion_signUp', function ($scope, $timeout, $state, $stateParams, $ionicHistory) {
     //是否正在加载中..
     $scope.isLoading = true;
     //调用微信接口获取用户信息
     var wechatAOuthCode = $stateParams['code'];
     var nextState = 'person.my';
-    User$.getWeChatOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
+    $scope.User$.getWeChatOAuthUserInfo(wechatAOuthCode).done(function (userInfo) {
         $scope.isLoading = false;
         $scope.userInfo = userInfo;
         $scope.$digest();
-        User$.loginWithUnionId(userInfo.username).done(function () {//已经注册过
-            Status$.loadUnreadStatusesCount();//加载未读消息数量
+        $scope.User$.loginWithUnionId(userInfo.username).done(function () {//已经注册过
+            $scope.Status$.loadUnreadStatusesCount();//加载未读消息数量
             $state.go(nextState);
             $ionicHistory.clearHistory();
-            User$.updateMyInfoWithJson(userInfo);//更新微信信息
+            $scope.User$.updateMyInfoWithJson(userInfo);//更新微信信息
         });
     }).fail(function () {//用户还没有关注
-        WeChatJS$.tellUserGoWechat();
+        $scope.WeChatJS$.tellUserGoWechat();
     });
 
-    IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
+    $scope.IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
         $scope.userInfo.school = school;
     });
 
-    IonicModalView$.registerChooseMajorModalView($scope, function (major) {
+    $scope.IonicModalView$.registerChooseMajorModalView($scope, function (major) {
         $scope.userInfo.major = major;
     });
 
-    $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
+    $scope.startSchoolYearOptions = $scope.InfoService$.startSchoolYearOptions;
 
     //点击注册时
     $scope.submitOnClick = function () {
         $scope.isLoading = true;
-        User$.signUpWithJSONUser($scope.userInfo).done(function () {
+        $scope.User$.signUpWithJSONUser($scope.userInfo).done(function () {
             $state.go(nextState);
             $ionicHistory.clearHistory();
         }).fail(function (error) {

@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, User$, UsedBook$, Status$) {
+APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams) {
     $scope.receiverObjectId = $stateParams['receiverObjectId'];//消息接受者的AVOS ID
     $scope.isLoading = false;
     $scope.msg = {
@@ -40,7 +40,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, U
     //加载聊天记录
     $scope.statusList = [];
     $scope.loadMoreStatus = function () {
-        var query = Status$.makeQueryStatusList_twoUser($scope.receiverObjectId, $scope.msg.usedBookObjectId);
+        var query = $scope.Status$.makeQueryStatusList_twoUser($scope.receiverObjectId, $scope.msg.usedBookObjectId);
         query.skip($scope.statusList.length);
         query.find().done(function (statusList) {
             $scope.statusList.pushUniqueArray(statusList);
@@ -71,9 +71,9 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams, U
         $scope.isLoading = true;
         var promise;
         if ($scope.msg.inboxType == 'private') {
-            promise = Status$.sendPrivateMsg($scope.receiverObjectId, $scope.msg.sendMsg, $scope.msg.role, $scope.msg.usedBookObjectId);
+            promise = $scope.Status$.sendPrivateMsg($scope.receiverObjectId, $scope.msg.sendMsg, $scope.msg.role, $scope.msg.usedBookObjectId);
         } else if ($scope.msg.inboxType == 'reviewUsedBook') {
-            promise = Status$.reviewUsedBook($scope.receiverObjectId, $scope.msg.usedBookObjectId, $scope.msg.sendMsg, $scope.msg.role);
+            promise = $scope.Status$.reviewUsedBook($scope.receiverObjectId, $scope.msg.usedBookObjectId, $scope.msg.sendMsg, $scope.msg.role);
         }
         promise.done(function () {
             $scope.statusList.push(Model.Status.new({

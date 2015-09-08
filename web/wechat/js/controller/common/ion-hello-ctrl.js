@@ -6,9 +6,8 @@
  */
 "use strict";
 
-APP.controller('ion_hello', function ($scope, $state, $stateParams, $ionicHistory, WeChatJS$, User$) {
-    $scope.WeChatJS$ = WeChatJS$;
-    User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
+APP.controller('ion_hello', function ($scope, $state, $stateParams, $ionicHistory) {
+    $scope.User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
         $state.go('person.my');
         $ionicHistory.clearHistory();
     });

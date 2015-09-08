@@ -7,7 +7,7 @@
 /**
  * 图书搜索,调用豆瓣接口
  */
-APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo$) {
+APP.service('SearchBook$', function ($rootScope, $timeout) {
     var that = this;
     /**
      * 当前是否正在加载数据
@@ -42,7 +42,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
     this.loadMore = function () {
         that.isLoading = true;
         if (that.keyword.length > 0) {
-            DoubanBook$.searchBooks(that.keyword, that.books.length, 10).done(function (json) {
+            $rootScope.DoubanBook$.searchBooks(that.keyword, that.books.length, 10).done(function (json) {
                 that.totalNum = json['total'];
                 if (that.totalNum > 0) {
                     var booksJSON = json['books'];
@@ -89,7 +89,7 @@ APP.service('SearchBook$', function ($rootScope, $timeout, DoubanBook$, BookInfo
      * 去BookInfo表里全文搜索,把搜索到的结果加载到最前面
      */
     this.loadFromBookInfo = function () {
-        BookInfo$.searchBook(that.keyword).done(function (bookInfos) {
+        $rootScope.BookInfo$.searchBook(that.keyword).done(function (bookInfos) {
             that.books.unshiftUniqueArray(bookInfos);
             that.totalNum += bookInfos.length;
             that.isLoading = false;

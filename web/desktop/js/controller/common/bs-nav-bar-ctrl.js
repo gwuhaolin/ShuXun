@@ -3,9 +3,7 @@
  */
 "use strict";
 
-APP.controller('bs_navBarCtrl', function ($scope, Status$, SearchBook$) {
-    $scope.Status$ = Status$;
-    $scope.SearchBook$ = SearchBook$;
+APP.controller('bs_navBarCtrl', function ($scope) {
     $scope.navbarCollapseIsClosed = true;
     $scope.bookSearchResultMenuIsOpen = false;
 
@@ -36,7 +34,7 @@ APP.controller('bs_navBarCtrl', function ($scope, Status$, SearchBook$) {
      * 结束搜索，清空搜索浏览
      */
     $scope.endSearch = function () {
-        SearchBook$.books.length = 0;
-        SearchBook$.keyword = '';
+        $scope.SearchBook$.books.length = 0;
+        $scope.SearchBook$.keyword = '';
     };
 });

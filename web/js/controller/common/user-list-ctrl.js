@@ -5,32 +5,32 @@
 "use strict";
 
 //用户列表
-APP.controller('userList', function ($scope, $stateParams, UsedBook$, BookRecommend$, User$) {
+APP.controller('userList', function ($scope, $stateParams) {
     var cmd = $stateParams['cmd'];
 
     $scope.sortWay = '';
 
     if (cmd == 'near') {
         $scope.title = '你附近的同学';
-        $scope.users = BookRecommend$.NearUser.users;
-        $scope.loadMore = BookRecommend$.NearUser.loadMore;
-        $scope.hasMore = BookRecommend$.NearUser.hasMore;
-        $scope.setMajorFilter = BookRecommend$.NearUser.setMajorFilter;
-        $scope.getMajorFilter = BookRecommend$.NearUser.getMajorFilter;
+        $scope.users = $scope.BookRecommend$.NearUser.users;
+        $scope.loadMore = $scope.BookRecommend$.NearUser.loadMore;
+        $scope.hasMore = $scope.BookRecommend$.NearUser.hasMore;
+        $scope.setMajorFilter = $scope.BookRecommend$.NearUser.setMajorFilter;
+        $scope.getMajorFilter = $scope.BookRecommend$.NearUser.getMajorFilter;
     } else if (cmd == 'followee') {//我关注的同学
         $scope.title = '我关注的同学';
-        $scope.users = User$.Followee.users;
-        $scope.loadMore = User$.Followee.loadMore;
-        $scope.hasMore = User$.Followee.hasMore;
-        $scope.setMajorFilter = User$.Followee.setMajorFilter;
-        $scope.getMajorFilter = User$.Followee.getMajorFilter;
+        $scope.users = $scope.User$.Followee.users;
+        $scope.loadMore = $scope.User$.Followee.loadMore;
+        $scope.hasMore = $scope.User$.Followee.hasMore;
+        $scope.setMajorFilter = $scope.User$.Followee.setMajorFilter;
+        $scope.getMajorFilter = $scope.User$.Followee.getMajorFilter;
     } else if (cmd == 'follower') {//我的粉丝
         $scope.title = '我的粉丝';
-        $scope.users = User$.Follower.users;
-        $scope.loadMore = User$.Follower.loadMore;
-        $scope.hasMore = User$.Follower.hasMore;
-        $scope.setMajorFilter = User$.Follower.setMajorFilter;
-        $scope.getMajorFilter = User$.Follower.getMajorFilter;
+        $scope.users = $scope.User$.Follower.users;
+        $scope.loadMore = $scope.User$.Follower.loadMore;
+        $scope.hasMore = $scope.User$.Follower.hasMore;
+        $scope.setMajorFilter = $scope.User$.Follower.setMajorFilter;
+        $scope.getMajorFilter = $scope.User$.Follower.getMajorFilter;
     }
 
     var majorFilter = $stateParams['majorFilter'];

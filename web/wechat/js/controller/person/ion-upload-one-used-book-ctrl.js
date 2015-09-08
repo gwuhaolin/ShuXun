@@ -4,12 +4,11 @@
  */
 "use strict";
 
-APP.controller('ion_person_uploadOneUsedBook', function ($scope, $controller, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal, WeChatJS$) {
+APP.controller('ion_person_uploadOneUsedBook', function ($scope, $controller, $state, $stateParams, $ionicHistory, $ionicScrollDelegate, $ionicModal) {
     $controller('person_uploadOneUsedBook', {$scope: $scope});
-    $scope.WeChatJS$ = WeChatJS$;
 
     $scope.scanQRBtnOnClick = function () {
-        WeChatJS$.scanQRCode(function (code) {
+        $scope.WeChatJS$.scanQRCode(function (code) {
             $scope.usedBookJson.isbn13 = code;
             $scope.loadDoubanBookInfo();
         });

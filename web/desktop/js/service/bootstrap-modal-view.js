@@ -3,7 +3,7 @@
  */
 "use strict";
 
-APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, InfoService$, BookRecommend$) {
+APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal) {
 
     /**
      * 打开选择专业modal view
@@ -11,7 +11,6 @@ APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, In
      */
     this.openChooseMajorModalView = function (majorOnChooseCallback) {
         var scope = $rootScope.$new(true);
-        scope.InfoService$ = InfoService$;
         var modalInstance = $modal.open({
             templateUrl: 'html/directive/choose-major-modal-view.html',
             scope: scope
@@ -25,7 +24,6 @@ APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, In
      */
     this.openChooseSchoolModalView = function (schoolOnChooseCallback) {
         var scope = $rootScope.$new(true);
-        scope.InfoService$ = InfoService$;
         var modalInstance = $modal.open({
             templateUrl: 'html/directive/choose-school-modal-view.html',
             scope: scope
@@ -39,7 +37,6 @@ APP.service('BootstrapModalView$', function ($rootScope, $controller, $modal, In
      */
     this.openChooseBookTagModalView = function (bookTagOnChooseCallback) {
         var scope = $rootScope.$new(true);
-        scope.BookRecommend$ = BookRecommend$;
         var modalInstance = $modal.open({
             templateUrl: 'html/directive/choose-book-tag-modal-view.html',
             scope: scope

@@ -4,14 +4,12 @@
  */
 "use strict";
 
-APP.directive('ionUserInfo', function (WeChatJS$, User$) {
+APP.directive('ionUserInfo', function () {
     function link($scope) {
         $scope.AV = AV;
-        $scope.WeChatJS$ = WeChatJS$;
-        $scope.User$ = User$;
         //加载它的二手书的数量
         function loadHeUsedBookNumber() {
-            User$.loadHeUsedBookNumber($scope.user).done(function (number) {
+            $scope.$root.User$.loadHeUsedBookNumber($scope.user).done(function (number) {
                 $scope.user.userUsedBookNumber = number;
                 $scope.$digest();
             });
@@ -19,7 +17,7 @@ APP.directive('ionUserInfo', function (WeChatJS$, User$) {
 
         //加载它的求书的数量
         function loadHeNeedBookNumber() {
-            User$.loadHeNeedBookNumber($scope.user).done(function (number) {
+            $scope.$root.User$.loadHeNeedBookNumber($scope.user).done(function (number) {
                 $scope.user.userNeedBookNumber = number;
                 $scope.$digest();
             });
@@ -27,7 +25,7 @@ APP.directive('ionUserInfo', function (WeChatJS$, User$) {
 
         //加载它的求书的数量
         function loadHeCircleBookNumber() {
-            User$.loadHeCircleBookNumber($scope.user).done(function (number) {
+            $scope.$root.User$.loadHeCircleBookNumber($scope.user).done(function (number) {
                 $scope.user.userCircleBookNumber = number;
                 $scope.$digest();
             });
@@ -35,7 +33,7 @@ APP.directive('ionUserInfo', function (WeChatJS$, User$) {
 
         //判断是否我已经关注ta
         function loadIsMyFollowee() {
-            User$.loadIsMyFollowee($scope.user).done(function (is) {
+            $scope.$root.User$.loadIsMyFollowee($scope.user).done(function (is) {
                 $scope.isMyFollowee = is;
                 $scope.$digest();
             });

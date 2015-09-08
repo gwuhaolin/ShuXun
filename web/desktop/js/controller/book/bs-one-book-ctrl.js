@@ -4,10 +4,10 @@
  */
 "use strict";
 
-APP.controller('bs_book_oneBook', function ($scope, $controller, DoubanBook$) {
+APP.controller('bs_book_oneBook', function ($scope, $controller) {
     $controller('book_oneBook', {$scope: $scope});
 
-    $scope.BookReview = DoubanBook$.BookReview;
+    $scope.BookReview = $scope.DoubanBook$.BookReview;
     $scope.$watch(function () {
         return $scope.bookInfo;
     }, function () {

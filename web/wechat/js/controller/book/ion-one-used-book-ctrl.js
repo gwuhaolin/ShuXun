@@ -4,9 +4,8 @@
  */
 "use strict";
 
-APP.controller('ion_book_oneUsedBook', function ($scope, $controller, WeChatJS$) {
+APP.controller('ion_book_oneUsedBook', function ($scope, $controller) {
     $controller('book_oneUsedBook', {$scope: $scope});
-    $scope.WeChatJS$ = WeChatJS$;
 
     //统计用户行为
     $scope.$on('$ionicView.afterEnter', function () {

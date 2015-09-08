@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
+APP.service('BookRecommend$', function ($rootScope) {
     var that = this;
 
     /**
@@ -42,7 +42,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
                 that.TagBook.books.length = 0;
                 that.TagBook.nowTag = tag;
                 //来自BookInfo表里的tag相关的图书
-                BookInfo$.searchBook(tag).done(function (bookInfos) {
+                $rootScope.BookInfo$.searchBook(tag).done(function (bookInfos) {
                     that.TagBook.books.unshiftUniqueArray(bookInfos);
                     $rootScope.$digest();
                     $rootScope.$broadcast('scroll.infiniteScrollComplete');
@@ -53,7 +53,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         hasMoreFlag: true,
         loadMore: function () {
             //来自 豆瓣图书 里的tag相关的图书
-            DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, LoadCount).done(function (json) {
+            $rootScope.DoubanBook$.getBooksByTag(that.TagBook.nowTag, that.TagBook.books.length, LoadCount).done(function (json) {
                 var jsonBooks = json['books'];
                 if (jsonBooks.length > 0) {
                     for (var i = 0; i < jsonBooks.length; i++) {
@@ -105,7 +105,7 @@ APP.service('BookRecommend$', function ($rootScope, DoubanBook$, BookInfo$) {
         role && query.equalTo('role', role);
         var me = AV.User.current();
         me && query.notEqualTo('owner', me);//不要显示自己的上传的
-        var location = me.get('location');
+        var location = me ? me.get('location') : null;
         if (location || major) {
             var ownerUserQuery = new AV.Query(Model.User);
             location && ownerUserQuery.near("location", location);

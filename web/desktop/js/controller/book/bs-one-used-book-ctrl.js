@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('bs_book_oneUsedBook', function ($scope, $controller, UsedBook$) {
+APP.controller('bs_book_oneUsedBook', function ($scope, $controller) {
     $controller('book_oneUsedBook', {$scope: $scope});
 
     $scope.ownerOtherUsedBooks = [];
@@ -16,15 +16,15 @@ APP.controller('bs_book_oneUsedBook', function ($scope, $controller, UsedBook$) 
             $scope.SEO$.setSEO([$scope.title, $scope.usedBook]);
             var owner = $scope.usedBook.get('owner');
             if (owner) {
-                UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
+                $scope.UsedBook$.loadUsedBookListForOwner(owner).done(function (usedBooks) {
                     $scope.ownerOtherUsedBooks = usedBooks;
                     $scope.$digest()
                 });
-                UsedBook$.loadNeedBookListForOwner(owner).done(function (needBooks) {
+                $scope.UsedBook$.loadNeedBookListForOwner(owner).done(function (needBooks) {
                     $scope.ownerOtherNeedBooks = needBooks;
                     $scope.$digest()
                 });
-                UsedBook$.loadCircleBookListForOwner(owner).done(function (circleBooks) {
+                $scope.UsedBook$.loadCircleBookListForOwner(owner).done(function (circleBooks) {
                     $scope.ownerOtherCircleBooks = circleBooks;
                     $scope.$digest()
                 });

@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('BookInfo$', function ($rootScope, DoubanBook$) {
+APP.service('BookInfo$', function ($rootScope) {
     var that = this;
 
     /**
@@ -16,7 +16,7 @@ APP.service('BookInfo$', function ($rootScope, DoubanBook$) {
      */
     this.getBookInfoByISBN = function (isbn) {
         var rePromise = new AV.Promise();
-        DoubanBook$.getBookByISBN(isbn).done(function (doubanJson) {
+        $rootScope.DoubanBook$.getBookByISBN(isbn).done(function (doubanJson) {
             rePromise.resolve(Model.BookInfo.fromDouban(doubanJson));
         }).fail(function (doubanErr) {
             AV.Cloud.run('getJsonBookByISBN13', {

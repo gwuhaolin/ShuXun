@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('ion_book_bookList', function ($scope, $controller, $stateParams, BookRecommend$) {
+APP.controller('ion_book_bookList', function ($scope, $controller, $stateParams) {
     $controller('book_bookList', {$scope: $scope});
 
     var cmd = $stateParams['cmd'];
@@ -14,7 +14,7 @@ APP.controller('ion_book_bookList', function ($scope, $controller, $stateParams,
         $scope.$on('$ionicView.afterEnter', function () {
             var analyticsSugue = leanAnalytics.browseTag(tag);
             $scope.$on('$ionicView.afterLeave', function () {
-                BookRecommend$.TagBook.books.length = 0;
+                $scope.BookRecommend$.TagBook.books.length = 0;
                 analyticsSugue.send();
             });
         });

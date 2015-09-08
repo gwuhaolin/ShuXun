@@ -124,7 +124,18 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
         });
     $urlRouterProvider.otherwise('/book/recommend');
 });
-APP.run(function ($rootScope, $anchorScroll, User$, SEO$) {
+APP.run(function ($rootScope, $anchorScroll, User$, BookInfo$, BookRecommend$, DoubanBook$, InfoService$, SearchBook$, Status$, UsedBook$, SEO$, WechatNews$, BootstrapModalView$) {
+    $rootScope.User$ = User$;
+    $rootScope.BookInfo$ = BookInfo$;
+    $rootScope.BookRecommend$ = BookRecommend$;
+    $rootScope.DoubanBook$ = DoubanBook$;
+    $rootScope.InfoService$ = InfoService$;
+    $rootScope.SearchBook$ = SearchBook$;
+    $rootScope.Status$ = Status$;
+    $rootScope.UsedBook$ = UsedBook$;
+
+    $rootScope.WechatNews$ = WechatNews$;
+    $rootScope.BootstrapModalView$ = BootstrapModalView$;
     User$.loginWithUnionId(readCookie('unionId'));
     SEO$.setSEO();
     $rootScope.SEO$ = SEO$;

@@ -4,6 +4,5 @@
  */
 "use strict";
 //图书推荐
-APP.controller('ion_tabs', function ($scope, Status$) {
-    $scope.Status$ = Status$;
+APP.controller('ion_tabs', function ($scope) {
 });

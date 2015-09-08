@@ -4,11 +4,9 @@
  */
 "use strict";
 
-APP.controller('bs_userHome', function ($scope, $controller, $sce, User$, BootstrapModalView$) {
+APP.controller('bs_userHome', function ($scope, $controller, $sce) {
     $controller('userHome', {$scope: $scope});
     $scope.AV = AV;
-    $scope.User$ = User$;
-    $scope.BootstrapModalView$ = BootstrapModalView$;
 
     /**
      * 判断是否本人是我自己
@@ -26,7 +24,7 @@ APP.controller('bs_userHome', function ($scope, $controller, $sce, User$, Bootst
 
     //判断是否我已经关注ta
     function loadIsMyFollowee() {
-        User$.loadIsMyFollowee($scope.owner).done(function (is) {
+        $scope.User$.loadIsMyFollowee($scope.owner).done(function (is) {
             $scope.isMyFollowee = is;
             $scope.$digest();
         });

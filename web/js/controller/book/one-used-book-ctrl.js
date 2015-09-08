@@ -4,10 +4,7 @@
  */
 "use strict";
 
-APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, Status$) {
-    $scope.User$ = User$;
-    $scope.UsedBook$ = UsedBook$;
-    $scope.Status$ = Status$;
+APP.controller('book_oneUsedBook', function ($scope, $stateParams) {
 
     $scope.usedBookObjectId = $stateParams['usedBookAvosObjectId'];
     var query = new AV.Query(Model.UsedBook);
@@ -38,7 +35,7 @@ APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, Us
     };
 
     //加载评论数据
-    Status$.getStatusList_reviewBook($scope.usedBookObjectId).done(function (statusList) {
+    $scope.Status$.getStatusList_reviewBook($scope.usedBookObjectId).done(function (statusList) {
         $scope.statusList = statusList;
         $scope.$digest();
     });

@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('ion_person_sendMsgToUser', function ($scope, $controller, $ionicScrollDelegate, Status$) {
+APP.controller('ion_person_sendMsgToUser', function ($scope, $controller, $ionicScrollDelegate) {
     $controller('person_sendMsgToUser', {$scope: $scope});
 
     $scope.$on('NewStatusLoaded', function () {
@@ -15,7 +15,7 @@ APP.controller('ion_person_sendMsgToUser', function ($scope, $controller, $ionic
     //自动刷新拿去新信息,模仿真实聊天
     $scope.$on('$ionicView.afterEnter', function () {
         autoTimer = setInterval(function () {
-            Status$.makeQueryStatusList_twoUser($scope.receiverObjectId, $scope.msg.usedBookObjectId).count().done(function (count) {
+            $scope.Status$.makeQueryStatusList_twoUser($scope.receiverObjectId, $scope.msg.usedBookObjectId).count().done(function (count) {
                 if (count > $scope.statusList.length) {
                     $scope.loadMoreStatus();
                 }
@@ -24,6 +24,6 @@ APP.controller('ion_person_sendMsgToUser', function ($scope, $controller, $ionic
     });
     $scope.$on('$ionicView.afterLeave', function () {
         clearInterval(autoTimer);
-        Status$.cleanMyInbox($scope.msg.inboxType, $scope.msg.usedBookObjectId, $scope.receiverObjectId);
+        $scope.Status$.cleanMyInbox($scope.msg.inboxType, $scope.msg.usedBookObjectId, $scope.receiverObjectId);
     });
 });

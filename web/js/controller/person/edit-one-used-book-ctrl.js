@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('person_editOneUsedBook', function ($scope, $state, $stateParams, UsedBook$) {
+APP.controller('person_editOneUsedBook', function ($scope, $state, $stateParams) {
     var usedBookId = $stateParams['usedBookId'];
     $scope.usedBook = new Model.UsedBook();
     $scope.usedBook.id = usedBookId;
@@ -24,8 +24,8 @@ APP.controller('person_editOneUsedBook', function ($scope, $state, $stateParams,
     $scope.submitOnClick = function () {
         $scope.usedBook.set('des', $scope.usedBook.attributes.des);
         $scope.usedBook.set('price', $scope.usedBook.attributes.price);
-        UsedBook$.saveUsedBook($scope.usedBook).done(function () {
-            UsedBook$.reloadMyUsedBookAndGoMyHome($scope.usedBook.get('role'));
+        $scope.UsedBook$.saveUsedBook($scope.usedBook).done(function () {
+            $scope.UsedBook$.reloadMyUsedBookAndGoMyHome($scope.usedBook.get('role'));
         }).fail(function (error) {
             alert(error.message);
         });

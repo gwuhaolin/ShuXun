@@ -198,7 +198,19 @@ var APP = angular.module('APP', ['ionic'], null)
         $urlRouterProvider.otherwise('/book/recommend');
     });
 
-APP.run(function ($rootScope, $state, $anchorScroll, User$, WeChatJS$) {
+APP.run(function ($rootScope, $state, $anchorScroll, User$, BookInfo$, BookRecommend$, DoubanBook$, InfoService$, SearchBook$, Status$, UsedBook$, WeChatJS$, IonicModalView$) {
+    $rootScope.User$ = User$;
+    $rootScope.BookInfo$ = BookInfo$;
+    $rootScope.BookRecommend$ = BookRecommend$;
+    $rootScope.DoubanBook$ = DoubanBook$;
+    $rootScope.InfoService$ = InfoService$;
+    $rootScope.SearchBook$ = SearchBook$;
+    $rootScope.Status$ = Status$;
+    $rootScope.UsedBook$ = UsedBook$;
+
+    $rootScope.WeChatJS$ = WeChatJS$;
+    $rootScope.IonicModalView$ = IonicModalView$;
+
     WeChatJS$.config();//马上调用配置微信
     User$.loginWithUnionId(readCookie('unionId'));
     $rootScope.$on('$stateChangeStart', function (event, nextState) {

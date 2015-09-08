@@ -4,7 +4,7 @@
         <!-- 关键字输入框-->
         <label class="item-input-wrapper">
             <i class="icon ion-ios-search placeholder-icon balanced"></i>
-            <input type="search" placeholder="输入专业名称搜索" ng-model="InfoService$.Major.searchMajorKeyword">
+            <input type="search" placeholder="输入专业名称搜索" ng-model="$root.InfoService$.Major.searchMajorKeyword">
         </label>
         <button class="button button-clear button-balanced"
                 ng-click="chooseMajorModalView.hide()">返回
@@ -14,13 +14,13 @@
         <ul class="list">
             <ion-item item-height="55px"
                       item-width="100%"
-                      collection-repeat="major in InfoService$.Major.majors"
+                      collection-repeat="major in $root.InfoService$.Major.majors"
                       ng-click="majorOnChoose(major.attributes.name)"
                       ng-bind="major.attributes.name">
             </ion-item>
         </ul>
-        <ion-infinite-scroll ng-if="InfoService$.Major.hasMore()"
-                             on-infinite="InfoService$.Major.loadMore()"
+        <ion-infinite-scroll ng-if="$root.InfoService$.Major.hasMore()"
+                             on-infinite="$root.InfoService$.Major.loadMore()"
                              distance="1%">
         </ion-infinite-scroll>
     </ion-content>

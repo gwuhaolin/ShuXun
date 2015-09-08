@@ -18,17 +18,17 @@
     </button>
     <button ng-if="user.attributes.location" class="button button-small button-clear button-balanced"
             style="float: right"
-            ng-click="WeChatJS$.openMap(user.attributes.location.latitude,user.attributes.location.longitude)">地图
+            ng-click="$root.WeChatJS$.openMap(user.attributes.location.latitude,user.attributes.location.longitude)">地图
     </button>
     <button ng-if="AV.User.current() && !isMyFollowee && !isMe()"
             class="button button-small button-clear button-balanced"
             style="float: right"
-            ng-click="User$.followUser(user.id)">关注Ta
+            ng-click="$root.User$.followUser(user.id)">关注Ta
     </button>
     <button ng-if="isMyFollowee"
             class="button button-small button-clear button-energized"
             style="float: right"
-            ng-click="User$.unfollowUser(user.id)">取消关注
+            ng-click="$root.User$.unfollowUser(user.id)">取消关注
     </button>
 </div>
 <!-- 主人所有旧书链接-->

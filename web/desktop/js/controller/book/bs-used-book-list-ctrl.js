@@ -5,12 +5,12 @@
 "use strict";
 
 //二手书列表
-APP.controller('bs_book_usedBookList', function ($scope, $controller, BootstrapModalView$) {
+APP.controller('bs_book_usedBookList', function ($scope, $controller) {
     $controller('book_usedBookList', {$scope: $scope});
     $scope.loadMore();
     //按照专业筛选
     $scope.chooseBookTag = function () {
-        BootstrapModalView$.openChooseBookTagModalView(function (bookTag) {
+        $scope.BootstrapModalView$.openChooseBookTagModalView(function (bookTag) {
             $scope.setTagFilter && $scope.setTagFilter(bookTag);
         });
     };

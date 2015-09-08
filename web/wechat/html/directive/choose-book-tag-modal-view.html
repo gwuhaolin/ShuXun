@@ -12,12 +12,12 @@
     </ion-header-bar>
     <ion-content class="has-header">
         <ion-list>
-            <div ng-repeat="bigTag in BookRecommend$.BookTag.getTagAttrNames()">
+            <div ng-repeat="bigTag in $root.BookRecommend$.BookTag.getTagAttrNames()">
                 <ion-item class="item-divider item-button-right balanced" ng-bind="bigTag"
                           ng-click="bookTagOnChoose(bigTag)"></ion-item>
                 <ion-item style="white-space:normal">
                     <button class="button button-small button-outline button-balanced" style="margin: 5px"
-                            ng-repeat="littleTag in BookRecommend$.BookTag.tag[bigTag] | filter:keyword"
+                            ng-repeat="littleTag in $root.BookRecommend$.BookTag.tag[bigTag] | filter:keyword"
                             ng-click="bookTagOnChoose(littleTag)"
                             ng-bind="littleTag">
                     </button>

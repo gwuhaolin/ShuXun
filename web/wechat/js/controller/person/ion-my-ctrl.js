@@ -4,8 +4,7 @@
  */
 "use strict";
 
-APP.controller('ion_person_my', function ($scope, $state, $stateParams, User$, Status$) {
-    $scope.Status$ = Status$;
+APP.controller('ion_person_my', function ($scope) {
     function load() {
         $scope.user = AV.User.current();
         //加载我上传的二手书的数量
@@ -46,7 +45,7 @@ APP.controller('ion_person_my', function ($scope, $state, $stateParams, User$, S
             $scope.$digest();
         });
         //加载我的未读消息
-        Status$.loadUnreadStatusesCount();
+        $scope.Status$.loadUnreadStatusesCount();
     }
 
     $scope.$on('$ionicView.afterEnter', load);

@@ -5,10 +5,10 @@
 "use strict";
 
 //用户列表
-APP.controller('ion_userList', function ($scope, $controller, IonicModalView$) {
+APP.controller('ion_userList', function ($scope, $controller) {
     $controller('userList', {$scope: $scope});
     //按照专业筛选
-    IonicModalView$.registerChooseMajorModalView($scope, function (major) {
+    $scope.IonicModalView$.registerChooseMajorModalView($scope, function (major) {
         $scope.setMajorFilter(major);
     });
 });

@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory, InfoService$, BookRecommend$) {
+APP.service('IonicModalView$', function ($rootScope, $ionicModal) {
 
     /**
      * 为$scope注册选择学校modalView功能
@@ -12,7 +12,6 @@ APP.service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory,
      * @param schoolOnChooseCallback 当选中了一个学校时调用 返回选中的学校
      */
     this.registerChooseSchoolModalView = function ($scope, schoolOnChooseCallback) {
-        $scope.InfoService$ = InfoService$;
         $ionicModal.fromTemplateUrl('html/directive/choose-school-modal-view.html', {
             scope: $scope
         }).then(function (modal) {
@@ -30,7 +29,6 @@ APP.service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory,
      * @param majorOnChooseCallback 当选中了一个专业时调用 返回选中的专业
      */
     this.registerChooseMajorModalView = function ($scope, majorOnChooseCallback) {
-        $scope.InfoService$ = InfoService$;
         //选中了专业
         $ionicModal.fromTemplateUrl('html/directive/choose-major-modal-view.html', {
             scope: $scope
@@ -49,7 +47,6 @@ APP.service('IonicModalView$', function ($rootScope, $ionicModal, $ionicHistory,
      * @param bookTagOnChooseCallback 当选中了一个 Book Tag 时调用 返回选中的 Book Tag
      */
     this.registerChooseBookTagModalView = function ($scope, bookTagOnChooseCallback) {
-        $scope.BookRecommend$ = BookRecommend$;
         $ionicModal.fromTemplateUrl('html/directive/choose-book-tag-modal-view.html', {
             scope: $scope
         }).then(function (modal) {

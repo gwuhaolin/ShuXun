@@ -1,5 +1,5 @@
 <!--编辑一本上传的二手书-->
-<ion-view ng-controller="ion_person_editOneUsedBook" view-title="修改我的{{usedBook.attributes.bookInfo.attributes.title}}">
+<ion-view ng-controller="person_editOneUsedBook" view-title="修改我的{{usedBook.attributes.bookInfo.attributes.title}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
@@ -28,8 +28,7 @@
             提交修改
         </button>
         <button class="button button-small button-outline button-assertive"
-                ng-click="UsedBook$.removeUsedBook(usedBook)"
-                ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id,hashId:'userUsedBook'})">永远删除
+                ng-click="UsedBook$.removeUsedBook(usedBook)">永远删除
         </button>
     </ion-content>
 </ion-view>

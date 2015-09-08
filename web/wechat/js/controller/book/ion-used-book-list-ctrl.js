@@ -5,11 +5,11 @@
 "use strict";
 
 //二手书列表
-APP.controller('ion_book_usedBookList', function ($scope, $controller, IonicModalView$) {
+APP.controller('ion_book_usedBookList', function ($scope, $controller) {
     $controller('book_usedBookList', {$scope: $scope});
 
     //按照专业筛选
-    IonicModalView$.registerChooseBookTagModalView($scope, function (bookTag) {
+    $scope.IonicModalView$.registerChooseBookTagModalView($scope, function (bookTag) {
         $scope.setTagFilter && $scope.setTagFilter(bookTag);
     });
 

@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.service('User$', function ($rootScope, Status$) {
+APP.service('User$', function ($rootScope) {
     var that = this;
 
     /**
@@ -151,7 +151,7 @@ APP.service('User$', function ($rootScope, Status$) {
             AV.User.logIn(unionId, unionId).done(function (me) {
                 $rootScope.$broadcast('UserLoginSuccess');
                 rePromise.resolve(me);
-                Status$.loadUnreadStatusesCount();//加载未读消息数量
+                $rootScope.Status$.loadUnreadStatusesCount();//加载未读消息数量
             }).fail(function (err) {
                 rePromise.reject(err);
             })

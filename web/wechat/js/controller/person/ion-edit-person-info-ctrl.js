@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('ion_person_editPersonInfo', function ($scope, $state, $ionicHistory, InfoService$, User$, IonicModalView$) {
+APP.controller('ion_person_editPersonInfo', function ($scope, $state, $ionicHistory) {
     //是否对属性进行了修改
     $scope.attrHasChange = false;
     $scope.me = AV.User.current();
@@ -16,15 +16,15 @@ APP.controller('ion_person_editPersonInfo', function ($scope, $state, $ionicHist
         startSchoolYear: jsonMe.startSchoolYear
     };
 
-    IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
+    $scope.IonicModalView$.registerChooseSchoolModalView($scope, function (school) {
         $scope.attrHasChange = true;
         $scope.userInfo.school = school;
     });
-    IonicModalView$.registerChooseMajorModalView($scope, function (major) {
+    $scope.IonicModalView$.registerChooseMajorModalView($scope, function (major) {
         $scope.attrHasChange = true;
         $scope.userInfo.major = major;
     });
-    $scope.startSchoolYearOptions = InfoService$.startSchoolYearOptions;
+    $scope.startSchoolYearOptions = $scope.InfoService$.startSchoolYearOptions;
 
     $scope.confirmWechatAlert = function () {
         if ($scope.userInfo.wechatAlert == false) {
@@ -34,7 +34,7 @@ APP.controller('ion_person_editPersonInfo', function ($scope, $state, $ionicHist
 
     //点击提交修改时
     $scope.submitOnClick = function () {
-        User$.updateMyInfoWithJson($scope.userInfo).done(function () {
+        $scope.User$.updateMyInfoWithJson($scope.userInfo).done(function () {
             alert('修改成功');
             AV.User.current().fetch();
         }).fail(function (error) {

@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, BookInfo$) {
+APP.controller('book_bookList', function ($scope, $stateParams) {
     $scope.title = $stateParams['title'];
     var cmd = $stateParams['cmd'];
     if (cmd == 'tag') {
@@ -13,16 +13,16 @@ APP.controller('book_bookList', function ($scope, $stateParams, BookRecommend$, 
         if (!tag && me) {
             tag = me.get('major');
         }
-        BookRecommend$.TagBook.setTag(tag);
-        BookRecommend$.TagBook.loadMore();
+        $scope.BookRecommend$.TagBook.setTag(tag);
+        $scope.BookRecommend$.TagBook.loadMore();
         $scope.title = tag;
-        $scope.books = BookRecommend$.TagBook.books;
-        $scope.loadMore = BookRecommend$.TagBook.loadMore;
-        $scope.hasMore = BookRecommend$.TagBook.hasMore;
+        $scope.books = $scope.BookRecommend$.TagBook.books;
+        $scope.loadMore = $scope.BookRecommend$.TagBook.loadMore;
+        $scope.hasMore = $scope.BookRecommend$.TagBook.hasMore;
     } else if (cmd == 'latest') {
-        $scope.books = BookInfo$.LatestBook.books;
-        $scope.loadMore = BookInfo$.LatestBook.loadMore;
+        $scope.books = $scope.BookInfo$.LatestBook.books;
+        $scope.loadMore = $scope.BookInfo$.LatestBook.loadMore;
         $scope.title = '新书速递';
-        $scope.hasMore = BookInfo$.LatestBook.hasMore;
+        $scope.hasMore = $scope.BookInfo$.LatestBook.hasMore;
     }
 });
