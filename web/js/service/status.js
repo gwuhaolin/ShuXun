@@ -184,6 +184,41 @@ APP.service('Status$', function ($rootScope, $state) {
         })
     };
 
+    /**
+     * 已经把我的 旧书 卖给了receiver
+     * @param usedBook
+     * @param receiver
+     */
+    that.sellUsedBookToUser = function (usedBook, receiver) {
+        var me = $rootScope.User$.me();
+        if (me && usedBook.get('owner').id === me.id) {
+            $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
+        }
+    };
+
+    /**
+     * 从 TA 那里获得了我发布的求书
+     * @param usedBook
+     * @param receiver
+     */
+    that.gainUsedBookFromUser = function (usedBook, receiver) {
+        var me = $rootScope.User$.me();
+        if (me && usedBook.get('owner').id === me.id) {
+            $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
+        }
+    };
+
+    /**
+     * 把我发布的书漂流传递给ta
+     * @param usedBook
+     * @param receiver
+     */
+    that.deliverUsedBookToUser = function (usedBook, receiver) {
+        var me = $rootScope.User$.me();
+        if (me && usedBook.get('owner').id === me.id) {
+            $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
+        }
+    };
 
     /**
      * 对一本二手书进行评论,评论的内容会被所有人看到

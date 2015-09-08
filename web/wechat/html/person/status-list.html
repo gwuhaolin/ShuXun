@@ -4,15 +4,9 @@
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
     <ion-content class="padding">
-        <div ng-if="cmd=='newUsedBook'"
+        <div ng-if="cmd=='newUsedBook' || cmd==='newNeedBook'"
              collection-repeat="status in statusList">
             <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
-            <ion-user-info user="status.attributes.source"></ion-user-info>
-        </div>
-
-        <div ng-if="cmd=='newNeedBook'"
-             collection-repeat="status in statusList">
-            <ion-one-need-book need-book="status.attributes.usedBook"></ion-one-need-book>
             <ion-user-info user="status.attributes.source"></ion-user-info>
         </div>
 
@@ -26,11 +20,7 @@
                     回复私信
                 </button>
             </ion-item>
-            <ion-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
-                               used-book="status.attributes.usedBook">
-            </ion-one-used-book>
-            <ion-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
-                               need-book="status.attributes.usedBook"></ion-one-need-book>
+            <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
             <ion-user-info user="status.attributes.source"></ion-user-info>
         </div>
 
@@ -44,11 +34,7 @@
                     回复评论
                 </button>
             </ion-item>
-            <ion-one-used-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='sell'"
-                               used-book="status.attributes.usedBook">
-            </ion-one-used-book>
-            <ion-one-need-book ng-if="status.attributes.usedBook && status.attributes.usedBook.attributes.role=='need'"
-                               need-book="status.attributes.usedBook"></ion-one-need-book>
+            <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
             <ion-user-info user="status.attributes.source"></ion-user-info>
         </div>
 

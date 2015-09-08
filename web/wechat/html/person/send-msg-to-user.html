@@ -7,8 +7,24 @@
         <!-- 对方用户信息-->
         <ion-user-info ng-if="user" user="user"></ion-user-info>
         <!-- 二手书信息-->
-        <ion-one-used-book ng-if="usedBook && usedBook.get('role')=='sell'" used-book="usedBook"></ion-one-used-book>
-        <ion-one-need-book ng-if="usedBook && usedBook.get('role')=='need'" need-book="usedBook"></ion-one-need-book>
+        <ion-one-used-book used-book="usedBook"></ion-one-used-book>
+        <ion-item ng-if="usedBook.attributes.alive && usedBook.attributes.owner.id===User$.me().id">
+            <button class="button button-block button-small button-balanced"
+                    ng-if="usedBook.attributes.role==='sell'"
+                    ng-click="Status$.sellUsedBookToUser(usedBook,user)">
+                已决定卖给Ta
+            </button>
+            <button class="button button-block button-small button-balanced"
+                    ng-if="usedBook.attributes.role==='need'"
+                    ng-click="Status$.gainUsedBookFromUser(usedBook,user)">
+                已成功从Ta获得
+            </button>
+            <button class="button button-block button-small button-balanced"
+                    ng-if="usedBook.attributes.role==='circle'"
+                    ng-click="Status$.deliverUsedBookToUser(usedBook,user)">
+                已决定传递给Ta
+            </button>
+        </ion-item>
         <!-- 聊天记录-->
         <ion-item style="margin: 0;padding: 0;border-right: none;border-left: none">
             <ol ng-if="statusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
@@ -23,10 +39,11 @@
         <ion-item class="item-divider" style="text-align: center" ng-if="nowModel()" ng-bind="nowModel()"></ion-item>
         <!-- 我的输入框-->
         <label class="item item-input">
-            <input type="text" ng-model="msg.sendMsg" placeholder="输入回复内容">
+            <textarea rows="5" ng-model="msg.sendMsg" placeholder="输入回复内容"></textarea>
         </label>
         <!-- 发送-->
-        <button ng-disabled="!msg.sendMsg || isLoading" class="button button-block button-outline button-balanced"
+        <button class="button button-block button-outline button-balanced"
+                ng-disabled="!msg.sendMsg || isLoading"
                 ng-click="sendOnClick()">发送
         </button>
         <!-- 正在加载-->

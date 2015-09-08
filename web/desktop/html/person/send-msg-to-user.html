@@ -22,7 +22,7 @@
             <!-- 我的输入框-->
             <form class="col-md-12">
                 <div class="form-group">
-                        <textarea type="text"
+                        <textarea rows="5"
                                   class="form-control"
                                   placeholder="输入回复内容"
                                   ng-model="msg.sendMsg"
@@ -49,6 +49,25 @@
 
     <div class="col-md-3">
         <!-- 对方用户信息-->
+        <div class="row" ng-if="usedBook.attributes.alive && usedBook.attributes.owner.id===User$.me().id">
+            <div class="col-md-12">
+                <button class="btn btn-block btn-primary"
+                        ng-if="usedBook.attributes.role==='sell'"
+                        ng-click="Status$.sellUsedBookToUser(usedBook,user)">
+                    已决定卖给Ta
+                </button>
+                <button class="btn btn-block btn-primary"
+                        ng-if="usedBook.attributes.role==='need'"
+                        ng-click="Status$.gainUsedBookFromUser(usedBook,user)">
+                    已成功从Ta获得
+                </button>
+                <button class="btn btn-block btn-primary"
+                        ng-if="usedBook.attributes.role==='circle'"
+                        ng-click="Status$.deliverUsedBookToUser(usedBook,user)">
+                    已决定传递给Ta
+                </button>
+            </div>
+        </div>
         <div class="row" ng-if="user">
             <div class="col-md-12">
                 <h4>对方信息</h4>
@@ -70,10 +89,8 @@
             </div>
             <div class="col-md-12">
                 <!-- 二手书信息-->
-                <bs-one-used-book ng-if="usedBook && usedBook.get('role')=='sell'" used-book="usedBook"
+                <bs-one-used-book used-book="usedBook"
                                   popover-placement="left"></bs-one-used-book>
-                <bs-one-need-book ng-if="usedBook && usedBook.get('role')=='need'" need-book="usedBook"
-                                  popover-placement="left"></bs-one-need-book>
             </div>
         </div>
     </div>

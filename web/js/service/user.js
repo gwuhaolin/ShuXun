@@ -7,6 +7,10 @@
 APP.service('User$', function ($rootScope) {
     var that = this;
 
+    that.me = function () {
+        return AV.User.current();
+    };
+
     /**
      * 用户注册 用户名=Email
      * @param jsonUser json格式的用户信息
