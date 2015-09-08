@@ -7,6 +7,7 @@
 APP.controller('book_oneUsedBook', function ($scope, $stateParams, UsedBook$, User$, Status$) {
     $scope.User$ = User$;
     $scope.UsedBook$ = UsedBook$;
+    $scope.Status$ = Status$;
 
     $scope.usedBookObjectId = $stateParams['usedBookAvosObjectId'];
     var query = new AV.Query(Model.UsedBook);

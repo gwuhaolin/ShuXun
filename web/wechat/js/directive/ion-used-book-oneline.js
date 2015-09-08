@@ -13,7 +13,7 @@ APP.directive('ionUsedBookOneline', function () {
             $scope.showUsedBooks = $scope.usedBooks.slice(0, LoadCount);
             AV._.each($scope.showUsedBooks, function (usedBook) {
                 var query = new AV.Query(Model.BookInfo);
-                query.select('image', 'title');
+                query.select('title', 'image');
                 query.get(usedBook.attributes.bookInfo.id).done(function (bookInfo) {
                     usedBook.set('bookInfo', bookInfo);
                     $scope.$digest();

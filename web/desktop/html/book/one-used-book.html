@@ -15,15 +15,57 @@
             <div class="col-md-6">
                 <div class="btn-toolbar pull-right">
                     <div class="btn-group" ng-if="!isMy()">
-                        <a class="btn btn-info"
-                           ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
-                            联系Ta
-                        </a>
                         <a class="btn btn-primary" ng-click="scrollToHash('大家都说')">大家都说</a>
                     </div>
                     <div class="btn-group">
                         <a class="btn btn-default" ng-click="scrollToHash('Ta的旧书')">Ta的旧书</a>
                         <a class="btn btn-default" ng-click="scrollToHash('Ta的求书')">Ta的求书</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>主人信息</h4>
+                <hr>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3">
+                    <bs-one-user class="center-block"
+                                 user="usedBook.attributes.owner"
+                                 avatar-size="80"
+                                 popover-placement="right"
+                                 margin="5"
+                                 image-size="132"></bs-one-user>
+                </div>
+                <div class="col-md-6">
+                    <dl class="dl-horizontal" ng-if="usedBook.attributes.price>0">
+                        <dt ng-if="usedBook.attributes.role==='sell'">主人要价</dt>
+                        <dt ng-if="usedBook.attributes.role==='need'">最高承受价</dt>
+                        <dd ng-bind="usedBook.attributes.price"></dd>
+                    </dl>
+                    <dl class="dl-horizontal">
+                        <dt>上传时间</dt>
+                        <dd ng-bind="usedBook.updatedAt | date:'mediumDate'"></dd>
+                    </dl>
+                    <dl class="dl-horizontal" ng-if="usedBook.attributes.des">
+                        <dt>主人描述</dt>
+                        <dd ng-bind="usedBook.attributes.des"></dd>
+                    </dl>
+                </div>
+                <div class="col-md-3">
+                    <div ng-if="!isMy()">
+                        <a style="margin: 5px" ng-if="usedBook.attributes.role ==='sell'"
+                           class="btn btn-info" ng-click="Status$.requestSellUsedBook(usedBook)">我买了,向Ta预定</a>
+                        <a style="margin: 5px" ng-if="usedBook.attributes.role ==='need'"
+                           class="btn btn-info" ng-click="Status$.requestNeedUsedBook(usedBook)">我正好有,卖给Ta</a>
+                        <a style="margin: 5px" ng-if="usedBook.attributes.role ==='circle'"
+                           class="btn btn-info" ng-click="Status$.requestCircleUsedBook(usedBook)">我想要,向Ta索要</a>
+                        <a style="margin: 5px" class="btn btn-primary"
+                           ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
+                            私信Ta
+                        </a>
                     </div>
                     <div class="btn-group" ng-if="isMy()">
                         <button class="btn btn-info"
@@ -44,38 +86,6 @@
                             修改
                         </button>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h4>图书信息</h4>
-                <hr>
-            </div>
-            <div class="col-md-12">
-                <div class="col-md-3">
-                    <bs-one-user class="center-block"
-                                 user="usedBook.attributes.owner"
-                                 avatar-size="80"
-                                 popover-placement="right"
-                                 margin="5"
-                                 image-size="132"></bs-one-user>
-                </div>
-                <div class="col-md-9">
-                    <dl class="dl-horizontal" ng-if="usedBook.attributes.price>0">
-                        <dt ng-if="usedBook.attributes.role==='sell'">主人要价</dt>
-                        <dt ng-if="usedBook.attributes.role==='need'">最高承受价</dt>
-                        <dd ng-bind="usedBook.attributes.price"></dd>
-                    </dl>
-                    <dl class="dl-horizontal">
-                        <dt>上传时间</dt>
-                        <dd ng-bind="usedBook.updatedAt | date:'mediumDate'"></dd>
-                    </dl>
-                    <dl class="dl-horizontal" ng-if="usedBook.attributes.des">
-                        <dt>主人描述</dt>
-                        <dd ng-bind="usedBook.attributes.des"></dd>
-                    </dl>
                 </div>
             </div>
         </div>
