@@ -85,8 +85,11 @@ APP.service('BookRecommend$', function ($rootScope) {
         var me = AV.User.current();
         me && query.notEqualTo('owner', me);//不要显示自己的上传的
         if (tag) {
-            var bookInfoQuery = new AV.Query(Model.BookInfo);
-            bookInfoQuery.contains('title', tag);
+            var bookInfoQuery1 = new AV.Query(Model.BookInfo);
+            bookInfoQuery1.contains('title', tag);
+            var bookInfoQuery2 = new AV.Query(Model.BookInfo);
+            bookInfoQuery2.contains('catalog', tag);
+            var bookInfoQuery = AV.Query.or(bookInfoQuery1, bookInfoQuery2);
             query.matchesQuery('bookInfo', bookInfoQuery);
         }
         return query;

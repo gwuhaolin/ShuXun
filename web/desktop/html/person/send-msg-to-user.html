@@ -14,27 +14,29 @@
             <div class="row">
                 <h3 class="col-md-12" ng-if="statusList.length>0" ng-repeat="status in statusList">
                     <span class="label"
+                          style="white-space: pre-wrap"
                           ng-style="{float:status.attributes.source.id==receiver.id ? 'left':'right',backgroundColor:status.attributes.source.id==receiver.id ? '#30bf4c':'#e6e5eb'}"
                           ng-bind="status.attributes.message">
                     </span>
                 </h3>
-            </div>
-            <!-- 我的输入框-->
-            <form class="col-md-12">
-                <div class="form-group">
+                <!-- 我的输入框-->
+                <form class="col-md-12">
+                    <div class="form-group">
                         <textarea rows="5"
                                   class="form-control"
                                   placeholder="输入回复内容"
                                   ng-model="msg.sendMsg"
                                   popover-placement="bottom"
                                   popover-template="'common-replay-words-popover.html'"></textarea>
-                </div>
-                <button class="btn btn-danger pull-left" ng-click="goBack()">退出聊天</button>
-                <button class="btn btn-primary pull-right"
-                        ng-disabled="!msg.sendMsg || isLoading"
-                        ng-click="sendOnClick()">发送
-                </button>
-            </form>
+                    </div>
+                    <button class="btn btn-danger pull-left" ng-click="goBack()">退出聊天</button>
+                    <button class="btn btn-primary pull-right"
+                            ng-disabled="!msg.sendMsg || isLoading"
+                            ng-click="sendOnClick()">发送
+                    </button>
+                </form>
+            </div>
+
             <script type="text/ng-template" id="common-replay-words-popover.html">
                 <h4>快速回复内容</h4>
                 <button style="margin: 5px"

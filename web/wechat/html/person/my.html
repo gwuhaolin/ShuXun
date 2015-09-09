@@ -12,6 +12,16 @@
         </ion-item>
         <ion-user-info ng-if="user" user="user" hide-used-book="true"></ion-user-info>
         <!-- 消息-->
+        <ion-item ui-sref="person.status-list({cmd:'private'})">
+            同学给我发的私信<span class="badge badge-assertive"
+                          ng-if="Status$.PrivateStatus.unreadCount>0"
+                          ng-bind="Status$.PrivateStatus.unreadCount"></span>
+        </ion-item>
+        <ion-item ui-sref="person.status-list({cmd:'reviewUsedBook'})">
+            同学对我的书的评价<span class="badge badge-assertive"
+                           ng-if="Status$.ReviewUsedBookStatus.unreadCount>0"
+                           ng-bind="Status$.ReviewUsedBookStatus.unreadCount"></span>
+        </ion-item>
         <ion-item ui-sref="person.status-list({cmd:'newUsedBook'})">
             我关注的同学新上传的旧书<span class="badge badge-assertive"
                               ng-if="Status$.NewUsedBookStatus.unreadCount>0"
@@ -26,16 +36,6 @@
             我关注的同学新发布的书漂流<span class="badge badge-assertive"
                                ng-if="Status$.NewCircleBookStatus.unreadCount>0"
                                ng-bind="Status$.NewCircleBookStatus.unreadCount"></span>
-        </ion-item>
-        <ion-item ui-sref="person.status-list({cmd:'private'})">
-            同学给我发的私信<span class="badge badge-assertive"
-                          ng-if="Status$.PrivateStatus.unreadCount>0"
-                          ng-bind="Status$.PrivateStatus.unreadCount"></span>
-        </ion-item>
-        <ion-item ui-sref="person.status-list({cmd:'reviewUsedBook'})">
-            同学对我的书的评价<span class="badge badge-assertive"
-                           ng-if="Status$.ReviewUsedBookStatus.unreadCount>0"
-                           ng-bind="Status$.ReviewUsedBookStatus.unreadCount"></span>
         </ion-item>
         <!-- 我上传的二手书-->
         <ion-item class="item-divider item-button-right">我上传的旧书

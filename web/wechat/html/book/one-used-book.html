@@ -53,18 +53,17 @@
                 </a>
             </ion-item>
             <ion-user-info user="usedBook.attributes.owner" used-book-object-id="usedBook.id"></ion-user-info>
-            <ion-item ng-if="usedBook.attributes.role ==='sell'">
-                <button class="button button-block button-small button-balanced"
+            <ion-item>
+                <button ng-if="usedBook.attributes.role ==='sell'"
+                        class="button button-block button-small button-balanced"
                         ng-click="Status$.requestSellUsedBook(usedBook)">我买了,向Ta预定
                 </button>
-            </ion-item>
-            <ion-item ng-if="usedBook.attributes.role ==='need'">
-                <button class="button button-block button-small button-balanced"
+                <button ng-if="usedBook.attributes.role ==='need'"
+                        class="button button-block button-small button-balanced"
                         ng-click="Status$.requestNeedUsedBook(usedBook)">我正好有,卖给Ta
                 </button>
-            </ion-item>
-            <ion-item ng-if="usedBook.attributes.role ==='circle'">
-                <button class="button button-block button-small button-balanced"
+                <button ng-if="usedBook.attributes.role ==='circle'"
+                        class="button button-block button-small button-balanced"
                         ng-click="Status$.requestCircleUsedBook(usedBook)">我想要,向Ta索要
                 </button>
             </ion-item>

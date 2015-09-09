@@ -94,7 +94,7 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
             /**
              * @param:receiverObjectId 接受者的微信openID
              * @param:usedBookObjectId 当前太难的二手书的AVOS ID
-             * @param:inboxType 是否为发私信
+             * @param:inboxType private | reviewUsedBook
              * @param:title 显示的说明当前聊天模式标题
              */
             url: '/send-msg-to-user?receiverObjectId&usedBookObjectId&inboxType&title',
