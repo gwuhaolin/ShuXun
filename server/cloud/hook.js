@@ -22,10 +22,13 @@ AV.Cloud.afterSave('UsedBook', function (req) {
     //给用户的粉丝发送状态
     var status = new AV.Status(null, usedBook.get('des'));
     status.set('usedBook', usedBook);
-    if (usedBook.get('role') == 'sell') {//上传二手书
+    var usedBookRole = usedBook.get('role');
+    if (usedBookRole === 'sell') {//上传二手书
         status.inboxType = 'newUsedBook';
-    } else if (usedBook.get('role') == 'need') {//发布求书
+    } else if (usedBookRole === 'need') {//发布求书
         status.inboxType = 'newNeedBook';
+    } else if (usedBookRole === 'circle') {
+        status.inboxType = 'newCircleBook';
     }
     AV.Status.sendStatusToFollowers(status, null);
 });

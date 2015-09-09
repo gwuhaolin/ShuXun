@@ -5,8 +5,10 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-item class="item-divider">未读消息</ion-item>
+        <ion-item ng-if="unreadStatusList.length===0">没有未读消息</ion-item>
         <ion-one-status class="list" ng-repeat="status in unreadStatusList" status="status"></ion-one-status>
         <ion-item class="item-divider">历史消息</ion-item>
+        <ion-item ng-if="historyStatusList.length===0">没有历史消息</ion-item>
         <ion-one-status class="list" ng-repeat="status in historyStatusList" status="status"></ion-one-status>
         <div ng-if="statusList.length==0">
             <ion-item style="text-align: center">没有未读消息</ion-item>

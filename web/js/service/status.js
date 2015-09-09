@@ -142,6 +142,53 @@ APP.service('Status$', function ($rootScope, $state) {
         }
     };
 
+    this.NewCircleBookStatus = {
+        unreadCount: 0,
+        unreadStatusList: [],
+        loadUnread: function () {
+            var query = _buildStatusQuery('newCircleBook');
+            query.limit(that.NewCircleBookStatus.unreadCount);
+            query.find().done(function (statusList) {
+                that.NewCircleBookStatus.unreadStatusList.length = 0;
+                AV._.each(statusList, function (status) {
+                    status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                    delete status.data;
+                    that.NewCircleBookStatus.unreadStatusList.push(status);
+                });
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        historyStatusList: [],
+        loadMoreHistory: function () {
+            var query = _buildStatusQuery('newCircleBook');
+            var historyStatusList = that.NewCircleBookStatus.historyStatusList;
+            var last = historyStatusList.length > 0 ? historyStatusList[historyStatusList.length - 1] : null;
+            last && query.maxId(last.messageId);
+            query.limit(LoadCount);
+            query.find().done(function (statusList) {
+                if (statusList.length > 0) {
+                    AV._.each(statusList, function (status) {
+                        status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                        delete status.data;
+                        historyStatusList.push(status);
+                        if (status.messageId <= 1) {
+                            that.NewCircleBookStatus._hasMoreHistoryFlag = false;
+                        }
+                    });
+                } else {
+                    that.NewCircleBookStatus._hasMoreHistoryFlag = false;
+                }
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        _hasMoreHistoryFlag: true,
+        hasMoreHistory: function () {
+            return that.NewCircleBookStatus._hasMoreHistoryFlag;
+        }
+    };
+
     this.PrivateStatus = {
         unreadCount: 0,
         unreadStatusList: [],

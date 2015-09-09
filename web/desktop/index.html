@@ -83,6 +83,13 @@
                             </a>
                         </li>
                         <li>
+                            <a ui-sref="person.status-list({cmd:'newCircleBook'})">你关注的同学新发布的书漂流
+                                <span class="badge"
+                                      ng-if="Status$.NewCircleBookStatus.unreadCount>0"
+                                      ng-bind="Status$.NewCircleBookStatus.unreadCount"></span>
+                            </a>
+                        </li>
+                        <li>
                             <a ui-sref="person.status-list({cmd:'private'})">同学给你发的私信
                                 <span class="badge"
                                       ng-if="Status$.PrivateStatus.unreadCount>0"
