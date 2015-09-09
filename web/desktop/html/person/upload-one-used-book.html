@@ -62,6 +62,11 @@
                         ng-click="submitOnClick('sell')">提交
                 </button>
             </form>
+            <div class="col-md-12">
+                <small ng-if="usedBookJson.role==='sell'" style="font-size: x-small">上传要卖的旧书:把你不要的旧书低价卖给正需要它的同学</small>
+                <small ng-if="usedBookJson.role==='need'" style="font-size: x-small">发布求书公告:把你正需要的书公告给社区帮你找到它</small>
+                <small ng-if="usedBookJson.role==='circle'" style="font-size: x-small">分享书漂流:免费把你的书传递给下一位读者</small>
+            </div>
             <script type="text/ng-template" id="commonUsedBookDesWords.html">
                 <h4>常用描述内容</h4>
                 <button class="btn btn-default btn-sm"

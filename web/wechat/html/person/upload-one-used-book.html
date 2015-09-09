@@ -27,7 +27,6 @@
             <ion-one-book-info ng-if="bookInfo" book-info="bookInfo"
                                should-show-used-books-count="true"></ion-one-book-info>
         </div>
-        <hr style="margin: 10px">
         <!-- 填写价格和描述-->
         <div class="list list-inset">
             <label class="item item-input" ng-if="usedBookJson.role!='circle'">
@@ -42,6 +41,12 @@
                 class="button button-block button-outline button-balanced"
                 ng-click="submitOnClick()">提交
         </button>
+
+        <ion-item>
+            <small ng-if="usedBookJson.role==='sell'" style="font-size: x-small">上传要卖的旧书:把你不要的旧书低价卖给正需要它的同学</small>
+            <small ng-if="usedBookJson.role==='need'" style="font-size: x-small">发布求书公告:把你正需要的书公告给社区帮你找到它</small>
+            <small ng-if="usedBookJson.role==='circle'" style="font-size: x-small">分享书漂流:免费把你的书传递给下一位读者</small>
+        </ion-item>
 
         <!-- 常用描述语-->
         <ion-list ng-if="InfoService$.commonUsedBookDesWords.length>0">
