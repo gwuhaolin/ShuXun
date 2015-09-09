@@ -4,7 +4,7 @@
  */
 "use strict";
 
-APP.controller('bs_hello', function ($scope, $state, $stateParams) {
+APP.controller('bs_hello', function ($scope, $state) {
     $scope.User$.loginWithUnionId(readCookie('unionId')).done(function () {//尝试使用cookies登入
         $state.go('common.user-home', {ownerId: AV.User.current().id});
     });

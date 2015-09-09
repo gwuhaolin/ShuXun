@@ -162,30 +162,22 @@ AV.Cloud.afterSave('_Status', function (req) {
      */
     function sendOutWechatMsg() {
         url += '&title=' + title;
-        var rePromise = new AV.Promise(null);
         if (receiver) {
             receiver.fetch().done(function () {
                 var receiverOpenId = receiver.get('openId');
                 if (receiverOpenId) {
                     var wechatAlert = receiver.get('wechatAlert');//用户自己设置的是否接受微信提醒
                     if (wechatAlert) {
-                        WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId).done(function (re) {
-                            rePromise.resolve(re);
-                        }).fail(function (err) {
-                            rePromise.reject(err);
+                        WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId).fail(function (err) {
+                            console.error(err);
                         })
-                    } else {
-                        rePromise.reject('用户设置了不接受微信提醒,不能给他发消息');
                     }
-                } else {
-                    rePromise.reject('对方还没有关注书循,不能给他发消息');//获取不到openID
                 }
             }).fail(function (err) {
-                rePromise.reject(err);
+                console.error(err);
             })
         } else {
-            rePromise.reject('消息接收者不能为空');
+            console.error('消息接收者不能为空');
         }
-        return rePromise;
     }
 });
