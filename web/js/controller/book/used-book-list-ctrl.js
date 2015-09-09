@@ -49,8 +49,8 @@ APP.controller('book_usedBookList', function ($scope, $stateParams) {
         $scope.hasMore = $scope.UsedBook$.ISBN_need.hasMore;
     }
 
-    var tagFilter = $stateParams['tagFilter'];
-    if (tagFilter && $scope.setTagFilter) {
-        $scope.setTagFilter(tagFilter);
+    var tag = $stateParams['tag'];
+    if (tag && $scope.setTagFilter) {
+        $scope.setTagFilter(tag);
     }
 });
