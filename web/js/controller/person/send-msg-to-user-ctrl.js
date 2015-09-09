@@ -54,7 +54,7 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams) {
     if ($scope.msg.role == 'sell') {//我是卖家
         $scope.commonReplayWords = ['求微信号', '成交', '不能再便宜了', '这本书已经卖出去了'];
     } else {//我是买家
-        $scope.commonReplayWords = ['求微信号', '成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
+        $scope.commonReplayWords = ['求微信号', '成交', '可以再便宜点吗?', '我在什么地方?', '书有破损吗?'];
     }
 
     //加载二手书信息

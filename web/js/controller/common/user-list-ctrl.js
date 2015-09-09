@@ -11,7 +11,7 @@ APP.controller('userList', function ($scope, $stateParams) {
     $scope.sortWay = '';
 
     if (cmd == 'near') {
-        $scope.title = '你附近的同学';
+        $scope.title = '我附近的同学';
         $scope.users = $scope.BookRecommend$.NearUser.users;
         $scope.loadMore = $scope.BookRecommend$.NearUser.loadMore;
         $scope.hasMore = $scope.BookRecommend$.NearUser.hasMore;

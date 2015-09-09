@@ -9,21 +9,21 @@ APP.controller('book_usedBookList', function ($scope, $stateParams) {
     $scope.cmd = $stateParams['cmd'];
     $scope.sortWay = '';
     if ($scope.cmd == 'nearCircle') {
-        $scope.title = '你附近的书漂流';
+        $scope.title = '我附近的书漂流';
         $scope.usedBooks = $scope.BookRecommend$.NearCircleBook.circleBooks;
         $scope.loadMore = $scope.BookRecommend$.NearCircleBook.loadMore;
         $scope.hasMore = $scope.BookRecommend$.NearCircleBook.hasMore;
         $scope.setTagFilter = $scope.BookRecommend$.NearCircleBook.setTagFilter;
         $scope.getTagFilter = $scope.BookRecommend$.NearCircleBook.getTagFilter;
     } else if ($scope.cmd == 'nearUsed') {
-        $scope.title = '你附近的二手书';
+        $scope.title = '我附近的二手书';
         $scope.usedBooks = $scope.BookRecommend$.NearUsedBook.usedBooks;
         $scope.loadMore = $scope.BookRecommend$.NearUsedBook.loadMore;
         $scope.hasMore = $scope.BookRecommend$.NearUsedBook.hasMore;
         $scope.setTagFilter = $scope.BookRecommend$.NearUsedBook.setTagFilter;
         $scope.getTagFilter = $scope.BookRecommend$.NearUsedBook.getTagFilter;
     } else if ($scope.cmd == 'nearNeed') {
-        $scope.title = '你附近的求书';
+        $scope.title = '我附近的求书';
         $scope.usedBooks = $scope.BookRecommend$.NearNeedBook.needBooks;
         $scope.loadMore = $scope.BookRecommend$.NearNeedBook.loadMore;
         $scope.hasMore = $scope.BookRecommend$.NearNeedBook.hasMore;

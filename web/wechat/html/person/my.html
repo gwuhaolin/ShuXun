@@ -13,27 +13,27 @@
         <ion-user-info ng-if="user" user="user" hide-used-book="true"></ion-user-info>
         <!-- 消息-->
         <ion-item ui-sref="person.status-list({cmd:'newUsedBook'})">
-            你关注的同学新上传的旧书<span class="badge badge-assertive"
+            我关注的同学新上传的旧书<span class="badge badge-assertive"
                               ng-if="Status$.NewUsedBookStatus.unreadCount>0"
                               ng-bind="Status$.NewUsedBookStatus.unreadCount"></span>
         </ion-item>
         <ion-item ui-sref="person.status-list({cmd:'newNeedBook'})">
-            你关注的同学新发布的求书<span class="badge badge-assertive"
+            我关注的同学新发布的求书<span class="badge badge-assertive"
                               ng-if="Status$.NewNeedBookStatus.unreadCount>0"
                               ng-bind="Status$.NewNeedBookStatus.unreadCount"></span>
         </ion-item>
         <ion-item ui-sref="person.status-list({cmd:'newCircleBook'})">
-            你关注的同学新发布的书漂流<span class="badge badge-assertive"
+            我关注的同学新发布的书漂流<span class="badge badge-assertive"
                                ng-if="Status$.NewCircleBookStatus.unreadCount>0"
                                ng-bind="Status$.NewCircleBookStatus.unreadCount"></span>
         </ion-item>
         <ion-item ui-sref="person.status-list({cmd:'private'})">
-            同学给你发的私信<span class="badge badge-assertive"
+            同学给我发的私信<span class="badge badge-assertive"
                           ng-if="Status$.PrivateStatus.unreadCount>0"
                           ng-bind="Status$.PrivateStatus.unreadCount"></span>
         </ion-item>
         <ion-item ui-sref="person.status-list({cmd:'reviewUsedBook'})">
-            同学对你的书的评价<span class="badge badge-assertive"
+            同学对我的书的评价<span class="badge badge-assertive"
                            ng-if="Status$.ReviewUsedBookStatus.unreadCount>0"
                            ng-bind="Status$.ReviewUsedBookStatus.unreadCount"></span>
         </ion-item>
@@ -84,7 +84,7 @@
             <i class="icon ion-ios-arrow-right balanced"></i>
         </ion-item>
         <ion-item ng-if="followeeNumber==0" ui-sref="common.user-list({cmd:'near'})">
-            你还没有关注的同学,去逛逛
+            我还没有关注的同学,去逛逛
         </ion-item>
         <!-- 我的粉丝-->
         <ion-item class="item-divider">我的粉丝</ion-item>

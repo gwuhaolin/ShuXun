@@ -34,7 +34,7 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
             templateUrl: 'html/common/user-home.html'
         }).state('common.user-list', {
             /**
-             * @param:cmd 当前模式 =near时显示你附近的用户
+             * @param:cmd 当前模式 =near时显示我附近的用户
              * @param:title 当前View要显示的标题
              * @param:majorFilter 专业筛选限制
              */
@@ -70,7 +70,7 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
             templateUrl: 'html/book/book-list.html'
         }).state('book.used-book-list', {
             /**
-             * @param:cmd 当前模式 =near时显示你附近的二手书 =isbn时显示所有对应ISBN的二手书
+             * @param:cmd 当前模式 =near时显示我附近的二手书 =isbn时显示所有对应ISBN的二手书
              * @param:isbn13 当cmd=isbn时使用
              * @param:tagFilter 专业筛选
              */
@@ -116,8 +116,8 @@ APP.config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
              * @param:cmd 当前模式
              * =newUsedBook时显上传的二手书
              * =newNeedBook 显示发布的求书
-             * =private 有同学给你发私信
-             * =reviewUsedBook 有同学评价你的书
+             * =private 有同学给我发私信
+             * =reviewUsedBook 有同学评价我的书
              */
             url: '/status-list?cmd',
             templateUrl: 'html/person/status-list.html'

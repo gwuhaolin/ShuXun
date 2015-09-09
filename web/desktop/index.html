@@ -69,35 +69,35 @@
                     <a href="#" dropdown-toggle>消息 <span class="badge" ng-bind="Status$.unreadCountSum()"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a ui-sref="person.status-list({cmd:'newUsedBook'})">你关注的同学新上传的旧书
+                            <a ui-sref="person.status-list({cmd:'newUsedBook'})">我关注的同学新上传的旧书
                                 <span class="badge"
                                       ng-if="Status$.NewUsedBookStatus.unreadCount>0"
                                       ng-bind="Status$.NewUsedBookStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li>
-                            <a ui-sref="person.status-list({cmd:'newNeedBook'})">你关注的同学新发布的求书
+                            <a ui-sref="person.status-list({cmd:'newNeedBook'})">我关注的同学新发布的求书
                                 <span class="badge"
                                       ng-if="Status$.NewNeedBookStatus.unreadCount>0"
                                       ng-bind="Status$.NewNeedBookStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li>
-                            <a ui-sref="person.status-list({cmd:'newCircleBook'})">你关注的同学新发布的书漂流
+                            <a ui-sref="person.status-list({cmd:'newCircleBook'})">我关注的同学新发布的书漂流
                                 <span class="badge"
                                       ng-if="Status$.NewCircleBookStatus.unreadCount>0"
                                       ng-bind="Status$.NewCircleBookStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li>
-                            <a ui-sref="person.status-list({cmd:'private'})">同学给你发的私信
+                            <a ui-sref="person.status-list({cmd:'private'})">同学给我发的私信
                                 <span class="badge"
                                       ng-if="Status$.PrivateStatus.unreadCount>0"
                                       ng-bind="Status$.PrivateStatus.unreadCount"></span>
                             </a>
                         </li>
                         <li>
-                            <a ui-sref="person.status-list({cmd:'reviewUsedBook'})">同学对你的书的评价
+                            <a ui-sref="person.status-list({cmd:'reviewUsedBook'})">同学对我的书的评价
                                 <span class="badge"
                                       ng-if="Status$.ReviewUsedBookStatus.unreadCount>0"
                                       ng-bind="Status$.ReviewUsedBookStatus.unreadCount"></span>

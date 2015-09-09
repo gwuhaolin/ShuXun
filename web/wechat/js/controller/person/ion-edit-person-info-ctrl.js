@@ -28,7 +28,7 @@ APP.controller('ion_person_editPersonInfo', function ($scope, $state, $ionicHist
 
     $scope.confirmWechatAlert = function () {
         if ($scope.userInfo.wechatAlert == false) {
-            $scope.userInfo.wechatAlert = !window.confirm('关闭后有同学给你发消息时你将收不到通知,确定关闭吗?');
+            $scope.userInfo.wechatAlert = !window.confirm('关闭后有同学给我发消息时我将收不到通知,确定关闭吗?');
         }
     };
 
