@@ -72,10 +72,12 @@ APP.directive('ionUserInfo', function () {
             user: '=',
             //是否隐藏二手书的数量
             hideUsedBook: '=?',
+            //是否隐藏功能按钮
+            hideActionButtons: '=?',
             //当给用户发送私信时,如果要显示当前二手书就传入
             usedBookObjectId: '=?'
         },
-        templateUrl: 'html/directive/user-info.html',
+        templateUrl: 'html/directive/one-user.html',
         link: link
     }
 });

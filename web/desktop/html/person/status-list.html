@@ -11,67 +11,22 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h4 ng-bind="title"></h4>
-            <h4 class="text-warning" ng-if="statusList.length==0">没有未读消息</h4>
+            <h4>未读－{{title}}</h4>
+            <h4 class="text-warning" ng-if="unreadStatusList.length==0">没有未读消息</h4>
             <hr>
         </div>
-        <div class="col-md-3 text-center" ng-if="cmd=='newUsedBook'"
-             ng-repeat="status in statusList">
-            <bs-one-user user="status.attributes.source"
-                         image-size="132"
-                         margin="5"
-                         popover-placement="right"
-                         avatar-size="66"></bs-one-user>
-            <bs-one-used-book used-book="status.attributes.usedBook"
-                              popover-placement="right"></bs-one-used-book>
+        <div class="col-md-3" ng-repeat="status in unreadStatusList">
+            <bs-one-status status="status"></bs-one-status>
         </div>
 
-        <div class="col-md-3 text-center" ng-if="cmd=='newNeedBook'"
-             ng-repeat="status in statusList">
-            <bs-one-user user="status.attributes.source"
-                         image-size="132"
-                         margin="20"
-                         popover-placement="right"
-                         avatar-size="66"></bs-one-user>
-            <bs-one-used-book used-book="status.attributes.usedBook"
-                              popover-placement="right"></bs-one-used-book>
+        <div class="col-md-12">
+            <h4>历史－{{title}}</h4>
+            <h4 class="text-warning" ng-if="historyStatusList.length==0">没有消息</h4>
+            <hr>
         </div>
-
-        <div class="col-md-3 text-center" ng-if="cmd=='private'"
-             ng-repeat="status in statusList">
-            <bs-one-user user="status.attributes.source"
-                         image-size="132"
-                         margin="20"
-                         popover-placement="right"
-                         avatar-size="66"></bs-one-user>
-            <bs-one-used-book used-book="status.attributes.usedBook"
-                              popover-placement="right">
-            </bs-one-used-book>
-            <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
-            <button style="float:right;"
-                    class="btn btn-primary"
-                    ui-sref="person.send-msg-to-user({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:status.attributes.usedBook.id})">
-                回复私信
-            </button>
+        <div class="col-md-3" ng-repeat="status in historyStatusList">
+            <bs-one-status status="status"></bs-one-status>
         </div>
-
-        <div class="col-md-3 text-center" ng-if="cmd=='reviewUsedBook'"
-             ng-repeat="status in statusList">
-            <bs-one-user user="status.attributes.source"
-                         image-size="132"
-                         margin="20"
-                         popover-placement="right"
-                         avatar-size="66"></bs-one-user>
-            <bs-one-used-book used-book="status.attributes.usedBook"
-                              popover-placement="right">
-            </bs-one-used-book>
-            <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
-            <button style="float:right;"
-                    class="button button-clear button-balanced button-small"
-                    ui-sref="person.send-msg-to-user({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:status.attributes.usedBook.id})">
-                回复评论
-            </button>
-        </div>
-
+        <bs-infinite-scroll ng-if="hasMore()" on-infinite="loadMore()"></bs-infinite-scroll>
     </div>
 </div>

@@ -167,22 +167,6 @@ APP.service('UsedBook$', function ($rootScope, $state) {
     };
 
     /**
-     * 删除一本没有卖出的二手书保存到数据库
-     * 会更新MyUsedBook.usedBooks ｜ MyNeedBook.needBooks
-     * @param avosUsedBook
-     */
-    this.removeUsedBook = function (avosUsedBook) {
-        if (window.confirm('你确定要删除它吗?将不可恢复')) {
-            var role = avosUsedBook.get('role');
-            avosUsedBook.destroy().done(function () {
-                that.reloadMyUsedBookAndGoMyHome(role);
-            }).fail(function (error) {
-                alert(error.message);
-            });
-        }
-    };
-
-    /**
      * 把这本UsedBook杀死
      * @param avosUsedBook
      * @param receiver

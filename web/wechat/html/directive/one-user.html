@@ -1,0 +1,39 @@
+<!-- 用户基本信息-->
+<div style="border-top: 2px solid #ddd" class="item item-avatar" ng-if="user">
+    <img ng-src="{{user.avatarUrlWithSize(64)}}">
+
+    <strong ng-bind="user.attributes.nickName"></strong>
+    <i class="icon ion-male" style="color: #5eb1ed" ng-if="user.attributes.sex==1"></i>
+    <i class="icon ion-female" style="color: #ff6d9e" ng-if="user.attributes.sex==2"></i>
+    <strong ng-bind="user.attributes.startSchoolYear"></strong>级
+    <br>
+    <small ng-bind="user.attributes.major"></small>
+    <small ng-bind="user.attributes.school"></small>
+    <div style="float: right" ng-if="!hideActionButtons">
+        <button ng-if="AV.User.current() && !isMe()"
+                class="button button-small button-clear button-balanced"
+                ui-sref="person.send-msg-to-user({receiverObjectId:user.id,role:'buy',inboxType:'private',usedBookObjectId:usedBookObjectId})">
+            发私信
+        </button>
+        <button ng-if="user.attributes.location" class="button button-small button-clear button-balanced"
+                ng-click="$root.WeChatJS$.openMap(user.attributes.location.latitude,user.attributes.location.longitude)">
+            地图
+        </button>
+        <button ng-if="AV.User.current() && !isMyFollowee && !isMe()"
+                class="button button-small button-clear button-balanced"
+                ng-click="$root.User$.followUser(user.id)">关注Ta
+        </button>
+        <button ng-if="isMyFollowee"
+                class="button button-small button-clear button-energized"
+                ng-click="$root.User$.unfollowUser(user.id)">取消关注
+        </button>
+    </div>
+</div>
+<!-- 主人所有旧书链接-->
+<ion-item class="littleTailItem"
+          ng-if="!hideUsedBook"
+          ui-sref="common.user-home({ownerId:user.id})">
+    <strong ng-bind="user.userUsedBookNumber"></strong>本旧书转让
+    <strong ng-bind="user.userNeedBookNumber"></strong>本求书
+    <strong ng-bind="user.userCircleBookNumber"></strong>本书漂流
+</ion-item>

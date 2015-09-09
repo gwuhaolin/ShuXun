@@ -7,20 +7,36 @@
 APP.controller('person_statusList', function ($scope, $stateParams) {
     $scope.cmd = $stateParams.cmd;
     if ($scope.cmd == 'newUsedBook') {//显示上传的二手书
-        $scope.title = '同学新上传的旧书';
-        $scope.statusList = $scope.Status$.NewUsedBookStatus.statusList;
-        $scope.Status$.NewUsedBookStatus.load();
+        $scope.title = '你关注的同学新上传的旧书';
+        $scope.unreadStatusList = $scope.Status$.NewUsedBookStatus.unreadStatusList;
+        $scope.historyStatusList = $scope.Status$.NewUsedBookStatus.historyStatusList;
+        $scope.Status$.NewUsedBookStatus.loadUnread();
+        $scope.Status$.NewUsedBookStatus.loadMoreHistory();
+        $scope.loadMore = $scope.Status$.NewUsedBookStatus.loadMoreHistory;
+        $scope.hasMore = $scope.Status$.NewUsedBookStatus.hasMoreHistory;
     } else if ($scope.cmd == 'newNeedBook') {//显示发布的求书
-        $scope.title = '同学新发布的求书';
-        $scope.statusList = $scope.Status$.NewNeedBookStatus.statusList;
-        $scope.Status$.NewNeedBookStatus.load();
+        $scope.title = '你关注的同学新发布的求书';
+        $scope.unreadStatusList = $scope.Status$.NewNeedBookStatus.unreadStatusList;
+        $scope.historyStatusList = $scope.Status$.NewNeedBookStatus.historyStatusList;
+        $scope.Status$.NewNeedBookStatus.loadUnread();
+        $scope.Status$.NewNeedBookStatus.loadMoreHistory();
+        $scope.loadMore = $scope.Status$.NewNeedBookStatus.loadMoreHistory;
+        $scope.hasMore = $scope.Status$.NewNeedBookStatus.hasMoreHistory;
     } else if ($scope.cmd == 'private') {
         $scope.title = '你收到的私信';
-        $scope.statusList = $scope.Status$.PrivateStatus.statusList;
-        $scope.Status$.PrivateStatus.load();
+        $scope.unreadStatusList = $scope.Status$.PrivateStatus.unreadStatusList;
+        $scope.historyStatusList = $scope.Status$.PrivateStatus.historyStatusList;
+        $scope.Status$.PrivateStatus.loadUnread();
+        $scope.Status$.PrivateStatus.loadMoreHistory();
+        $scope.loadMore = $scope.Status$.PrivateStatus.loadMoreHistory;
+        $scope.hasMore = $scope.Status$.PrivateStatus.hasMoreHistory;
     } else if ($scope.cmd == 'reviewUsedBook') {
-        $scope.title = '同学对你的书的评论';
-        $scope.statusList = $scope.Status$.ReviewUsedBookStatus.statusList;
-        $scope.Status$.ReviewUsedBookStatus.load();
+        $scope.title = '你关注的同学对你的书的评论';
+        $scope.unreadStatusList = $scope.Status$.ReviewUsedBookStatus.unreadStatusList;
+        $scope.historyStatusList = $scope.Status$.ReviewUsedBookStatus.historyStatusList;
+        $scope.Status$.ReviewUsedBookStatus.loadUnread();
+        $scope.Status$.ReviewUsedBookStatus.loadMoreHistory();
+        $scope.loadMore = $scope.Status$.ReviewUsedBookStatus.loadMoreHistory;
+        $scope.hasMore = $scope.Status$.ReviewUsedBookStatus.hasMoreHistory;
     }
 });

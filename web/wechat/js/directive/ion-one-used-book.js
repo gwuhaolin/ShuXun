@@ -6,7 +6,6 @@
 APP.directive('ionOneUsedBook', function () {
 
     function link($scope) {
-
         //如果usedBook的bookInfo属性缺少就去获得旧书的图书信息
         if ($scope.usedBook) {
             var bookInfo = $scope.usedBook.get('bookInfo');

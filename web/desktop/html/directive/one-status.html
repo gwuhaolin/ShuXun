@@ -1,0 +1,33 @@
+<bs-one-used-book ng-if="status.attributes.usedBook" used-book="status.attributes.usedBook"
+                  popover-placement="right"
+        ></bs-one-used-book>
+<div class="row" style="height: 100px">
+    <bs-one-user class="col-md-2"
+                 user="status.attributes.source"
+                 image-size="64"
+                 margin="0"
+                 popover-placement="right"
+                 avatar-size="40"></bs-one-user>
+    <div class="col-md-10">
+        <div ng-if="status.attributes.inboxType==='private'">
+            <h5 style="white-space: pre-wrap" ng-bind="status.attributes.message"></h5>
+            <button style="float:right;"
+                    class="btn btn-sm btn-default"
+                    ui-sref="person.send-msg-to-user({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:status.attributes.usedBook.id})">
+                回复私信
+            </button>
+        </div>
+
+        <div ng-if="status.attributes.inboxType==='reviewUsedBook'">
+            <h5 style="white-space: pre-wrap" ng-bind="status.attributes.message"></h5>
+            <button style="float:right;"
+                    class="btn btn-sm btn-default"
+                    ui-sref="person.send-msg-to-user({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:status.attributes.usedBook.id})">
+                回复评论
+            </button>
+        </div>
+
+        <small style="font-size: x-small;float: left"
+               ng-bind="status.createdAt | date :'yyyy-MM-dd HH:mm:ss'"></small>
+    </div>
+</div>

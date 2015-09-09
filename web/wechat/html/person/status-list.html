@@ -3,43 +3,17 @@
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
-    <ion-content class="padding">
-        <div ng-if="cmd=='newUsedBook' || cmd==='newNeedBook'"
-             collection-repeat="status in statusList">
-            <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
-            <ion-user-info user="status.attributes.source"></ion-user-info>
-        </div>
-
-        <div ng-if="cmd=='private'"
-             collection-repeat="status in statusList">
-            <ion-item>
-                <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
-                <button style="float:right;"
-                        class="button button-clear button-balanced button-small"
-                        ui-sref="person.send-msg-to-user({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'private',usedBookObjectId:status.attributes.usedBook.id})">
-                    回复私信
-                </button>
-            </ion-item>
-            <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
-            <ion-user-info user="status.attributes.source"></ion-user-info>
-        </div>
-
-        <div ng-if="cmd=='reviewUsedBook'"
-             collection-repeat="status in statusList">
-            <ion-item>
-                <p style="white-space: pre-wrap" ng-bind="status.attributes.message"></p>
-                <button style="float:right;"
-                        class="button button-clear button-balanced button-small"
-                        ui-sref="person.send-msg-to-user({receiverObjectId:status.attributes.source.id,role:status.attributes.role=='buy' ? 'sell' : 'buy',inboxType:'reviewUsedBook',usedBookObjectId:status.attributes.usedBook.id})">
-                    回复评论
-                </button>
-            </ion-item>
-            <ion-one-used-book used-book="status.attributes.usedBook"></ion-one-used-book>
-            <ion-user-info user="status.attributes.source"></ion-user-info>
-        </div>
-
+    <ion-content>
+        <ion-item class="item-divider">未读消息</ion-item>
+        <ion-one-status class="list" ng-repeat="status in unreadStatusList" status="status"></ion-one-status>
+        <ion-item class="item-divider">历史消息</ion-item>
+        <ion-one-status class="list" ng-repeat="status in historyStatusList" status="status"></ion-one-status>
         <div ng-if="statusList.length==0">
             <ion-item style="text-align: center">没有未读消息</ion-item>
         </div>
+        <ion-infinite-scroll ng-if="hasMore()"
+                             on-infinite="loadMore()"
+                             distance="1%">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

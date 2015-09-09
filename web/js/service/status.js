@@ -41,91 +41,200 @@ APP.service('Status$', function ($rootScope, $state) {
         }
     };
 
+    function _buildStatusQuery(inboxType) {
+        var query = AV.Status.inboxQuery(AV.User.current(), inboxType);
+        query.include("usedBook");
+        query.include("source");
+        return query;
+    }
+
     this.NewUsedBookStatus = {
         unreadCount: 0,
-        statusList: [],
-        load: function () {
-            var query = AV.Status.inboxQuery(AV.User.current(), 'newUsedBook');
-            query.include("usedBook");
-            query.include("source");
+        unreadStatusList: [],
+        loadUnread: function () {
+            var query = _buildStatusQuery('newUsedBook');
             query.limit(that.NewUsedBookStatus.unreadCount);
-            query.find().done(function (statuses) {
-                that.NewUsedBookStatus.statusList.length = 0;
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.attributes = one.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
-                    that.NewUsedBookStatus.statusList.push(one);
-                }
-                that.NewUsedBookStatus.unreadCount = 0;
+            query.find().done(function (statusList) {
+                that.NewUsedBookStatus.unreadStatusList.length = 0;
+                AV._.each(statusList, function (status) {
+                    status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                    delete status.data;
+                    that.NewUsedBookStatus.unreadStatusList.push(status);
+                });
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
+        },
+        historyStatusList: [],
+        loadMoreHistory: function () {
+            var query = _buildStatusQuery('newUsedBook');
+            var historyStatusList = that.NewUsedBookStatus.historyStatusList;
+            var last = historyStatusList.length > 0 ? historyStatusList[historyStatusList.length - 1] : null;
+            last && query.maxId(last.messageId - 1);
+            query.limit(LoadCount);
+            query.find().done(function (statusList) {
+                if (statusList.length > 0) {
+                    AV._.each(statusList, function (status) {
+                        status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                        delete status.data;
+                        historyStatusList.push(status);
+                        if (status.messageId <= 1) {
+                            that.NewUsedBookStatus._hasMoreHistoryFlag = false;
+                        }
+                    });
+                } else {
+                    that.NewUsedBookStatus._hasMoreHistoryFlag = false;
+                }
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        _hasMoreHistoryFlag: true,
+        hasMoreHistory: function () {
+            return that.NewUsedBookStatus._hasMoreHistoryFlag;
         }
     };
 
     this.NewNeedBookStatus = {
         unreadCount: 0,
-        statusList: [],
-        load: function () {
-            var query = AV.Status.inboxQuery(AV.User.current(), 'newNeedBook');
-            query.include("usedBook");
-            query.include("source");
+        unreadStatusList: [],
+        loadUnread: function () {
+            var query = _buildStatusQuery('newNeedBook');
             query.limit(that.NewNeedBookStatus.unreadCount);
-            query.find().done(function (statuses) {
-                that.NewNeedBookStatus.statusList.length = 0;
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.attributes = one.data;
-                    that.NewNeedBookStatus.statusList.push(one);
-                }
-                that.NewNeedBookStatus.unreadCount = 0;
+            query.find().done(function (statusList) {
+                that.NewNeedBookStatus.unreadStatusList.length = 0;
+                AV._.each(statusList, function (status) {
+                    status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                    delete status.data;
+                    that.NewNeedBookStatus.unreadStatusList.push(status);
+                });
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
+        },
+        historyStatusList: [],
+        loadMoreHistory: function () {
+            var query = _buildStatusQuery('newNeedBook');
+            var historyStatusList = that.NewNeedBookStatus.historyStatusList;
+            var last = historyStatusList.length > 0 ? historyStatusList[historyStatusList.length - 1] : null;
+            last && query.maxId(last.messageId);
+            query.limit(LoadCount);
+            query.find().done(function (statusList) {
+                if (statusList.length > 0) {
+                    AV._.each(statusList, function (status) {
+                        status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                        delete status.data;
+                        historyStatusList.push(status);
+                        if (status.messageId <= 1) {
+                            that.NewNeedBookStatus._hasMoreHistoryFlag = false;
+                        }
+                    });
+                } else {
+                    that.NewNeedBookStatus._hasMoreHistoryFlag = false;
+                }
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        _hasMoreHistoryFlag: true,
+        hasMoreHistory: function () {
+            return that.NewNeedBookStatus._hasMoreHistoryFlag;
         }
     };
 
     this.PrivateStatus = {
         unreadCount: 0,
-        statusList: [],
-        load: function () {
-            var query = AV.Status.inboxQuery(AV.User.current(), 'private');
-            query.include("usedBook");
-            query.include("source");
+        unreadStatusList: [],
+        loadUnread: function () {
+            var query = _buildStatusQuery('private');
             query.limit(that.PrivateStatus.unreadCount);
-            query.find().done(function (statuses) {
-                that.PrivateStatus.statusList.length = 0;
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.attributes = one.data;
-                    that.PrivateStatus.statusList.push(one);
-                }
+            query.find().done(function (statusList) {
+                that.PrivateStatus.unreadStatusList.length = 0;
+                AV._.each(statusList, function (status) {
+                    status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                    delete status.data;
+                    that.PrivateStatus.unreadStatusList.push(status);
+                });
                 that.PrivateStatus.unreadCount = 0;
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
+        },
+        historyStatusList: [],
+        loadMoreHistory: function () {
+            var query = _buildStatusQuery('private');
+            var historyStatusList = that.PrivateStatus.historyStatusList;
+            var last = historyStatusList.length > 0 ? historyStatusList[historyStatusList.length - 1] : null;
+            last && query.maxId(last.messageId);
+            query.limit(LoadCount);
+            query.find().done(function (statusList) {
+                if (statusList.length > 0) {
+                    AV._.each(statusList, function (status) {
+                        status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                        delete status.data;
+                        historyStatusList.push(status);
+                        if (status.messageId <= 1) {
+                            that.PrivateStatus._hasMoreHistoryFlag = false;
+                        }
+                    });
+                } else {
+                    that.PrivateStatus._hasMoreHistoryFlag = false;
+                }
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        _hasMoreHistoryFlag: true,
+        hasMoreHistory: function () {
+            return that.PrivateStatus._hasMoreHistoryFlag;
         }
     };
 
     this.ReviewUsedBookStatus = {
         unreadCount: 0,
-        statusList: [],
-        load: function () {
-            var query = AV.Status.inboxQuery(AV.User.current(), 'reviewUsedBook');
-            query.include("usedBook");
-            query.include("source");
+        unreadStatusList: [],
+        loadUnread: function () {
+            var query = _buildStatusQuery('reviewUsedBook');
             query.limit(that.ReviewUsedBookStatus.unreadCount);
-            query.find().done(function (statuses) {
-                that.ReviewUsedBookStatus.statusList.length = 0;
-                for (var i = 0; i < statuses.length; i++) {
-                    var one = statuses[i];
-                    one.attributes = one.data;
-                    that.ReviewUsedBookStatus.statusList.push(one);
-                }
+            query.find().done(function (statusList) {
+                that.ReviewUsedBookStatus.unreadStatusList.length = 0;
+                AV._.each(statusList, function (status) {
+                    status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                    delete status.data;
+                    that.ReviewUsedBookStatus.unreadStatusList.push(status);
+                });
                 that.ReviewUsedBookStatus.unreadCount = 0;
                 $rootScope.$digest();
                 $rootScope.$broadcast('scroll.infiniteScrollComplete');
             })
+        },
+        historyStatusList: [],
+        loadMoreHistory: function () {
+            var query = _buildStatusQuery('reviewUsedBook');
+            var historyStatusList = that.ReviewUsedBookStatus.historyStatusList;
+            var last = historyStatusList.length > 0 ? historyStatusList[historyStatusList.length - 1] : null;
+            last && query.maxId(last.messageId);
+            query.limit(LoadCount);
+            query.find().done(function (statusList) {
+                if (statusList.length > 0) {
+                    AV._.each(statusList, function (status) {
+                        status.attributes = status.data;//坑爹的AVOS对应AV.Status把attributes属性换成了data
+                        delete status.data;
+                        historyStatusList.push(status);
+                        if (status.messageId <= 1) {
+                            that.ReviewUsedBookStatus._hasMoreHistoryFlag = false;
+                        }
+                    });
+                } else {
+                    that.ReviewUsedBookStatus._hasMoreHistoryFlag = false;
+                }
+                $rootScope.$digest();
+                $rootScope.$broadcast('scroll.infiniteScrollComplete');
+            })
+        },
+        _hasMoreHistoryFlag: true,
+        hasMoreHistory: function () {
+            return that.ReviewUsedBookStatus._hasMoreHistoryFlag;
         }
     };
 
