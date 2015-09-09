@@ -185,10 +185,10 @@ var APP = angular.module('APP', ['ionic'], null)
                 /**
                  * @param:receiverObjectId 接受者的微信openID
                  * @param:usedBookObjectId 当前太难的二手书的AVOS ID
-                 * @param:role 消息发送者扮演的身份是 buy | sell
                  * @param:inboxType 是否为发私信
+                 * @param:title 显示的说明当前聊天模式标题
                  */
-                url: '/send-msg-to-user?receiverObjectId&usedBookObjectId&role&inboxType',
+                url: '/send-msg-to-user?receiverObjectId&usedBookObjectId&inboxType&title',
                 views: {
                     'person': {
                         templateUrl: 'html/person/send-msg-to-user.html'

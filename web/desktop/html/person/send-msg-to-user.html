@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-md-12">
                 <h4>
-                    回复-<span ng-bind="user.attributes.nickName"></span>
-                    -<span ng-if="nowModel()" ng-bind="nowModel()"></span>
+                    回复-<span ng-bind="receiver.attributes.nickName"></span>
+                    -<span ng-if="msg.title" ng-bind="msg.title"></span>
                 </h4>
                 <hr>
             </div>
@@ -14,7 +14,7 @@
             <div class="row">
                 <h3 class="col-md-12" ng-if="statusList.length>0" ng-repeat="status in statusList">
                     <span class="label"
-                          ng-style="{float:status.attributes.source.id==user.id ? 'left':'right',backgroundColor:status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}"
+                          ng-style="{float:status.attributes.source.id==receiver.id ? 'left':'right',backgroundColor:status.attributes.source.id==receiver.id ? '#30bf4c':'#e6e5eb'}"
                           ng-bind="status.attributes.message">
                     </span>
                 </h3>
@@ -53,28 +53,28 @@
             <div class="col-md-12">
                 <button class="btn btn-block btn-primary"
                         ng-if="usedBook.attributes.role==='sell'"
-                        ng-click="Status$.sellUsedBookToUser(usedBook,user)">
+                        ng-click="Status$.sellUsedBookToUser(usedBook,receiver)">
                     已决定卖给Ta
                 </button>
                 <button class="btn btn-block btn-primary"
                         ng-if="usedBook.attributes.role==='need'"
-                        ng-click="Status$.gainUsedBookFromUser(usedBook,user)">
+                        ng-click="Status$.gainUsedBookFromUser(usedBook,receiver)">
                     已成功从Ta获得
                 </button>
                 <button class="btn btn-block btn-primary"
                         ng-if="usedBook.attributes.role==='circle'"
-                        ng-click="Status$.deliverUsedBookToUser(usedBook,user)">
+                        ng-click="Status$.deliverUsedBookToUser(usedBook,receiver)">
                     已决定传递给Ta
                 </button>
             </div>
         </div>
-        <div class="row" ng-if="user">
+        <div class="row" ng-if="receiver">
             <div class="col-md-12">
                 <h4>对方信息</h4>
                 <hr>
             </div>
             <div class="col-md-12">
-                <bs-one-user user="user"
+                <bs-one-user user="receiver"
                              popover-placement="left"
                              image-size="132"
                              avatar-size="80"

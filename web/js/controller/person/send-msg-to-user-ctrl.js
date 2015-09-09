@@ -9,31 +9,14 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams) {
     $scope.isLoading = false;
     $scope.msg = {
         inboxType: $stateParams['inboxType'],//必须
-        role: $stateParams['role'],//我当前是买家还是卖家,必须
         sendMsg: '',//必须
-        usedBookObjectId: $stateParams['usedBookObjectId']//在私信下为空
-    };
-
-    //当前聊天模式
-    $scope.nowModel = function () {
-        if ($scope.msg.inboxType == 'private') {//发私信
-            if ($scope.msg.role == 'sell') {
-                return '回应卖家的私信';
-            } else if ($scope.msg.role == 'buy') {
-                return '给图书主人发私信';
-            }
-        } else if ($scope.msg.inboxType == 'reviewUsedBook') {//评价二手书
-            if ($scope.msg.role == 'sell') {
-                return '回复买家对旧书的评论';
-            } else if ($scope.msg.role == 'buy') {
-                return '对Ta的旧书发表评论';
-            }
-        }
+        usedBookObjectId: $stateParams['usedBookObjectId'],//在私信下为空
+        title: $stateParams['title']
     };
 
     //加载用户信息
-    AV.Object.createWithoutData('_User', $scope.receiverObjectId).fetch().done(function (user) {
-        $scope.user = user;
+    AV.Object.createWithoutData('_User', $scope.receiverObjectId).fetch().done(function (receiver) {
+        $scope.receiver = receiver;
         $scope.$digest();
     });
 
@@ -54,15 +37,14 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams) {
     if ($scope.msg.role == 'sell') {//我是卖家
         $scope.commonReplayWords = ['求微信号', '成交', '不能再便宜了', '这本书已经卖出去了'];
     } else {//我是买家
-        $scope.commonReplayWords = ['求微信号', '成交', '可以再便宜点吗?', '我在什么地方?', '书有破损吗?'];
+        $scope.commonReplayWords = ['求微信号', '成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
     }
 
     //加载二手书信息
     if ($scope.msg.usedBookObjectId) {
-        $scope.usedBook = new Model.UsedBook();
-        $scope.usedBook.id = $scope.msg.usedBookObjectId;
-        $scope.usedBook.fetch().done(function () {
-            $scope.$digest();
+        var query = new AV.Query(Model.UsedBook);
+        query.get($scope.msg.usedBookObjectId).done(function (usedBook) {
+            $scope.usedBook = usedBook;
         });
     }
 

@@ -36,7 +36,7 @@
         <!-- 附近用户上传的书漂流-->
         <div class="row" id="图书漂流" ng-if="BookRecommend$.NearCircleBook.circleBooks.length>0">
             <div class="col-md-12">
-                <h4><a ui-sref="book.used-book-list({cmd:'nearCircle'})">图书漂流</a></h4>
+                <h4><a ui-sref="book.used-book-list({cmd:'nearCircle'})">图书漂流-免费送</a></h4>
                 <hr>
             </div>
             <div class="col-md-3" ng-repeat="circleBook in BookRecommend$.NearCircleBook.circleBooks.slice(0,8)">

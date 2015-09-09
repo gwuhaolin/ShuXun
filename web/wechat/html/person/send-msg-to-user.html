@@ -1,27 +1,27 @@
 <!--个人主页-->
-<ion-view ng-controller="ion_person_sendMsgToUser" view-title="回复{{user.attributes.nickName}}">
+<ion-view ng-controller="ion_person_sendMsgToUser" view-title="回复{{receiver.attributes.nickName}}">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
     <ion-content>
         <!-- 对方用户信息-->
-        <ion-user-info ng-if="user" user="user"></ion-user-info>
+        <ion-user-info ng-if="receiver" user="receiver"></ion-user-info>
         <!-- 二手书信息-->
         <ion-one-used-book used-book="usedBook"></ion-one-used-book>
         <ion-item ng-if="usedBook.attributes.alive && usedBook.attributes.owner.id===User$.me().id">
             <button class="button button-block button-small button-balanced"
                     ng-if="usedBook.attributes.role==='sell'"
-                    ng-click="Status$.sellUsedBookToUser(usedBook,user)">
+                    ng-click="Status$.sellUsedBookToUser(usedBook,receiver)">
                 已决定卖给Ta
             </button>
             <button class="button button-block button-small button-balanced"
                     ng-if="usedBook.attributes.role==='need'"
-                    ng-click="Status$.gainUsedBookFromUser(usedBook,user)">
+                    ng-click="Status$.gainUsedBookFromUser(usedBook,receiver)">
                 已成功从Ta获得
             </button>
             <button class="button button-block button-small button-balanced"
                     ng-if="usedBook.attributes.role==='circle'"
-                    ng-click="Status$.deliverUsedBookToUser(usedBook,user)">
+                    ng-click="Status$.deliverUsedBookToUser(usedBook,receiver)">
                 已决定传递给Ta
             </button>
         </ion-item>
@@ -30,13 +30,14 @@
             <ol ng-if="statusList.length>0" style="margin: 5px;padding: 0;list-style-type:none;">
                 <li ng-repeat="status in statusList"
                     style="display: block;clear: both;border-radius: 10px;padding: 5px;margin: 5px;max-width: 80%;white-space: normal;"
-                    ng-style="{'float':status.attributes.source.id==user.id ? 'left':'right','background-color':status.attributes.source.id==user.id ? '#30bf4c':'#e6e5eb'}"
+                    ng-style="{'float':status.attributes.source.id==receiver.id ? 'left':'right','background-color':status.attributes.source.id==receiver.id ? '#30bf4c':'#e6e5eb'}"
                     ng-bind="status.attributes.message">
                 </li>
             </ol>
         </ion-item>
         <!-- 当前聊天模式-->
-        <ion-item class="item-divider" style="text-align: center" ng-if="nowModel()" ng-bind="nowModel()"></ion-item>
+        <ion-item class="item-divider" style="text-align: center;white-space: pre-wrap" ng-if="msg.title"
+                  ng-bind="msg.title"></ion-item>
         <!-- 我的输入框-->
         <label class="item item-input">
             <textarea rows="5" ng-model="msg.sendMsg" placeholder="输入回复内容"></textarea>
@@ -53,7 +54,7 @@
         <!-- 常用回复语-->
         <ion-list ng-if="commonReplayWords.length>0">
             <ion-item class="item-divider item-button-right">快速回复内容</ion-item>
-            <ion-item style="white-space:normal;padding: 5px">
+            <ion-item style="white-space:normal;padding: 5px;text-align: center">
                 <button class="button button-small button-outline button-balanced" style="margin: 5px"
                         ng-disabled="isLoading"
                         ng-repeat="word in commonReplayWords"

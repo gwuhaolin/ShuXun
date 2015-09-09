@@ -346,10 +346,8 @@ APP.service('Status$', function ($rootScope, $state) {
      * @param receiver
      */
     that.sellUsedBookToUser = function (usedBook, receiver) {
-        var me = $rootScope.User$.me();
-        if (me && usedBook.get('owner').id === me.id) {
-            $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
-        }
+        $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
+        that.sendPrivateMsg(receiver.id, '我把这本旧书设置为 已买给了你', 'sell', usedBook.id);
     };
 
     /**
@@ -358,10 +356,8 @@ APP.service('Status$', function ($rootScope, $state) {
      * @param receiver
      */
     that.gainUsedBookFromUser = function (usedBook, receiver) {
-        var me = $rootScope.User$.me();
-        if (me && usedBook.get('owner').id === me.id) {
-            $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
-        }
+        $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
+        that.sendPrivateMsg(receiver.id, '我把这个求书公告设置为 已从你那获得', 'buy', usedBook.id);
     };
 
     /**
@@ -370,10 +366,8 @@ APP.service('Status$', function ($rootScope, $state) {
      * @param receiver
      */
     that.deliverUsedBookToUser = function (usedBook, receiver) {
-        var me = $rootScope.User$.me();
-        if (me && usedBook.get('owner').id === me.id) {
-            $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
-        }
+        $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
+        that.sendPrivateMsg(receiver.id, '我把这本书漂流设置为 已经送给了你', 'sell', usedBook.id);
     };
 
     /**
