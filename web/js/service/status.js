@@ -294,11 +294,17 @@ APP.service('Status$', function ($rootScope, $state) {
      * @returns {AV.Promise}
      */
     this.sendPrivateMsg = function (receiverObjectId, msg, role, usedBookObjectId) {
-        var status = new AV.Status(null, msg);
-        status.set('to', AV.Object.createWithoutData('_User', receiverObjectId));
-        usedBookObjectId && status.set('usedBook', AV.Object.createWithoutData('UsedBook', usedBookObjectId));
-        status.set('role', role);
-        return AV.Status.sendPrivateStatus(status, receiverObjectId);
+        if ($rootScope.User$.me()) {
+            var status = new AV.Status(null, msg);
+            status.set('to', AV.Object.createWithoutData('_User', receiverObjectId));
+            usedBookObjectId && status.set('usedBook', AV.Object.createWithoutData('UsedBook', usedBookObjectId));
+            status.set('role', role);
+            return AV.Status.sendPrivateStatus(status, receiverObjectId);
+        } else {
+            alert('你还没有登入呢～');
+            $state.go('common.hello');
+            return AV.Promise.error();
+        }
     };
 
     /**
