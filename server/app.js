@@ -29,7 +29,7 @@ app.get('/wechatOAuthForwarder', function (req, res) {
     }
 });
 
-app.use(require('prerender-node').set('prerenderServiceUrl', 'http://prerender.ishuxun.cn'));
+app.use(require('prerender-node').set('prerenderServiceUrl', 'http://prerender.wuhaolin.cn'));
 
 /**
  * 配置静态资源
