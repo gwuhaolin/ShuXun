@@ -1,5 +1,5 @@
 <!--个人主页-->
-<ion-view ng-controller="ion_person_sendMsgToUser" view-title="回复{{receiver.attributes.nickName}}">
+<ion-view ng-controller="ion_person_sendMsgToUser" view-title="与 {{receiver.attributes.nickName}} 对话">
     <ion-nav-buttons side="right">
         <button class="button button-clear button-balanced" ui-sref="person.my">我</button>
     </ion-nav-buttons>
@@ -8,20 +8,20 @@
         <ion-user-info ng-if="receiver" user="receiver"></ion-user-info>
         <!-- 二手书信息-->
         <ion-one-used-book used-book="usedBook"></ion-one-used-book>
-        <ion-item ng-if="usedBook.attributes.alive && usedBook.attributes.owner.id===User$.me().id">
+        <ion-item ng-if="receiver && usedBook.attributes.alive && usedBook.attributes.owner.id===User$.me().id">
             <button class="button button-block button-small button-balanced"
                     ng-if="usedBook.attributes.role==='sell'"
-                    ng-click="Status$.sellUsedBookToUser(usedBook,receiver)">
+                    ng-click="sellUsedBookToUser()">
                 已决定卖给Ta
             </button>
             <button class="button button-block button-small button-balanced"
                     ng-if="usedBook.attributes.role==='need'"
-                    ng-click="Status$.gainUsedBookFromUser(usedBook,receiver)">
+                    ng-click="gainUsedBookFromUser()">
                 已成功从Ta获得
             </button>
             <button class="button button-block button-small button-balanced"
                     ng-if="usedBook.attributes.role==='circle'"
-                    ng-click="Status$.deliverUsedBookToUser(usedBook,receiver)">
+                    ng-click="deliverUsedBookToUser()">
                 已决定传递给Ta
             </button>
         </ion-item>

@@ -20,6 +20,14 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams) {
         $scope.$digest();
     });
 
+    //加载二手书信息
+    if ($scope.msg.usedBookObjectId) {
+        var query = new AV.Query(Model.UsedBook);
+        query.get($scope.msg.usedBookObjectId).done(function (usedBook) {
+            $scope.usedBook = usedBook;
+        });
+    }
+
     //加载聊天记录
     $scope.statusList = [];
     $scope.loadMoreStatus = function () {
@@ -38,14 +46,6 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams) {
         $scope.commonReplayWords = ['求微信号', '成交', '不能再便宜了', '这本书已经卖出去了'];
     } else {//我是买家
         $scope.commonReplayWords = ['求微信号', '成交', '可以再便宜点吗?', '你在什么地方?', '书有破损吗?'];
-    }
-
-    //加载二手书信息
-    if ($scope.msg.usedBookObjectId) {
-        var query = new AV.Query(Model.UsedBook);
-        query.get($scope.msg.usedBookObjectId).done(function (usedBook) {
-            $scope.usedBook = usedBook;
-        });
     }
 
     //发出消息
@@ -69,5 +69,23 @@ APP.controller('person_sendMsgToUser', function ($scope, $state, $stateParams) {
             $scope.msg.sendMsg = '';
             $scope.$digest();
         });
+    };
+
+    $scope.sellUsedBookToUser = function () {
+        $scope.UsedBook$.killUsedBook($scope.usedBook, $scope.receiver);
+        $scope.msg.sendMsg = '我把这本旧书设置为 已买给了你';
+        $scope.sendOnClick();
+    };
+
+    $scope.gainUsedBookFromUser = function () {
+        $scope.UsedBook$.killUsedBook($scope.usedBook, $scope.receiver);
+        $scope.msg.sendMsg = '我把这个求书公告设置为 已从你那获得';
+        $scope.sendOnClick();
+    };
+
+    $scope.deliverUsedBookToUser = function () {
+        $scope.UsedBook$.killUsedBook($scope.usedBook, $scope.receiver);
+        $scope.msg.sendMsg = '我把这本书漂流设置为 已经送给了你';
+        $scope.sendOnClick();
     };
 });

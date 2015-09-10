@@ -22,6 +22,7 @@ APP.service('UsedBook$', function ($rootScope, $state) {
         var query = avosUser.relation('usedBooks').query();
         query.descending('alive');
         query.equalTo('role', 'sell');
+        query.limit(1000);
         return query.find();
     };
 
@@ -34,6 +35,7 @@ APP.service('UsedBook$', function ($rootScope, $state) {
         var query = avosUser.relation('usedBooks').query();
         query.descending('alive');
         query.equalTo('role', 'need');
+        query.limit(1000);
         return query.find();
     };
 
@@ -46,6 +48,7 @@ APP.service('UsedBook$', function ($rootScope, $state) {
         var query = avosUser.relation('usedBooks').query();
         query.descending('alive');
         query.equalTo('role', 'circle');
+        query.limit(1000);
         return query.find();
     };
 

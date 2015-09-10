@@ -5,8 +5,8 @@
         <div class="row">
             <div class="col-md-12">
                 <h4>
-                    回复-<span ng-bind="receiver.attributes.nickName"></span>
-                    -<span ng-if="msg.title" ng-bind="msg.title"></span>
+                    与 <span ng-bind="receiver.attributes.nickName"></span> 对话
+                    <span ng-if="msg.title" ng-bind="msg.title"></span>
                 </h4>
                 <hr>
             </div>
@@ -51,21 +51,21 @@
 
     <div class="col-md-3">
         <!-- 对方用户信息-->
-        <div class="row" ng-if="usedBook.attributes.alive && usedBook.attributes.owner.id===User$.me().id">
+        <div class="row" ng-if="receiver && usedBook.attributes.alive && usedBook.attributes.owner.id===User$.me().id">
             <div class="col-md-12">
                 <button class="btn btn-block btn-primary"
                         ng-if="usedBook.attributes.role==='sell'"
-                        ng-click="Status$.sellUsedBookToUser(usedBook,receiver)">
+                        ng-click="sellUsedBookToUser()">
                     已决定卖给Ta
                 </button>
                 <button class="btn btn-block btn-primary"
                         ng-if="usedBook.attributes.role==='need'"
-                        ng-click="Status$.gainUsedBookFromUser(usedBook,receiver)">
+                        ng-click="gainUsedBookFromUser()">
                     已成功从Ta获得
                 </button>
                 <button class="btn btn-block btn-primary"
                         ng-if="usedBook.attributes.role==='circle'"
-                        ng-click="Status$.deliverUsedBookToUser(usedBook,receiver)">
+                        ng-click="deliverUsedBookToUser()">
                     已决定传递给Ta
                 </button>
             </div>

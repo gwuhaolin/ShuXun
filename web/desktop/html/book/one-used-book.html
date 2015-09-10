@@ -56,16 +56,19 @@
                 </div>
                 <div class="col-md-3">
                     <div ng-if="!isMy()">
-                        <a style="margin: 5px" ng-if="usedBook.attributes.role ==='sell'"
-                           class="btn btn-info" ng-click="Status$.requestSellUsedBook(usedBook)">我买了,向Ta预定</a>
-                        <a style="margin: 5px" ng-if="usedBook.attributes.role ==='need'"
-                           class="btn btn-info" ng-click="Status$.requestNeedUsedBook(usedBook)">我正好有,卖给Ta</a>
-                        <a style="margin: 5px" ng-if="usedBook.attributes.role ==='circle'"
-                           class="btn btn-info" ng-click="Status$.requestCircleUsedBook(usedBook)">我想要,向Ta索要</a>
-                        <a style="margin: 5px" class="btn btn-primary"
-                           ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
+                        <button style="margin: 5px" ng-if="usedBook.attributes.role ==='sell'"
+                                class="btn btn-info" ng-click="Status$.requestSellUsedBook(usedBook,$event)">我买了,向Ta预定
+                        </button>
+                        <button style="margin: 5px" ng-if="usedBook.attributes.role ==='need'"
+                                class="btn btn-info" ng-click="Status$.requestNeedUsedBook(usedBook,$event)">我正好有,卖给Ta
+                        </button>
+                        <button style="margin: 5px" ng-if="usedBook.attributes.role ==='circle'"
+                                class="btn btn-info" ng-click="Status$.requestCircleUsedBook(usedBook,$event)">我想要,向Ta索要
+                        </button>
+                        <button style="margin: 5px" class="btn btn-primary"
+                                ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
                             私信Ta
-                        </a>
+                        </button>
                     </div>
                     <div class="btn-group" ng-if="isMy()">
                         <button class="btn btn-info"

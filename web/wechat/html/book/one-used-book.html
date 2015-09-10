@@ -56,15 +56,15 @@
             <ion-item>
                 <button ng-if="usedBook.attributes.role ==='sell'"
                         class="button button-block button-small button-balanced"
-                        ng-click="Status$.requestSellUsedBook(usedBook)">我买了,向Ta预定
+                        ng-click="Status$.requestSellUsedBook(usedBook,$event)">我买了,向Ta预定
                 </button>
                 <button ng-if="usedBook.attributes.role ==='need'"
                         class="button button-block button-small button-balanced"
-                        ng-click="Status$.requestNeedUsedBook(usedBook)">我正好有,卖给Ta
+                        ng-click="Status$.requestNeedUsedBook(usedBook,$event)">我正好有,卖给Ta
                 </button>
                 <button ng-if="usedBook.attributes.role ==='circle'"
                         class="button button-block button-small button-balanced"
-                        ng-click="Status$.requestCircleUsedBook(usedBook)">我想要,向Ta索要
+                        ng-click="Status$.requestCircleUsedBook(usedBook,$event)">我想要,向Ta索要
                 </button>
             </ion-item>
         </div>

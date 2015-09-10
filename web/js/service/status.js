@@ -310,70 +310,67 @@ APP.service('Status$', function ($rootScope, $state) {
     /**
      * 我想要买一本
      * @param usedBook
+     * @param $event 触发按钮 再加载时把它设置为disable
      */
-    that.requestSellUsedBook = function (usedBook) {
+    that.requestSellUsedBook = function (usedBook, $event) {
+        $event.currentTarget.disabled = true;
+        var receiver = usedBook.get('owner');
         that.sendPrivateMsg(usedBook.get('owner').id, 'Hi，这本书我买了，给我留着！', 'buy', usedBook.id).done(function () {
             alert('成功向主人发送购买请求，请等待Ta的回复');
-            $state.go('book.one-book', {isbn13: usedBook.get('isbn13')});
+            $state.go('person.send-msg-to-user', {
+                receiverObjectId: receiver.id,
+                usedBookObjectId: usedBook.id,
+                inboxType: 'private'
+            });
         }).fail(function (err) {
             alert(err.message);
-        })
+        }).always(function () {
+            $event.currentTarget.disabled = false;
+        });
     };
 
     /**
      * 我正好有这本 ta发的求书
      * @param usedBook
+     * @param $event 触发按钮 再加载时把它设置为disable
      */
-    that.requestNeedUsedBook = function (usedBook) {
-        that.sendPrivateMsg(usedBook.get('owner').id, 'Hi，我正好有这本书要转让，给你留着！', 'sell', usedBook.id).done(function () {
+    that.requestNeedUsedBook = function (usedBook, $event) {
+        $event.currentTarget.disabled = true;
+        var receiver = usedBook.get('owner');
+        that.sendPrivateMsg(receiver.id, 'Hi，我正好有这本书要转让，给你留着！', 'sell', usedBook.id).done(function () {
             alert('成功告诉Ta你正好有这本书要卖，请等待Ta的回复');
-            $state.go('book.one-book', {isbn13: usedBook.get('isbn13')});
+            $state.go('person.send-msg-to-user', {
+                receiverObjectId: receiver.id,
+                usedBookObjectId: usedBook.id,
+                inboxType: 'private'
+            });
         }).fail(function (err) {
             alert(err.message);
-        })
+        }).always(function () {
+            $event.currentTarget.disabled = false;
+        });
     };
 
     /**
      * 我想要 Ta发的书漂流
      * @param usedBook
+     * @param $event 触发按钮 再加载时把它设置为disable
      */
-    that.requestCircleUsedBook = function (usedBook) {
+    that.requestCircleUsedBook = function (usedBook, $event) {
+        $event.currentTarget.disabled = true;
+        var receiver = usedBook.get('owner');
         that.sendPrivateMsg(usedBook.get('owner').id, 'Hi，好想要这本书，不能不留给我～', 'buy', usedBook.id).done(function () {
             alert('成功告诉Ta你想要这本书，请等待Ta的回复');
-            $state.go('book.one-book', {isbn13: usedBook.get('isbn13')});
+            $state.go('person.send-msg-to-user', {
+                receiverObjectId: receiver.id,
+                usedBookObjectId: usedBook.id,
+                inboxType: 'private'
+            });
         }).fail(function (err) {
             alert(err.message);
-        })
-    };
-
-    /**
-     * 已经把我的 旧书 卖给了receiver
-     * @param usedBook
-     * @param receiver
-     */
-    that.sellUsedBookToUser = function (usedBook, receiver) {
-        $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
-        that.sendPrivateMsg(receiver.id, '我把这本旧书设置为 已买给了你', 'sell', usedBook.id);
-    };
-
-    /**
-     * 从 TA 那里获得了我发布的求书
-     * @param usedBook
-     * @param receiver
-     */
-    that.gainUsedBookFromUser = function (usedBook, receiver) {
-        $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
-        that.sendPrivateMsg(receiver.id, '我把这个求书公告设置为 已从你那获得', 'buy', usedBook.id);
-    };
-
-    /**
-     * 把我发布的书漂流传递给ta
-     * @param usedBook
-     * @param receiver
-     */
-    that.deliverUsedBookToUser = function (usedBook, receiver) {
-        $rootScope.UsedBook$.killUsedBook(usedBook, receiver);
-        that.sendPrivateMsg(receiver.id, '我把这本书漂流设置为 已经送给了你', 'sell', usedBook.id);
+        }).always(function () {
+            $event.currentTarget.disabled = false;
+        });
     };
 
     /**

@@ -101,59 +101,62 @@ AV.Cloud.afterSave('_Status', function (req) {
     var usedBook = status.get('usedBook');//在 私信,评论二手书时 才有
     var url = 'http://www.ishuxun.cn/wechat/#/person/send-msg-to-user?receiverObjectId=' + sender.id + '&inboxType=' + inboxType,
         title;
-    if (usedBook) {
-        url += '&usedBookObjectId=' + usedBook.id;
-        var query = new AV.Query(Model.UsedBook);
-        query.include('bookInfo');
-        query.get(usedBook.id).always(function (fetchUsedBook) {
-            usedBook = fetchUsedBook;
-            var usedBookIsReceiver = usedBook.get('owner').id === receiver.id;
-            var bookTitle = usedBook.get('bookInfo').get('title');
-            var usedBookRole = usedBook.get('role');
+    if (receiver) {//如果是用户上传了新的UsedBook触发了Status事件那么Status就不会有to属性 receiver就为null 这里就不会发送微信消息
+        if (usedBook) {
+            url += '&usedBookObjectId=' + usedBook.id;
+            var query = new AV.Query(Model.UsedBook);
+            query.include('bookInfo');
+            query.get(usedBook.id).always(function (fetchUsedBook) {
+                usedBook = fetchUsedBook;
+                var usedBookIsReceiver = usedBook.get('owner').id === receiver.id;
+                var bookInfo = fetchUsedBook.get('bookInfo');
+                var bookTitle = bookInfo ? bookInfo.get('title') : '';
+                var usedBookRole = usedBook.get('role');
+                if (inboxType == 'private') {//发私信
+                    if (usedBookIsReceiver) {
+                        if (usedBookRole === 'sell') {
+                            title = '有同学对你要卖的旧书 ' + bookTitle + ' 感兴趣';
+                        } else if (usedBookRole === 'need') {
+                            title = '有同学回应你发布的求书 ' + title;
+                        } else if (usedBookRole === 'circle') {
+                            title = '有同学对你发布的书漂流 ' + bookTitle + ' 感兴趣';
+                        }
+                    } else {
+                        if (usedBookRole === 'sell') {
+                            title = '旧书 ' + bookTitle + ' 的主人回复了你';
+                        } else if (usedBookRole === 'need') {
+                            title = '发布求书 ' + bookTitle + '的同学回复了你';
+                        } else if (usedBookRole === 'circle') {
+                            title = '发布书漂流 ' + bookTitle + ' 的同学回复了你';
+                        }
+                    }
+                } else if (inboxType == 'reviewUsedBook') {//评价二手书
+                    if (usedBookIsReceiver) {
+                        if (usedBookRole === 'sell') {
+                            title = '有同学对你要卖的旧书 ' + bookTitle + ' 发表了评价';
+                        } else if (usedBookRole === 'need') {
+                            title = '有同学对你发布的求书 ' + bookTitle + ' 发表了评价';
+                        } else if (usedBookRole === 'circle') {
+                            title = '有同学对你发布的书漂流 ' + bookTitle + ' 发表了评价';
+                        }
+                    } else {
+                        if (usedBookRole === 'sell') {
+                            title = '旧书 ' + bookTitle + ' 的主人回复了你的评价';
+                        } else if (usedBookRole === 'need') {
+                            title = '发布求书 ' + bookTitle + '的同学回复了你的评价';
+                        } else if (usedBookRole === 'circle') {
+                            title = '发布书漂流 ' + bookTitle + ' 的同学回复了你的评价';
+                        }
+                    }
+                }
+                sendOutWechatMsg();
+            });
+        } else {
             if (inboxType == 'private') {//发私信
-                if (usedBookIsReceiver) {
-                    if (usedBookRole === 'sell') {
-                        title = '有同学对你要卖的旧书 ' + bookTitle + ' 感兴趣';
-                    } else if (usedBookRole === 'need') {
-                        title = '有同学回应你发布的求书 ' + title;
-                    } else if (usedBookRole === 'circle') {
-                        title = '有同学对你发布的书漂流 ' + bookTitle + ' 感兴趣';
-                    }
-                } else {
-                    if (usedBookRole === 'sell') {
-                        title = '旧书 ' + bookTitle + ' 的主人回复了你';
-                    } else if (usedBookRole === 'need') {
-                        title = '发布求书 ' + bookTitle + '的同学回复了你';
-                    } else if (usedBookRole === 'circle') {
-                        title = '发布书漂流 ' + bookTitle + ' 的同学回复了你';
-                    }
-                }
-            } else if (inboxType == 'reviewUsedBook') {//评价二手书
-                if (usedBookIsReceiver) {
-                    if (usedBookRole === 'sell') {
-                        title = '有同学对你要卖的旧书 ' + bookTitle + ' 发表了评价';
-                    } else if (usedBookRole === 'need') {
-                        title = '有同学对你发布的求书 ' + bookTitle + ' 发表了评价';
-                    } else if (usedBookRole === 'circle') {
-                        title = '有同学对你发布的书漂流 ' + bookTitle + ' 发表了评价';
-                    }
-                } else {
-                    if (usedBookRole === 'sell') {
-                        title = '旧书 ' + bookTitle + ' 的主人回复了你的评价';
-                    } else if (usedBookRole === 'need') {
-                        title = '发布求书 ' + bookTitle + '的同学回复了你的评价';
-                    } else if (usedBookRole === 'circle') {
-                        title = '发布书漂流 ' + bookTitle + ' 的同学回复了你的评价';
-                    }
-                }
+                title = '有同学给你发私信';
             }
             sendOutWechatMsg();
-        });
-    } else {
-        if (inboxType == 'private') {//发私信
-            title = '有同学给你发私信';
         }
-        sendOutWechatMsg();
     }
 
     /**
@@ -162,22 +165,18 @@ AV.Cloud.afterSave('_Status', function (req) {
      */
     function sendOutWechatMsg() {
         url += '&title=' + title;
-        if (receiver) {
-            receiver.fetch().done(function () {
-                var receiverOpenId = receiver.get('openId');
-                if (receiverOpenId) {
-                    var wechatAlert = receiver.get('wechatAlert');//用户自己设置的是否接受微信提醒
-                    if (wechatAlert) {
-                        WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId).fail(function (err) {
-                            console.error(err);
-                        })
-                    }
+        receiver.fetch().done(function () {
+            var receiverOpenId = receiver.get('openId');
+            if (receiverOpenId) {
+                var wechatAlert = receiver.get('wechatAlert');//用户自己设置的是否接受微信提醒
+                if (wechatAlert) {
+                    WeChatAPI.sendTemplateMsg(title, senderName, msg, url, receiverOpenId).fail(function (err) {
+                        console.error(err);
+                    })
                 }
-            }).fail(function (err) {
-                console.error(err);
-            })
-        } else {
-            console.error('消息接收者不能为空');
-        }
+            }
+        }).fail(function (err) {
+            console.error(err);
+        })
     }
 });

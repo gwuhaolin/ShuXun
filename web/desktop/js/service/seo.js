@@ -72,9 +72,9 @@ APP.service('SEO$', function () {
             }
         } else if (typeof  meta === 'string') {
             value = meta.trim();
-            re = value.length > 0 ? value : null;
+            re = value.length > 0 ? value : '';
         } else {
-            re = null;
+            re = '';
         }
         return re;
     }
