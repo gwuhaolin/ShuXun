@@ -6,6 +6,7 @@
 var AV = require('leanengine');
 var Model = require('../../web/js/model.js');
 var LBS = require('../util/lbs.js');
+var SEO = require('../util/seo.js');
 var WeChatAPI = require('../wechat/wechatAPI.js');
 var BookInfo = require('../book/book-info.js');
 
@@ -31,6 +32,9 @@ AV.Cloud.afterSave('UsedBook', function (req) {
         status.inboxType = 'newCircleBook';
     }
     AV.Status.sendStatusToFollowers(status, null);
+
+    //SEO
+    SEO.baiduLinkCommit('http://www.ishuxun.cn/desktop/#!/book/one-used-book/?usedBookAvosObjectId=' + usedBook.id);
 });
 AV.Cloud.beforeDelete('UsedBook', function (req, res) {
     //把当前usedBook从主人的relations的usedBooks属性中移除
@@ -44,6 +48,11 @@ AV.Cloud.beforeDelete('UsedBook', function (req, res) {
     });
 });
 
+AV.Cloud.afterSave('BookInfo', function (req) {
+    var bookInfo = req.object;
+    //SEO
+    SEO.baiduLinkCommit('http://www.ishuxun.cn/desktop/#!/book/one-book/?isbn13=' + bookInfo.get('isbn13'));
+});
 
 /**
  * 更新学校对象的经纬度
