@@ -7,23 +7,13 @@ var Unirest = require('unirest');
 
 /**
  * 向百度搜索引擎提交链接
- * @param url 要提交的链接的Url string or array
+ * @param url 要提交的链接的URL
  * @returns {AV.Promise}
  */
 exports.baiduLinkCommit = function (url) {
     var rePromise = new AV.Promise();
-    var data = '';
-    if (typeof url === 'string') {
-        data = url;
-    } else {
-        if (Array.isArray(url)) {
-            AV._.each(url, function (url) {
-                data += url + '\n';
-            });
-        }
-    }
     Unirest.post('http://data.zz.baidu.com/urls?site=www.ishuxun.cn&token=2dk82PmKgFJHnJSh')
-        .set('Content-Type', 'text/html').send(data).end(function (res) {
+        .set('Content-Type', 'text/html').send(url).end(function (res) {
             if (res.ok) {
                 rePromise.resolve(res.body);
             } else {
@@ -31,4 +21,31 @@ exports.baiduLinkCommit = function (url) {
             }
         });
     return rePromise;
+};
+
+/**
+ * 向Prerender Server 提交要抓取的链接 先缓存好
+ * @param url
+ * @returns {AV.Promise}
+ */
+exports.prerenderLinkCommit = function (url) {
+    var rePromise = new AV.Promise();
+    var postURL = 'http://prerender.wuhaolin.cn/' + url.replace('#!', '?_escaped_fragment_=');
+    Unirest.post(postURL).end(function (res) {
+        if (res.ok) {
+            rePromise.resolve(res.raw_body);
+        } else {
+            rePromise.reject(res.error);
+        }
+    });
+    return rePromise;
+};
+
+/**
+ * 当有网页需要被重新抓取时调用
+ * @param url 需要被重新抓取的网页
+ */
+exports.linkCommit = function (url) {
+    exports.prerenderLinkCommit(url);
+    exports.baiduLinkCommit(url);
 };

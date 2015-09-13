@@ -7,27 +7,21 @@ var SEO = require('../../server/util/seo.js');
 describe('util/seo.js', function () {
 
     describe('#baiduLinkCommit', function () {
-        var urlList = [
-            'http://www.ishuxun.cn/desktop/#!/book/recommend',
-            'http://www.ishuxun.cn/desktop/#!/book/book-list?cmd=latest',
-            'http://www.ishuxun.cn/desktop/#!/book/used-book-list?cmd=nearCircle',
-            'http://www.ishuxun.cn/desktop/#!/book/used-book-list?cmd=nearUsed',
-            'http://www.ishuxun.cn/desktop/#!/book/used-book-list?cmd=nearNeed',
-            'http://www.ishuxun.cn/desktop/#!/common/user-list?cmd=near'
-        ];
-
-        it('数组', function (done) {
-            SEO.baiduLinkCommit(urlList).done(function (res) {
+        it('', function (done) {
+            SEO.baiduLinkCommit('http://www.ishuxun.cn/desktop/#!/book/recommend').done(function (res) {
                 console.log(res);
                 done();
             }).fail(function (err) {
                 done(err);
             });
         });
+    });
 
-        it('单个字符串', function (done) {
-            SEO.baiduLinkCommit(urlList[0]).done(function (res) {
-                console.log(res);
+    describe.only('#prerenderLinkCommit', function () {
+        it('', function (done) {
+            this.timeout(100000);
+            SEO.prerenderLinkCommit('http://www.ishuxun.cn/desktop/#!/book/one-book/?isbn13=9787515512594').done(function (res) {
+                assert(res.indexOf('9787515512594')>0);
                 done();
             }).fail(function (err) {
                 done(err);

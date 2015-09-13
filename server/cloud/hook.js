@@ -34,7 +34,7 @@ AV.Cloud.afterSave('UsedBook', function (req) {
     AV.Status.sendStatusToFollowers(status, null);
 
     //SEO
-    SEO.baiduLinkCommit('http://www.ishuxun.cn/desktop/#!/book/one-used-book/?usedBookAvosObjectId=' + usedBook.id);
+    SEO.linkCommit('http://www.ishuxun.cn/desktop/#!/book/one-used-book/?usedBookAvosObjectId=' + usedBook.id);
 });
 AV.Cloud.beforeDelete('UsedBook', function (req, res) {
     //把当前usedBook从主人的relations的usedBooks属性中移除
@@ -51,7 +51,8 @@ AV.Cloud.beforeDelete('UsedBook', function (req, res) {
 AV.Cloud.afterSave('BookInfo', function (req) {
     var bookInfo = req.object;
     //SEO
-    SEO.baiduLinkCommit('http://www.ishuxun.cn/desktop/#!/book/one-book/?isbn13=' + bookInfo.get('isbn13'));
+    SEO.linkCommit('http://www.ishuxun.cn/desktop/#!/book/one-book/?isbn13=' + bookInfo.get('isbn13'));
+    SEO.linkCommit('http://www.ishuxun.cn/desktop/#!/book/book-list?cmd=latest');
 });
 
 /**
