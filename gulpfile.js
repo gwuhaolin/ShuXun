@@ -68,7 +68,7 @@ gulp.task('wechat_js', function () {
             }));
     }
 
-    streamqueue({objectMode: true}, js(), html())
+    return streamqueue({objectMode: true}, js(), html())
         .pipe(concat('index-' + NOW + '.js'))//合并
         .pipe(uglify({outSourceMap: false}))//压缩
         .pipe(gulp.dest('public/wechat'));
@@ -121,7 +121,7 @@ gulp.task('desktop_js', function () {
             }));
     }
 
-    streamqueue({objectMode: true}, js(), html())
+    return streamqueue({objectMode: true}, js(), html())
         .pipe(concat('index-' + NOW + '.js'))//合并
         .pipe(uglify({outSourceMap: false}))//压缩
         .pipe(gulp.dest('public/desktop'));
