@@ -9,7 +9,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var templateCache = require('gulp-angular-templatecache');
 var ngAnnotate = require('gulp-ng-annotate');
-var es = require("event-stream");
+var streamqueue = require('streamqueue');
 var htmlreplace = require('gulp-html-replace');
 var htmlmin = require('gulp-htmlmin');
 var clean = require('gulp-clean');
@@ -40,8 +40,21 @@ gulp.task('image', function () {
 
 /////////////////////////////////////// wechat ////////////////////////////////////////
 gulp.task('wechat_js', function () {
-    return es.concat(
-        gulp.src(
+
+    function js() {
+        return gulp.src([
+            'web/js/*.js',
+            'web/wechat/js/*.js',
+            'web/js/service/*.js',
+            'web/js/controller/**/*.js',
+            'web/wechat/js/service/*.js',
+            'web/wechat/js/controller/**/*.js',
+            'web/wechat/js/directive/*js'])
+            .pipe(ngAnnotate());//angular依赖
+    }
+
+    function html() {
+        return gulp.src(
             //把模板变成js
             ['web/wechat/html/**/*.html', 'web/wechat/html/*.html'])
             .pipe(htmlmin({
@@ -52,11 +65,10 @@ gulp.task('wechat_js', function () {
             .pipe(templateCache({
                 root: 'html/',
                 module: 'APP'
-            })),
-        //合并app js
-        gulp.src(['web/js/*.js', 'web/wechat/js/*.js', 'web/js/service/*.js', 'web/js/controller/**/*.js', 'web/wechat/js/service/*.js', 'web/wechat/js/controller/**/*.js', 'web/wechat/js/directive/*js']))
-        //angular依赖
-        .pipe(ngAnnotate())
+            }));
+    }
+
+    streamqueue({objectMode: true}, js(), html())
         .pipe(concat('index-' + NOW + '.js'))//合并
         .pipe(uglify({outSourceMap: false}))//压缩
         .pipe(gulp.dest('public/wechat'));
@@ -81,8 +93,21 @@ gulp.task('wechat', function () {
 
 /////////////////////////////////////// desktop ////////////////////////////////////////
 gulp.task('desktop_js', function () {
-    return es.concat(
-        gulp.src(
+
+    function js() {
+        return gulp.src([
+            'web/js/*.js',
+            'web/desktop/js/*.js',
+            'web/js/service/*.js',
+            'web/js/controller/**/*.js',
+            'web/desktop/js/service/*.js',
+            'web/desktop/js/controller/**/*.js',
+            'web/desktop/js/directive/*js'])
+            .pipe(ngAnnotate());//angular依赖
+    }
+
+    function html() {
+        return gulp.src(
             //把模板变成js
             ['web/desktop/html/**/*.html', 'web/desktop/html/*.html'])
             .pipe(htmlmin({
@@ -93,11 +118,10 @@ gulp.task('desktop_js', function () {
             .pipe(templateCache({
                 root: 'html/',
                 module: 'APP'
-            })),
-        //合并app js
-        gulp.src(['web/js/*.js', 'web/desktop/js/*.js', 'web/js/service/*.js', 'web/js/controller/**/*.js', 'web/desktop/js/service/*.js', 'web/desktop/js/controller/**/*.js', 'web/desktop/js/directive/*js']))
-        //angular依赖
-        .pipe(ngAnnotate())
+            }));
+    }
+
+    streamqueue({objectMode: true}, js(), html())
         .pipe(concat('index-' + NOW + '.js'))//合并
         .pipe(uglify({outSourceMap: false}))//压缩
         .pipe(gulp.dest('public/desktop'));
