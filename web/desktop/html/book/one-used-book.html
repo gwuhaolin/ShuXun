@@ -62,7 +62,7 @@
             </div>
             <div class="col-md-3" ng-repeat="circleBook in ownerOtherCircleBooks">
                 <bs-one-used-book used-book="circleBook"
-                                  popover-placement="left"></bs-one-used-book>
+                                  popover-placement="right"></bs-one-used-book>
             </div>
         </div>
 
@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-3" ng-repeat="usedBook in ownerOtherUsedBooks">
                 <bs-one-used-book used-book="usedBook"
-                                  popover-placement="left"></bs-one-used-book>
+                                  popover-placement="right"></bs-one-used-book>
             </div>
         </div>
 
@@ -84,7 +84,7 @@
             </div>
             <div class="col-md-3" ng-repeat="needBook in ownerOtherNeedBooks">
                 <bs-one-used-book used-book="needBook"
-                                  popover-placement="left"></bs-one-used-book>
+                                  popover-placement="right"></bs-one-used-book>
             </div>
         </div>
 
@@ -109,18 +109,18 @@
                 </div>
                 <div class="col-md-12">
                     <p ng-if="usedBook.attributes.price>0">
-                        <span ng-if="usedBook.attributes.role==='sell'">主人要价</span>
-                        <span ng-if="usedBook.attributes.role==='need'">最高承受价</span>
+                        <span ng-if="usedBook.attributes.role==='sell'">主人要价:</span>
+                        <span ng-if="usedBook.attributes.role==='need'">最高承受价:</span>
                         <strong ng-bind="usedBook.attributes.price"></strong>
                     </p>
 
                     <p>
-                        <span>上传时间</span>
+                        <span>上传时间:</span>
                         <strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong>
                     </p>
 
                     <p ng-if="usedBook.attributes.des">
-                        <span>主人描述</span>
+                        <span>主人描述:</span>
                         <strong ng-bind="usedBook.attributes.des"></strong>
                     </p>
                     <hr>
