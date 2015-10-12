@@ -1,6 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 node_modules
 .idea
-bower_components
 config
 public
