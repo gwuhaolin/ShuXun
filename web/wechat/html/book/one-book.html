@@ -64,15 +64,10 @@
         </div>
 
         <!-- 书漂流-->
-        <div class="list">
-            <ion-item class="item-divider item-button-right">书漂流
-                <button class="button button-clear button-balanced"
-                        ui-sref="person.upload-one-used-book({isbn13:bookInfo.attributes.isbn13,role:'circle'})">上传书漂流
-                </button>
-            </ion-item>
+        <div class="list" ng-if="UsedBook$.ISBN_circle.nowEqualISBNCircleBooks.length>0">
+            <ion-item class="item-divider item-button-right">书漂流-免费送</ion-item>
             <ion-item ng-if="circleBookNumber==0" style="text-align: center">还没有同学分享它</ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_circle.nowEqualISBNCircleBooks.length>0"
-                      ng-repeat="usedBook in UsedBook$.ISBN_circle.nowEqualISBNCircleBooks"
+            <ion-item ng-repeat="usedBook in UsedBook$.ISBN_circle.nowEqualISBNCircleBooks"
                       class="item-avatar">
                 <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
                      ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id})">
@@ -95,15 +90,10 @@
         </div>
 
         <!-- 二手书-->
-        <div class="list">
-            <ion-item class="item-divider item-button-right">要卖对应旧书的同学
-                <button class="button button-clear button-balanced"
-                        ui-sref="person.upload-one-used-book({isbn13:bookInfo.attributes.isbn13,role:'sell'})">上传旧书
-                </button>
-            </ion-item>
+        <div class="list" ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0">
+            <ion-item class="item-divider item-button-right">要卖对应旧书的同学</ion-item>
             <ion-item ng-if="usedBookNumber==0" style="text-align: center">还没有对应的二手书</ion-item>
-            <ion-item ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0"
-                      ng-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
+            <ion-item ng-repeat="usedBook in UsedBook$.ISBN_sell.nowEqualISBNUsedBooks"
                       class="item-avatar">
                 <img ng-src="{{usedBook.attributes.owner.avatarUrlWithSize(64)}}"
                      ui-sref="common.user-home({ownerId:usedBook.attributes.owner.id})">
@@ -126,12 +116,8 @@
         </div>
 
         <!-- 求书-->
-        <div class="list">
-            <ion-item class="item-divider item-button-right">正需要它的同学
-                <button class="button button-clear button-balanced"
-                        ui-sref="person.upload-one-used-book({isbn13:bookInfo.attributes.isbn13,role:'need'})">发布求书
-                </button>
-            </ion-item>
+        <div class="list" ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0">
+            <ion-item class="item-divider item-button-right">正需要它的同学</ion-item>
             <ion-item ng-if="needBookNumber==0" style="text-align: center">还没有同学想要它</ion-item>
             <ion-item ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0"
                       ng-repeat="usedBook in UsedBook$.ISBN_need.nowEqualISBNNeedBooks"
@@ -156,6 +142,18 @@
                 共<strong ng-bind="needBookNumber"></strong>位同学想要它,查看全部
             </ion-item>
 
+        </div>
+
+        <div class="list">
+            <ion-item class="item-divider item-button-right">上传</ion-item>
+            <div class="button-bar">
+                <a class="button button-balanced"
+                   ui-sref="person.upload-one-used-book({isbn13:bookInfo.attributes.isbn13,role:'circle'})">图书漂流</a>
+                <a class="button button-balanced"
+                   ui-sref="person.upload-one-used-book({isbn13:bookInfo.attributes.isbn13,role:'sell'})">转让旧书</a>
+                <a class="button button-balanced"
+                   ui-sref="person.upload-one-used-book({isbn13:bookInfo.attributes.isbn13,role:'need'})">求书公告</a>
+            </div>
         </div>
 
         <!-- 书评-->
