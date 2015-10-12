@@ -50,14 +50,15 @@
                     </li>
                 </ul>
             </div>
-            <bs-infinite-scroll ng-if="DoubanBook$.BookReview.hasMore()" on-infinite="DoubanBook$.BookReview.loadMore()"></bs-infinite-scroll>
+            <bs-infinite-scroll ng-if="DoubanBook$.BookReview.hasMore()"
+                                on-infinite="DoubanBook$.BookReview.loadMore()"></bs-infinite-scroll>
         </div>
     </div>
 
     <aside class="col-md-3">
 
         <!-- 电商购买新书-->
-        <div class="row">
+        <div class="row" ng-if="businessInfos.length>0">
             <div class="col-md-12">
                 <h4>网购新书比价</h4>
                 <hr>
@@ -76,10 +77,9 @@
         </div>
 
         <!-- 书漂流-->
-        <div class="row">
+        <div class="row" ng-if="circleBookNumber>0">
             <div class="col-md-12">
-                <h4 ng-if="circleBookNumber>0"><strong ng-bind="circleBookNumber"></strong> 位同学分享它</h4>
-                <h4 class="text-warning" ng-if="circleBookNumber==0">还没有同学分享它</h4>
+                <h4><strong ng-bind="circleBookNumber"></strong> 位同学分享它</h4>
                 <hr>
             </div>
             <div class="col-md-12" ng-if="UsedBook$.ISBN_circle.nowEqualISBNCircleBooks.length>0">
@@ -106,10 +106,9 @@
         </div>
 
         <!-- 二手书-->
-        <div class="row">
+        <div class="row" ng-if="usedBookNumber>0">
             <div class="col-md-12">
-                <h4 ng-if="usedBookNumber>0"><strong ng-bind="usedBookNumber"></strong> 位同学卖对应旧书</h4>
-                <h4 class="text-warning" ng-if="usedBookNumber==0">还没有对应的二手书</h4>
+                <h4><strong ng-bind="usedBookNumber"></strong> 位同学卖对应旧书</h4>
                 <hr>
             </div>
             <div class="col-md-12" ng-if="UsedBook$.ISBN_sell.nowEqualISBNUsedBooks.length>0">
@@ -137,10 +136,9 @@
         </div>
 
         <!-- 求书-->
-        <div class="row">
+        <div class="row" ng-if="needBookNumber>0">
             <div class="col-md-12">
-                <h4 ng-if="needBookNumber>0"><strong ng-bind="needBookNumber"></strong> 位同学正需要它</h4>
-                <h4 class="text-warning" ng-if="needBookNumber==0">还没有同学正需要它</h4>
+                <h4><strong ng-bind="needBookNumber"></strong> 位同学正需要它</h4>
                 <hr>
             </div>
             <div class="col-md-12" ng-if="UsedBook$.ISBN_need.nowEqualISBNNeedBooks.length>0">

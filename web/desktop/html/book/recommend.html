@@ -55,21 +55,6 @@
             </div>
         </div>
 
-        <!-- 用户附近的用户-->
-        <div id="附近同学" class="row" ng-if="BookRecommend$.NearUser.users.length>0">
-            <div class="col-md-12">
-                <h4><a ui-sref="common.user-list({cmd:'near'})">附近同学</a></h4>
-                <hr>
-            </div>
-            <div class="col-xs-6 col-md-2" ng-repeat="user in BookRecommend$.NearUser.users.slice(0,24)">
-                <bs-one-user user="user"
-                             image-size="132"
-                             margin="20"
-                             popover-placement="right"
-                             avatar-size="66"></bs-one-user>
-            </div>
-        </div>
-
         <!-- 附近用户发布的求书-->
         <div id="求书公告" class="row" ng-if="BookRecommend$.NearNeedBook.needBooks.length>0">
             <div class="col-md-12">
@@ -129,6 +114,22 @@
                            ui-sref="book.book-list({cmd:'tag',tag:littleTag})"></a>
                     </tab>
                 </tabset>
+            </div>
+        </div>
+
+        <!-- 用户附近的用户-->
+        <div id="附近同学" class="row" ng-if="BookRecommend$.NearUser.users.length>0">
+            <div class="col-md-12">
+                <h4><a ui-sref="common.user-list({cmd:'near'})">附近同学</a></h4>
+                <hr>
+            </div>
+            <div class="col-md-4" ng-repeat="user in BookRecommend$.NearUser.users.slice(0,24)">
+                <bs-one-user ng-if="user.attributes.avatarUrl"
+                             user="user"
+                             image-size="132"
+                             margin="20"
+                             popover-placement="right"
+                             avatar-size="66"></bs-one-user>
             </div>
         </div>
 
