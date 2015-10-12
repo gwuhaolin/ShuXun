@@ -12,9 +12,6 @@ APP.controller('bs_book_oneBook', function ($scope, $controller) {
         return $scope.bookInfo;
     }, function () {
         if ($scope.bookInfo) {
-            $scope.BookReview.clear();
-            $scope.BookReview.nowBookId = $scope.bookInfo.attributes.doubanId;
-            $scope.BookReview.loadMore();
             $scope.SEO$.setSEO($scope.bookInfo);
         }
     });

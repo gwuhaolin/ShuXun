@@ -13,6 +13,10 @@ APP.controller('book_oneBook', function ($scope, $state, $stateParams) {
     //加载图书信息
     $scope.BookInfo$.getBookInfoByISBN($scope.isbn13).done(function (bookInfo) {
         $scope.bookInfo = bookInfo;
+        //加载书评
+        $scope.DoubanBook$.BookReview.clear();
+        $scope.DoubanBook$.BookReview.nowBookId = $scope.bookInfo.attributes.doubanId;
+        $scope.DoubanBook$.BookReview.loadMore();
     }).fail(function () {
         alert('没有找到图书信息,再去搜搜看~');
         $state.go('book.search-list');

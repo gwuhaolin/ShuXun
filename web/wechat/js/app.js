@@ -114,17 +114,6 @@ var APP = angular.module('APP', ['ionic'], null)
                     templateUrl: 'html/book/one-used-book.html'
                 }
             }
-        }).state('book.book-review', {
-            /**
-             * @param:doubanBookId 豆瓣图书id
-             * @param:图书的名称
-             */
-            url: '/book-review?doubanBookId&bookTitle',
-            views: {
-                'book': {
-                    templateUrl: 'html/book/book-review.html'
-                }
-            }
         }).state('book.title-pre', {
             /**
              * @param:title 标题

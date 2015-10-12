@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-12">
                 <ul class="media-list">
-                    <li class="media" ng-repeat="review in BookReview.reviewList">
+                    <li class="media" ng-repeat="review in DoubanBook$.BookReview.reviewList">
                         <div class="media-left">
                             <img style="width: 40px;height: 40px;" class="img-circle" ng-src="{{review.avatarUrl}}">
                         </div>
@@ -50,7 +50,7 @@
                     </li>
                 </ul>
             </div>
-            <bs-infinite-scroll ng-if="BookReview.hasMore()" on-infinite="BookReview.loadMore()"></bs-infinite-scroll>
+            <bs-infinite-scroll ng-if="DoubanBook$.BookReview.hasMore()" on-infinite="DoubanBook$.BookReview.loadMore()"></bs-infinite-scroll>
         </div>
     </div>
 

@@ -47,8 +47,7 @@
                                  num-raters="{{bookInfo.attributes.rating.numRaters}}"></ion-review-star>
                 <i>&nbsp;</i>
                 <button class="button button-small button-clear button-balanced"
-                        ui-sref="book.book-review({doubanBookId:bookInfo.attributes.doubanId,bookTitle:bookInfo.attributes.title})">
-                    书评
+                        ng-click="scrollToHash('书评')">书评
                 </button>
             </ion-item>
         </div>
@@ -157,6 +156,22 @@
                 共<strong ng-bind="needBookNumber"></strong>位同学想要它,查看全部
             </ion-item>
 
+        </div>
+
+        <!-- 书评-->
+        <div class="list" id="书评" ng-if="DoubanBook$.BookReview.reviewList.length>0">
+            <ion-item class="item-divider item-button-right">书评</ion-item>
+            <ion-item class="item-avatar" ng-repeat="review in DoubanBook$.BookReview.reviewList">
+                <img ng-src="{{review.avatarUrl}}">
+
+                <h3 ng-bind="review.title"></h3>
+
+                <p style="white-space: pre-wrap" ng-bind="review.context"></p>
+            </ion-item>
+            <ion-infinite-scroll ng-if="DoubanBook$.BookReview.hasMore()"
+                                 on-infinite="DoubanBook$.BookReview.loadMore()"
+                                 distance="1%">
+            </ion-infinite-scroll>
         </div>
 
     </ion-content>
