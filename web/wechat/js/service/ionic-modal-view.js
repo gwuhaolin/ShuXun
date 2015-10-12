@@ -57,24 +57,4 @@ APP.service('IonicModalView$', function ($rootScope, $ionicModal) {
             $scope.chooseBookTagModalView.hide();
         };
     };
-
-    /**
-     * 弹出详细文本信息
-     * @param title 标题
-     * @param pre 要放在pre里显示的内容
-     */
-    this.alertTitleAndPreModalView = function (title, pre) {
-        var $scope = $rootScope.$new(true);
-        $scope.titleAndPreModalViewData = {
-            title: title,
-            pre: pre
-        };
-        $ionicModal.fromTemplateUrl('html/directive/title-and-pre-modal-view.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.titleAndPreModalView = modal;
-            modal.show();
-        });
-    };
-
 });

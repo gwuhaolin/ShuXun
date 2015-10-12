@@ -4,14 +4,14 @@
  */
 "use strict";
 
-APP.controller('ion_book_oneBook', function ($scope, $controller, $ionicModal) {
+APP.controller('ion_book_oneBook', function ($scope, $controller, $state) {
     $controller('book_oneBook', {$scope: $scope});
 
     //显示作者介绍
     $scope.showAuthorIntro = function () {
         var title = $scope.bookInfo.attributes.author.toString();
         var pre = $scope.bookInfo.attributes.author_intro;
-        $scope.IonicModalView$.alertTitleAndPreModalView(title, pre);
+        $state.go('book.title-pre', {title: title, pre: pre});
     };
     //显示出版信息
     $scope.showPubInfo = function () {
@@ -25,14 +25,14 @@ APP.controller('ion_book_oneBook', function ($scope, $controller, $ionicModal) {
             '\n装帧:' + bookJson.binding +
             '\nISBN:' + bookJson.isbn13 +
             '\n目录:\n' + bookJson.catalog;
-        $scope.IonicModalView$.alertTitleAndPreModalView(title, pre);
+        $state.go('book.title-pre', {title: title, pre: pre});
     };
 
     //显示图书简介
     $scope.showSummary = function () {
         var title = '图书简介';
         var pre = $scope.bookInfo.attributes.summary;
-        $scope.IonicModalView$.alertTitleAndPreModalView(title, pre);
+        $state.go('book.title-pre', {title: title, pre: pre});
     };
 
     //统计用户行为
