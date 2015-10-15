@@ -17,7 +17,7 @@ describe('util/seo.js', function () {
         });
     });
 
-    describe.only('#prerenderLinkCommit', function () {
+    describe('#prerenderLinkCommit', function () {
         it('', function (done) {
             this.timeout(100000);
             SEO.prerenderLinkCommit('http://www.ishuxun.cn/desktop/#!/book/one-book/?isbn13=9787515512594').done(function (res) {
