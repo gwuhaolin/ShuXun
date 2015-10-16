@@ -94,72 +94,66 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h4>主人信息</h4>
+                <h4 ng-bind="title"></h4>
                 <hr>
             </div>
             <div class="col-md-12">
-                <div class="col-md-12 text-center">
-                    <bs-one-user class="center-block"
-                                 user="usedBook.attributes.owner"
-                                 avatar-size="80"
-                                 popover-placement="right"
-                                 margin="5"
-                                 image-size="132"></bs-one-user>
-                    <hr>
-                </div>
-                <div class="col-md-12">
-                    <p ng-if="usedBook.attributes.price>0">
-                        <span ng-if="usedBook.attributes.role==='sell'">主人要价:</span>
-                        <span ng-if="usedBook.attributes.role==='need'">最高承受价:</span>
-                        <strong ng-bind="usedBook.attributes.price"></strong>
-                    </p>
+                <bs-one-user class="center-block"
+                             user="usedBook.attributes.owner"
+                             avatar-size="80"
+                             popover-placement="right"
+                             margin="5"
+                             image-size="132"></bs-one-user>
+                <hr>
+                <p ng-if="usedBook.attributes.price>0">
+                    <span ng-if="usedBook.attributes.role==='sell'">主人要价:</span>
+                    <span ng-if="usedBook.attributes.role==='need'">最高承受价:</span>
+                    <strong>{{usedBook.attributes.price}} 元</strong>
+                </p>
 
-                    <p>
-                        <span>上传时间:</span>
-                        <strong ng-bind="usedBook.updatedAt | date:'mediumDate'"></strong>
-                    </p>
+                <p>
+                    <span>上传时间:</span>
+                    <span ng-bind="usedBook.updatedAt | date:'mediumDate'"></span>
+                </p>
 
-                    <p ng-if="usedBook.attributes.des">
-                        <span>主人描述:</span>
-                        <strong ng-bind="usedBook.attributes.des"></strong>
-                    </p>
-                    <hr>
+                <p ng-if="usedBook.attributes.des">
+                    <span>主人描述:</span>
+                    <span ng-bind="usedBook.attributes.des"></span>
+                </p>
+                <hr>
+                <div ng-if="!isMy()">
+                    <button style="margin: 5px" ng-if="usedBook.attributes.role ==='sell'"
+                            class="btn btn-info" ng-click="Status$.requestSellUsedBook(usedBook,$event)">我买了,向Ta预定
+                    </button>
+                    <button style="margin: 5px" ng-if="usedBook.attributes.role ==='need'"
+                            class="btn btn-info" ng-click="Status$.requestNeedUsedBook(usedBook,$event)">我正好有,卖给Ta
+                    </button>
+                    <button style="margin: 5px" ng-if="usedBook.attributes.role ==='circle'"
+                            class="btn btn-info" ng-click="Status$.requestCircleUsedBook(usedBook,$event)">我想要,向Ta索要
+                    </button>
+                    <button style="margin: 5px" class="btn btn-primary"
+                            ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
+                        私信Ta
+                    </button>
                 </div>
-                <div class="col-md-12">
-                    <div ng-if="!isMy()">
-                        <button style="margin: 5px" ng-if="usedBook.attributes.role ==='sell'"
-                                class="btn btn-info" ng-click="Status$.requestSellUsedBook(usedBook,$event)">我买了,向Ta预定
-                        </button>
-                        <button style="margin: 5px" ng-if="usedBook.attributes.role ==='need'"
-                                class="btn btn-info" ng-click="Status$.requestNeedUsedBook(usedBook,$event)">我正好有,卖给Ta
-                        </button>
-                        <button style="margin: 5px" ng-if="usedBook.attributes.role ==='circle'"
-                                class="btn btn-info" ng-click="Status$.requestCircleUsedBook(usedBook,$event)">我想要,向Ta索要
-                        </button>
-                        <button style="margin: 5px" class="btn btn-primary"
-                                ui-sref="person.send-msg-to-user({receiverObjectId:usedBook.attributes.owner.id,role:'buy',inboxType:'private',usedBookObjectId:usedBook.id})">
-                            私信Ta
-                        </button>
-                    </div>
-                    <div class="btn-group" ng-if="isMy()">
-                        <button class="btn btn-info"
-                                ng-if="usedBook.attributes.alive"
-                                ng-click="UsedBook$.killUsedBook(usedBook)">
-                            <span ng-if="usedBook.attributes.role==='sell'">已卖</span>
-                            <span ng-if="usedBook.attributes.role==='need'">已买</span>
-                            <span ng-if="usedBook.attributes.role==='circle'">已送</span>
-                        </button>
-                        <button class="btn btn-info"
-                                ng-if="!usedBook.attributes.alive"
-                                ng-click="UsedBook$.backToLifeUsedBook(usedBook)">
-                            <span ng-if="usedBook.attributes.role==='sell'">撤销已卖</span>
-                            <span ng-if="usedBook.attributes.role==='need'">撤销已买</span>
-                            <span ng-if="usedBook.attributes.role==='circle'">撤销已送</span>
-                        </button>
-                        <button class="btn btn-warning" ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">
-                            修改
-                        </button>
-                    </div>
+                <div class="btn-group" ng-if="isMy()">
+                    <button class="btn btn-info"
+                            ng-if="usedBook.attributes.alive"
+                            ng-click="UsedBook$.killUsedBook(usedBook)">
+                        <span ng-if="usedBook.attributes.role==='sell'">已卖</span>
+                        <span ng-if="usedBook.attributes.role==='need'">已买</span>
+                        <span ng-if="usedBook.attributes.role==='circle'">已送</span>
+                    </button>
+                    <button class="btn btn-info"
+                            ng-if="!usedBook.attributes.alive"
+                            ng-click="UsedBook$.backToLifeUsedBook(usedBook)">
+                        <span ng-if="usedBook.attributes.role==='sell'">撤销已卖</span>
+                        <span ng-if="usedBook.attributes.role==='need'">撤销已买</span>
+                        <span ng-if="usedBook.attributes.role==='circle'">撤销已送</span>
+                    </button>
+                    <button class="btn btn-warning" ui-sref="person.edit-one-used-book({usedBookId:usedBook.id})">
+                        修改
+                    </button>
                 </div>
             </div>
         </div>
