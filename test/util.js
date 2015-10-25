@@ -68,5 +68,4 @@ exports.initAVOS = function () {
     AV.initialize(APP_ID, APP_KEY, MASTER_KEY);
     AV.Cloud.useMasterKey();
     AV.setProduction(false);
-    //AV.User.logIn(exports.WuHaolin.unionId, exports.WuHaolin.unionId);
 };

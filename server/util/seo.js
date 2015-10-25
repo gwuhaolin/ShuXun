@@ -13,20 +13,20 @@ var Unirest = require('unirest');
 exports.baiduLinkCommit = function (url) {
     var rePromise = new AV.Promise();
     Unirest.post('http://data.zz.baidu.com/urls?site=www.ishuxun.cn&token=2dk82PmKgFJHnJSh')
-        .set('Content-Type', 'text/html').send(url).end(function (res) {
-            if (res.ok) {
-                rePromise.resolve(res.body);
-            } else {
-                rePromise.reject(res.error);
-            }
-        });
+        .set('Content-Type', 'text/plain').send(url).end(function (res) {
+        if (res.ok) {
+            rePromise.resolve(res.body);
+        } else {
+            rePromise.reject(res.body);
+        }
+    });
     return rePromise;
 };
 
 /**
  * 向Prerender Server 提交要抓取的链接 先缓存好
  * @param url
- * @returns {AV.Promise}
+ * @returns {AV.Promise} string 渲染出来的html
  */
 exports.prerenderLinkCommit = function (url) {
     var rePromise = new AV.Promise();
