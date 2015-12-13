@@ -2,7 +2,7 @@
  * Created by wuhaolin on 5/29/15.
  */
 var assert = require('assert');
-var AppConfig = require('../../config/config.js');
+var AppConfig = require('../../config/config.json');
 var wechatAPI = require('../../server/wechat/wechatAPI.js');
 var Util = require('../util.js');
 

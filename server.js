@@ -5,7 +5,7 @@
 "use strict";
 
 var AV = require('leanengine');
-var AppConfig = require('./config/config.js');
+var AppConfig = require('./config/config.json');
 var APP_ID = process.env['LC_APP_ID'] || AppConfig.AV.applicationId;
 var APP_KEY = process.env['LC_APP_KEY'] || AppConfig.AV.applicationKey;
 var MASTER_KEY = process.env['LC_APP_MASTER_KEY'] || AppConfig.AV.masterKey;

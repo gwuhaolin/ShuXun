@@ -4,7 +4,7 @@
  */
 "use strict";
 var AV = require('leanengine');
-var AppConfig = require('../../config/config.js');
+var AppConfig = require('../../config/config.json');
 var Model = require('../../web/js/model.js');
 var Wechat = require('wechat');
 var DoubanBook = require('../book/douban-book.js');

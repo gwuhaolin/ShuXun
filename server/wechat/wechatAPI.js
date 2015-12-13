@@ -3,7 +3,7 @@
  *
  */
 "use strict";
-var AppConfig = require('../../config/config.js');
+var AppConfig = require('../../config/config.json');
 var WeChatAPIClient = require('wechat-api');
 var WeChatOAuthClient = require('wechat-oauth');
 var AV = require('leanengine');
