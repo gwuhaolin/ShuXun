@@ -38,7 +38,6 @@
     "express": "^4.13.3",
     "leanengine": "^0.1.6",
     "moment": "^2.10.6",
-    "prerender-node": "^2.1.0",
     "superagent": "^1.4.0",
     "superagent-charset": "^0.1.1",
     "underscore": "^1.8.3",
