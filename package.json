@@ -12,7 +12,7 @@
   "main": "server.js",
   "scripts": {
     "build": "gulp",
-    "start": "node server.js",
+    "start": "node --harmony server.js",
     "test": "mocha --recursive test/"
   },
   "devDependencies": {
