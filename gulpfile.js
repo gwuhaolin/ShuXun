@@ -20,7 +20,7 @@ function CDN(cdn) {
         'Ionic-js': 'http://cdn.bootcss.com/ionic/1.1.0/js/ionic.bundle.min.js',
         'Angular-js': 'http://cdn.bootcss.com/angular.js/1.4.5/angular.min.js',
         'AngularUIRouter-js': 'http://cdn.bootcss.com/angular-ui-router/0.2.15/angular-ui-router.min.js',
-        'LeanAnalytics-js': 'http://7xiv48.com1.z0.glb.clouddn.com/AV.analytics.min.js',
+        'LeanAnalytics-js': 'http://ou8vcvyuy.bkt.clouddn.com/AV.analytics.js',
         'Avos-js': 'https://cdn1.lncld.net/static/js/av-core-mini-0.6.0.js',
         'Bootstrap-css': 'http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css',
         'UIBootstrap-js': 'http://cdn.bootcss.com/angular-ui-bootstrap/0.13.3/ui-bootstrap.min.js',
